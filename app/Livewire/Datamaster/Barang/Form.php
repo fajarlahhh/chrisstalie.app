@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\DB;
 class Form extends Component
 {
     public $data, $previous, $supplierData = [];
-    public $name, $unit, $min_inventory, $price, $type, $description, $consignment_id, $precompounded, $kfa, $office_portion, $practitioner_portion, $capital;
+    public $nama, $unit, $min_inventory, $price, $type, $description, $consignment_id, $precompounded, $kfa, $office_portion, $practitioner_portion, $capital;
 
     public function submit()
     {
         $this->validate([
-            'name' => 'required',
+            'nama' => 'required',
             'unit' => 'required',
             'min_inventory' => 'required',
             'price' => 'required',
@@ -32,7 +32,7 @@ class Form extends Component
         }
 
         DB::transaction(function () {
-            $this->data->name = $this->name;
+            $this->data->nama = $this->nama;
             $this->data->unit = $this->unit;
             $this->data->min_inventory = $this->min_inventory;
             $this->data->price = $this->price;
@@ -54,7 +54,7 @@ class Form extends Component
     public function mount(Goods $data)
     {
         $this->previous = url()->previous();
-        $this->supplierData = Supplier::withoutGlobalScopes()->orderBy('name')->where('consignment', 1)->get()->toArray();
+        $this->supplierData = Supplier::withoutGlobalScopes()->orderBy('nama')->where('consignment', 1)->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
     }

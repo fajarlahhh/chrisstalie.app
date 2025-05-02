@@ -15,16 +15,16 @@ class Index extends Component
 {
     use WithPagination;
     public $previous, $practitionerData = [], $purchase, $patient, $patientData = [];
-    public $date, $patient_id, $rm, $description, $practitioner_id, $nik, $name, $address, $gender, $birth_place, $birth_date, $phone, $patient_description;
+    public $date, $patient_id, $rm, $description, $practitioner_id, $nik, $nama, $address, $gender, $birth_place, $birth_date, $phone, $patient_description;
 
     public function mount()
     {
-        $this->patientData = Patient::orderBy('name')->limit(10)->get()->toArray();
+        $this->patientData = Patient::orderBy('nama')->limit(10)->get()->toArray();
         $this->previous = url()->previous();
         $this->date = $this->date ?: date('Y-m-d');
-        $this->practitionerData = Practitioner::doctor()->with('employee')->orderBy('name')->get()->map(fn($q) => [
+        $this->practitionerData = Practitioner::doctor()->with('employee')->orderBy('nama')->get()->map(fn($q) => [
             'id' => $q->id,
-            'name' => $q->name ?: $q->employee->name,
+            'nama' => $q->nama ?: $q->employee->nama,
             'doctor' => $q->doctor == 1 ? 'Dokter' : '',
         ])->toArray();
     }
@@ -35,7 +35,7 @@ class Index extends Component
         $this->patient = Patient::find($id);
         $this->rm = $this->patient->rm;
         $this->nik = $this->patient->nik;
-        $this->name = $this->patient->name;
+        $this->nama = $this->patient->nama;
         $this->address = $this->patient->address;
         $this->gender = $this->patient->gender;
         $this->birth_place = $this->patient->birth_place;
@@ -46,7 +46,7 @@ class Index extends Component
 
     public function resetPatient()
     {
-        $this->reset(['nik', 'rm', 'name', 'address', 'gender', 'birth_place', 'birth_date', 'phone', 'patient_description', 'patient_id']);
+        $this->reset(['nik', 'rm', 'nama', 'address', 'gender', 'birth_place', 'birth_date', 'phone', 'patient_description', 'patient_id']);
     }
 
     public function submit()
@@ -62,7 +62,7 @@ class Index extends Component
                 'date' => 'required',
                 'practitioner_id' => 'required',
                 'nik' => 'required|unique:patients,nik',
-                'name' => 'required',
+                'nama' => 'required',
                 'address' => 'required',
                 'gender' => 'required',
                 'birth_place' => 'required',
@@ -81,7 +81,7 @@ class Index extends Component
                 $patient = Patient::find($this->patient_id);
             }
             $patient->nik = $this->nik;
-            $patient->name = $this->name;
+            $patient->nama = $this->nama;
             $patient->address = $this->address;
             $patient->gender = $this->gender;
             $patient->birth_place = $this->birth_place;

@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\DB;
 class Form extends Component
 {
     public $data, $previous;
-    public $name, $address, $phone_number, $start_date, $birth_date, $gender, $nik, $npwp, $bpjs_health, $wages, $allowance, $transport_allowance, $bpjs_health_cost, $office, $position;
+    public $nama, $address, $phone_number, $start_date, $birth_date, $gender, $nik, $npwp, $bpjs_health, $wages, $allowance, $transport_allowance, $bpjs_health_cost, $office, $position;
 
     public function submit()
     {
         $this->validate([
-            'name' => 'required',
+            'nama' => 'required',
             'address' => 'required',
             'phone_number' => 'required',
             'gender' => 'required',
@@ -29,7 +29,7 @@ class Form extends Component
             'office' => 'required',
         ]);
         DB::transaction(function () {
-            $this->data->name = $this->name;
+            $this->data->nama = $this->nama;
             $this->data->address = $this->address;
             $this->data->phone_number = $this->phone_number;
             $this->data->start_date = $this->start_date;

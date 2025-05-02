@@ -9,20 +9,20 @@ use Illuminate\Support\Facades\DB;
 class Form extends Component
 {
     public $data, $previous, $capital;
-    public $name, $price, $practitioner_portion, $office_portion_percent, $category, $profit, $beautician_fee, $description, $icd_9_cm_code;
+    public $nama, $price, $practitioner_portion, $office_portion_percent, $category, $profit, $beautician_fee, $description, $icd_9_cm_code;
 
     public function submit()
     {
         $this->validate([
             'capital' => 'required',
             'category' => 'required',
-            'name' => 'required',
+            'nama' => 'required',
             'office_portion_percent' => 'required',
             'price' => 'required',
         ]);
 
         DB::transaction(function () {
-            $this->data->name = $this->name;
+            $this->data->nama = $this->nama;
             $this->data->category = $this->category;
             $this->data->description = $this->description;
             $this->data->price = $this->price;

@@ -31,7 +31,7 @@ class Index extends Component
         return SaleDetail::whereHas('sale', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->whereNotNull('consignment_id')->with('consignment')->get()->map(function ($q) {
             return [
                 'id' => $q->consignment_id,
-                'name' => $q->consignment->name
+                'nama' => $q->consignment->nama
             ];
         })->unique()->toArray();
     }
@@ -41,7 +41,7 @@ class Index extends Component
         return (SaleDetail::whereHas('sale', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->whereNotNull('practitioner_id')->with('practitioner')->get()->map(function ($q) {
             return [
                 'id' => $q->practitioner_id,
-                'name' => $q->practitioner->name ?: $q->practitioner->employee->name
+                'nama' => $q->practitioner->nama ?: $q->practitioner->employee->nama
             ];
         })->unique()->toArray());
     }
@@ -51,7 +51,7 @@ class Index extends Component
         return (SaleDetail::whereNotNull('consignment_id')->whereHas('sale', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->with(['sale', 'goods'])->get()->map(function ($q) {
             return [
                 'id' => $q->goods_id,
-                'name' => $q->goods->name,
+                'nama' => $q->goods->nama,
                 'unit' => $q->goods->unit,
                 'price' => $q->price,
                 'qty' => $q->qty,
@@ -63,7 +63,7 @@ class Index extends Component
                 'office_portion' => $q->office_portion,
                 'practitioner_portion' => $q->practitioner_portion,
             ];
-        })->sortBy('name')->toArray());
+        })->sortBy('nama')->toArray());
     }
 
     public function render()

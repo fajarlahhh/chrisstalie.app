@@ -31,7 +31,7 @@ class Bulanan extends Component
             ])->toArray();
         } else {
             $this->detail = MonthlyExpense::all()->map(fn($q) => [
-                'description' => $q['name'],
+                'description' => $q['nama'],
                 'cost' => null
             ])->toArray();
         }

@@ -19,11 +19,11 @@ class Index extends Component
 
     public function mount()
     {
-        $goods = Goods::orderBy('name')->with('availableStock')->get()->map(fn($q) => [
+        $goods = Goods::orderBy('nama')->with('availableStock')->get()->map(fn($q) => [
             'id' => 'goods' . Str::random(10),
             'goods_id' => $q->id,
             'medical_treatment_id' => null,
-            'name' => ucFirst($q->name),
+            'nama' => ucFirst($q->nama),
             'unit' => $q->unit,
             'type' =>  $q->type,
             'price' => $q->price,
@@ -31,11 +31,11 @@ class Index extends Component
             'kode' => $q->kfa,
         ])->toArray();
 
-        $medicalTreatment = ActionRate::orderBy('name')->get()->map(fn($q) => [
+        $medicalTreatment = ActionRate::orderBy('nama')->get()->map(fn($q) => [
             'id' => 'medicaltreatment' . Str::random(10),
             'goods_id' => $q->id,
             'medical_treatment_id' => $q->id,
-            'name' => ucFirst($q->name),
+            'nama' => ucFirst($q->nama),
             'unit' => null,
             'type' =>  "Tindakan Medis",
             'price' => $q->price,
@@ -43,7 +43,7 @@ class Index extends Component
             'kode' => $q->icd_9_cm_code,
         ])->toArray();
 
-        $this->informationData = collect(array_merge($goods, $medicalTreatment))->sortBy('name');
+        $this->informationData = collect(array_merge($goods, $medicalTreatment))->sortBy('nama');
     }
 
     public function render()

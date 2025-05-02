@@ -29,7 +29,7 @@ class Index extends Component
         return PaymentTreatment::with('actionRate')->whereHas('payment', fn($r) => $r->whereBetween('date', [$this->date1, $this->date2]))->get()->map(function ($q) {
             return [
                 'id' => $q->action_rate_id,
-                'name' => $q->actionRate->name,
+                'nama' => $q->actionRate->nama,
                 'price' => $q->price * $q->qty,
                 'priceAfterDiscount' => ($q->price - ($q->price * $q->discount / 100)) * $q->qty,
                 'qty' => $q->qty,

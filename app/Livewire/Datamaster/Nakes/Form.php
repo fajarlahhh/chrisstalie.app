@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\DB;
 class Form extends Component
 {
     public $data, $previous, $employeeData = [];
-    public $name, $ihs, $nik, $gender, $description, $address, $phone_number, $doctor = false, $employee_id;
+    public $nama, $ihs, $nik, $gender, $description, $address, $phone_number, $doctor = false, $employee_id;
 
     public function submit()
     {
         if (!$this->employee_id) {
             $this->validate([
-                'name' => 'required',
+                'nama' => 'required',
                 'nik' => 'required',
                 'gender' => 'required',
                 'address' => 'required',
@@ -32,7 +32,7 @@ class Form extends Component
                 $practitionerSatuSehat = SatusehatClass::getPractitionerByNik($this->nik);
             }
             $this->data->employee_id = $this->employee_id;
-            $this->data->name = $this->name;
+            $this->data->nama = $this->nama;
             $this->data->ihs = $this->ihs;
             $this->data->nik = $this->nik;
             $this->data->description = $this->description;
@@ -51,7 +51,7 @@ class Form extends Component
     public function mount(Practitioner $data)
     {
         $this->previous = url()->previous();
-        $this->employeeData = Employee::orderBy('name')->with('user')->get()->toArray();
+        $this->employeeData = Employee::orderBy('nama')->with('user')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
         $this->doctor = $this->data->doctor == 1 ? true : false;

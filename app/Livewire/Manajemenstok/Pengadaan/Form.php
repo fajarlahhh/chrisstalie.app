@@ -19,7 +19,7 @@ class Form extends Component
     public function addCost()
     {
         $this->cost[] = [
-            'name' => null,
+            'nama' => null,
             'qty' => 0,
             'price' => null,
         ];
@@ -51,8 +51,8 @@ class Form extends Component
     {
         $this->date = $this->date ?: date('Y-m-d');
         $this->previous = url()->previous();
-        $this->goodsData = Goods::orderBy('name')->whereNull('consignment_id')->get()->toArray();
-        $this->supplierData = Supplier::general()->orderBy('name')->get()->toArray();
+        $this->goodsData = Goods::orderBy('nama')->whereNull('consignment_id')->get()->toArray();
+        $this->supplierData = Supplier::general()->orderBy('nama')->get()->toArray();
     }
 
     public function submit()
@@ -92,7 +92,7 @@ class Form extends Component
                 ExpenditureDetail::insert(collect($this->procurement)->map(fn($q) => [
                     'expenditure_id' => $expenditure->id,
                     'cost' => $q['price'],
-                    'description' => collect($this->goodsData)->where('id', $q['goods_id'])->first()->name
+                    'description' => collect($this->goodsData)->where('id', $q['goods_id'])->first()->nama
                 ])->toArray());
             }
 

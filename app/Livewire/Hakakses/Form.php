@@ -48,7 +48,7 @@ class Form extends Component
     {
         $this->previous = url()->previous();
         $this->roleData = Role::all()->toArray();
-        $this->employeeData = Employee::orderBy('name')->get()->toArray();
+        $this->employeeData = Employee::orderBy('nama')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
         $this->role = $this->data->getRoleNames()?->first();
@@ -59,7 +59,7 @@ class Form extends Component
     {
         if ($this->role == 'administrator') {
             foreach (Permission::all() as $id => $subRow) {
-                $this->hakAkses[] = $subRow->name;
+                $this->hakAkses[] = $subRow->nama;
             }
         } else {
             // $this->hakAkses = [];

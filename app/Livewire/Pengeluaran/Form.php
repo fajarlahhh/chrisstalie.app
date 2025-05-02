@@ -16,7 +16,7 @@ class Form extends Component
 
     public function mount(Expenditure $data)
     {
-        $this->expenditureData = MonthlyExpense::orderBy('name')->get()->toArray();
+        $this->expenditureData = MonthlyExpense::orderBy('nama')->get()->toArray();
         $this->previous = url()->previous();
         $this->date = $this->date ?: date('Y-m-d');
         $this->data = $data;

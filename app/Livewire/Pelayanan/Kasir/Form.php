@@ -22,9 +22,9 @@ class Form extends Component
 
     public function mount(Registration $data)
     {
-        $this->dataPractitioner = Practitioner::with('employee')->orderBy('name')->get()->toArray();
-        $this->dataActionRate = ActionRate::orderBy('name')->get()->toArray();
-        $this->dataGoods = Goods::orderBy('name')->get()->toArray();
+        $this->dataPractitioner = Practitioner::with('employee')->orderBy('nama')->get()->toArray();
+        $this->dataActionRate = ActionRate::orderBy('nama')->get()->toArray();
+        $this->dataGoods = Goods::orderBy('nama')->get()->toArray();
         $this->date = $this->date ?: date('Y-m-d');
         $this->data = $data;
         $this->treatment = $data->treatment->map(function ($q) {

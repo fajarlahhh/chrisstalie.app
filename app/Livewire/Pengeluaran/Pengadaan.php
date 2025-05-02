@@ -32,7 +32,7 @@ class Pengadaan extends Component
             ExpenditureDetail::insert(collect($purchase->purchaseDetail)->map(fn($q) => [
                 'expenditure_id' => $expenditure->id,
                 'cost' => $q['price'],
-                'description' => $q->goods->name
+                'description' => $q->goods->nama
             ])->toArray());
         });
 

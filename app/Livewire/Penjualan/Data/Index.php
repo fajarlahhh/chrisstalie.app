@@ -35,7 +35,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.penjualan.data.index', [
-            'data' => Sale::with(['patient', 'saleDetail'])->where('date', $this->date)->when($this->search, fn($r) => $r->whereHas('patient', fn($q) => $q->where('name', 'like', '%' . $this->search . '%')))->orderBy('created_at', 'desc')->orderBy('id', 'desc')->get()
+            'data' => Sale::with(['patient', 'saleDetail'])->where('date', $this->date)->when($this->search, fn($r) => $r->whereHas('patient', fn($q) => $q->where('nama', 'like', '%' . $this->search . '%')))->orderBy('created_at', 'desc')->orderBy('id', 'desc')->get()
         ]);
     }
 }

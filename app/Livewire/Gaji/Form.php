@@ -25,7 +25,7 @@ class Form extends Component
         $this->year = $this->year ?: date('Y');
         $this->data = $data;
         $this->fill($this->data->toArray());
-        $this->employeeData = Employee::orderBy('name')->get()->toArray();
+        $this->employeeData = Employee::orderBy('nama')->get()->toArray();
         if ($this->data->exists) {
             $this->detail = $this->data->expenditureDetail->map(fn($q) => [
                 'jenis' => $q['description'],
@@ -93,7 +93,7 @@ class Form extends Component
             $this->data->date = $this->date;
             $this->data->cost = $total;
             $this->data->employee_id = $this->employee_id;
-            $this->data->description = "Gaji " . $this->employee['name'] . ' bulan ' . $this->month . '-' . $this->year;
+            $this->data->description = "Gaji " . $this->employee['nama'] . ' bulan ' . $this->month . '-' . $this->year;
             $this->data->user_id = auth()->id();
             $this->data->save();
 

@@ -10,17 +10,17 @@ use Illuminate\Support\Facades\DB;
 class Form extends Component
 {
     public $data, $previous, $officeData = [];
-    public $name, $description, $office;
+    public $nama, $description, $office;
 
     public function submit()
     {
         $this->validate([
-            'name' => 'required',
+            'nama' => 'required',
             'office' => 'required',
         ]);
 
         DB::transaction(function () {
-            $this->data->name = $this->name;
+            $this->data->nama = $this->nama;
             $this->data->office = $this->office;
             $this->data->description = $this->description;
             $this->data->user_id = auth()->id();

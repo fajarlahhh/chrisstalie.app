@@ -33,9 +33,9 @@ class Index extends Component
     public function render()
     {
         return view('livewire.datamaster.tariftindakan.index', [
-            'data' => ActionRate::where(fn($q) => $q->where('name', 'like', '%' . $this->search . '%')->orWhere('description', 'like', '%' . $this->search . '%'))
+            'data' => ActionRate::where(fn($q) => $q->where('nama', 'like', '%' . $this->search . '%')->orWhere('description', 'like', '%' . $this->search . '%'))
                 ->when($this->exist == '2', fn($q) => $q->onlyTrashed())->with('user')
-                ->orderBy('name')->paginate(10)
+                ->orderBy('nama')->paginate(10)
         ]);
     }
 }

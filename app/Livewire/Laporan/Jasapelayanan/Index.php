@@ -37,7 +37,7 @@ class Index extends Component
             return $value !== null;
         })->toArray())->get()->map(fn($q) => [
             'id' => $q->id,
-            'name' => $q->employee ? $q->employee->name : $q->name,
+            'nama' => $q->employee ? $q->employee->nama : $q->nama,
         ]));
     }
 
@@ -53,7 +53,7 @@ class Index extends Component
             $practitionerPortion = ($profitAfterDicount - $beauticianFee) * $q->practitioner_portion;
             return [
                 'id' => $q->action_rate_id,
-                'name' => $q->actionRate->name,
+                'nama' => $q->actionRate->nama,
                 'price' => $price,
                 'discount_percent' => $q->discount,
                 'qty' => $q->qty,

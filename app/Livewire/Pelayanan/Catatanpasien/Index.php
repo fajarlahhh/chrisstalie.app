@@ -27,7 +27,7 @@ class Index extends Component
     {
         return view('livewire.pelayanan.catatanpasien.index', [
             'data' => Registration::with('patient')->with('practitioner')->with('user')
-                ->whereHas('patient', fn($q) => $q->where('name', 'like', '%' . $this->search . '%'))->whereDoesntHave('payment')
+                ->whereHas('patient', fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'))->whereDoesntHave('payment')
                 ->orderBy('created_at', 'desc')->paginate(10)
         ]);
     }

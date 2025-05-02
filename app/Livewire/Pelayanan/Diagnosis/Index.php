@@ -30,7 +30,7 @@ class Index extends Component
             'data' => Registration::with('patient')->with('practitioner')->with('user')
                 ->when($this->status == '2', fn($q) => $q->whereHas('diagnosis', fn($q) => $q->where('date', $this->date)))
                 ->when($this->status == '1', fn($q) => $q->whereDoesntHave('diagnosis'))
-                ->whereHas('patient', fn($q) => $q->where('name', 'like', '%' . $this->search . '%'))
+                ->whereHas('patient', fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'))
                 ->whereHas('initialExamination')
                 ->orderBy('created_at', 'desc')->paginate(10)
         ]);

@@ -9,18 +9,18 @@ use Illuminate\Support\Facades\DB;
 class Form extends Component
 {
     public $data, $previous;
-    public $name, $description, $address, $phone, $consignment = false;
+    public $nama, $description, $address, $phone, $consignment = false;
 
     public function submit()
     {
         $this->validate([
-            'name' => 'required',
+            'nama' => 'required',
             'address' => 'required',
             'phone' => 'required',
         ]);
 
         DB::transaction(function () {
-            $this->data->name = $this->name;
+            $this->data->nama = $this->nama;
             $this->data->description = $this->description;
             $this->data->address = $this->address;
             $this->data->phone = $this->phone;

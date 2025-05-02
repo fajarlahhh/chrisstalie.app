@@ -24,7 +24,7 @@ class Data extends Component
     public function render()
     {
         return view('livewire.pelayanan.pendaftaran.data', [
-            'data' => Registration::with(['initialExamination', 'diagnosis', 'treatment', 'payment'])->with('patient')->with('practitioner')->with('user')->whereHas('patient', fn($q) => $q->where('name', 'like', '%' . $this->search . '%'))
+            'data' => Registration::with(['initialExamination', 'diagnosis', 'treatment', 'payment'])->with('patient')->with('practitioner')->with('user')->whereHas('patient', fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'))
                 ->where('datetime', 'like', $this->date . '%')
                 ->orderBy('created_at', 'desc')->paginate(10)
         ]);

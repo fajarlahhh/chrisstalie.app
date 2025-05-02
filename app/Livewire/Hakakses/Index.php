@@ -39,9 +39,9 @@ class Index extends Component
     public function render()
     {
         return view('livewire.hakakses.index', [
-            'data' => User::where('email', '!=', 'rafaskinclinic@gmail.com')->where(fn($q) => $q->where('email', 'like', '%' . $this->search . '%')->orWhere('name', 'like', '%' . $this->search . '%'))
+            'data' => User::where('email', '!=', 'rafaskinclinic@gmail.com')->where(fn($q) => $q->where('email', 'like', '%' . $this->search . '%')->orWhere('nama', 'like', '%' . $this->search . '%'))
                 ->when($this->exist == '2', fn($q) => $q->onlyTrashed())
-                ->orderBy('name')->paginate(10)
+                ->orderBy('nama')->paginate(10)
         ]);
     }
 }

@@ -20,7 +20,7 @@ class Index extends Component
         $this->receipt[$index]['goods'][] =
             [
                 'id' => null,
-                'name' => null,
+                'nama' => null,
                 'unit' => null,
                 'price' => 0,
                 'qty' => 1,
@@ -45,7 +45,7 @@ class Index extends Component
         if ($goods['id']) {
             $data = collect($this->goodsData)->where('id', $goods['id'])->first();
             $this->receipt[$index1]['goods'][$index2]['price'] = $data['price'] ?? 0;
-            $this->receipt[$index1]['goods'][$index2]['name'] = $data['name'] ?? null;
+            $this->receipt[$index1]['goods'][$index2]['nama'] = $data['nama'] ?? null;
             $this->receipt[$index1]['goods'][$index2]['unit'] = $data['unit'] ?? null;
             $this->receipt[$index1]['goods'][$index2]['office_portion'] = $data['office_portion'] ?? null;
             $this->receipt[$index1]['goods'][$index2]['consignment_id'] = $data['consignment_id'] ?? null;
@@ -70,7 +70,7 @@ class Index extends Component
 
         // $goods = collect($this->receipt)->pluck('goods')->flatten(1)->groupBy('id')->map(fn($q) => [
         //     'id' => $q->first()['id'],
-        //     'name' => $q->first()['name'],
+        //     'nama' => $q->first()['nama'],
         //     'unit' => $q->first()['unit'],
         //     'qty' => $q->sum('qty'),
         //     'price' => $q->first()['price'],
@@ -83,7 +83,7 @@ class Index extends Component
         // foreach ($goods as $key1 => $receipt) {
         //     $stock = Stock::where('goods_id', $receipt['id'])->available()->count();
         //     if ($receipt['qty'] < $stock) {
-        //         session()->flash('warning', 'Sisa stok ' . $receipt['name'] . ' tidak mencukupi (' . $stock . ')');
+        //         session()->flash('warning', 'Sisa stok ' . $receipt['nama'] . ' tidak mencukupi (' . $stock . ')');
         //         return $this->render();
         //     }
         // }
@@ -151,16 +151,16 @@ class Index extends Component
     public function mount()
     {
         $this->date = $this->date ?: date('Y-m-d');
-        $this->goodsData = Goods::orderBy('name')->get()->toArray();
+        $this->goodsData = Goods::orderBy('nama')->get()->toArray();
         $this->receipt = [
             [
                 'description' => null,
                 'goods' => [],
             ]
         ];
-        $this->practitionerData = Practitioner::doctor()->with('employee')->orderBy('name')->get()->map(fn($q) => [
+        $this->practitionerData = Practitioner::doctor()->with('employee')->orderBy('nama')->get()->map(fn($q) => [
             'id' => $q->id,
-            'name' => $q->name ?: $q->employee->name,
+            'nama' => $q->nama ?: $q->employee->nama,
             'doctor' => $q->doctor == 1 ? 'Dokter' : '',
         ])->toArray();
     }

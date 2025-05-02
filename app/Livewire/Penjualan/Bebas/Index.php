@@ -18,7 +18,7 @@ class Index extends Component
     {
         array_push($this->goods, [
             'id' => null,
-            'name' => null,
+            'nama' => null,
             'unit' => null,
             'price' => null,
             'qty' => 1,
@@ -35,7 +35,7 @@ class Index extends Component
         if ($index[1] == 'id') {
             $data = collect($this->goodsData)->where('id', $value)->first();
             $this->goods[$index[0]]['price'] = $data['price'] ?? 0;
-            $this->goods[$index[0]]['name'] = $data['name'] ?? null;
+            $this->goods[$index[0]]['nama'] = $data['nama'] ?? null;
             $this->goods[$index[0]]['unit'] = $data['unit'] ?? null;
             $this->goods[$index[0]]['consignment_id'] = $data['consignment_id'] ?? null;
             $this->goods[$index[0]]['capital'] = $data['consignment_id'] ? $data['capital'] : 0;
@@ -115,10 +115,10 @@ class Index extends Component
     public function mount()
     {
         $this->date = $this->date ?: date('Y-m-d');
-        $this->goodsData = Goods::orderBy('name')->get()->toArray();
-        $this->practitionerData = Practitioner::doctor()->with('employee')->orderBy('name')->get()->map(fn($q) => [
+        $this->goodsData = Goods::orderBy('nama')->get()->toArray();
+        $this->practitionerData = Practitioner::doctor()->with('employee')->orderBy('nama')->get()->map(fn($q) => [
             'id' => $q->id,
-            'name' => $q->name ?: $q->employee->name,
+            'nama' => $q->nama ?: $q->employee->nama,
             'doctor' => $q->doctor == 1 ? 'Dokter' : '',
         ])->toArray();
     }
