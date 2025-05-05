@@ -117,7 +117,7 @@ trait SatuSehatApiTrait
         }
     }
 
-    public function getPatient()
+    public function getPasien()
     {
         try {
             $token = $this->getAccessToken();
@@ -128,7 +128,7 @@ trait SatuSehatApiTrait
                     'Authorization' => 'Bearer ' . $token
                 ];
                 $body = '';
-                $request = new Request('GET', config('app.satusehat.base_url') . '/Patient?identifier=https://fhir.kemkes.go.id/id/nik|5271050203900001', $headers, $body);
+                $request = new Request('GET', config('app.satusehat.base_url') . '/Pasien?identifier=https://fhir.kemkes.go.id/id/nik|5271050203900001', $headers, $body);
                 $res = $client->sendAsync($request)->wait();
                 return json_decode($res->getBody()->getContents(), true)['entry'][0]['resource'];
             } else {

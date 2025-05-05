@@ -12,27 +12,28 @@ use Spatie\Permission\Models\Permission;
 
 class Form extends Component
 {
-    public $data, $previous, $roleData = [], $pegawaiData = [];
-    public $email, $pegawai_id, $password, $role, $hakAkses = [];
+    public $data, $previous, $dataRole = [], $pegawaiData = [];
+    public $uid, $nama, $pegawai_id, $password, $role, $hakAkses = [];
 
     public function submit()
     {
         $this->validate([
             'hakAkses' => 'required',
             'role' => 'required',
-            'email' => 'required|email|unique:users,email,' . $this->data->id,
+            'uid' => 'required|uid|unique:users,uid,' . $this->data->id,
             'pegawai_id' => 'required',
         ]);
 
         DB::transaction(function () {
             if (!$this->data->exists) {
-                if (Pengguna::where('email', $this->email)->withTrashed()->count() > 0) {
-                    session()->flash('danger', 'Email ' . $this->email . ' sudah ada');
+                if (Pengguna::where('uid', $this->uid)->withTrashed()->count() > 0) {
+                    session()->flash('danger', 'uid ' . $this->uid . ' sudah ada');
                     return $this->render();
                 }
-                $this->data->email = $this->email;
-                $this->data->password = Hash::make($this->email);
+                $this->data->uid = $this->uid;
+                $this->data->password = Hash::make($this->uid);
             }
+            $this->data->nama = $this->nama;
             $this->data->pegawai_id = $this->pegawai_id;
             $this->data->save();
 
@@ -46,10 +47,13 @@ class Form extends Component
 
     public function mount(Pengguna $data)
     {
-        $this->previous = url()->previous();
-        $this->roleData = Role::all()->toArray();
-        $this->pegawaiData = Pegawai::orderBy('nama')->get()->toArray();
         $this->data = $data;
+        if ($data->uid == 'administrator') {
+            abort(404);
+        }
+        $this->previous = url()->previous();
+        $this->dataRole = Role::all()->toArray();
+        $this->pegawaiData = Pegawai::orderBy('nama')->get()->toArray();
         $this->fill($this->data->toArray());
         $this->role = $this->data->getRoleNames()?->first();
         $this->hakAkses = $this->data->getPermissionNames()->toArray();
@@ -68,7 +72,7 @@ class Form extends Component
 
     public function resetKataSandi()
     {
-        $this->data->password = Hash::make($this->email);
+        $this->data->password = Hash::make($this->uid);
         $this->data->save();
 
         session()->flash('success', 'Berhasil menyimpan data');

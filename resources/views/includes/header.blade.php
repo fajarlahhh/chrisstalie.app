@@ -27,7 +27,7 @@
 
     <!-- BEGIN header-nav -->
     <div class="navbar-nav">
-        <div class="navbar-item navbar-pengguna dropdown">
+        <div class="navbar-item navbar-user dropdown">
             <a href="#" class="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
                 <img src="/assets/img/favicon.png" alt="" />
                 <span>

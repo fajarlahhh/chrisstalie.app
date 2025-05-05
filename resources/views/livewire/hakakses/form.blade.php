@@ -13,39 +13,50 @@
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading ui-sortable-handle">
-            
+
             <h4 class="panel-title">Form</h4>
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
                 <div class="row width-full">
                     <div class="col-md-4">
+                        @if ($data->exists)
+                            <div class="mb-3">
+                                <label class="form-label">Nama</label>
+                                <input class="form-control" type="text" wire:model="nama"
+                                    @if ($data->exists) disabled @endif />
+                                @error('nama')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        @else
+                            <div class="mb-3">
+                                <label class="form-label">Pegawai</label>
+                                <select x-init="$($el).selectpicker({
+                                    liveSearch: true,
+                                    width: 'auto',
+                                    size: 10,
+                                    container: 'body',
+                                    style: '',
+                                    showSubtext: true,
+                                    styleBase: 'form-control'
+                                })" class="form-control" wire:model="pegawai_id"
+                                    data-width="100%">
+                                    <option selected value="">-- Pilih Pegawai --</option>
+                                    @foreach ($pegawaiData as $item)
+                                        <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
+                                    @endforeach
+                                </select>
+                                @error('pegawai_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        @endif
                         <div class="mb-3">
-                            <label class="form-label">Pegawai</label>
-                            <select x-init="$($el).selectpicker({
-                                liveSearch: true,
-                                width: 'auto',
-                                size: 10,
-                                container: 'body',
-                                style: '',
-                                showSubtext: true,
-                                styleBase: 'form-control'
-                            })" class="form-control" wire:model="pegawai_id"
-                                data-width="100%">
-                                <option selected value="">-- Pilih Pegawai --</option>
-                                @foreach ($pegawaiData as $item)
-                                    <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
-                                @endforeach
-                            </select>
-                            @error('pegawai_id')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input class="form-control" type="email" wire:model="email"
+                            <label class="form-label">UID</label>
+                            <input class="form-control" type="uid" wire:model="uid"
                                 @if ($data->exists) disabled @endif />
-                            @error('email')
+                            @error('uid')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -56,8 +67,8 @@
                                     $wire.changeRole($($el).val())
                                 })" data-width="100%">
                                 <option selected hidden>-- Pilih Role --</option>
-                                @foreach ($roleData as $row)
-                                    <option value="{{ $row['nama'] }}">{{ ucfirst($row['nama']) }}</option>
+                                @foreach ($dataRole as $row)
+                                    <option value="{{ $row['name'] }}">{{ ucfirst($row['name']) }}</option>
                                 @endforeach
                             </select>
                             @error('role')

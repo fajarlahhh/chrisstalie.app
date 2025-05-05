@@ -18,9 +18,9 @@
         <form wire:submit.prevent="submit">
             <div class="panel-body">
                 <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input class="form-control" type="email" value="{{ auth()->user()->email }}" disabled />
-                    @error('email')
+                    <label class="form-label">UID</label>
+                    <input class="form-control" type="uid" value="{{ auth()->user()->uid }}" disabled />
+                    @error('uid')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

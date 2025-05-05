@@ -39,7 +39,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.hakakses.index', [
-            'data' => Pengguna::where('email', '!=', 'rafaskinclinic@gmail.com')->where(fn($q) => $q->where('email', 'like', '%' . $this->search . '%')->orWhere('nama', 'like', '%' . $this->search . '%'))
+            'data' => Pengguna::where('uid', '!=', 'rafaskinclinic@gmail.com')->where(fn($q) => $q->where('uid', 'like', '%' . $this->search . '%')->orWhere('nama', 'like', '%' . $this->search . '%'))
                 ->when($this->exist == '2', fn($q) => $q->onlyTrashed())
                 ->orderBy('nama')->paginate(10)
         ]);

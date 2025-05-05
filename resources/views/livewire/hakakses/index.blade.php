@@ -32,7 +32,7 @@
                     <tr>
                         <th class="w-10px">No.</th>
                         <th>Nama</th>
-                        <th>Email</th>
+                        <th>UID</th>
                         <th>Level</th>
                         <th class="w-10px"></th>
                     </tr>
@@ -44,12 +44,12 @@
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
                             <td>{{ $row->pegawai ? $row->pegawai->nama : $row->nama }}</td>
-                            <td>{{ $row->email }}</td>
+                            <td>{{ $row->uid }}</td>
                             <td>{{ $row->getRoleNames()->first() }}
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                 @role('administrator|supervisor|operator')
-                                    @if ($row->email != 'rafaskinclinic@gmail.com')
+                                    @if ($row->uid != 'administrator')
                                         @if ($row->trashed())
                                             <x-action :row="$row"  custom="" :detail="false" :edit="false"
                                                 :print="false" :permanentDelete="false" :restore="true" :delete="false" />

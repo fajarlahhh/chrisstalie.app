@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+// use Illuminate\Contracts\Auth\MustVerifyuid;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\Pengguna as Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
 class Pengguna extends Authenticatable
@@ -23,7 +23,7 @@ class Pengguna extends Authenticatable
      */
     protected $fillable = [
         'nama',
-        'email',
+        'uid',
         'password',
     ];
 
@@ -45,13 +45,13 @@ class Pengguna extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
+            'uid_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
 
     /**
-     * Get the pegawai that owns the Pengguna
+     * Get the pegawai that owns the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

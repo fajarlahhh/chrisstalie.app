@@ -30,7 +30,7 @@ class PembagianjasapelayananExport implements FromView
             return $value !== null;
         })->toArray())->get()->map(fn($q) => [
             'id' => $q->id,
-            'name' => $q->pegawai ? $q->pegawai->name : $q->name,
+            'name' => $q->pegawai ? $q->pegawai->nama : $q->name,
         ]));
     }
 

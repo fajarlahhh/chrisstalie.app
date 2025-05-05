@@ -17,7 +17,7 @@
                             </div>
                             <div class="menu-caret ms-auto"></div>
                         </div>
-                        <small>{{ auth()->user()->email }}</small>
+                        <small>{{ auth()->user()->uid }}</small>
                     </div>
                 </a>
             </div>

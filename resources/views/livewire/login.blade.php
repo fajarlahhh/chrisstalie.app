@@ -22,10 +22,10 @@
                 <div class="login-content fs-13px">
                     <form wire:submit="login">
                         <div class="form-floating mb-20px">
-                            <input type="email" class="form-control fs-13px h-45px" id="email" autocomplete="off"
-                                wire:model="email" placeholder="Email Address" required />
-                            <label for="email" class="d-flex align-items-center">Email</label>
-                            @error('email')
+                            <input type="text" class="form-control fs-13px h-45px" id="uid" autocomplete="off"
+                                wire:model="uid" placeholder="UID" required />
+                            <label for="uid" class="d-flex align-items-center">UID</label>
+                            @error('uid')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>

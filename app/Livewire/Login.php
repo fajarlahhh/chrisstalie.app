@@ -8,15 +8,15 @@ use Illuminate\Support\Facades\Hash;
 
 class Login extends Component
 {
-    public $email, $password, $remember;
+    public $uid, $password, $remember;
 
     public function login() {
         $this->validate([
-            "email" => "required|email|min:3",
+            "uid" => "required|min:3",
             "password" => "required"
         ]);
         
-        if (Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
+        if (Auth::attempt(['uid' => $this->uid, 'password' => $this->password], $this->remember)) {
             return $this->redirect('/');
         } else {
             session()->flash('danger', 'Invalid Credential');

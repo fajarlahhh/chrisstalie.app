@@ -172,16 +172,13 @@ return [
                 [
                     "title" => "Tindakan",
                     "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Kasir",
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Catatan Pasien",
-                    "method" => ["Index", "Form"],
                 ]
             ]
+        ],
+        [
+            "title" => "Kasir",
+            "icon" => "<i class='fa fa-shopping-cart'></i>",
+            "method" => ["Index", "Form"],
         ],
         [
             "title" => "Hak Akses",
