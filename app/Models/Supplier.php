@@ -12,23 +12,24 @@ class Supplier extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'supplier';
     /**
-     * Get the user that owns the Supplier
+     * Get the pengguna that owns the Supplier
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(Pengguna::class)->withTrashed();
     }
 
     public function scopeConsignment($query)
     {
-        return $query->where('consignment', 1);
+        return $query->where('konsinyasi', 1);
     }
 
     public function scopeGeneral($query)
     {
-        return $query->where('consignment', 0);
+        return $query->where('konsinyasi', 0);
     }
 }

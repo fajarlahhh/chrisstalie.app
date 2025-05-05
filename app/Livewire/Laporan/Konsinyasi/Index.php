@@ -4,9 +4,9 @@ namespace App\Livewire\Laporan\Konsinyasi;
 
 use App\Exports\PembagianpenjualanExport;
 use App\Models\Sale;
-use App\Models\Goods;
+use App\Models\Barang;
 use App\Models\SaleDetail;
-use App\Models\Stock;
+use App\Models\Stok;
 use App\Models\Supplier;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
@@ -28,20 +28,20 @@ class Index extends Component
 
     public function getConsignment()
     {
-        return SaleDetail::whereHas('sale', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->whereNotNull('consignment_id')->with('consignment')->get()->map(function ($q) {
+        return SaleDetail::whereHas('sale', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->whereNotNull('consignment_id')->with('konsinyasi')->get()->map(function ($q) {
             return [
                 'id' => $q->consignment_id,
-                'nama' => $q->consignment->nama
+                'nama' => $q->konsinyasi->nama
             ];
         })->unique()->toArray();
     }
 
-    public function getPractitioner()
+    public function getNakes()
     {
-        return (SaleDetail::whereHas('sale', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->whereNotNull('practitioner_id')->with('practitioner')->get()->map(function ($q) {
+        return (SaleDetail::whereHas('sale', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->whereNotNull('nakes_id')->with('nakes')->get()->map(function ($q) {
             return [
-                'id' => $q->practitioner_id,
-                'nama' => $q->practitioner->nama ?: $q->practitioner->employee->nama
+                'id' => $q->nakes_id,
+                'nama' => $q->nakes->nama ?: $q->nakes->pegawai->nama
             ];
         })->unique()->toArray());
     }
@@ -52,16 +52,16 @@ class Index extends Component
             return [
                 'id' => $q->goods_id,
                 'nama' => $q->goods->nama,
-                'unit' => $q->goods->unit,
-                'price' => $q->price,
+                'satuan' => $q->goods->satuan,
+                'harga' => $q->harga,
                 'qty' => $q->qty,
-                'discount' => $q->price * $q->discount / 100,
-                'price_discount' => $q->price - ($q->price * $q->discount / 100),
-                'practitioner_id' => $q->practitioner_id,
+                'discount' => $q->harga * $q->discount / 100,
+                'harga_discount' => $q->harga - ($q->harga * $q->discount / 100),
+                'nakes_id' => $q->nakes_id,
                 'consignment_id' => $q->consignment_id,
-                'capital' => $q->capital,
-                'office_portion' => $q->office_portion,
-                'practitioner_portion' => $q->practitioner_portion,
+                'modal' => $q->modal,
+                'porsi_kantor' => $q->porsi_kantor,
+                'porsi_nakes' => $q->porsi_nakes,
             ];
         })->sortBy('nama')->toArray());
     }
@@ -70,8 +70,8 @@ class Index extends Component
     {
         return view('livewire.laporan.konsinyasi.index', [
             'data' => $this->getData(),
-            'consignment' => $this->getConsignment(),
-            'practitioner' => $this->getPractitioner(),
+            'konsinyasi' => $this->getConsignment(),
+            'nakes' => $this->getNakes(),
         ]);
     }
 }

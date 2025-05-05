@@ -51,14 +51,14 @@
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
                             <td>{{ $row->datetime }}</td>
-                            <td>{{ $row->patient->rm }}</td>
-                            <td>{{ $row->patient->name }}</td>
-                            <td>{{ $row->patient->nik }}</td>
-                            <td>{{ $row->patient->birth_date }}</td>
-                            <td>{{ $row->patient->gender }}</td>
-                            <td>{{ $row->patient->address }}</td>
-                            <td>{{ $row->patient->phone }}</td>
-                            <td>{{ $row->description }}</td>
+                            <td>{{ $row->pasien->rm }}</td>
+                            <td>{{ $row->pasien->nama }}</td>
+                            <td>{{ $row->pasien->nik }}</td>
+                            <td>{{ $row->pasien->tanggal_lahir }}</td>
+                            <td>{{ $row->pasien->jenis_kelamin }}</td>
+                            <td>{{ $row->pasien->alamat }}</td>
+                            <td>{{ $row->pasien->no_telpon }}</td>
+                            <td>{{ $row->uraian }}</td>
                             <td>{{ $row->note }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
@@ -74,7 +74,7 @@
                                                 :delete="false" />
                                         @else
                                             <x-action :row="$row"
-                                                custom="<li><hr class='dropdown-divider'></li><a href='javascript:;'class='dropdown-item fs-8px'>{{ $row->initialExamination->user?->name }}<br>{{ $row->initialExamination->updated_at }}</a>"
+                                                custom="<li><hr class='dropdown-divider'></li><a href='javascript:;'class='dropdown-item fs-8px'>{{ $row->initialExamination->pengguna?->nama }}<br>{{ $row->initialExamination->updated_at }}</a>"
                                                 :detail="false" :edit="true" :information="false" :print="false"
                                                 :permanentDelete="false" :restore="false" :delete="true" />
                                         @endif

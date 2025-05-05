@@ -30,18 +30,18 @@
                         showSubtext: true,
                         styleBase: 'form-control'
                     })"
-                        wire:model.lazy="employee_id" data-width="100%">
+                        wire:model.lazy="pegawai_id" data-width="100%">
                         <option selected value="">-- Bukan Pegawai --</option>
-                        @foreach ($employeeData as $employee)
-                            <option value="{{ $employee['id'] }}" data-subtext="{{ $employee['nik'] }}">
-                                {{ $employee['name'] }}</option>
+                        @foreach ($pegawaiData as $pegawai)
+                            <option value="{{ $pegawai['id'] }}" data-subtext="{{ $pegawai['nik'] }}">
+                                {{ $pegawai['nama'] }}</option>
                         @endforeach
                     </select>
-                    @error('employee_id')
+                    @error('pegawai_id')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                @if (!$employee_id)
+                @if (!$pegawai_id)
                     <div class="mb-3">
                         <label class="form-label">NIK</label>
                         <input class="form-control" type="number" step="1" maxlength="16" minlength="16"
@@ -58,50 +58,50 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                @if (!$employee_id)
+                @if (!$pegawai_id)
                     <div class="mb-3">
                         <label class="form-label">Nama</label>
-                        <input class="form-control" type="text" wire:model="name" />
-                        @error('name')
+                        <input class="form-control" type="text" wire:model="nama" />
+                        @error('nama')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Alamat</label>
-                        <input class="form-control" type="text" wire:model="address" />
-                        @error('address')
+                        <input class="form-control" type="text" wire:model="alamat" />
+                        @error('alamat')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label class="form-label">No. Telp.</label>
-                        <input class="form-control" type="text" wire:model="phone_number" />
-                        @error('phone_number')
+                        <input class="form-control" type="text" wire:model="no_hp" />
+                        @error('no_hp')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Jenis Kelamin</label>
-                        <select data-container="body" class="form-control " wire:model="gender" data-width="100%">
+                        <select data-container="body" class="form-control " wire:model="jenis_kelamin" data-width="100%">
                             <option selected>-- Pilih Jenis Kelamin --</option>
                             <option value="Laki-laki">Laki-laki</option>
                             <option value="Perempuan">Perempuan</option>
                         </select>
-                        @error('gender')
+                        @error('jenis_kelamin')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 @endif
                 <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
-                    <input class="form-control" type="text" wire:model="description" />
-                    @error('description')
+                    <input class="form-control" type="text" wire:model="deskripsi" />
+                    @error('deskripsi')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" id="doctor" value="1" wire:model="doctor" />
-                    <label class="form-check-label" for="doctor">
+                    <input class="form-check-input" type="checkbox" id="dokter" value="1" wire:model="dokter" />
+                    <label class="form-check-label" for="dokter">
                         Dokter
                     </label>
                 </div>

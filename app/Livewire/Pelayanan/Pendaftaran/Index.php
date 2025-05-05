@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Pelayanan\Pendaftaran;
 
-use App\Models\Patient;
+use App\Models\Pasien;
 use Livewire\Component;
 use Illuminate\Support\Str;
-use App\Models\Practitioner;
+use App\Models\Nakes;
 use App\Models\Registration;
 use Livewire\WithPagination;
 use App\Class\SatusehatClass;
@@ -14,93 +14,93 @@ use Illuminate\Support\Facades\DB;
 class Index extends Component
 {
     use WithPagination;
-    public $previous, $practitionerData = [], $purchase, $patient, $patientData = [];
-    public $date, $patient_id, $rm, $description, $practitioner_id, $nik, $nama, $address, $gender, $birth_place, $birth_date, $phone, $patient_description;
+    public $previous, $nakesData = [], $purchase, $pasien, $pasienData = [];
+    public $date, $pasien_id, $rm, $uraian, $nakes_id, $nik, $nama, $alamat, $jenis_kelamin, $tempat_lahir, $tanggal_lahir, $no_telpon, $pasien_description;
 
     public function mount()
     {
-        $this->patientData = Patient::orderBy('nama')->limit(10)->get()->toArray();
+        $this->pasienData = Pasien::orderBy('nama')->limit(10)->get()->toArray();
         $this->previous = url()->previous();
         $this->date = $this->date ?: date('Y-m-d');
-        $this->practitionerData = Practitioner::doctor()->with('employee')->orderBy('nama')->get()->map(fn($q) => [
+        $this->nakesData = Nakes::dokter()->with('pegawai')->orderBy('nama')->get()->map(fn($q) => [
             'id' => $q->id,
-            'nama' => $q->nama ?: $q->employee->nama,
-            'doctor' => $q->doctor == 1 ? 'Dokter' : '',
+            'nama' => $q->nama ?: $q->pegawai->nama,
+            'dokter' => $q->dokter == 1 ? 'Dokter' : '',
         ])->toArray();
     }
 
-    public function updatedPatientId($id)
+    public function updatedPasienId($id)
     {
-        $this->patient_id = $id;
-        $this->patient = Patient::find($id);
-        $this->rm = $this->patient->rm;
-        $this->nik = $this->patient->nik;
-        $this->nama = $this->patient->nama;
-        $this->address = $this->patient->address;
-        $this->gender = $this->patient->gender;
-        $this->birth_place = $this->patient->birth_place;
-        $this->birth_date = $this->patient->birth_date;
-        $this->phone = $this->patient->phone;
-        $this->patient_description = $this->patient->patient_description;
+        $this->pasien_id = $id;
+        $this->pasien = Pasien::find($id);
+        $this->rm = $this->pasien->rm;
+        $this->nik = $this->pasien->nik;
+        $this->nama = $this->pasien->nama;
+        $this->alamat = $this->pasien->alamat;
+        $this->jenis_kelamin = $this->pasien->jenis_kelamin;
+        $this->tempat_lahir = $this->pasien->tempat_lahir;
+        $this->tanggal_lahir = $this->pasien->tanggal_lahir;
+        $this->no_telpon = $this->pasien->no_telpon;
+        $this->pasien_description = $this->pasien->pasien_description;
     }
 
-    public function resetPatient()
+    public function resetPasien()
     {
-        $this->reset(['nik', 'rm', 'nama', 'address', 'gender', 'birth_place', 'birth_date', 'phone', 'patient_description', 'patient_id']);
+        $this->reset(['nik', 'rm', 'nama', 'alamat', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'no_telpon', 'pasien_description', 'pasien_id']);
     }
 
     public function submit()
     {
-        if ($this->patient_id) {
+        if ($this->pasien_id) {
             $this->validate([
                 'date' => 'required',
-                'address' => 'required',
-                'practitioner_id' => 'required',
+                'alamat' => 'required',
+                'nakes_id' => 'required',
             ]);
         } else {
             $this->validate([
                 'date' => 'required',
-                'practitioner_id' => 'required',
-                'nik' => 'required|unique:patients,nik',
+                'nakes_id' => 'required',
+                'nik' => 'required|unique:pasiens,nik',
                 'nama' => 'required',
-                'address' => 'required',
-                'gender' => 'required',
-                'birth_place' => 'required',
-                'birth_date' => 'required',
-                'phone' => 'required',
+                'alamat' => 'required',
+                'jenis_kelamin' => 'required',
+                'tempat_lahir' => 'required',
+                'tanggal_lahir' => 'required',
+                'no_telpon' => 'required',
             ]);
         }
         DB::transaction(function () {
-            $patientSatuSehat = SatusehatClass::getPatientByNik($this->nik);
-            if (!$this->patient_id) {
-                $patient = new Patient();
-                $last = Patient::where('created_at', 'like', date('Y-m') . '%')->orderBy('created_at', 'desc')->first();
-                $patient->rm = date('y.m.') . ($last ? sprintf('%04s', substr($last->rm, 6, 4) + 1) : '0001');
-                $patient->user_id = auth()->id();
+            $pasienSatuSehat = SatusehatClass::getPasienByNik($this->nik);
+            if (!$this->pasien_id) {
+                $pasien = new Pasien();
+                $last = Pasien::where('created_at', 'like', date('Y-m') . '%')->orderBy('created_at', 'desc')->first();
+                $pasien->rm = date('y.m.') . ($last ? sprintf('%04s', substr($last->rm, 6, 4) + 1) : '0001');
+                $pasien->user_id = auth()->id();
             } else {
-                $patient = Patient::find($this->patient_id);
+                $pasien = Pasien::find($this->pasien_id);
             }
-            $patient->nik = $this->nik;
-            $patient->nama = $this->nama;
-            $patient->address = $this->address;
-            $patient->gender = $this->gender;
-            $patient->birth_place = $this->birth_place;
-            $patient->birth_date = $this->birth_date;
-            $patient->phone = $this->phone;
-            $patient->registration_date = $this->date;
-            $patient->ihs = $patientSatuSehat ? $patientSatuSehat['id'] : null;
-            $patient->save();
+            $pasien->nik = $this->nik;
+            $pasien->nama = $this->nama;
+            $pasien->alamat = $this->alamat;
+            $pasien->jenis_kelamin = $this->jenis_kelamin;
+            $pasien->tempat_lahir = $this->tempat_lahir;
+            $pasien->tanggal_lahir = $this->tanggal_lahir;
+            $pasien->no_telpon = $this->no_telpon;
+            $pasien->tanggal_registrasi = $this->date;
+            $pasien->ihs = $pasienSatuSehat ? $pasienSatuSehat['id'] : null;
+            $pasien->save();
 
             $datetime = $this->date . date(' H:i:s');
             $data = new Registration();
-            if (!$this->patient_id) {
+            if (!$this->pasien_id) {
                 $data->new = 1;
             }
             $data->datetime = $datetime;
             $data->order = str_replace(['/', ':', '-', ' '], '', $datetime);
-            $data->description = $this->description;
-            $data->practitioner_id = $this->practitioner_id;
-            $data->patient_id = $this->patient_id ? $this->patient_id : $patient->id;
+            $data->uraian = $this->uraian;
+            $data->nakes_id = $this->nakes_id;
+            $data->pasien_id = $this->pasien_id ? $this->pasien_id : $pasien->id;
             $data->user_id = auth()->id();
             $data->save();
             session()->flash('success', 'Berhasil menyimpan data');

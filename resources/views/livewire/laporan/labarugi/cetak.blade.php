@@ -41,7 +41,7 @@
         @foreach ($gaji_pegawai as $item)
             <tr>
                 <td></td>
-                <td> - {{ $item['description'] }}</td>
+                <td> - {{ $item['uraian'] }}</td>
                 <td class="text-end">{{ number_format($item['cost']) }}</td>
             </tr>
         @endforeach

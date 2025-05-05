@@ -41,18 +41,18 @@
                                 {{ $index + 1 }}
                             </td>
                             <td>{{ $row->date }}</td>
-                            <td>{{ $row->description }}</td>
+                            <td>{{ $row->uraian }}</td>
                             <td>{{ $row->payment_description }}</td>
                             <td>
                                 <ul>
                                     @foreach ($row->saleDetail as $subRow)
-                                        <li>{{ $subRow->goods->name }} ({{ $subRow->qty }})</li>
+                                        <li>{{ $subRow->goods->nama }} ({{ $subRow->qty }})</li>
                                     @endforeach
                                 </ul>
                             </td>
-                            <td>{{ $row->patient?->rm }} - {{ $row->patient?->name }}</td>
+                            <td>{{ $row->pasien?->rm }} - {{ $row->pasien?->nama }}</td>
                             <td class="text-end">
-                                {{ number_format($row->saleDetail->sum(fn($q) => $q->qty * ($q->price - ($q->price * $q->discount) / 100)), 2) }}
+                                {{ number_format($row->saleDetail->sum(fn($q) => $q->qty * ($q->harga - ($q->harga * $q->discount) / 100)), 2) }}
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
@@ -67,7 +67,7 @@
                     <tr>
                         <td colspan="7" class="text-end">
                             <strong>Total :
-                                {{ number_format($data->sum(fn($q) => $q->saleDetail->sum(fn($q) => $q->qty * ($q->price - ($q->price * $q->discount) / 100))), 2) }}</strong>
+                                {{ number_format($data->sum(fn($q) => $q->saleDetail->sum(fn($q) => $q->qty * ($q->harga - ($q->harga * $q->discount) / 100))), 2) }}</strong>
                         </td>
                         <td></td>
                     </tr>

@@ -50,13 +50,13 @@
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
                             <td>{{ $row->ihs }}</td>
-                            <td>{{ $row->employee_id ? $row->employee->nik : $row->nik }}</td>
-                            <td>{{ $row->employee_id ? $row->employee->name : $row->name }}</td>
-                            <td>{{ $row->employee_id ? $row->employee->address : $row->address }}</td>
-                            <td>{{ $row->employee_id ? $row->employee->phone_number : $row->phone_number }}</td>
-                            <td>{{ $row->employee_id ? $row->employee->gender : $row->gender }}</td>
-                            <td>{{ $row->doctor == 1 ? 'Ya' : '' }}</td>
-                            <td>{{ $row->description }}</td>
+                            <td>{{ $row->pegawai_id ? $row->pegawai->nik : $row->nik }}</td>
+                            <td>{{ $row->pegawai_id ? $row->pegawai->nama : $row->nama }}</td>
+                            <td>{{ $row->pegawai_id ? $row->pegawai->alamat : $row->alamat }}</td>
+                            <td>{{ $row->pegawai_id ? $row->pegawai->no_hp : $row->no_hp }}</td>
+                            <td>{{ $row->pegawai_id ? $row->pegawai->jenis_kelamin : $row->jenis_kelamin }}</td>
+                            <td>{{ $row->dokter == 1 ? 'Ya' : '' }}</td>
+                            <td>{{ $row->deskripsi }}</td>
                             <td class="with-btn-group text-end" nowrap>
                 @role('administrator|supervisor|operator')
                                     @if ($row->trashed())

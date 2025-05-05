@@ -33,23 +33,23 @@ class Purchase extends Model
     }
 
     /**
-     * Get all of the incomingStock for the Purchase
+     * Get all of the stokMasuk for the Purchase
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function incomingStock(): HasMany
+    public function stokMasuk(): HasMany
     {
-        return $this->hasMany(IncomingStock::class);
+        return $this->hasMany(IncomingStok::class);
     }
 
     /**
-     * Get the user that owns the Purchase
+     * Get the pengguna that owns the Purchase
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Pengguna::class);
     }
 
     /**
@@ -65,11 +65,11 @@ class Purchase extends Model
 
     public function scopeConsignment($query)
     {
-        return $query->whereNotNull('consignment');
+        return $query->whereNotNull('konsinyasi');
     }
 
     public function scopeGeneral($query)
     {
-        return $query->whereNull('consignment');
+        return $query->whereNull('konsinyasi');
     }
 }

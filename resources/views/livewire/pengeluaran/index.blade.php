@@ -53,7 +53,7 @@
                             <td>{{ $row->date }}</td>
                             <td>{{ $row->office }}</td>
                             <td>{{ $row->expenditure_type }}</td>
-                            <td>{{ $row->description }}</td>
+                            <td>{{ $row->uraian }}</td>
                             <td>{{ $row->receipt }}</td>
                             <td class="text-end">{{ number_format($row->cost) }}</td>
                             <td class="with-btn-group text-end" nowrap>

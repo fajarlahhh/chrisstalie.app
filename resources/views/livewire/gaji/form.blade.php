@@ -57,11 +57,11 @@
                         style: '',
                         showSubtext: true,
                         styleBase: 'form-control'
-                    })" wire:model.live="employee_id">
+                    })" wire:model.live="pegawai_id">
                         <option value="" selected hidden>-- Pilih Pegawai --</option>
-                        @foreach ($employeeData as $employee)
-                            <option value="{{ $employee['id'] }}">
-                                {{ $employee['name'] }}
+                        @foreach ($pegawaiData as $pegawai)
+                            <option value="{{ $pegawai['id'] }}">
+                                {{ $pegawai['nama'] }}
                             </option>
                         @endforeach
                     </select>
@@ -78,7 +78,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if ($employee_id)
+                            @if ($pegawai_id)
                                 @foreach ($detail as $index => $row)
                                     <tr>
                                         <td>{{ $row['jenis'] }}</td>

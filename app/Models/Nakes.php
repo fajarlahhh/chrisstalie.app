@@ -9,42 +9,43 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Practitioner extends Model
+class Nakes extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $table = 'nakes';
 
     public function scopeDoctor(Builder $query): void
     {
-        $query->where('doctor', 1);
+        $query->where('dokter', 1);
     }
 
     public function scopeNotDcotor(Builder $query): void
     {
-        $query->where('doctor', 0);
+        $query->where('dokter', 0);
     }
 
     /**
-     * Get the user that owns the Practitioner
+     * Get the pengguna that owns the Nakes
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(Pengguna::class)->withTrashed();
     }
 
     /**
-     * Get the employee that owns the Practitioner
+     * Get the pegawai that owns the Nakes
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function employee(): BelongsTo
+    public function pegawai(): BelongsTo
     {
-        return $this->belongsTo(Employee::class)->withTrashed();
+        return $this->belongsTo(Pegawai::class)->withTrashed();
     }
 
     /**
-     * Get all of the paymentTreatment for the Practitioner
+     * Get all of the paymentTreatment for the Nakes
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

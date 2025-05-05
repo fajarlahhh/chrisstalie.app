@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Laporan\Stokbarang;
 
-use App\Models\Goods;
+use App\Models\Barang;
 use Livewire\Component;
 
 class Index extends Component
@@ -22,9 +22,9 @@ class Index extends Component
 
     public function getData()
     {
-        return Goods::where('nama', 'like', '%' . $this->search . '%')->with('user')
+        return Barang::where('nama', 'like', '%' . $this->search . '%')->with('pengguna')
             ->with(['goodsBalance' => fn($q) => $q->where('period', 'like',  $this->year . '-' . $this->month . '%')])
-            ->with(['incomingStock' => fn($q) => $q->where('date', 'like',  $this->year . '-' . $this->month . '%')])
+            ->with(['stokMasuk' => fn($q) => $q->where('date', 'like',  $this->year . '-' . $this->month . '%')])
             ->with(['saleDetail' => fn($q) => $q->whereHas('sale', fn($r) => $r->where('date', 'like',  $this->year . '-' . $this->month . '%'))])
             ->get();
     }

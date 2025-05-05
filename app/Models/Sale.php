@@ -22,11 +22,11 @@ class Sale extends Model
     
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Pengguna::class);
     }
 
-    public function patient(): BelongsTo
+    public function pasien(): BelongsTo
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(Pasien::class);
     }
 }

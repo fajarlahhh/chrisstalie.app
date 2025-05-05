@@ -29,7 +29,7 @@
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $row->date }}</td>
                 <td>{{ $row->receipt }}</td>
-                <td>{{ $row->description }}</td>
+                <td>{{ $row->uraian }}</td>
                 <td>{{ $row->due_date }}</td>
                 <td class="w-400px">
                     <table class="table-bordered fs-10px">
@@ -42,22 +42,22 @@
                         @foreach ($row->purchaseDetail as $j => $subRow)
                             <tr>
                                 <td class="p-1">
-                                    {{ $subRow->goods_id ? $subRow->goods?->name : $subRow->name }}</td>
+                                    {{ $subRow->goods_id ? $subRow->goods?->nama : $subRow->nama }}</td>
                                 <td class="text-end p-1  text-nowrap">
-                                    {{ number_format($subRow->price) }}</td>
+                                    {{ number_format($subRow->harga) }}</td>
                                 <td class="text-end p-1  text-nowrap">
                                     {{ number_format($subRow->qty) }}</td>
                                 <td class="text-end p-1  text-nowrap">
-                                    {{ number_format($subRow->qty * $subRow->price) }}</td>
+                                    {{ number_format($subRow->qty * $subRow->harga) }}</td>
                             </tr>
                         @endforeach
                         <tr>
                             <td class="p-1" colspan="3">Total</td>
                             <td class="text-end p-1  text-nowrap">
                                 @php
-                                    $total += $row->purchaseDetail->sum(fn($q) => $q->price * $q->qty);
+                                    $total += $row->purchaseDetail->sum(fn($q) => $q->harga * $q->qty);
                                 @endphp
-                                {{ number_format($row->purchaseDetail->sum(fn($q) => $q->price * $q->qty)) }}
+                                {{ number_format($row->purchaseDetail->sum(fn($q) => $q->harga * $q->qty)) }}
                             </td>
                         </tr>
                     </table>
@@ -65,11 +65,11 @@
                 <td class="text-nowrap">
                     @if ($row->expenditure)
                         @php
-                            $totalLunas += $row->purchaseDetail->sum(fn($q) => $q->price * $q->qty);
+                            $totalLunas += $row->purchaseDetail->sum(fn($q) => $q->harga * $q->qty);
                         @endphp
                         {{ $row->expenditure->date }},
-                        {{ $row->expenditure->description }}<br>
-                        {{ $row->expenditure->user->name }}
+                        {{ $row->expenditure->uraian }}<br>
+                        {{ $row->expenditure->pengguna->nama }}
                     @endif
                 </td>
             </tr>

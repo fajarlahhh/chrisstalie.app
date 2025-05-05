@@ -18,7 +18,7 @@ class Expenditure extends Model
 
     public function scopeWages(Builder $query): void
     {
-        $query->where('routine', 1)->where('wages', 1);
+        $query->where('routine', 1)->where('gaji', 1);
     }
 
     public function scopeNotRoutine(Builder $query): void
@@ -27,13 +27,13 @@ class Expenditure extends Model
     }
     
     /**
-     * Get the user that owns the Expenditure
+     * Get the pengguna that owns the Expenditure
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(Pengguna::class)->withTrashed();
     }
 
     /**
@@ -47,13 +47,13 @@ class Expenditure extends Model
     }
 
     /**
-     * Get the employee that owns the Expenditure
+     * Get the pegawai that owns the Expenditure
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function employee(): BelongsTo
+    public function pegawai(): BelongsTo
     {
-        return $this->belongsTo(Employee::class)->withTrashed();
+        return $this->belongsTo(Pegawai::class)->withTrashed();
     }
 
     /**

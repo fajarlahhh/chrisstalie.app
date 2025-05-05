@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Datamaster\Barang;
 
-use App\Models\Goods;
+use App\Models\Barang;
 use Livewire\Component;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\DB;
@@ -10,39 +10,39 @@ use Illuminate\Support\Facades\DB;
 class Form extends Component
 {
     public $data, $previous, $supplierData = [];
-    public $nama, $unit, $min_inventory, $price, $type, $description, $consignment_id, $precompounded, $kfa, $office_portion, $practitioner_portion, $capital;
+    public $nama, $satuan, $stok_minimum, $harga, $jenis, $deskripsi, $konsinyator_id, $precompounded, $kfa, $porsi_kantor, $porsi_nakes, $modal;
 
     public function submit()
     {
         $this->validate([
             'nama' => 'required',
-            'unit' => 'required',
-            'min_inventory' => 'required',
-            'price' => 'required',
-            'consignment_id' => 'integer|nullable',
-            'type' => 'required',
+            'satuan' => 'required',
+            'stok_minimum' => 'required',
+            'harga' => 'required',
+            'konsinyator_id' => 'integer|nullable',
+            'jenis' => 'required',
         ]);
 
-        if ($this->consignment_id) {
+        if ($this->konsinyator_id) {
             $this->validate([
-                'capital' => 'required',
-                'practitioner_portion' => 'required',
-                'office_portion' => 'required',
+                'modal' => 'required',
+                'porsi_nakes' => 'required',
+                'porsi_kantor' => 'required',
             ]);
         }
 
         DB::transaction(function () {
             $this->data->nama = $this->nama;
-            $this->data->unit = $this->unit;
-            $this->data->min_inventory = $this->min_inventory;
-            $this->data->price = $this->price;
-            $this->data->description = $this->description;
+            $this->data->satuan = $this->satuan;
+            $this->data->stok_minimum = $this->stok_minimum;
+            $this->data->harga = $this->harga;
+            $this->data->deskripsi = $this->deskripsi;
             $this->data->precompounded = $this->precompounded;
-            $this->data->type = $this->type;
-            $this->data->consignment_id = $this->consignment_id;
-            $this->data->capital = $this->consignment_id ? $this->capital: null;
-            $this->data->office_portion = $this->consignment_id ? $this->office_portion : 100;
-            $this->data->practitioner_portion = $this->consignment_id ? $this->practitioner_portion: 0;
+            $this->data->jenis = $this->jenis;
+            $this->data->konsinyator_id = $this->konsinyator_id;
+            $this->data->modal = $this->konsinyator_id ? $this->modal : null;
+            $this->data->porsi_kantor = $this->konsinyator_id ? $this->porsi_kantor : 100;
+            $this->data->porsi_nakes = $this->konsinyator_id ? $this->porsi_nakes : 0;
             $this->data->kfa = $this->kfa;
             $this->data->user_id = auth()->id();
             $this->data->save();
@@ -51,12 +51,13 @@ class Form extends Component
         $this->redirect($this->previous);
     }
 
-    public function mount(Goods $data)
+    public function mount(Barang $data)
     {
         $this->previous = url()->previous();
-        $this->supplierData = Supplier::withoutGlobalScopes()->orderBy('nama')->where('consignment', 1)->get()->toArray();
+        $this->supplierData = Supplier::withoutGlobalScopes()->orderBy('nama')->where('konsinyator', 1)->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
+        $this->precompounded = $this->data->precompounded == 1 ? true : false;
     }
 
     public function render()

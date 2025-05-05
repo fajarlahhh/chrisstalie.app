@@ -23,13 +23,13 @@
                         <ul class="nav nav-tabs bg-gray-100">
                             <li class="nav-item">
                                 <a href="#default-tab-1" data-bs-toggle="tab" class="nav-link active"
-                                    wire:click="resetPatient" wire:ignore.self>
+                                    wire:click="resetPasien" wire:ignore.self>
                                     <span class="d-sm-none">Pasien Baru</span>
                                     <span class="d-sm-block d-none">Pasien Baru</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#default-tab-2" data-bs-toggle="tab" class="nav-link" wire:click="resetPatient"
+                                <a href="#default-tab-2" data-bs-toggle="tab" class="nav-link" wire:click="resetPasien"
                                     wire:ignore.self>
                                     <span class="d-sm-none">Pasien Lama</span>
                                     <span class="d-sm-block d-none">Pasien Lama</span>
@@ -52,48 +52,48 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Nama</label>
-                                    <input class="form-control" type="text" wire:model="name" />
-                                    @error('name')
+                                    <input class="form-control" type="text" wire:model="nama" />
+                                    @error('nama')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Alamat</label>
-                                    <input class="form-control" type="text" wire:model="address" />
-                                    @error('address')
+                                    <input class="form-control" type="text" wire:model="alamat" />
+                                    @error('alamat')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Tempat Lahir</label>
-                                    <input class="form-control" type="text" wire:model="birth_place" />
-                                    @error('birth_place')
+                                    <input class="form-control" type="text" wire:model="tempat_lahir" />
+                                    @error('tempat_lahir')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Tanggal Lahir</label>
-                                    <input class="form-control" type="date" wire:model="birth_date" />
-                                    @error('birth_date')
+                                    <input class="form-control" type="date" wire:model="tanggal_lahir" />
+                                    @error('tanggal_lahir')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Jenis Kelamin</label>
-                                    <select data-container="body" class="form-control " wire:model="gender"
+                                    <select data-container="body" class="form-control " wire:model="jenis_kelamin"
                                         data-width="100%">
                                         <option selected>-- Pilih Jenis Kelamin --</option>
                                         <option value="Laki-laki">Laki-laki</option>
                                         <option value="Perempuan">Perempuan</option>
                                     </select>
-                                    @error('gender')
+                                    @error('jenis_kelamin')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">No. Telpon</label>
-                                    <input class="form-control" type="text" wire:model="phone" />
-                                    @error('phone')
+                                    <input class="form-control" type="text" wire:model="no_telpon" />
+                                    @error('no_telpon')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -103,7 +103,7 @@
                             <div class="tab-pane fade" id="default-tab-2" wire:ignore.self>
                                 <h4 class="mt-10px">Data Pasien</h4>
                                 <hr>
-                                @if (!$patient_id)
+                                @if (!$pasien_id)
                                     <div class="mb-3">
                                         <label class="form-label">Cari Pasien</label>
                                         <div wire:ignore>
@@ -114,7 +114,7 @@
                                                 minimumInputLength: 3,
                                                 dataType: 'json',
                                                 ajax: {
-                                                    url: '/search/patient',
+                                                    url: '/search/pasien',
                                                     data: function(params) {
                                                         var query = {
                                                             search: params.term
@@ -131,7 +131,7 @@
                                             });
                                             
                                             $($el).on('change', function(element) {
-                                                $wire.set('patient_id', $($el).val());
+                                                $wire.set('pasien_id', $($el).val());
                                             });
                                             
                                             function format(data) {
@@ -141,7 +141,7 @@
                                                 var $data = $('<table><tr><th>No. RM</th><th>:</th><th>' + data.rm + '</th></tr>' +
                                                     '<tr><th>No. KTP</th><th>:</th><th>' + data.nik + '</th></tr>' +
                                                     '<tr><th>Nama</th><th>:</th><th>' + data.name + '</th></tr>' +
-                                                    '<tr><th>Alamat</th><th>:</th><th>' + data.address + '</th></tr></table>');
+                                                    '<tr><th>Alamat</th><th>:</th><th>' + data.alamat + '</th></tr></table>');
                                                 return $data;
                                             }">
                                             </select>
@@ -152,7 +152,7 @@
                                     <label class="form-label">No. RM</label>
                                     <input class="form-control" type="text" wire:model="rm"
                                         @if ($rm) disabled @endif
-                                        @if (!$patient_id) disabled @endif />
+                                        @if (!$pasien_id) disabled @endif />
                                     @error('rm')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -161,55 +161,55 @@
                                     <label class="form-label">No. KTP</label>
                                     <input class="form-control" type="text" wire:model="nik"
                                         @if ($nik) disabled @endif
-                                        @if (!$patient_id) disabled @endif />
+                                        @if (!$pasien_id) disabled @endif />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Nama</label>
-                                    <input class="form-control" type="text" wire:model="name"
+                                    <input class="form-control" type="text" wire:model="nama"
                                         @if ($name) disabled @endif
-                                        @if (!$patient_id) disabled @endif />
-                                    @error('name')
+                                        @if (!$pasien_id) disabled @endif />
+                                    @error('nama')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Alamat</label>
-                                    <input class="form-control" type="text" wire:model="address"
-                                        @if ($address) disabled @endif
-                                        @if (!$patient_id) disabled @endif />
-                                    @error('address')
+                                    <input class="form-control" type="text" wire:model="alamat"
+                                        @if ($alamat) disabled @endif
+                                        @if (!$pasien_id) disabled @endif />
+                                    @error('alamat')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Tempat Lahir</label>
-                                    <input class="form-control" type="text" wire:model="birth_place"
-                                        @if ($birth_place) disabled @endif
-                                        @if (!$patient_id) disabled @endif />
+                                    <input class="form-control" type="text" wire:model="tempat_lahir"
+                                        @if ($tempat_lahir) disabled @endif
+                                        @if (!$pasien_id) disabled @endif />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Tanggal Lahir</label>
-                                    <input class="form-control" type="date" wire:model="birth_date"
-                                        @if ($birth_date) disabled @endif
-                                        @if (!$patient_id) disabled @endif />
-                                    @error('birth_date')
+                                    <input class="form-control" type="date" wire:model="tanggal_lahir"
+                                        @if ($tanggal_lahir) disabled @endif
+                                        @if (!$pasien_id) disabled @endif />
+                                    @error('tanggal_lahir')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Jenis Kelamin</label>
-                                    <input class="form-control" type="text" wire:model="gender"
-                                        @if ($gender) disabled @endif
-                                        @if (!$patient_id) disabled @endif />
-                                    @error('gender')
+                                    <input class="form-control" type="text" wire:model="jenis_kelamin"
+                                        @if ($jenis_kelamin) disabled @endif
+                                        @if (!$pasien_id) disabled @endif />
+                                    @error('jenis_kelamin')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">No. Telpon</label>
-                                    <input class="form-control" type="text" wire:model="phone"
-                                        @if ($phone) disabled @endif
-                                        @if (!$patient_id) disabled @endif />
+                                    <input class="form-control" type="text" wire:model="no_telpon"
+                                        @if ($no_telpon) disabled @endif
+                                        @if (!$pasien_id) disabled @endif />
                                 </div>
                             </div>
                             <!-- END tab-pane -->
@@ -235,22 +235,22 @@
                                 showSubtext: true,
                                 styleBase: 'form-control'
                             })"
-                                wire:model="practitioner_id" data-width="100%">
+                                wire:model="nakes_id" data-width="100%">
                                 <option selected value="">-- Pilih Dokter --</option>
-                                @foreach ($practitionerData as $row)
-                                    <option value="{{ $row['id'] }}" data-subtext="{{ $row['doctor'] }}">
-                                        {{ $row['name'] }}
+                                @foreach ($nakesData as $row)
+                                    <option value="{{ $row['id'] }}" data-subtext="{{ $row['dokter'] }}">
+                                        {{ $row['nama'] }}
                                     </option>
                                 @endforeach
                             </select>
-                            @error('practitioner_id')
+                            @error('nakes_id')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Keterangan</label>
-                            <textarea class="form-control" wire:model="description" rows="5"></textarea>
-                            @error('description')
+                            <textarea class="form-control" wire:model="uraian" rows="5"></textarea>
+                            @error('uraian')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -262,7 +262,7 @@
                     <input type="submit" value="Simpan" class="btn btn-success" />
                 @endrole
                 <a href="/pelayanan/pendaftaran/data" class="btn btn-warning m-r-3">Data</a>
-                <a href="javascript:;" wire:click="resetPatient" class="btn btn-secondary m-r-3">Reset</a>
+                <a href="javascript:;" wire:click="resetPasien" class="btn btn-secondary m-r-3">Reset</a>
             </div>
         </form>
     </div>

@@ -43,8 +43,8 @@
                             <td>
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
-                            <td>{{ $row->name }}</td>
-                            <td>{{ $row->address }}</td>
+                            <td>{{ $row->nama }}</td>
+                            <td>{{ $row->alamat }}</td>
                             <td class="with-btn-group text-end" nowrap>
                 @role('administrator|supervisor|operator')
                                     @if ($row->trashed())

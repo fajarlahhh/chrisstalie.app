@@ -27,12 +27,12 @@
 
     <!-- BEGIN header-nav -->
     <div class="navbar-nav">
-        <div class="navbar-item navbar-user dropdown">
+        <div class="navbar-item navbar-pengguna dropdown">
             <a href="#" class="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
                 <img src="/assets/img/favicon.png" alt="" />
                 <span>
                     <span class="d-none d-md-inline">&nbsp;
-                        {{ auth()->user()->employee ? auth()->user()->employee->name : auth()->user()->name }}
+                        {{ auth()->user()->pegawai ? auth()->user()->pegawai->nama : auth()->user()->nama }}
                     </span>
                     <b class="caret"></b>
                 </span>

@@ -10,6 +10,6 @@ class ToolMaterial extends Model
     //
     public function goods(): BelongsTo
     {
-        return $this->belongsTo(Goods::class);
+        return $this->belongsTo(Barang::class);
     }
 }

@@ -45,14 +45,14 @@
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
                             <td>{{ $row->datetime }}</td>
-                            <td>{{ $row->patient->rm }}</td>
-                            <td>{{ $row->patient->name }}</td>
-                            <td>{{ $row->patient->nik }}</td>
-                            <td>{{ $row->patient->birth_date }}</td>
-                            <td>{{ $row->patient->gender }}</td>
-                            <td>{{ $row->patient->address }}</td>
-                            <td>{{ $row->patient->phone }}</td>
-                            <td>{{ $row->description }}</td>
+                            <td>{{ $row->pasien->rm }}</td>
+                            <td>{{ $row->pasien->nama }}</td>
+                            <td>{{ $row->pasien->nik }}</td>
+                            <td>{{ $row->pasien->tanggal_lahir }}</td>
+                            <td>{{ $row->pasien->jenis_kelamin }}</td>
+                            <td>{{ $row->pasien->alamat }}</td>
+                            <td>{{ $row->pasien->no_telpon }}</td>
+                            <td>{{ $row->uraian }}</td>
                             <td>
                                 {!! nl2br(e($row->note)) !!}
                             </td>

@@ -23,8 +23,8 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Carbon::setLocale('id_ID');
-        Gate::before(function ($user, $ability) {
-            return $user->hasRole('administrator') || $user->getKey() == 'administrator' ? true : null;
+        Gate::before(function ($pengguna, $ability) {
+            return $pengguna->hasRole('administrator') || $pengguna->getKey() == 'administrator' ? true : null;
         });
     }
 }

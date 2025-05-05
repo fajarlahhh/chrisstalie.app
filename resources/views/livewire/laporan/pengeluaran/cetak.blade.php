@@ -27,7 +27,7 @@
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $row->date }}</td>
                 <td>{{ $row->receipt }}</td>
-                <td>{{ $row->description }}</td>
+                <td>{{ $row->uraian }}</td>
                 <td>{{ $row->expenditure_type }}</td>
                 <td class="text-end">{{ number_format($row->cost) }}</td>
                 @php

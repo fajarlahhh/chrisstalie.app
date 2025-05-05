@@ -21,41 +21,41 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Nama</label>
-                    <input class="form-control" type="text" wire:model="name" />
-                    @error('name')
+                    <input class="form-control" type="text" wire:model="nama" />
+                    @error('nama')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Satuan</label>
-                    <input class="form-control" type="text" wire:model="unit" />
-                    @error('unit')
+                    <input class="form-control" type="text" wire:model="satuan" />
+                    @error('satuan')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Stok Min.</label>
-                    <input class="form-control" type="number" wire:model="min_inventory" />
-                    @error('min_inventory')
+                    <input class="form-control" type="number" wire:model="stok_minimum" />
+                    @error('stok_minimum')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Harga Jual</label>
-                    <input class="form-control" type="number" wire:model="price" />
-                    @error('price')
+                    <input class="form-control" type="number" wire:model="harga" />
+                    @error('harga')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Jenis Barang</label>
-                    <select class="form-control" wire:model="type" data-width="100%">
+                    <select class="form-control" wire:model="jenis" data-width="100%">
                         <option hidden selected>-- Pilih Jenis Barang --</option>
                         @foreach (\App\Enums\GoodstypeEnum::cases() as $item)
                             <option value="{{ $item->value }}">{{ $item->label() }}</option>
                         @endforeach
                     </select>
-                    @error('type')
+                    @error('jenis')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
@@ -70,38 +70,38 @@
                             style: '',
                             showSubtext: true,
                             styleBase: 'form-control'
-                        })" class="form-control" wire:model.live="consignment_id"
+                        })" class="form-control" wire:model.live="konsinyator_id"
                             data-width="100%">
                             <option selected value="">-- Pilih Konsinyasi --</option>
                             @foreach ($supplierData as $item)
-                                <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
+                                <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
                             @endforeach
                         </select>
-                        @error('consignment_id')
+                        @error('konsinyator_id')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     @role('administrator|supervisor|operator')
-                        @if ($consignment_id)
+                        @if ($konsinyator_id)
                             <div class="mb-3">
                                 <label class="form-label">Modal</label>
-                                <input class="form-control" type="number" wire:model="capital" />
-                                @error('capital')
+                                <input class="form-control" type="number" wire:model="modal" />
+                                @error('modal')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Bagian Apotek</label>
-                                <input class="form-control" type="number" wire:model="office_portion" step="1" max="100" />
-                                @error('office_portion')
+                                <input class="form-control" type="number" wire:model="porsi_kantor" step="1" max="100" />
+                                @error('porsi_kantor')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Bagian Dokter</label>
-                                <input class="form-control" step="1" type="number" wire:model="practitioner_portion"
+                                <input class="form-control" step="1" type="number" wire:model="porsi_nakes"
                                     max="100" />
-                                @error('practitioner_portion')
+                                @error('porsi_nakes')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -110,8 +110,8 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
-                    <input class="form-control" type="text" wire:model="description" />
-                    @error('description')
+                    <input class="form-control" type="text" wire:model="deskripsi" />
+                    @error('deskripsi')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

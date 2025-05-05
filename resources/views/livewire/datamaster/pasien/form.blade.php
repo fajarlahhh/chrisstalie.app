@@ -43,61 +43,61 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Nama</label>
-                    <input class="form-control" type="text" wire:model="name" />
-                    @error('name')
+                    <input class="form-control" type="text" wire:model="nama" />
+                    @error('nama')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tempat Lahir</label>
-                    <input class="form-control" type="text" wire:model="birth_place" />
-                    @error('birth_place')
+                    <input class="form-control" type="text" wire:model="tempat_lahir" />
+                    @error('tempat_lahir')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tanggal Lahir</label>
-                    <input class="form-control" type="date" wire:model="birth_date" />
-                    @error('birth_date')
+                    <input class="form-control" type="date" wire:model="tanggal_lahir" />
+                    @error('tanggal_lahir')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Jenis Kelamin</label>
-                    <select data-container="body" class="form-control " wire:model="gender" data-width="100%">
+                    <select data-container="body" class="form-control " wire:model="jenis_kelamin" data-width="100%">
                         <option selected hidden>-- Pilih Jenis Kelamin --</option>
                         <option value="Laki-laki">Laki-laki</option>
                         <option value="Perempuan">Perempuan</option>
                     </select>
-                    @error('gender')
+                    @error('jenis_kelamin')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Alamat</label>
-                    <input class="form-control" type="text" wire:model="address" />
-                    @error('address')
+                    <input class="form-control" type="text" wire:model="alamat" />
+                    @error('alamat')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">No. Telp.</label>
-                    <input class="form-control" type="text" wire:model="phone" />
-                    @error('phone')
+                    <input class="form-control" type="text" wire:model="no_telpon" />
+                    @error('no_telpon')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
-                    <input class="form-control" type="text" wire:model="description" />
-                    @error('description')
+                    <input class="form-control" type="text" wire:model="uraian" />
+                    @error('uraian')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tanggal Daftar</label>
-                    <input class="form-control" type="text" disabled wire:model="registration_date" />
-                    @error('registration_date')
+                    <input class="form-control" type="text" disabled wire:model="tanggal_registrasi" />
+                    @error('tanggal_registrasi')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

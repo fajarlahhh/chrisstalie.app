@@ -50,7 +50,7 @@
                         <tr>
                             <td>{{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}</td>
                             <td>{{ $row->date }}</td>
-                            <td>{{ $row->description }}</td>
+                            <td>{{ $row->uraian }}</td>
                             <td class="w-400px">
                                 <table class="table-bordered fs-10px">
                                     <tr class="bg-gray-100">
@@ -62,26 +62,26 @@
                                     @foreach ($row->purchaseDetail as $j => $subRow)
                                         <tr>
                                             <td class="p-1">
-                                                {{ $subRow->goods_id ? $subRow->goods->name : $subRow->name }}</td>
+                                                {{ $subRow->goods_id ? $subRow->goods->nama : $subRow->nama }}</td>
                                             <td class="text-end p-1  text-nowrap">
-                                                {{ number_format($subRow->price) }}</td>
+                                                {{ number_format($subRow->harga) }}</td>
                                             <td class="text-end p-1  text-nowrap">
                                                 {{ number_format($subRow->qty) }}</td>
                                             <td class="text-end p-1  text-nowrap">
-                                                {{ number_format($subRow->qty * $subRow->price) }}</td>
+                                                {{ number_format($subRow->qty * $subRow->harga) }}</td>
                                         </tr>
                                     @endforeach
                                     <tr>
                                         <td class="p-1" colspan="3">Total</td>
                                         <td class="text-end p-1  text-nowrap">
-                                            {{ number_format($row->purchaseDetail->sum(fn($q) => $q->price * $q->qty)) }}
+                                            {{ number_format($row->purchaseDetail->sum(fn($q) => $q->harga * $q->qty)) }}
                                         </td>
                                     </tr>
                                 </table>
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                 @role('administrator|supervisor|operator')
-                                    @if ($row->incomingStock->count() == 0)
+                                    @if ($row->stokMasuk->count() == 0)
                                         <x-action :row="$row"  custom="" :detail="false" :edit="false" :print="false"
                                             :permanentDelete="false" :restore="false" :delete="true" />
                                     @endif

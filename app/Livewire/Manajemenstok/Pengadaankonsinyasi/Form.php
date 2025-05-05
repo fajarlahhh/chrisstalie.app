@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Manajemenstok\Pengadaankonsinyasi;
 
-use App\Models\Goods;
+use App\Models\Barang;
 use Livewire\Component;
 use App\Models\Purchase;
 use App\Models\Supplier;
@@ -12,14 +12,14 @@ use Illuminate\Support\Facades\DB;
 class Form extends Component
 {
     public $data, $previous, $goodsData = [], $supplierData = [];
-    public $date, $description, $due_date, $receipt, $supplier_id, $procurement = [], $cost = [];
+    public $date, $uraian, $due_date, $receipt, $supplier_id, $procurement = [], $cost = [];
 
     public function addCost()
     {
         $this->cost[] = [
             'nama' => null,
             'qty' => 0,
-            'price' => null,
+            'harga' => null,
         ];
     }
 
@@ -35,7 +35,7 @@ class Form extends Component
             'goods_id' => null,
             'qty' => 0,
             'expired_date' => null,
-            'price' => null,
+            'harga' => null,
         ];
     }
 
@@ -49,18 +49,18 @@ class Form extends Component
     {
         $this->previous = url()->previous();
         $this->date = $this->date ?: date('Y-m-d');
-        $this->supplierData = Supplier::consignment()->orderBy('nama')->get()->toArray();
+        $this->supplierData = Supplier::konsinyasi()->orderBy('nama')->get()->toArray();
     }
 
     public function updatedSupplierId()
     {
-        $this->goodsData = Goods::orderBy('nama')->where('consignment_id', $this->supplier_id)->get()->toArray();
+        $this->goodsData = Barang::orderBy('nama')->where('consignment_id', $this->supplier_id)->get()->toArray();
     }
 
     public function submit()
     {
         $this->validate([
-            'description' => 'required',
+            'uraian' => 'required',
             'supplier_id' => 'required',
             'date' => 'required',
             'procurement' => 'required|array',
@@ -71,8 +71,8 @@ class Form extends Component
             $data = new Purchase();
             $data->receipt = now();
             $data->date = $this->date;
-            $data->consignment = 1;
-            $data->description = $this->description;
+            $data->konsinyasi = 1;
+            $data->uraian = $this->uraian;
             $data->supplier_id = $this->supplier_id;
             $data->user_id = auth()->id();
             $data->save();
@@ -80,7 +80,7 @@ class Form extends Component
             if (collect($this->procurement)->count() > 0) {
                 PurchaseDetail::insert(collect($this->procurement)->map(fn($q) => [
                     'qty' => $q['qty'],
-                    'price' => Goods::find($q['goods_id'])->capital,
+                    'harga' => Barang::find($q['goods_id'])->modal,
                     'goods_id' => $q['goods_id'],
                     'purchase_id' => $data->id,
                 ])->toArray());

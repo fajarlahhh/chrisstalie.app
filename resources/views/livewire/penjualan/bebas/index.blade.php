@@ -35,7 +35,7 @@
                             minimumInputLength: 3,
                             dataType: 'json',
                             ajax: {
-                                url: '/search/patient',
+                                url: '/search/pasien',
                                 data: function(params) {
                                     var query = {
                                         search: params.term
@@ -52,7 +52,7 @@
                         });
                         
                         $($el).on('change', function(element) {
-                            $wire.set('patient_id', $($el).val());
+                            $wire.set('pasien_id', $($el).val());
                         });
                         
                         function format(data) {
@@ -62,7 +62,7 @@
                             var $data = $('<table><tr><th>No. RM</th><th>:</th><th>' + data.rm + '</th></tr>' +
                                 '<tr><th>No. KTP</th><th>:</th><th>' + data.nik + '</th></tr>' +
                                 '<tr><th>Nama</th><th>:</th><th>' + data.name + '</th></tr>' +
-                                '<tr><th>Alamat</th><th>:</th><th>' + data.address + '</th></tr></table>');
+                                '<tr><th>Alamat</th><th>:</th><th>' + data.alamat + '</th></tr></table>');
                             return $data;
                         }">
                         </select>
@@ -79,22 +79,22 @@
                         showSubtext: true,
                         styleBase: 'form-control'
                     })"
-                        wire:model="practitioner_id" data-width="100%">
+                        wire:model="nakes_id" data-width="100%">
                         <option selected value="">-- Pilih Dokter --</option>
-                        @foreach ($practitionerData as $row)
-                            <option value="{{ $row['id'] }}" data-subtext="{{ $row['doctor'] }}">
-                                {{ $row['name'] }}
+                        @foreach ($nakesData as $row)
+                            <option value="{{ $row['id'] }}" data-subtext="{{ $row['dokter'] }}">
+                                {{ $row['nama'] }}
                             </option>
                         @endforeach
                     </select>
-                    @error('practitioner_id')
+                    @error('nakes_id')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
-                    <input class="form-control" type="text" wire:model="description" />
-                    @error('description')
+                    <input class="form-control" type="text" wire:model="uraian" />
+                    @error('uraian')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
@@ -127,8 +127,8 @@
                                                 <option value="">-- Pilih Barang --</option>
                                                 @foreach ($goodsData as $subRow)
                                                     <option value="{{ $subRow['id'] }}"
-                                                        data-subtext="{{ number_format($subRow['price']) }}">
-                                                        {{ $subRow['name'] . ' (' . $subRow['unit'] . ')' }}
+                                                        data-subtext="{{ number_format($subRow['harga']) }}">
+                                                        {{ $subRow['nama'] . ' (' . $subRow['satuan'] . ')' }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -138,8 +138,8 @@
                                         </td>
                                         <td class="with-btn">
                                             <input type="text" class="form-control text-end"
-                                                id="goods-price-{{ $index }}"
-                                                value="{{ number_format($row['price']) }}" disabled autocomplete="off">
+                                                id="goods-harga-{{ $index }}"
+                                                value="{{ number_format($row['harga']) }}" disabled autocomplete="off">
                                         </td>
                                         <td class="with-btn">
                                             <input type="number" class="form-control" min="0" step="1"
@@ -242,15 +242,15 @@
 {{-- <script>
         document.addEventListener('livewire:init', () => {
             Livewire.on('calculation', (data) => {
-                calculation(data.index, data.price);
+                calculation(data.index, data.harga);
             });
         });
 
-        function calculation(index, price = null) {
-            let price = price ?? document.getElementById('goods-price-' + index).value.replace(/\,/g, '');
+        function calculation(index, harga = null) {
+            let harga = harga ?? document.getElementById('goods-harga-' + index).value.replace(/\,/g, '');
             let qty = document.getElementById('goods-qty-' + index).value;
             let discount = document.getElementById('goods-discount-' + index).value;
-            let total = (price * qty) - (price * qty * discount / 100);
+            let total = (harga * qty) - (harga * qty * discount / 100);
             document.getElementById('goods-total-' + index).value = numberFormat(total);
         }
     </script> --}}

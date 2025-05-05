@@ -22,10 +22,10 @@ class PembagianpenjualanExport implements FromView
 
     public function getConsignment()
     {
-        return SaleDetail::whereHas('sale', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->whereNotNull('consignment_id')->with('consignment')->get()->map(function ($q) {
+        return SaleDetail::whereHas('sale', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->whereNotNull('consignment_id')->with('konsinyasi')->get()->map(function ($q) {
             return [
                 'id' => $q->consignment_id,
-                'name' => $q->consignment->name
+                'name' => $q->konsinyasi->name
             ];
         })->unique()->toArray();
     }
@@ -33,20 +33,20 @@ class PembagianpenjualanExport implements FromView
     public function getData()
     {
         return (SaleDetail::whereHas('sale', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->with(['sale', 'goods'])->get()->map(function ($q) {
-            $price = $q->price * $q->qty;
-            $discount = ($q->price * $q->discount);
-            $priceAfterDiscount = ($q->price - $discount) * $q->qty;
+            $harga = $q->harga * $q->qty;
+            $discount = ($q->harga * $q->discount);
+            $hargaAfterDiscount = ($q->harga - $discount) * $q->qty;
             return [
                 'id' => $q->goods_id,
                 'name' => $q->goods->name,
-                'unit' => $q->goods->unit,
-                'price' => $price,
+                'satuan' => $q->goods->satuan,
+                'harga' => $harga,
                 'qty' => $q->qty,
-                'priceAfterDiscount' => $priceAfterDiscount,
+                'hargaAfterDiscount' => $hargaAfterDiscount,
                 'discount' => $discount,
                 'consignment_id' => $q->consignment_id,
-                'consignment_portion' => $q->office_portion > 0 ? $price - $q->office_portion : 0,
-                'office_portion' => $priceAfterDiscount - $q->office_portion
+                'consignment_portion' => $q->porsi_kantor > 0 ? $harga - $q->porsi_kantor : 0,
+                'porsi_kantor' => $hargaAfterDiscount - $q->porsi_kantor
             ];
         })->sortBy('name')->toArray());
     }
@@ -58,7 +58,7 @@ class PembagianpenjualanExport implements FromView
             'date1' => $this->date1,
             'date2' => $this->date2,
             'data' => $this->getData(),
-            'consignment' => $this->getConsignment(),
+            'konsinyasi' => $this->getConsignment(),
         ]);
     }
 }

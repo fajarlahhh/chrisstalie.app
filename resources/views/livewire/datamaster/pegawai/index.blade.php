@@ -38,7 +38,7 @@
                         <th>No. Telpon</th>
                         <th>Jenis Kelamin</th>
                         <th>Tanggal Mulai</th>
-                        <th>Jabatan</th>
+                        <th>Posisi</th>
                         <th>NPWP</th>
                         <th>No. BPJS Ketenagakerjaan</th>
                         <th>No. BPJS Kesehatan</th>
@@ -53,20 +53,20 @@
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
                             <td>{{ $row->nik }}</td>
-                            <td>{{ $row->name }}</td>
-                            <td>{{ $row->address }}</td>
-                            <td>{{ $row->phone_number }}</td>
-                            <td>{{ $row->gender }}</td>
-                            <td>{{ $row->start_date }}</td>
-                            <td>{{ $row->position }} - {{ $row->office }}</td>
+                            <td>{{ $row->nama }}</td>
+                            <td>{{ $row->alamat }}</td>
+                            <td>{{ $row->no_hp }}</td>
+                            <td>{{ $row->jenis_kelamin }}</td>
+                            <td>{{ $row->tanggal_masuk }}</td>
+                            <td>{{ $row->posisi }}</td>
                             <td>{{ $row->npwp }}</td>
-                            <td>{{ $row->bpjs_employment }}</td>
-                            <td>{{ $row->bpjs_health }}</td>
+                            <td>{{ $row->no_bpjs }}</td>
+                            <td>{{ $row->no_bpjs }}</td>
                             <td class="text-nowrap">
-                                Gaji Pokok : {{ number_format($row->wages) }}<br>
-                                Tunjangan : {{ number_format($row->allowance) }}<br>
-                                Transport : {{ number_format($row->transport_allowance) }}<br>
-                                BPJS Kesehatan : {{ number_format($row->bpjs_health_cost) }}
+                                Gaji Pokok : {{ number_format($row->gaji) }}<br>
+                                Tunjangan : {{ number_format($row->tunjangan) }}<br>
+                                Transport : {{ number_format($row->tunjangan_transport) }}<br>
+                                BPJS Kesehatan : {{ number_format($row->tunjangan_bpjs) }}
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')

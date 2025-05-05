@@ -26,8 +26,8 @@ class Index extends Component
     public function render()
     {
         return view('livewire.pelayanan.catatanpasien.index', [
-            'data' => Registration::with('patient')->with('practitioner')->with('user')
-                ->whereHas('patient', fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'))->whereDoesntHave('payment')
+            'data' => Registration::with('pasien')->with('nakes')->with('pengguna')
+                ->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'))->whereDoesntHave('payment')
                 ->orderBy('created_at', 'desc')->paginate(10)
         ]);
     }

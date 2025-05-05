@@ -50,14 +50,14 @@
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $row->date }}</td>
-                            <td>{{ $row->description }}</td>
+                            <td>{{ $row->uraian }}</td>
                             <td>{{ collect($row->purchase['purchase_detail'])->pluck('goods_name_qty')->join(',') }}
-                                {{ $row->purchase['receipt'] }} - {{ $row->purchase['description'] }}</td>
+                                {{ $row->purchase['receipt'] }} - {{ $row->purchase['uraian'] }}</td>
                             <td>{{ number_format($row->cost) }}</td>
                             <td class="text-nowrap">
                                 <ul>
                                     @foreach ($row->expenditureDetail as $subRow)
-                                        <li>{{ $subRow->description }} : {{ number_format($subRow->cost) }}</li>
+                                        <li>{{ $subRow->uraian }} : {{ number_format($subRow->cost) }}</li>
                                     @endforeach
                                 </ul>
                             </td>

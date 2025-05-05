@@ -35,7 +35,7 @@
                         <th>Nama</th>
                         <th>Alamat</th>
                         <th>No. Telp.</th>
-                        <th>Konsinyasi</th>
+                        <th>Konsinyator</th>
                         <th>Deskripsi</th>
                         <th class="w-10px"></th>
                     </tr>
@@ -46,19 +46,19 @@
                             <td>
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
-                            <td>{{ $row->name }}</td>
-                            <td>{{ $row->address }}</td>
-                            <td>{{ $row->phone }}</td>
-                            <td>{{ $row->consignment == 1 ? 'Ya' : '' }}</td>
-                            <td>{{ $row->description }}</td>
+                            <td>{{ $row->nama }}</td>
+                            <td>{{ $row->alamat }}</td>
+                            <td>{{ $row->no_telpon }}</td>
+                            <td>{{ $row->konsinyator == 1 ? 'Ya' : '' }}</td>
+                            <td>{{ $row->deskripsi }}</td>
                             <td class="with-btn-group text-end" nowrap>
-                @role('administrator|supervisor|operator')
+                                @role('administrator|supervisor|operator')
                                     @if ($row->trashed())
-                                        <x-action :row="$row"  custom="" :detail="false" :edit="false" :print="false"
-                                            :permanentDelete="false" :restore="true" :delete="false" />
+                                        <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                            :print="false" :permanentDelete="false" :restore="true" :delete="false" />
                                     @else
-                                        <x-action :row="$row"  custom="" :detail="false" :edit="true" :print="false"
-                                            :permanentDelete="true" :restore="false" :delete="true" />
+                                        <x-action :row="$row" custom="" :detail="false" :edit="true"
+                                            :print="false" :permanentDelete="true" :restore="false" :delete="true" />
                                     @endif
                                 @endrole
                             </td>

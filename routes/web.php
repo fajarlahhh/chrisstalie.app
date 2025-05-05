@@ -3,7 +3,7 @@
 use App\Models\Icd10;
 use App\Models\Loinc;
 use App\Models\Icd9cm;
-use App\Models\Patient;
+use App\Models\Pasien;
 use App\Models\SnomedCt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -62,31 +62,31 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/gantipassword', \App\Livewire\Gantipassword::class);
 
     Route::prefix('search')->group(function () {
-        Route::get('patient', function (Request $req) {
-            return Patient::where(fn($q) => $q->where('nik', 'like', "%$req->search%")->orWhere('address', 'like', "%$req->search%")->orWhere('name', 'like', "%$req->search%"))->orderBy('name', 'asc')->get()
+        Route::get('pasien', function (Request $req) {
+            return Pasien::where(fn($q) => $q->where('nik', 'like', "%$req->search%")->orWhere('alamat', 'like', "%$req->search%")->orWhere('name', 'like', "%$req->search%"))->orderBy('name', 'asc')->get()
                 ->map(fn($q) => [
                     'id' => $q->id,
-                    'text' => $q->name . ' ' . $q->address,
+                    'text' => $q->name . ' ' . $q->alamat,
                     'rm' => $q->rm,
                     'nik' => $q->nik ?: '',
                     'name' => $q->name,
-                    'address' => $q->address,
+                    'alamat' => $q->alamat,
                 ])->toArray();
         });
 
         Route::get('/icd10', function (Request $req) {
-            return Icd10::where('description', 'like', '%' . $req->search . '%')->orWhere('code', 'like', '%' . $req->search . '%')->take(100)->get()->map(fn($q) => [
+            return Icd10::where('uraian', 'like', '%' . $req->search . '%')->orWhere('code', 'like', '%' . $req->search . '%')->take(100)->get()->map(fn($q) => [
                 'id' => $q->code,
-                'text' => $q->code . " - " . $q->description,
-                'description' => $q->description
+                'text' => $q->code . " - " . $q->uraian,
+                'uraian' => $q->uraian
             ]);
         });
 
         Route::get('/icd9cm', function (Request $req) {
-            return Icd9cm::where('description', 'like', '%' . $req->search . '%')->orWhere('code', 'like', '%' . $req->search . '%')->take(100)->get()->map(fn($q) => [
+            return Icd9cm::where('uraian', 'like', '%' . $req->search . '%')->orWhere('code', 'like', '%' . $req->search . '%')->take(100)->get()->map(fn($q) => [
                 'id' => $q->code,
-                'text' => $q->code . " - " . $q->description,
-                'description' => $q->description
+                'text' => $q->code . " - " . $q->uraian,
+                'uraian' => $q->uraian
             ]);
         });
 
@@ -94,16 +94,16 @@ Route::middleware(['auth'])->group(function () {
             return SnomedCt::where(fn($q) => $q->where('term', 'like', '%' . $req->search . '%')->orWhere('concept_id', 'like', '%' . $req->search . '%'))->where('active', 1)->groupBy('concept_id', 'term')->select('concept_id', 'term')->take(100)->get()->map(fn($q) => [
                 'id' => $q->concept_id,
                 'text' => $q->concept_id . ' - ' . $q->term,
-                'description' => $q->term,
+                'uraian' => $q->term,
             ])->all();
         });
 
         Route::get('/loinc', function (Request $req) {
             return Loinc::where('long_common_name', 'like', '%' . $req->search . '%')->orWhere('number', 'like', '%' . $req->search . '%')->take(100)->get()->map(fn($q) => [
                 'id' => $q->number,
-                'text' => $q->number . " - " . $q->long_common_name . ($q->unit ? "(" . $q->unit . ")" : null),
-                'description' => $q->long_common_name,
-                'unit' => $q->unit ? $q->unit : null,
+                'text' => $q->number . " - " . $q->long_common_name . ($q->satuan ? "(" . $q->satuan . ")" : null),
+                'uraian' => $q->long_common_name,
+                'satuan' => $q->satuan ? $q->satuan : null,
             ]);
         });
     });

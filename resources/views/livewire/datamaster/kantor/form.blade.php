@@ -21,15 +21,15 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Nama</label>
-                    <input class="form-control" type="text" wire:model="name" />
-                    @error('name')
+                    <input class="form-control" type="text" wire:model="nama" />
+                    @error('nama')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Alamat</label>
-                    <input class="form-control" type="text" wire:model="address" />
-                    @error('address')
+                    <input class="form-control" type="text" wire:model="alamat" />
+                    @error('alamat')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

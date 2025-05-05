@@ -28,8 +28,8 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
-                    <input class="form-control" type="text" wire:model="description" />
-                    @error('description')
+                    <input class="form-control" type="text" wire:model="uraian" />
+                    @error('uraian')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
@@ -48,8 +48,8 @@
                         <option selected value="">-- Pilih Supplier --</option>
                         @foreach ($supplierData as $row)
                             <option value="{{ $row['id'] }}"
-                                data-subtext="{{ $row['consignment'] == 1 ? 'Konsinyasi' : '' }}">
-                                {{ $row['name'] }}
+                                data-subtext="{{ $row['konsinyasi'] == 1 ? 'Konsinyasi' : '' }}">
+                                {{ $row['nama'] }}
                             </option>
                         @endforeach
                     </select>
@@ -84,8 +84,8 @@
                                                 <option value="">-- Pilih Barang/Item --</option>
                                                 @foreach ($goodsData as $subRow)
                                                     <option value="{{ $subRow['id'] }}"
-                                                        data-subtext="{{ $subRow['unit'] }}">
-                                                        {{ $subRow['name'] . ' (' . $subRow['type'] . ')' }}
+                                                        data-subtext="{{ $subRow['satuan'] }}">
+                                                        {{ $subRow['nama'] . ' (' . $subRow['type'] . ')' }}
                                                     </option>
                                                 @endforeach
                                             </select>

@@ -33,8 +33,8 @@ class Index extends Component
     public function render()
     {
         return view('livewire.datamaster.pengeluaran.index', [
-            'data' => MonthlyExpense::where(fn($q) => $q->where('nama', 'like', '%' . $this->search . '%')->orWhere('description', 'like', '%' . $this->search . '%'))
-                ->when($this->exist == '2', fn($q) => $q->onlyTrashed())->with('user')
+            'data' => MonthlyExpense::where(fn($q) => $q->where('nama', 'like', '%' . $this->search . '%')->orWhere('uraian', 'like', '%' . $this->search . '%'))
+                ->when($this->exist == '2', fn($q) => $q->onlyTrashed())->with('pengguna')
                 ->orderBy('nama')->paginate(10)
         ]);
     }

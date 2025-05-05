@@ -3,29 +3,29 @@
 namespace App\Livewire\Penjualan\Bebas;
 
 use App\Models\Sale;
-use App\Models\Goods;
-use App\Models\Practitioner;
-use App\Models\Stock;
+use App\Models\Barang;
+use App\Models\Nakes;
+use App\Models\Stok;
 use Livewire\Component;
 use App\Models\SaleDetail;
 use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
-    public $goodsData = [], $goods = [], $date, $description, $practitionerData = [], $practitioner_id, $type = "Cash", $cash = 0,  $total = 0, $payment_description, $patientData = [], $patient_id;
+    public $goodsData = [], $goods = [], $date, $uraian, $nakesData = [], $nakes_id, $type = "Cash", $cash = 0,  $total = 0, $payment_description, $pasienData = [], $pasien_id;
 
     public function addGoods()
     {
         array_push($this->goods, [
             'id' => null,
             'nama' => null,
-            'unit' => null,
-            'price' => null,
+            'satuan' => null,
+            'harga' => null,
             'qty' => 1,
             'discount' => 0,
             'total' => null,
             'consignment_id' => null,
-            'office_portion' => null
+            'porsi_kantor' => null
         ]);
     }
 
@@ -34,15 +34,15 @@ class Index extends Component
         $index = explode('.', $key);
         if ($index[1] == 'id') {
             $data = collect($this->goodsData)->where('id', $value)->first();
-            $this->goods[$index[0]]['price'] = $data['price'] ?? 0;
+            $this->goods[$index[0]]['harga'] = $data['harga'] ?? 0;
             $this->goods[$index[0]]['nama'] = $data['nama'] ?? null;
-            $this->goods[$index[0]]['unit'] = $data['unit'] ?? null;
+            $this->goods[$index[0]]['satuan'] = $data['satuan'] ?? null;
             $this->goods[$index[0]]['consignment_id'] = $data['consignment_id'] ?? null;
-            $this->goods[$index[0]]['capital'] = $data['consignment_id'] ? $data['capital'] : 0;
-            $this->goods[$index[0]]['office_portion'] = $data['consignment_id'] ? $data['office_portion'] : 1;
-            $this->goods[$index[0]]['practitioner_portion'] = $data['consignment_id'] ? $data['practitioner_portion'] : 0;
+            $this->goods[$index[0]]['modal'] = $data['consignment_id'] ? $data['modal'] : 0;
+            $this->goods[$index[0]]['porsi_kantor'] = $data['consignment_id'] ? $data['porsi_kantor'] : 1;
+            $this->goods[$index[0]]['porsi_nakes'] = $data['consignment_id'] ? $data['porsi_nakes'] : 0;
         }
-        $this->goods[$index[0]]['total'] = ($this->goods[$index[0]]['price'] - ($this->goods[$index[0]]['price'] * ($this->goods[$index[0]]['discount'] ?? 0) / 100)) * ($this->goods[$index[0]]['qty'] ?? 0);
+        $this->goods[$index[0]]['total'] = ($this->goods[$index[0]]['harga'] - ($this->goods[$index[0]]['harga'] * ($this->goods[$index[0]]['discount'] ?? 0) / 100)) * ($this->goods[$index[0]]['qty'] ?? 0);
         $this->total = collect($this->goods)->sum('total');
     }
 
@@ -55,23 +55,23 @@ class Index extends Component
     public function submit()
     {
         $this->validate([
-            'practitioner_id' => 'required',
+            'nakes_id' => 'required',
             'date' => 'required|date',
             'goods' => 'required|array',
             'goods.*.id' => 'required',
-            'goods.*.price' => 'required|integer',
+            'goods.*.harga' => 'required|integer',
             'goods.*.qty' => 'required',
         ]);
 
         DB::transaction(function () {
 
-            $bill = collect($this->goods)->sum(fn($q) => $q['price'] * $q['qty']);
+            $bill = collect($this->goods)->sum(fn($q) => $q['harga'] * $q['qty']);
             
             $data = new Sale();
-            $data->patient_id = $this->patient_id;
-            $data->practitioner_id = $this->practitioner_id;
+            $data->pasien_id = $this->pasien_id;
+            $data->nakes_id = $this->nakes_id;
             $data->date = $this->date;
-            $data->description = $this->description;
+            $data->uraian = $this->uraian;
             $data->payment_description = $this->payment_description;
             $data->user_id = auth()->id();
             $data->amount = $bill;
@@ -81,23 +81,23 @@ class Index extends Component
             SaleDetail::insert(collect($this->goods)->map(fn($q) => [
                 'discount' => $q['discount'],
                 'qty' => $q['qty'],
-                'price' => $q['price'],
+                'harga' => $q['harga'],
                 'sale_id' => $data->id,
                 'goods_id' => $q['id'],
                 'consignment_id' => $q['consignment_id'],
-                'practitioner_id' => $this->practitioner_id,
-                'capital' => $q['capital'],
-                'office_portion' => $q['office_portion'],
-                'practitioner_portion' => $q['practitioner_portion'],
+                'nakes_id' => $this->nakes_id,
+                'modal' => $q['modal'],
+                'porsi_kantor' => $q['porsi_kantor'],
+                'porsi_nakes' => $q['porsi_nakes'],
             ])->toArray());
 
             // foreach ($this->goods as $row) {
-            //     Stock::where('goods_id', $row['id'])->available()->orderBy('created_at', 'asc')->limit($row['qty'])->update([
-            //         'date_out_stock' => $this->date,
-            //         'selling_price' => $row['price'],
-            //         'discount' => $row['price'] * $row['discount'] / 100,
+            //     Stok::where('goods_id', $row['id'])->available()->orderBy('created_at', 'asc')->limit($row['qty'])->update([
+            //         'date_out_stok' => $this->date,
+            //         'selling_harga' => $row['harga'],
+            //         'discount' => $row['harga'] * $row['discount'] / 100,
             //         'sale_id' => $data->id,
-            //         'office_portion' => $row['office_portion'],
+            //         'porsi_kantor' => $row['porsi_kantor'],
             //     ]);
             // }
 
@@ -115,11 +115,11 @@ class Index extends Component
     public function mount()
     {
         $this->date = $this->date ?: date('Y-m-d');
-        $this->goodsData = Goods::orderBy('nama')->get()->toArray();
-        $this->practitionerData = Practitioner::doctor()->with('employee')->orderBy('nama')->get()->map(fn($q) => [
+        $this->goodsData = Barang::orderBy('nama')->get()->toArray();
+        $this->nakesData = Nakes::dokter()->with('pegawai')->orderBy('nama')->get()->map(fn($q) => [
             'id' => $q->id,
-            'nama' => $q->nama ?: $q->employee->nama,
-            'doctor' => $q->doctor == 1 ? 'Dokter' : '',
+            'nama' => $q->nama ?: $q->pegawai->nama,
+            'dokter' => $q->dokter == 1 ? 'Dokter' : '',
         ])->toArray();
     }
 

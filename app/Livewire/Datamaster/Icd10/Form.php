@@ -9,17 +9,17 @@ use Illuminate\Support\Facades\DB;
 class Form extends Component
 {
     public $data, $previous;
-    public $description, $code;
+    public $uraian, $kode;
 
     public function submit()
     {
         $this->validate([
-            'description' => 'required',
+            'uraian' => 'required',
         ]);
 
         DB::transaction(function () {
-            $this->data->description = $this->description;
-            $this->data->id = $this->code;
+            $this->data->uraian = $this->uraian;
+            $this->data->id = $this->kode;
             $this->data->user_id = auth()->id();
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
@@ -32,7 +32,7 @@ class Form extends Component
         $this->previous = url()->previous();
         $this->data = $data;
         $this->fill($this->data->toArray());
-        $this->code = $this->data->id;
+        $this->kode = $this->data->id;
     }
 
     public function render()

@@ -7,12 +7,14 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\Pengguna as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class Pengguna extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles, SoftDeletes;
+
+    protected $table = 'pengguna';
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +22,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'nama',
         'email',
         'password',
     ];
@@ -49,12 +51,12 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the employee that owns the User
+     * Get the pegawai that owns the Pengguna
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function employee(): BelongsTo
+    public function pegawai(): BelongsTo
     {
-        return $this->belongsTo(Employee::class)->withTrashed();
+        return $this->belongsTo(Pegawai::class)->withTrashed();
     }
 }

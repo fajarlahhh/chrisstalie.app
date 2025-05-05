@@ -29,7 +29,7 @@
                 })" class="form-control" wire:model.live="information_id" data-width="100%">
                     <option hidden selected>-- Pilih Data --</option>
                     @foreach ($informationData as $item)
-                        <option value="{{ $item['id'] }}" data-subtext="{{ $item['type'] }}">{{ $item['name'] }}
+                        <option value="{{ $item['id'] }}" data-subtext="{{ $item['type'] }}">{{ $item['nama'] }}
                         </option>
                     @endforeach
                 </select>
@@ -41,14 +41,14 @@
                 @if ($information_id)
                     <div class="mb-3">
                         <label class="form-label">Harga</label>
-                        <input class="form-control" type="text" value="{{ number_format($information['price']) }}"
+                        <input class="form-control" type="text" value="{{ number_format($information['harga']) }}"
                             readonly />
                     </div>
                     @if ($information['type'] != 'Tindakan Medis')
                         <hr>
                         <div class="mb-3">
-                            <label class="form-label">Stok <small>({{ $information['unit'] }})</small></label>
-                            <input class="form-control" type="text" value="{{ $information['stock'] }}" readonly />
+                            <label class="form-label">Stok <small>({{ $information['satuan'] }})</small></label>
+                            <input class="form-control" type="text" value="{{ $information['stok'] }}" readonly />
                         </div>
                         <div class="mb-3">
                             <label class="form-label">KFA</label>

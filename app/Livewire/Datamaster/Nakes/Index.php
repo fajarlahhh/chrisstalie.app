@@ -3,7 +3,7 @@
 namespace App\Livewire\Datamaster\Nakes;
 
 use Livewire\Component;
-use App\Models\Practitioner;
+use App\Models\Nakes;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 
@@ -17,25 +17,25 @@ class Index extends Component
 
     public function delete($id)
     {
-        Practitioner::findOrFail($id)->delete();
+        Nakes::findOrFail($id)->delete();
     }
 
     public function permanentDelete($id)
     {
-        Practitioner::findOrFail($id)->forceDelete();
+        Nakes::findOrFail($id)->forceDelete();
     }
 
     public function restore($id)
     {
-        Practitioner::withTrashed()->findOrFail($id)->restore();
+        Nakes::withTrashed()->findOrFail($id)->restore();
     }
 
     public function render()
     {
         return view('livewire.datamaster.nakes.index', [
-            'data' => Practitioner::where(fn($q) => $q->where('nama', 'like', '%' . $this->search . '%')->orWhere('description', 'like', '%' . $this->search . '%'))
-                ->orWhereHas('employee', fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'))
-                ->when($this->exist == '2', fn($q) => $q->onlyTrashed())->with('user')
+            'data' => Nakes::where(fn($q) => $q->where('nama', 'like', '%' . $this->search . '%')->orWhere('deskripsi', 'like', '%' . $this->search . '%'))
+                ->orWhereHas('pegawai', fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'))
+                ->when($this->exist == '2', fn($q) => $q->onlyTrashed())->with('pengguna')
                 ->orderBy('nama')->paginate(10)
         ]);
     }

@@ -21,8 +21,8 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Nama</label>
-                    <input class="form-control" type="text" wire:model="name" />
-                    @error('name')
+                    <input class="form-control" type="text" wire:model="nama" />
+                    @error('nama')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
@@ -41,8 +41,8 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
-                    <input class="form-control" type="text" wire:model="description" />
-                    @error('description')
+                    <input class="form-control" type="text" wire:model="uraian" />
+                    @error('uraian')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

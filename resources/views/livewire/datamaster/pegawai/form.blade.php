@@ -31,48 +31,48 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Nama</label>
-                            <input class="form-control" type="text" wire:model="name" />
-                            @error('name')
+                            <input class="form-control" type="text" wire:model="nama" />
+                            @error('nama')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Alamat</label>
-                            <input class="form-control" type="text" wire:model="address" />
-                            @error('address')
+                            <input class="form-control" type="text" wire:model="alamat" />
+                            @error('alamat')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">No. Telpon</label>
-                            <input class="form-control" type="text" wire:model="phone_number" />
-                            @error('phone_number')
+                            <label class="form-label">No. Hp</label>
+                            <input class="form-control" type="text" wire:model="no_hp" />
+                            @error('no_hp')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Jenis Kelamin</label>
-                            <select data-container="body" class="form-control " wire:model="gender" data-width="100%">
+                            <select data-container="body" class="form-control " wire:model="jenis_kelamin" data-width="100%">
                                 <option selected>-- Pilih Jenis Kelamin --</option>
                                 <option value="Laki-laki">Laki-laki</option>
                                 <option value="Perempuan">Perempuan</option>
                             </select>
-                            @error('gender')
+                            @error('jenis_kelamin')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Tanggal Lahir</label>
-                            <input class="form-control" type="date" wire:model="birth_date" />
-                            @error('birth_date')
+                            <input class="form-control" type="date" wire:model="tanggal_lahir" />
+                            @error('tanggal_lahir')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <hr>
                         <div class="mb-3">
                             <label class="form-label">Tanggal Masuk</label>
-                            <input class="form-control" type="date" wire:model="start_date" />
-                            @error('start_date')
+                            <input class="form-control" type="date" wire:model="tanggal_masuk" />
+                            @error('tanggal_masuk')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -85,27 +85,15 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">No. BPJS Kesehatan</label>
-                            <input class="form-control" type="text" wire:model="bpjs_health" />
-                            @error('bpjs_health')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Kantor</label>
-                            <select class="form-control" wire:model="office" data-width="100%">
-                                <option hidden selected>-- Pilih Kantor --</option>
-                                @foreach (\App\Enums\OfficeEnum::cases() as $item)
-                                    <option value="{{ $item->value }}">{{ $item->label() }}</option>
-                                @endforeach
-                            </select>
-                            @error('office')
+                            <input class="form-control" type="text" wire:model="no_bpjs" />
+                            @error('no_bpjs')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Jabatan</label>
-                            <input class="form-control" type="text" wire:model="position" />
-                            @error('position')
+                            <input class="form-control" type="text" wire:model="posisi" />
+                            @error('posisi')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -118,32 +106,32 @@
                                 <div class="mb-3">
                                     <label class="form-label">Gaji Pokok</label>
                                     <input class="form-control" type="number" step="1" min="0"
-                                        wire:model="wages" />
-                                    @error('wages')
+                                        wire:model="gaji" />
+                                    @error('gaji')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Tunjangan</label>
                                     <input class="form-control" type="number" step="1" min="0"
-                                        wire:model="allowance" />
-                                    @error('allowance')
+                                        wire:model="tunjangan" />
+                                    @error('tunjangan')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Tunjangan Transport</label>
                                     <input class="form-control" type="number" step="1" min="0"
-                                        wire:model="transport_allowance" />
-                                    @error('transport_allowance')
+                                        wire:model="tunjangan_transport" />
+                                    @error('tunjangan_transport')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">BPJS Kesehatan</label>
                                     <input class="form-control" type="number" step="1" min="0"
-                                        wire:model="bpjs_health_cost" />
-                                    @error('bpjs_health_cost')
+                                        wire:model="tunjangan_bpjs" />
+                                    @error('tunjangan_bpjs')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>

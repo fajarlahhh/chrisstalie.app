@@ -33,8 +33,8 @@ class Index extends Component
     public function render()
     {
         return view('livewire.datamaster.icd10.index', [
-            'data' => Icd10::where(fn($q) => $q->where('description', 'like', '%' . $this->search . '%')->orWhere('id', 'like', '%' . $this->search . '%'))->with('user')
-                ->orderBy('description')->paginate(10)
+            'data' => Icd10::where(fn($q) => $q->where('uraian', 'like', '%' . $this->search . '%')->orWhere('id', 'like', '%' . $this->search . '%'))->with('pengguna')
+                ->orderBy('uraian')->paginate(10)
         ]);
     }
 }

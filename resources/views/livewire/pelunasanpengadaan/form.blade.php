@@ -43,7 +43,7 @@
                         @foreach ($purchaseData as $row)
                             <option value="{{ $row['id'] }}"
                                 data-subtext="{{ collect($row['purchase_detail'])->pluck('goods_name_qty')->join(',') }}">
-                                {{ $row['receipt'] }} - {{ $row['description'] }}
+                                {{ $row['receipt'] }} - {{ $row['uraian'] }}
                             </option>
                         @endforeach
                     </select>
@@ -63,14 +63,14 @@
                             @if ($purchase_id)
                                 @foreach ($detail as $index => $row)
                                     <tr>
-                                        <td>{{ $row['description'] }}</td>
+                                        <td>{{ $row['uraian'] }}</td>
                                         <td class="text-end">{{ number_format($row['cost']) }}</td>
                                     </tr>
                                 @endforeach
                                 <tr>
                                     <th>Total</th>
                                     <th class="text-end">
-                                        {{ number_format(collect($detail)->where('description', '!=', 'Discount')->sum('cost') - collect($detail)->where('description', 'Discount')->sum('cost')) }}
+                                        {{ number_format(collect($detail)->where('uraian', '!=', 'Discount')->sum('cost') - collect($detail)->where('uraian', 'Discount')->sum('cost')) }}
                                     </th>
                                 </tr>
                             @endif

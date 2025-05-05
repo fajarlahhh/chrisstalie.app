@@ -10,13 +10,13 @@ class PaymentTreatment extends Model
     //
 
     /**
-     * Get the practitioner that owns the PaymentTreatment
+     * Get the nakes that owns the PaymentTreatment
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function practitioner(): BelongsTo
+    public function nakes(): BelongsTo
     {
-        return $this->belongsTo(Practitioner::class);
+        return $this->belongsTo(Nakes::class);
     }
 
     /**
@@ -26,7 +26,7 @@ class PaymentTreatment extends Model
      */
     public function beautician(): BelongsTo
     {
-        return $this->belongsTo(Practitioner::class);
+        return $this->belongsTo(Nakes::class);
     }
 
     /**
@@ -46,6 +46,6 @@ class PaymentTreatment extends Model
      */
     public function actionRate(): BelongsTo
     {
-        return $this->belongsTo(ActionRate::class);
+        return $this->belongsTo(Tarif::class);
     }
 }

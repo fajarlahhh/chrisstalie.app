@@ -9,22 +9,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Patient extends Model
+class Pasien extends Model
 {
     use HasFactory, SoftDeletes;
-
+    protected $table = 'pasien';
     /**
-     * Get the user that owns the patient
+     * Get the pengguna that owns the pasien
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(Pengguna::class)->withTrashed();
     }
 
     /**
-     * Get all of the registration for the Patient
+     * Get all of the registration for the Pasien
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -34,7 +34,7 @@ class Patient extends Model
     }
 
     /**
-     * Get all of the sales for the Patient
+     * Get all of the sales for the Pasien
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

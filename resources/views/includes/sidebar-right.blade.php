@@ -2,7 +2,7 @@
 <div id="sidebar-right" class="app-sidebar app-sidebar-end" data-bs-theme="dark">
 	<!-- BEGIN sidebar scrollbar -->
 	<div data-scrollbar="true" data-height="100%">
-		<!-- BEGIN sidebar user -->
+		<!-- BEGIN sidebar pengguna -->
 		<div class="p-20px text-body">
 			<p class="fw-bold mb-10px">Server Status</p>
 			<hr class="mt-0 mb-15px text-body text-opacity-35" />
@@ -111,7 +111,7 @@
 				</div>
 			</div>
 		</div>
-		<!-- END sidebar user -->
+		<!-- END sidebar pengguna -->
 	</div>
 	<!-- END sidebar scrollbar -->
 </div>

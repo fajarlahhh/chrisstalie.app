@@ -55,7 +55,7 @@
                     <hr class="dropdown-divider">
                 </li>
                 <a href="javascript:;"
-                    class="dropdown-item fs-8px">{{ $row->user?->name }}<br>{{ $row->updated_at }}</a>
+                    class="dropdown-item fs-8px">{{ $row->pengguna?->nama }}<br>{{ $row->updated_at }}</a>
             @endif
         </div>
     </div>

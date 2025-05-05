@@ -46,19 +46,19 @@
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
                             <td>{{ $row->datetime }}</td>
-                            <td>{{ $row->patient->rm }}</td>
-                            <td>{{ $row->patient->name }}</td>
-                            <td>{{ $row->patient->nik }}</td>
-                            <td>{{ $row->patient->birth_date }}</td>
-                            <td>{{ $row->patient->gender }}</td>
-                            <td>{{ $row->patient->address }}</td>
-                            <td>{{ $row->patient->phone }}</td>
-                            <td>{{ $row->description }}</td>
+                            <td>{{ $row->pasien->rm }}</td>
+                            <td>{{ $row->pasien->nama }}</td>
+                            <td>{{ $row->pasien->nik }}</td>
+                            <td>{{ $row->pasien->tanggal_lahir }}</td>
+                            <td>{{ $row->pasien->jenis_kelamin }}</td>
+                            <td>{{ $row->pasien->alamat }}</td>
+                            <td>{{ $row->pasien->no_telpon }}</td>
+                            <td>{{ $row->uraian }}</td>
                             <td>
-                                {{ $row->initialExamination ? '1. Pemeriksaan Awal ' . $row->initialExamination->user->name . ' (' . $row->initialExamination->created_at . ')' : '' }}<br>
-                                {{ $row->diagnosis->count() > 0 ? '2. Diagnosis ' . $row->diagnosis->first()->user->name . ' (' . $row->diagnosis->first()->created_at . ')' : '' }}<br>
-                                {{ $row->treatment->count() > 0 ? '3. Tindakan ' . $row->treatment->first()->user->name . ' (' . $row->treatment->first()->created_at . ')' : '' }}<br>
-                                {{ $row->payment ? '4. Kasir ' . $row->payment->user->name . ' (' . $row->payment->created_at . ')' : '' }}
+                                {{ $row->initialExamination ? '1. Pemeriksaan Awal ' . $row->initialExamination->pengguna->nama . ' (' . $row->initialExamination->created_at . ')' : '' }}<br>
+                                {{ $row->diagnosis->count() > 0 ? '2. Diagnosis ' . $row->diagnosis->first()->pengguna->nama . ' (' . $row->diagnosis->first()->created_at . ')' : '' }}<br>
+                                {{ $row->treatment->count() > 0 ? '3. Tindakan ' . $row->treatment->first()->pengguna->nama . ' (' . $row->treatment->first()->created_at . ')' : '' }}<br>
+                                {{ $row->payment ? '4. Kasir ' . $row->payment->pengguna->nama . ' (' . $row->payment->created_at . ')' : '' }}
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')

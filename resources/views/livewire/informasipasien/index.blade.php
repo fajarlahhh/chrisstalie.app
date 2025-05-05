@@ -26,7 +26,7 @@
                         minimumInputLength: 3,
                         dataType: 'json',
                         ajax: {
-                            url: '/search/patient',
+                            url: '/search/pasien',
                             data: function(params) {
                                 var query = {
                                     search: params.term
@@ -43,7 +43,7 @@
                     });
                     
                     $($el).on('change', function(element) {
-                        $wire.set('patient_id', $($el).val());
+                        $wire.set('pasien_id', $($el).val());
                     });
                     
                     function format(data) {
@@ -53,52 +53,52 @@
                         var $data = $('<table><tr><th>No. RM</th><th>:</th><th>' + data.rm + '</th></tr>' +
                             '<tr><th>No. KTP</th><th>:</th><th>' + data.nik + '</th></tr>' +
                             '<tr><th>Nama</th><th>:</th><th>' + data.name + '</th></tr>' +
-                            '<tr><th>Alamat</th><th>:</th><th>' + data.address + '</th></tr></table>');
+                            '<tr><th>Alamat</th><th>:</th><th>' + data.alamat + '</th></tr></table>');
                         return $data;
                     }">
                     </select>
                 </div>
             </div>
             <div>
-                @if ($patient_id)
+                @if ($pasien_id)
                     <div class="row">
                         <div class="col-md-4">
                             <table class="table table-bordered">
                                 <tr>
                                     <th>IHS</th>
-                                    <td>{{ $patient->ihs }}</td>
+                                    <td>{{ $pasien->ihs }}</td>
                                 </tr>
                                 <tr>
                                     <th>No. RM</th>
-                                    <td>{{ $patient->rm }}</td>
+                                    <td>{{ $pasien->rm }}</td>
                                 </tr>
                                 <tr>
                                     <th>No. KTP</th>
-                                    <td>{{ $patient->nik }}</td>
+                                    <td>{{ $pasien->nik }}</td>
                                 </tr>
                                 <tr>
                                     <th>Nama</th>
-                                    <td>{{ $patient->name }}</td>
+                                    <td>{{ $pasien->nama }}</td>
                                 </tr>
                                 <tr>
                                     <th>Jenis Kelamin</th>
-                                    <td>{{ $patient->gender }}</td>
+                                    <td>{{ $pasien->jenis_kelamin }}</td>
                                 </tr>
                                 <tr>
                                     <th>Tgl. Lahir</th>
-                                    <td>{{ $patient->birth_date }}</td>
+                                    <td>{{ $pasien->tanggal_lahir }}</td>
                                 </tr>
                                 <tr>
                                     <th>Alamat</th>
-                                    <td>{{ $patient->address }}</td>
+                                    <td>{{ $pasien->alamat }}</td>
                                 </tr>
                                 <tr>
                                     <th>No. Telp</th>
-                                    <td>{{ $patient->phone }}</td>
+                                    <td>{{ $pasien->no_telpon }}</td>
                                 </tr>
                                 <tr>
                                     <th>Tgl. Registrasi</th>
-                                    <td>{{ $patient->registration_date }}</td>
+                                    <td>{{ $pasien->tanggal_registrasi }}</td>
                                 </tr>
                             </table>
                         </div>
@@ -110,14 +110,14 @@
                                         <th>Diagnosa</th>
                                         <th>Tindakan</th>
                                     </tr>
-                                    @foreach ($patient->registration as $registration)
+                                    @foreach ($pasien->registration as $registration)
                                         <tr>
                                             <td>{{ substr($registration->created_at, 0, 10) }}</td>
                                             <td>
                                                 <ul>
                                                     @foreach ($registration->diagnosis as $diagnosis)
                                                         <li>{{ $diagnosis->icd10?->code }} -
-                                                            {{ $diagnosis->icd10?->description }}
+                                                            {{ $diagnosis->icd10?->uraian }}
                                                         </li>
                                                     @endforeach
                                                 </ul>
@@ -125,7 +125,7 @@
                                             <td>
                                                 <ul>
                                                     @foreach ($registration->treatment as $treatment)
-                                                        <li>{{ $treatment->actionRate->name }} ({{ $treatment->qty }} x)
+                                                        <li>{{ $treatment->actionRate->nama }} ({{ $treatment->qty }} x)
                                                         </li>
                                                     @endforeach
                                                 </ul>
@@ -142,14 +142,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($patient->sales as $sales)
+                                        @foreach ($pasien->sales as $sales)
                                             <tr>
                                                 <td>{{ $sales->created_at }}</td>
                                                 <td>
                                                     <ul>
                                                         @foreach ($sales->saleDetail as $saleDetail)
-                                                            <li>{{ $saleDetail->goods->name }} ({{ $saleDetail->qty }}
-                                                                {{ $saleDetail->goods->unit }})</li>
+                                                            <li>{{ $saleDetail->goods->nama }} ({{ $saleDetail->qty }}
+                                                                {{ $saleDetail->goods->satuan }})</li>
                                                         @endforeach
                                                     </ul>
                                                 </td>

@@ -2,16 +2,16 @@
 
 namespace App\Livewire\Informasipasien;
 
-use App\Models\Patient;
+use App\Models\Pasien;
 use Livewire\Component;
 
 class Index extends Component
 {
-    public $patient_id, $patient;
+    public $pasien_id, $pasien;
 
-    public function updatedPatientId($value)
+    public function updatedPasienId($value)
     {
-        $this->patient = Patient::where('id', $value)->first();
+        $this->pasien = Pasien::where('id', $value)->first();
     }
 
     public function render()

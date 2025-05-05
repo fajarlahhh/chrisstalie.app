@@ -38,7 +38,7 @@
                                 @foreach ($purchaseData as $row)
                                     <option value="{{ $row['id'] }}"
                                         data-subtext="{{ collect($row['purchase_detail'])->pluck('goods_name_qty')->join(',') }}">
-                                        {{ $row['receipt'] }} - {{ $row['description'] }}
+                                        {{ $row['receipt'] }} - {{ $row['uraian'] }}
                                     </option>
                                 @endforeach
                             </select>
@@ -68,8 +68,8 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
-                    <input class="form-control" type="text" wire:model="description" />
-                    @error('description')
+                    <input class="form-control" type="text" wire:model="uraian" />
+                    @error('uraian')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
@@ -99,7 +99,7 @@
                                         </td>
                                         <td class="with-btn">
                                             <input type="text" class="form-control w-100px"
-                                                value="{{ $row['unit'] }}" autocomplete="off" disabled>
+                                                value="{{ $row['satuan'] }}" autocomplete="off" disabled>
                                         </td>
                                         <td class="with-btn">
                                             <input type="text" class="form-control w-100px"
@@ -112,9 +112,9 @@
                                         <td class="with-btn">
                                             @if ($row['remaining'] > 0)
                                                 <input type="number" class="form-control w-100px" min="0"
-                                                    step="1" wire:model="goods.{{ $index }}.stock_in"
+                                                    step="1" wire:model="goods.{{ $index }}.stok_in"
                                                     autocomplete="off">
-                                                @error('goods.' . $index . '.stock_in')
+                                                @error('goods.' . $index . '.stok_in')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             @endif

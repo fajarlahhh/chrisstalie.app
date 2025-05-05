@@ -3,17 +3,17 @@
 namespace App\Livewire\Penjualan\Resep;
 
 use App\Models\Sale;
-use App\Models\Goods;
-use App\Models\Stock;
-use App\Models\Patient;
+use App\Models\Barang;
+use App\Models\Stok;
+use App\Models\Pasien;
 use Livewire\Component;
 use App\Models\SaleDetail;
-use App\Models\Practitioner;
+use App\Models\Nakes;
 use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
-    public $patient_id, $patient, $goodsData = [],  $date, $description, $powerFee = 2000, $receiptFee = 3000,  $receipt = [], $type = "Cash", $cash = 0,  $total = 0, $payment_description, $practitioner_id, $practitionerData = [];
+    public $pasien_id, $pasien, $goodsData = [],  $date, $uraian, $powerFee = 2000, $receiptFee = 3000,  $receipt = [], $type = "Cash", $cash = 0,  $total = 0, $payment_description, $nakes_id, $nakesData = [];
 
     public function addGoods($index)
     {
@@ -21,12 +21,12 @@ class Index extends Component
             [
                 'id' => null,
                 'nama' => null,
-                'unit' => null,
-                'price' => 0,
+                'satuan' => null,
+                'harga' => 0,
                 'qty' => 1,
                 'discount' => 0,
                 'total' => 0,
-                'office_portion' => null,
+                'porsi_kantor' => null,
                 'consignment_id' => null
             ];
         $this->total = collect($this->receipt)->pluck('goods')->flatten(1)->sum('total');
@@ -44,25 +44,25 @@ class Index extends Component
         $goods = $this->receipt[$index1]['goods'][$index2];
         if ($goods['id']) {
             $data = collect($this->goodsData)->where('id', $goods['id'])->first();
-            $this->receipt[$index1]['goods'][$index2]['price'] = $data['price'] ?? 0;
+            $this->receipt[$index1]['goods'][$index2]['harga'] = $data['harga'] ?? 0;
             $this->receipt[$index1]['goods'][$index2]['nama'] = $data['nama'] ?? null;
-            $this->receipt[$index1]['goods'][$index2]['unit'] = $data['unit'] ?? null;
-            $this->receipt[$index1]['goods'][$index2]['office_portion'] = $data['office_portion'] ?? null;
+            $this->receipt[$index1]['goods'][$index2]['satuan'] = $data['satuan'] ?? null;
+            $this->receipt[$index1]['goods'][$index2]['porsi_kantor'] = $data['porsi_kantor'] ?? null;
             $this->receipt[$index1]['goods'][$index2]['consignment_id'] = $data['consignment_id'] ?? null;
-            $this->receipt[$index1]['goods'][$index2]['capital'] = $data['consignment_id'] ? $data['capital'] : 0;
-            $this->receipt[$index1]['goods'][$index2]['office_portion'] = $data['consignment_id'] ? $data['office_portion'] : 1;
-            $this->receipt[$index1]['goods'][$index2]['practitioner_portion'] = $data['consignment_id'] ? $data['practitioner_portion'] : 0;
+            $this->receipt[$index1]['goods'][$index2]['modal'] = $data['consignment_id'] ? $data['modal'] : 0;
+            $this->receipt[$index1]['goods'][$index2]['porsi_kantor'] = $data['consignment_id'] ? $data['porsi_kantor'] : 1;
+            $this->receipt[$index1]['goods'][$index2]['porsi_nakes'] = $data['consignment_id'] ? $data['porsi_nakes'] : 0;
         }
         $qty = (float)$this->receipt[$index1]['goods'][$index2]['qty'];
         $discount = (float)$this->receipt[$index1]['goods'][$index2]['discount'];
-        $this->receipt[$index1]['goods'][$index2]['total'] = ($this->receipt[$index1]['goods'][$index2]['price'] - ($this->receipt[$index1]['goods'][$index2]['price'] * ($discount ?? 0) / 100)) * ($qty ?? 0);
+        $this->receipt[$index1]['goods'][$index2]['total'] = ($this->receipt[$index1]['goods'][$index2]['harga'] - ($this->receipt[$index1]['goods'][$index2]['harga'] * ($discount ?? 0) / 100)) * ($qty ?? 0);
         $this->total = collect($this->receipt)->pluck('goods')->flatten(1)->sum('total');
     }
 
     public function submit()
     {
         $this->validate([
-            'practitioner_id' => 'required',
+            'nakes_id' => 'required',
             'date' => 'required|date',
             'receipt' => 'required|array',
             'cash' => 'required|numeric|min:' . $this->total,
@@ -71,19 +71,19 @@ class Index extends Component
         // $goods = collect($this->receipt)->pluck('goods')->flatten(1)->groupBy('id')->map(fn($q) => [
         //     'id' => $q->first()['id'],
         //     'nama' => $q->first()['nama'],
-        //     'unit' => $q->first()['unit'],
+        //     'satuan' => $q->first()['satuan'],
         //     'qty' => $q->sum('qty'),
-        //     'price' => $q->first()['price'],
+        //     'harga' => $q->first()['harga'],
         //     'discount' => $q->first()['discount'],
-        //     'total' => $q->sum(fn($q) => $q['qty'] * ($q['price'] - ($q['price'] * $q['discount'] / 100))),
-        //     'office_portion' => $q->first()['office_portion'],
+        //     'total' => $q->sum(fn($q) => $q['qty'] * ($q['harga'] - ($q['harga'] * $q['discount'] / 100))),
+        //     'porsi_kantor' => $q->first()['porsi_kantor'],
 
         // ]);
 
         // foreach ($goods as $key1 => $receipt) {
-        //     $stock = Stock::where('goods_id', $receipt['id'])->available()->count();
-        //     if ($receipt['qty'] < $stock) {
-        //         session()->flash('warning', 'Sisa stok ' . $receipt['nama'] . ' tidak mencukupi (' . $stock . ')');
+        //     $stok = Stok::where('goods_id', $receipt['id'])->available()->count();
+        //     if ($receipt['qty'] < $stok) {
+        //         session()->flash('warning', 'Sisa stok ' . $receipt['nama'] . ' tidak mencukupi (' . $stok . ')');
         //         return $this->render();
         //     }
         // }
@@ -91,20 +91,20 @@ class Index extends Component
         $receipt = collect($this->receipt)->map(function ($item, $index) {
             return collect($item['goods'])->map(function ($good) use ($item, $index) {
                 return array_merge($good, [
-                    'parent_description' => $item['description'], // Menambahkan description parent
+                    'parent_description' => $item['uraian'], // Menambahkan uraian parent
                     'parent_index' => $index                      // Menambahkan index parent
                 ]);
             });
         })->flatten(1);
 
         DB::transaction(function () use ($receipt) {
-            $bill = $this->powerFee + $this->receiptFee + collect($receipt)->sum(fn($q) => $q['price'] * $q['qty']);
+            $bill = $this->powerFee + $this->receiptFee + collect($receipt)->sum(fn($q) => $q['harga'] * $q['qty']);
             
             $data = new Sale();
-            $data->patient_id = $this->patient_id;
-            $data->practitioner_id = $this->practitioner_id;
+            $data->pasien_id = $this->pasien_id;
+            $data->nakes_id = $this->nakes_id;
             $data->date = $this->date;
-            $data->description = $this->description;
+            $data->uraian = $this->uraian;
             $data->payment_description = $this->payment_description;
             $data->user_id = auth()->id();
             $data->amount = $bill;
@@ -116,24 +116,24 @@ class Index extends Component
             SaleDetail::insert(collect($receipt)->map(fn($q) => [
                 'discount' => $q['discount'],
                 'qty' => $q['qty'],
-                'price' => $q['price'],
+                'harga' => $q['harga'],
                 'sale_id' => $data->id,
                 'goods_id' => $q['id'],
                 'total' => $q['total'],
-                'office_portion' => $q['office_portion'],
+                'porsi_kantor' => $q['porsi_kantor'],
                 'receipt_description' => $q['parent_description'],
-                'practitioner_id' => $this->practitioner_id,
+                'nakes_id' => $this->nakes_id,
                 'receipt_no' => $q['parent_index'],
                 'consignment_id' => $q['consignment_id'],
             ])->toArray());
 
             // foreach ($goods as $row) {
-            //     Stock::where('goods_id', $row['id'])->available()->orderBy('created_at', 'asc')->limit($row['qty'])->update([
-            //         'date_out_stock' => $this->date,
-            //         'selling_price' => $row['price'],
-            //         'discount' => $row['price'] * $row['discount'] / 100,
+            //     Stok::where('goods_id', $row['id'])->available()->orderBy('created_at', 'asc')->limit($row['qty'])->update([
+            //         'date_out_stok' => $this->date,
+            //         'selling_harga' => $row['harga'],
+            //         'discount' => $row['harga'] * $row['discount'] / 100,
             //         'sale_id' => $data->id,
-            //         'office_portion' => $row['office_portion'],
+            //         'porsi_kantor' => $row['porsi_kantor'],
             //     ]);
             // }
 
@@ -151,17 +151,17 @@ class Index extends Component
     public function mount()
     {
         $this->date = $this->date ?: date('Y-m-d');
-        $this->goodsData = Goods::orderBy('nama')->get()->toArray();
+        $this->goodsData = Barang::orderBy('nama')->get()->toArray();
         $this->receipt = [
             [
-                'description' => null,
+                'uraian' => null,
                 'goods' => [],
             ]
         ];
-        $this->practitionerData = Practitioner::doctor()->with('employee')->orderBy('nama')->get()->map(fn($q) => [
+        $this->nakesData = Nakes::dokter()->with('pegawai')->orderBy('nama')->get()->map(fn($q) => [
             'id' => $q->id,
-            'nama' => $q->nama ?: $q->employee->nama,
-            'doctor' => $q->doctor == 1 ? 'Dokter' : '',
+            'nama' => $q->nama ?: $q->pegawai->nama,
+            'dokter' => $q->dokter == 1 ? 'Dokter' : '',
         ])->toArray();
     }
 
@@ -170,7 +170,7 @@ class Index extends Component
         array_push(
             $this->receipt,
             [
-                'description' => null,
+                'uraian' => null,
                 'goods' => [],
             ]
         );

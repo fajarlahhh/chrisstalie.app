@@ -9,27 +9,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Employee extends Model
+class Pegawai extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $table = 'pegawai';
 
     /**
-     * Get the user that owns the Employee
+     * Get the pengguna that owns the Pegawai
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class)->withTrashed();
-    }
-
-    /**
-     * Get all of the expenditureDetail for the Employee
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function expenditureDetail(): HasMany
-    {
-        return $this->hasMany(ExpenditureDetail::class);
+        return $this->belongsTo(Pengguna::class)->withTrashed();
     }
 }

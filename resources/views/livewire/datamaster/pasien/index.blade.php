@@ -48,14 +48,14 @@
                             </td>
                             <td>{{ $row->rm }}</td>
                             <td>{{ $row->ihs }}</td>
-                            <td>{{ $row->name }}</td>
+                            <td>{{ $row->nama }}</td>
                             <td>{{ $row->nik }}</td>
-                            <td>{{ $row->birth_date }}</td>
-                            <td>{{ $row->gender }}</td>
-                            <td>{{ $row->address }}</td>
-                            <td>{{ $row->phone }}</td>
-                            <td>{{ $row->registration_date }}</td>
-                            <td>{{ $row->description }}</td>
+                            <td>{{ $row->tanggal_lahir }}</td>
+                            <td>{{ $row->jenis_kelamin }}</td>
+                            <td>{{ $row->alamat }}</td>
+                            <td>{{ $row->no_telpon }}</td>
+                            <td>{{ $row->tanggal_registrasi }}</td>
+                            <td>{{ $row->uraian }}</td>
                             <td class="with-btn-group text-end" nowrap>
                 @role('administrator|supervisor|operator')
                                     @if ($row->trashed())

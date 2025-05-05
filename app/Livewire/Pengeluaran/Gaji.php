@@ -3,7 +3,7 @@
 namespace App\Livewire\Pengeluaran;
 
 use Livewire\Component;
-use App\Models\Employee;
+use App\Models\Pegawai;
 use App\Models\Expenditure;
 use App\Models\ExpenditureDetail;
 use Carbon\Carbon;
@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\DB;
 class Gaji extends Component
 {
     public $data, $previous, $detail = [], $other = ['Uang Makan', 'Jasa Pelayanan', 'Bonus'], $otherCost = [];
-    public $date, $description, $cost, $receipt;
+    public $date, $uraian, $cost, $receipt;
 
     public function updatedDate()
     {
-        $this->description = "Gaji bulan " . substr($this->date, 0, 7);
+        $this->uraian = "Gaji bulan " . substr($this->date, 0, 7);
     }
 
     public function mount(Expenditure $data)
@@ -25,14 +25,14 @@ class Gaji extends Component
         $this->date = $this->date ?: date('Y-m-d');
         $this->data = $data;
         $this->updatedDate();
-        $this->detail = Employee::all()->map(fn($q) => [
+        $this->detail = Pegawai::all()->map(fn($q) => [
             'id' => $q->id,
             'nik' => $q->nik,
             'nama' => $q->nama,
-            'wages' => $q->wages,
-            'allowance' => $q->allowance,
-            'transport_allowance' => $q->transport_allowance,
-            'bpjs_health_cost' => $q->bpjs_health_cost
+            'gaji' => $q->gaji,
+            'tunjangan' => $q->tunjangan,
+            'tunjangan_transport' => $q->tunjangan_transport,
+            'tunjangan_bpjs' => $q->tunjangan_bpjs
         ]);
         foreach ($this->detail as $key => $row) {
             $this->otherCost[] = [
@@ -60,9 +60,9 @@ class Gaji extends Component
                     'date' => $this->date,
                     'user_id' => auth()->id(),
                     'type' => 'gaji',
-                    'description' => 'Gaji ' . $row['nama'],
-                    'employee_id' => $row['id'],
-                    'cost' => $row['wages'],
+                    'uraian' => 'Gaji ' . $row['nama'],
+                    'pegawai_id' => $row['id'],
+                    'cost' => $row['gaji'],
                     'created_at' => $now,
                     'updated_at' => $now
                 ];
@@ -70,9 +70,9 @@ class Gaji extends Component
                     'date' => $this->date,
                     'user_id' => auth()->id(),
                     'type' => 'gaji',
-                    'description' => 'Tunjangan ' . $row['nama'],
-                    'employee_id' => $row['id'],
-                    'cost' => $row['allowance'],
+                    'uraian' => 'Tunjangan ' . $row['nama'],
+                    'pegawai_id' => $row['id'],
+                    'cost' => $row['tunjangan'],
                     'created_at' => $now,
                     'updated_at' => $now
                 ];
@@ -80,9 +80,9 @@ class Gaji extends Component
                     'date' => $this->date,
                     'user_id' => auth()->id(),
                     'type' => 'gaji',
-                    'description' => 'Tunjangan Transport ' . $row['nama'],
-                    'employee_id' => $row['id'],
-                    'cost' => $row['allowance'],
+                    'uraian' => 'Tunjangan Transport ' . $row['nama'],
+                    'pegawai_id' => $row['id'],
+                    'cost' => $row['tunjangan'],
                     'created_at' => $now,
                     'updated_at' => $now
                 ];
@@ -90,9 +90,9 @@ class Gaji extends Component
                     'date' => $this->date,
                     'user_id' => auth()->id(),
                     'type' => 'gaji',
-                    'description' => 'BPJS Kesehatan ' . $row['nama'],
-                    'employee_id' => $row['id'],
-                    'cost' => $row['bpjs_health_cost'],
+                    'uraian' => 'BPJS Kesehatan ' . $row['nama'],
+                    'pegawai_id' => $row['id'],
+                    'cost' => $row['tunjangan_bpjs'],
                     'created_at' => $now,
                     'updated_at' => $now
                 ];
@@ -102,8 +102,8 @@ class Gaji extends Component
                     'date' => $this->date,
                     'user_id' => auth()->id(),
                     'type' => 'gaji',
-                    'description' => 'Uang Makan ' . $row['nama'],
-                    'employee_id' => $row['id'],
+                    'uraian' => 'Uang Makan ' . $row['nama'],
+                    'pegawai_id' => $row['id'],
                     'cost' => $row['uang_makan'],
                     'created_at' => $now,
                     'updated_at' => $now
@@ -112,8 +112,8 @@ class Gaji extends Component
                     'date' => $this->date,
                     'user_id' => auth()->id(),
                     'type' => 'gaji',
-                    'description' => 'Jasa Pelayanan ' . $row['nama'],
-                    'employee_id' => $row['id'],
+                    'uraian' => 'Jasa Pelayanan ' . $row['nama'],
+                    'pegawai_id' => $row['id'],
                     'cost' => $row['jasa_pelayanan'],
                     'created_at' => $now,
                     'updated_at' => $now
@@ -122,8 +122,8 @@ class Gaji extends Component
                     'date' => $this->date,
                     'user_id' => auth()->id(),
                     'type' => 'gaji',
-                    'description' => 'Bonus ' . $row['nama'],
-                    'employee_id' => $row['id'],
+                    'uraian' => 'Bonus ' . $row['nama'],
+                    'pegawai_id' => $row['id'],
                     'cost' => $row['bonus'],
                     'created_at' => $now,
                     'updated_at' => $now

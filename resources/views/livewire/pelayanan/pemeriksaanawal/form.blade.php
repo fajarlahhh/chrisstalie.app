@@ -34,42 +34,42 @@
                                 @endif
                                 <div class="mb-3">
                                     <label class="form-label">No. RM</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->rm }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->rm }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">No. KTP</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->nik }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->nik }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Nama</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->name }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->nama }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Alamat</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->address }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->alamat }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Tempat Lahir</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->birth_place }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->tempat_lahir }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Tanggal Lahir</label>
-                                    <input class="form-control" type="date" value="{{ $data->patient->birth_date }}"
+                                    <input class="form-control" type="date" value="{{ $data->pasien->tanggal_lahir }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Jenis Kelamin</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->gender }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->jenis_kelamin }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">No. Telpon</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->phone }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->no_telpon }}"
                                         disabled />
                                 </div>
                             </div>

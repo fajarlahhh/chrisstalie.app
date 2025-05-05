@@ -16,7 +16,7 @@ class Form extends Component
     {
         $this->date = $this->date ?: date('Y-m-d');
         $this->data = $data;
-        $this->dataIcd10 = Icd10::orderBy('description')->get()->toArray();
+        $this->dataIcd10 = Icd10::orderBy('uraian')->get()->toArray();
         $this->diagnosis = $data->diagnosis->map(fn($q) => ['icd10' => $q->icd10_id])->toArray();
     }
 

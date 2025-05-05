@@ -21,37 +21,37 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Nama</label>
-                    <input class="form-control" type="text" wire:model="name" />
-                    @error('name')
+                    <input class="form-control" type="text" wire:model="nama" />
+                    @error('nama')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Alamat</label>
-                    <input class="form-control" type="text" wire:model="address" />
-                    @error('address')
+                    <input class="form-control" type="text" wire:model="alamat" />
+                    @error('alamat')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">No. Telp.</label>
-                    <input class="form-control" type="text" wire:model="phone" />
-                    @error('phone')
+                    <input class="form-control" type="text" wire:model="no_telpon" />
+                    @error('no_telpon')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
-                    <input class="form-control" type="text" wire:model="description" />
-                    @error('description')
+                    <input class="form-control" type="text" wire:model="deskripsi" />
+                    @error('deskripsi')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" id="consignment" value="1"
-                        wire:model="consignment" />
-                    <label class="form-check-label" for="consignment">
-                        Konsinyasi
+                    <input class="form-check-input" type="checkbox" id="konsinyator" value="1"
+                        wire:model="konsinyator" />
+                    <label class="form-check-label" for="konsinyator">
+                        Konsinyator
                     </label>
                 </div>
             </div>

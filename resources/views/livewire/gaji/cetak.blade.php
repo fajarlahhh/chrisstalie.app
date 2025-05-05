@@ -7,11 +7,11 @@
 <table class="table table-borderless fs-11px">
     <tr>
         <td class="text-nowrap w-100px p-0">Nama</td>
-        <td class="p-0">: {{ $data->employee->name }}</td>
+        <td class="p-0">: {{ $data->pegawai->nama }}</td>
     </tr>
     <tr>
         <td class="text-nowrap p-0">Deskripsi</td>
-        <td class="p-0" colspan="2">: {{ $data->description }}</td>
+        <td class="p-0" colspan="2">: {{ $data->uraian }}</td>
     </tr>
 </table>
 <table class="table table-bordered fs-11px">
@@ -23,7 +23,7 @@
         $total = 0;
     @endphp
     @foreach ($data->expenditureDetail as $key => $row)
-        @if (strpos($row->description, '-') !== false)
+        @if (strpos($row->uraian, '-') !== false)
             <tr>
                 <th>
                     Total Gaji + Tunjangan</th>
@@ -40,7 +40,7 @@
         @endif
         <tr>
             <td>
-                {{ $row->description }}</td>
+                {{ $row->uraian }}</td>
             <td class="text-end">
                 {{ number_format($row->cost) }}</td>
         </tr>

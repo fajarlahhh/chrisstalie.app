@@ -23,12 +23,12 @@
         @foreach ($data as $i => $row)
             <tr>
                 @php
-                    $stokMasuk = $row->incomingStock->sum('qty');
+                    $stokMasuk = $row->stokMasuk->sum('qty');
                     $stokKeluar = $row->saleDetail->sum('qty');
                 @endphp
                 <td>{{ ++$i }}</td>
-                <td>{{ $row['name'] }}</td>
-                <td>{{ $row['unit'] }}</td>
+                <td>{{ $row['nama'] }}</td>
+                <td>{{ $row['satuan'] }}</td>
                 <td class="text-end">{{ number_format($row->goodsBalance->sum('qty'), 2) }}</td>
                 <td class="text-end @if ($stokMasuk > 0) bg-green-100 @endif">
                     {{ number_format($stokMasuk, 2) }}
@@ -38,7 +38,7 @@
                 </td>
                 <th class="text-end">
                     {{ number_format(
-                        $row->goodsBalance->sum('qty') + $row->incomingStock->sum('qty') - $row->saleDetail->sum('qty'),
+                        $row->goodsBalance->sum('qty') + $row->stokMasuk->sum('qty') - $row->saleDetail->sum('qty'),
                         2,
                     ) }}
                 </th>

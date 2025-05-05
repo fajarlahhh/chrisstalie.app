@@ -14,13 +14,13 @@ class Treatment extends Model
     use HasFactory;
 
     /**
-     * Get the user that owns the Treatment
+     * Get the pengguna that owns the Treatment
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class)->withTrashed()->withTrashed();
+        return $this->belongsTo(Pengguna::class)->withTrashed()->withTrashed();
     }
 
     /**
@@ -30,6 +30,6 @@ class Treatment extends Model
      */
     public function actionRate(): BelongsTo
     {
-        return $this->belongsTo(ActionRate::class);
+        return $this->belongsTo(Tarif::class);
     }
 }

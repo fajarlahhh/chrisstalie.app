@@ -43,7 +43,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.gaji.index', [
-            'data' => Expenditure::with('user')->where('type', 'Gaji')->with('expenditureDetail')->where('date', 'like', $this->year . '-' . $this->month . '%')->where('description', 'like', '%' . $this->search . '%')->with('employee')
+            'data' => Expenditure::with('pengguna')->where('type', 'Gaji')->with('expenditureDetail')->where('date', 'like', $this->year . '-' . $this->month . '%')->where('uraian', 'like', '%' . $this->search . '%')->with('pegawai')
                 ->when($this->exist == '2', fn($q) => $q->onlyTrashed())
                 ->orderBy('date', 'desc')->orderBy('id', 'desc')->paginate(10)
         ]);

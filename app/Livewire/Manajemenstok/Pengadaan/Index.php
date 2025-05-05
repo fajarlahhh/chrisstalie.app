@@ -24,7 +24,7 @@ class Index extends Component
     public function delete($id)
     {
         $data = Purchase::findOrFail($id);
-        if ($data->incomingStock->count() == 0) {
+        if ($data->stokMasuk->count() == 0) {
             $data->delete();
         }
     }
@@ -32,7 +32,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.manajemenstok.pengadaan.index', [
-            'data' => Purchase::general()->with('purchaseDetail.goods')->with('user')->with('incomingStock')->where('date', 'like', $this->year . '-' . $this->month . '%')->where(fn($q) => $q->where('description', 'like', '%' . $this->search . '%'))
+            'data' => Purchase::general()->with('purchaseDetail.goods')->with('pengguna')->with('stokMasuk')->where('date', 'like', $this->year . '-' . $this->month . '%')->where(fn($q) => $q->where('uraian', 'like', '%' . $this->search . '%'))
                 ->when($this->exist == '2', fn($q) => $q->onlyTrashed())
                 ->orderBy('date', 'desc')->orderBy('id', 'desc')->paginate(10)
         ]);

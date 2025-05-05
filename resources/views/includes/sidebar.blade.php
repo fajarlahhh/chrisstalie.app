@@ -13,7 +13,7 @@
                     <div class="menu-profile-info">
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
-                                {{ auth()->user()->employee ? auth()->user()->employee->name : auth()->user()->name }}
+                                {{ auth()->user()->pegawai ? auth()->user()->pegawai->nama : auth()->user()->nama }}
                             </div>
                             <div class="menu-caret ms-auto"></div>
                         </div>

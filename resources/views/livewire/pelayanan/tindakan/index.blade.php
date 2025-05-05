@@ -49,26 +49,26 @@
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
                             <td>{{ $row->datetime }}</td>
-                            <td>{{ $row->patient->rm }}</td>
-                            <td>{{ $row->patient->name }}</td>
-                            <td>{{ $row->patient->gender }}</td>
-                            <td>{{ $row->patient->address }}</td>
+                            <td>{{ $row->pasien->rm }}</td>
+                            <td>{{ $row->pasien->nama }}</td>
+                            <td>{{ $row->pasien->jenis_kelamin }}</td>
+                            <td>{{ $row->pasien->alamat }}</td>
                             <td class="text-nowrap">
                                 <ul>
                                     @foreach ($row->treatment as $subRow)
-                                        <li>{{ $subRow->actionRate->name }} ({{ $subRow->qty }} x
-                                            {{ number_format($subRow->actionRate->price, 2) }})</li>
+                                        <li>{{ $subRow->actionRate->nama }} ({{ $subRow->qty }} x
+                                            {{ number_format($subRow->actionRate->harga, 2) }})</li>
                                     @endforeach
                                 </ul>
                             </td>
                             <td class="text-nowrap">
                                 <ul>
                                     @foreach ($row->toolMaterial as $subRow)
-                                        <li>{{ $subRow->goods->name }} ({{ $subRow->qty }} x {{ $subRow->goods->price }})</li>
+                                        <li>{{ $subRow->goods->nama }} ({{ $subRow->qty }} x {{ $subRow->goods->harga }})</li>
                                     @endforeach
                                 </ul>
                             </td>
-                            <td>{{ $row->description }}</td>
+                            <td>{{ $row->uraian }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
                                     @if ($row->treatment->count() == 0)

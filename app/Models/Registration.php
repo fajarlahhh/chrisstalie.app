@@ -14,33 +14,33 @@ class Registration extends Model
     use HasFactory;
 
     /**
-     * Get the patient that owns the Registration
+     * Get the pasien that owns the Registration
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function patient(): BelongsTo
+    public function pasien(): BelongsTo
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(Pasien::class);
     }
 
     /**
-     * Get the practitioner that owns the Registration
+     * Get the nakes that owns the Registration
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function practitioner(): BelongsTo
+    public function nakes(): BelongsTo
     {
-        return $this->belongsTo(Practitioner::class);
+        return $this->belongsTo(Nakes::class);
     }
 
     /**
-     * Get the user that owns the Registration
+     * Get the pengguna that owns the Registration
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Pengguna::class);
     }
 
     /**

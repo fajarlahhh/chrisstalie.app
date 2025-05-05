@@ -27,8 +27,8 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
-                    <input class="form-control" type="text" value="{{ $description }}" disabled />
-                    @error('description')
+                    <input class="form-control" type="text" value="{{ $uraian }}" disabled />
+                    @error('uraian')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
@@ -44,7 +44,7 @@
                         @foreach ($detail as $index => $row)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $row['description'] }}</td>
+                                <td>{{ $row['uraian'] }}</td>
                                 <td class="with-btn">
                                     <input type="number" class="form-control w-200px" min="0" maxdigit="15" step="1"
                                         wire:model="detail.{{ $index }}.cost" autocomplete="off">

@@ -26,10 +26,10 @@
         @foreach ($data as $i => $row)
             <tr>
                 <td>{{ ++$index }}</td>
-                <td>{{ $row['name'] }}</td>
-                <td>{{ $row['consignment'] }}</td>
-                <td>{{ $row['unit'] }}</td>
-                <td class="text-end">{{ number_format($row['price_discount'], 2) }}</td>
+                <td>{{ $row['nama'] }}</td>
+                <td>{{ $row['konsinyasi'] }}</td>
+                <td>{{ $row['satuan'] }}</td>
+                <td class="text-end">{{ number_format($row['harga_discount'], 2) }}</td>
                 <td class="text-end">{{ number_format($row['qty'], 2) }}</td>
                 <td class="text-end">{{ number_format($row['total'], 2) }}</td>
             </tr>

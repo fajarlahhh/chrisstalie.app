@@ -6,7 +6,7 @@
 <table class="table table-borderless fs-11px">
     <tr>
         <td class="text-nowrap w-50px p-0">Kasir</td>
-        <td class="p-0">: {{ $data->user->employee ? $data->user->employee->name : $data->user->name }}</td>
+        <td class="p-0">: {{ $data->pengguna->pegawai ? $data->pengguna->pegawai->nama : $data->pengguna->nama }}</td>
     </tr>
     <tr>
         <td class="text-nowrap p-0">Tanggal</td>
@@ -17,28 +17,28 @@
 <table class="table table-borderless fs-11px">
     @foreach ($data->paymentTreatment as $treatment)
         <tr>
-            <td class="p-0">{{ $treatment->actionRate->name }}</td>
+            <td class="p-0">{{ $treatment->actionRate->nama }}</td>
         </tr>
         <tr>
             <td class="p-0 ps-2">{{ number_format($treatment->qty) }} x
-                {{ number_format($treatment->price - ($treatment->price * $treatment->discount) / 100) }}
+                {{ number_format($treatment->harga - ($treatment->harga * $treatment->discount) / 100) }}
             </td>
             <td class="p-0 text-end">Rp.
-                {{ number_format($treatment->qty * ($treatment->price - ($treatment->price * $treatment->discount) / 100)) }}
+                {{ number_format($treatment->qty * ($treatment->harga - ($treatment->harga * $treatment->discount) / 100)) }}
             </td>
         </tr>
     @endforeach
     @if ($data->sale)
         @foreach ($data->sale->saleDetail as $toolsMaterial)
             <tr>
-                <td class="p-0">{{ $toolsMaterial->goods->name }}</td>
+                <td class="p-0">{{ $toolsMaterial->goods->nama }}</td>
             </tr>
             <tr>
                 <td class="p-0 ps-2">{{ number_format($toolsMaterial->qty) }} x
-                    {{ number_format($toolsMaterial->price - ($toolsMaterial->price * $toolsMaterial->discount) / 100) }}
+                    {{ number_format($toolsMaterial->harga - ($toolsMaterial->harga * $toolsMaterial->discount) / 100) }}
                 </td>
                 <td class="p-0 text-end">Rp.
-                    {{ number_format($toolsMaterial->qty * ($toolsMaterial->price - ($toolsMaterial->price * $toolsMaterial->discount) / 100)) }}
+                    {{ number_format($toolsMaterial->qty * ($toolsMaterial->harga - ($toolsMaterial->harga * $toolsMaterial->discount) / 100)) }}
                 </td>
             </tr>
         @endforeach

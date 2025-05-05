@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\User;
+use App\Models\Pengguna;
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
 
@@ -21,7 +21,7 @@ class Gantipassword extends Component
             }],
         ]);
 
-        User::where('id', auth()->user()->id)->update([
+        Pengguna::where('id', auth()->user()->id)->update([
             'password' => Hash::make($this->newPassword),
         ]);
         session()->flash('success', 'Berhasil menyimpan data');

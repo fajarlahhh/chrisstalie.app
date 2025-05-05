@@ -3,19 +3,19 @@
 namespace App\Livewire\Gaji;
 
 use Livewire\Component;
-use App\Models\Employee;
+use App\Models\Pegawai;
 use App\Models\Expenditure;
 use App\Models\ExpenditureDetail;
 use Illuminate\Support\Facades\DB;
 
 class Form extends Component
 {
-    public $data, $previous, $employeeData = [], $detail = ['Uang Makan' => 0, 'Jasa Pelayanan' => 0, 'Bonus' => 0], $otherCost = [], $employee;
-    public $date, $description, $cost, $receipt, $month, $year, $employee_id;
+    public $data, $previous, $pegawaiData = [], $detail = ['Uang Makan' => 0, 'Jasa Pelayanan' => 0, 'Bonus' => 0], $otherCost = [], $pegawai;
+    public $date, $uraian, $cost, $receipt, $month, $year, $pegawai_id;
 
     public function updatedDate()
     {
-        $this->description = "Gaji bulan " . substr($this->date, 0, 7);
+        $this->uraian = "Gaji bulan " . substr($this->date, 0, 7);
     }
 
     public function mount(Expenditure $data)
@@ -25,31 +25,31 @@ class Form extends Component
         $this->year = $this->year ?: date('Y');
         $this->data = $data;
         $this->fill($this->data->toArray());
-        $this->employeeData = Employee::orderBy('nama')->get()->toArray();
+        $this->pegawaiData = Pegawai::orderBy('nama')->get()->toArray();
         if ($this->data->exists) {
             $this->detail = $this->data->expenditureDetail->map(fn($q) => [
-                'jenis' => $q['description'],
+                'jenis' => $q['uraian'],
                 'cost' =>  $q['cost']
             ]);
-            $this->employee = collect($this->employeeData)->where('id', $this->data->employee_id)->first();
+            $this->pegawai = collect($this->pegawaiData)->where('id', $this->data->pegawai_id)->first();
         }
     }
 
-    public function updatedEmployeeId()
+    public function updatedPegawaiId()
     {
-        $this->employee = collect($this->employeeData)->where('id', $this->employee_id)->first();
+        $this->pegawai = collect($this->pegawaiData)->where('id', $this->pegawai_id)->first();
         $this->detail = [
             [
                 'jenis' => ' Gaji',
-                'cost' => $this->employee['wages']
+                'cost' => $this->pegawai['gaji']
             ],
             [
                 'jenis' => '+ Tunjangan',
-                'cost' => $this->employee['allowance']
+                'cost' => $this->pegawai['tunjangan']
             ],
             [
                 'jenis' => '+ Transport',
-                'cost' => $this->employee['transport_allowance']
+                'cost' => $this->pegawai['tunjangan_transport']
             ],
             [
                 'jenis' => '+ Uang Makan',
@@ -65,7 +65,7 @@ class Form extends Component
             ],
             [
                 'jenis' => '- BPJS',
-                'cost' => $this->employee['bpjs_health_cost']
+                'cost' => $this->pegawai['tunjangan_bpjs']
             ],
         ];
     }
@@ -76,7 +76,7 @@ class Form extends Component
             'date' => 'required',
             'month' => 'required',
             'year' => 'required',
-            'employee_id' => 'required',
+            'pegawai_id' => 'required',
         ]);
 
         DB::transaction(function () {
@@ -92,14 +92,14 @@ class Form extends Component
             $this->data->type = 'gaji';
             $this->data->date = $this->date;
             $this->data->cost = $total;
-            $this->data->employee_id = $this->employee_id;
-            $this->data->description = "Gaji " . $this->employee['nama'] . ' bulan ' . $this->month . '-' . $this->year;
+            $this->data->pegawai_id = $this->pegawai_id;
+            $this->data->uraian = "Gaji " . $this->pegawai['nama'] . ' bulan ' . $this->month . '-' . $this->year;
             $this->data->user_id = auth()->id();
             $this->data->save();
 
             ExpenditureDetail::where('expenditure_id', $this->data->id)->delete();
             ExpenditureDetail::insert(collect($this->detail)->map(fn($q, $index) => [
-                'description' => $q['jenis'],
+                'uraian' => $q['jenis'],
                 'cost' => $q['cost'],
                 'expenditure_id' => $this->data->id
             ])->toArray());

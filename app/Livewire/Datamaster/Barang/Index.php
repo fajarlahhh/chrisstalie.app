@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Datamaster\Barang;
 
-use App\Models\Goods;
+use App\Models\Barang;
 use Livewire\Component;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
@@ -12,31 +12,31 @@ class Index extends Component
     use WithPagination;
 
     #[Url] 
-    public $search, $exist = 1, $type, $consignment = 1;
+    public $search, $exist = 1, $type, $konsinyasi = 1;
 
 
     public function delete($id)
     {
-        Goods::findOrFail($id)->delete();
+        Barang::findOrFail($id)->delete();
     }
 
     public function permanentDelete($id)
     {
-        Goods::findOrFail($id)->forceDelete();
+        Barang::findOrFail($id)->forceDelete();
     }
 
     public function restore($id)
     {
-        Goods::withTrashed()->findOrFail($id)->restore();
+        Barang::withTrashed()->findOrFail($id)->restore();
     }
 
     public function render()
     {
         return view('livewire.datamaster.barang.index', [
-            'data' => Goods::with('consignment')->with('user')
-                ->when($this->consignment == 2, fn($q) => $q->whereNotNull('consignment_id'))
+            'data' => Barang::with('konsinyasi')->with('pengguna')
+                ->when($this->konsinyasi == 2, fn($q) => $q->whereNotNull('consignment_id'))
                 ->when($this->type, fn($q) => $q->where('type', $this->type))
-                ->where(fn($q) => $q->where('nama', 'like', '%' . $this->search . '%')->orWhere('description', 'like', '%' . $this->search . '%'))
+                ->where(fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'))
                 ->when($this->exist == '2', fn($q) => $q->onlyTrashed())
                 ->orderBy('nama')->paginate(10)
         ]);

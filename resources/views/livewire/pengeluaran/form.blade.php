@@ -39,7 +39,7 @@
                         data-width="100%">
                         <option selected value="">-- Pilih Pengeluaran --</option>
                         @foreach ($expenditureData as $item)
-                            <option value="{{ $item['name'] }}">{{ $item['name'] }}</option>
+                            <option value="{{ $item['nama'] }}">{{ $item['nama'] }}</option>
                         @endforeach
                     </select>
                     @error('monthly_expenses_id')
@@ -76,8 +76,8 @@
                 @if (!$monthly_expenses_id)
                     <div class="mb-3">
                         <label class="form-label">Deskripsi</label>
-                        <input class="form-control" type="text" wire:model="description" />
-                        @error('description')
+                        <input class="form-control" type="text" wire:model="uraian" />
+                        @error('uraian')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>

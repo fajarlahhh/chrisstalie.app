@@ -34,42 +34,42 @@
                                 @endif
                                 <div class="mb-3">
                                     <label class="form-label">No. RM</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->rm }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->rm }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">No. KTP</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->nik }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->nik }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Nama</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->name }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->nama }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Alamat</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->address }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->alamat }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Tempat Lahir</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->birth_place }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->tempat_lahir }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Tanggal Lahir</label>
-                                    <input class="form-control" type="date" value="{{ $data->patient->birth_date }}"
+                                    <input class="form-control" type="date" value="{{ $data->pasien->tanggal_lahir }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Jenis Kelamin</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->gender }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->jenis_kelamin }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">No. Telpon</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->phone }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->no_telpon }}"
                                         disabled />
                                 </div>
                             </div>
@@ -110,13 +110,13 @@
                                                         styleBase: 'form-control'
                                                     })"
                                                     wire:model.lazy="treatment.{{ $index }}.action_rate_id"
-                                                    wire:change="changeActionRate({{ $index }})" required
+                                                    wire:change="changeTarif({{ $index }})" required
                                                     data-width="100%">
                                                     <option value="" selected hidden>-- Pilih Tindakan --</option>
-                                                    @foreach ($dataActionRate as $actionRate)
+                                                    @foreach ($dataTarif as $actionRate)
                                                         <option value="{{ $actionRate['id'] }}"
-                                                            data-subtext="{{ number_format($actionRate['price']) }}">
-                                                            {{ $actionRate['name'] }}
+                                                            data-subtext="{{ number_format($actionRate['harga']) }}">
+                                                            {{ $actionRate['nama'] }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -127,7 +127,7 @@
                                             </th>
                                             <th>
                                                 @if ($row['action_rate_id'])
-                                                    @if (collect($dataActionRate)->where('id', $row['action_rate_id'])->first()['practitioner_portion'] > 0)
+                                                    @if (collect($dataTarif)->where('id', $row['action_rate_id'])->first()['porsi_nakes'] > 0)
                                                         <select data-container="body" class="form-controll w-200px"
                                                             x-init="$($el).selectpicker({
                                                                 liveSearch: true,
@@ -138,12 +138,12 @@
                                                                 showSubtext: true,
                                                                 styleBase: 'form-control'
                                                             })"
-                                                            wire:model="treatment.{{ $index }}.practitioner_id"
+                                                            wire:model="treatment.{{ $index }}.nakes_id"
                                                             data-width="100%" required>
                                                             <option value="" selected>-- Pilih Nakes --</option>
-                                                            @foreach ($dataPractitioner as $petugas)
+                                                            @foreach ($dataNakes as $petugas)
                                                                 <option value="{{ $petugas['id'] }}">
-                                                                    {{ $petugas['name'] ?: $petugas['employee']['name'] }}
+                                                                    {{ $petugas['nama'] ?: $petugas['pegawai']['nama'] }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -152,7 +152,7 @@
                                             </th>
                                             <th>
                                                 @if ($row['action_rate_id'])
-                                                    @if (collect($dataActionRate)->where('id', $row['action_rate_id'])->first()['beautician_fee'] > 0)
+                                                    @if (collect($dataTarif)->where('id', $row['action_rate_id'])->first()['upah_petugas'] > 0)
                                                         <select data-container="body" class="form-control w-200px"
                                                             x-init="$($el).selectpicker({
                                                                 liveSearch: true,
@@ -167,9 +167,9 @@
                                                             data-width="100%" required>
                                                             <option value="" selected>-- Pilih Beautician --
                                                             </option>
-                                                            @foreach (collect($dataPractitioner)->where('doctor', 0)->toArray() as $beautician)
+                                                            @foreach (collect($dataNakes)->where('dokter', 0)->toArray() as $beautician)
                                                                 <option value="{{ $beautician['id'] }}">
-                                                                    {{ $beautician['name'] ?: $beautician['employee']['name'] }}
+                                                                    {{ $beautician['nama'] ?: $beautician['pegawai']['nama'] }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -225,8 +225,8 @@
                                                     </option>
                                                     @foreach ($dataGoods as $goods)
                                                         <option value="{{ $goods['id'] }}"
-                                                            data-subtext="{{ number_format($goods['price']) }}">
-                                                            {{ $goods['name'] }}
+                                                            data-subtext="{{ number_format($goods['harga']) }}">
+                                                            {{ $goods['nama'] }}
                                                         </option>
                                                     @endforeach
                                                 </select>

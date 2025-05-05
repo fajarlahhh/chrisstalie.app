@@ -2,35 +2,35 @@
 
 namespace App\Livewire\Datamaster\Pasien;
 
-use App\Models\Patient;
+use App\Models\Pasien;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 
 class Form extends Component
 {
     public $data, $previous;
-    public $nama, $ihs, $nik, $rm, $gender, $birth_place, $birth_date, $registration_date, $description, $address, $phone, $doctor = false;
+    public $nama, $ihs, $nik, $rm, $jenis_kelamin, $tempat_lahir, $tanggal_lahir, $tanggal_registrasi, $uraian, $alamat, $no_telpon, $dokter = false;
 
     public function submit()
     {
         $this->validate([
             'nama' => 'required',
             'nik' => 'required',
-            'gender' => 'required',
-            'birth_date' => 'required',
-            'address' => 'required',
-            'phone' => 'required',
+            'jenis_kelamin' => 'required',
+            'tanggal_lahir' => 'required',
+            'alamat' => 'required',
+            'no_telpon' => 'required',
         ]);
 
         DB::transaction(function () {
             $this->data->nama = $this->nama;
             $this->data->ihs = $this->ihs;
             $this->data->nik = $this->nik;
-            $this->data->description = $this->description;
-            $this->data->gender = $this->gender;
-            $this->data->address = $this->address;
-            $this->data->phone = $this->phone;
-            $this->data->doctor = $this->doctor ? 1 : 0;
+            $this->data->uraian = $this->uraian;
+            $this->data->jenis_kelamin = $this->jenis_kelamin;
+            $this->data->alamat = $this->alamat;
+            $this->data->no_telpon = $this->no_telpon;
+            $this->data->dokter = $this->dokter ? 1 : 0;
             $this->data->user_id = auth()->id();
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
@@ -38,7 +38,7 @@ class Form extends Component
         $this->redirect($this->previous);
     }
 
-    public function mount(Patient $data)
+    public function mount(Pasien $data)
     {
         $this->previous = url()->previous();
         $this->data = $data;

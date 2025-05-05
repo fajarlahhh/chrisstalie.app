@@ -11,14 +11,15 @@ class Icd10 extends Model
     use HasFactory;
     public $incrementing = false;
     protected $keyType = 'string';
+    protected $table = 'icd10';
     
     /**
-     * Get the user that owns the Icd10
+     * Get the pengguna that owns the Icd10
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(Pengguna::class)->withTrashed();
     }
 }

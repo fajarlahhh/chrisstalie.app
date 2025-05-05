@@ -25,18 +25,18 @@
             @foreach (collect($data)->groupBy('id')->map(
             fn($q) => [
                 'id' => $q[0]['id'],
-                'name' => $q[0]['name'],
-                'price' => collect($q)->sum('price'),
-                'priceAfterDiscount' => collect($q)->sum('priceAfterDiscount'),
+                'nama' => $q[0]['nama'],
+                'harga' => collect($q)->sum('harga'),
+                'hargaAfterDiscount' => collect($q)->sum('hargaAfterDiscount'),
                 'qty' => collect($q)->sum('qty'),
             ],
         )->values()->toArray() as $key => $row)
                 <tr>
                     <td>{{ ++$index }}</td>
-                    <td>{{ $row['name'] }}</td>
+                    <td>{{ $row['nama'] }}</td>
                     <td class="text-center">{{ number_format($row['qty']) }}</td>
-                    <td class="text-end">{{ number_format($row['price']) }}</td>
-                    <td class="text-end">{{ number_format($row['priceAfterDiscount']) }}</td>
+                    <td class="text-end">{{ number_format($row['harga']) }}</td>
+                    <td class="text-end">{{ number_format($row['hargaAfterDiscount']) }}</td>
                 </tr>
             @endforeach
             <tr>
@@ -48,10 +48,10 @@
             <tr>
                 <th colspan="3">Total</th>
                 <th class="text-end">
-                    {{ number_format(collect($data)->sum('price')) }}
+                    {{ number_format(collect($data)->sum('harga')) }}
                 </th>
                 <th class="text-end">
-                    {{ number_format(collect($data)->sum('priceAfterDiscount') + $admin->sum('admin')) }}
+                    {{ number_format(collect($data)->sum('hargaAfterDiscount') + $admin->sum('admin')) }}
                 </th>
             </tr>
         </tbody>
@@ -78,20 +78,20 @@
             @endphp
             @foreach ($data as $key => $row)
                 @php
-                    $total += ($row['price'] - ($row['price'] * $row['discount']) / 100) * $row['qty'];
+                    $total += ($row['harga'] - ($row['harga'] * $row['discount']) / 100) * $row['qty'];
                 @endphp
                 <tr>
                     <td>{{ ++$index }}</td>
                     <td>{{ $row->payment->date }}</td>
-                    <td>{{ $row->payment->registration->patient->name }}</td>
-                    <td>{{ $row->actionRate->name }}</td>
+                    <td>{{ $row->payment->registration->pasien->nama }}</td>
+                    <td>{{ $row->actionRate->nama }}</td>
                     <td class="text-center">{{ number_format($row['qty']) }}</td>
-                    <td class="text-end">{{ number_format($row['price']) }}</td>
-                    <td class="text-end">{{ number_format(($row['price'] * $row['discount']) / 100) }}</td>
-                    <td class="text-end">{{ number_format($row['price'] - ($row['price'] * $row['discount']) / 100) }}
+                    <td class="text-end">{{ number_format($row['harga']) }}</td>
+                    <td class="text-end">{{ number_format(($row['harga'] * $row['discount']) / 100) }}</td>
+                    <td class="text-end">{{ number_format($row['harga'] - ($row['harga'] * $row['discount']) / 100) }}
                     </td>
                     <td class="text-end">
-                        {{ number_format(($row['price'] - ($row['price'] * $row['discount']) / 100) * $row['qty']) }}
+                        {{ number_format(($row['harga'] - ($row['harga'] * $row['discount']) / 100) * $row['qty']) }}
                     </td>
                 </tr>
             @endforeach
@@ -108,13 +108,13 @@
             <tr>
                 <th colspan="5">Total Keseluruhan</th>
                 <th class="text-end">
-                    {{ number_format(collect($data)->sum('price')) }}
+                    {{ number_format(collect($data)->sum('harga')) }}
                 </th>
                 <th class="text-end">
-                    {{ number_format(collect($data)->sum(fn($row) => ($row['price'] * $row['discount']) / 100)) }}
+                    {{ number_format(collect($data)->sum(fn($row) => ($row['harga'] * $row['discount']) / 100)) }}
                 </th>
                 <th class="text-end">
-                    {{ number_format(collect($data)->sum(fn($row) => $row['price'] - ($row['price'] * $row['discount']) / 100)) }}
+                    {{ number_format(collect($data)->sum(fn($row) => $row['harga'] - ($row['harga'] * $row['discount']) / 100)) }}
                 </th>
                 <th class="text-end">
                     {{ number_format($total + $admin->sum('admin')) }}

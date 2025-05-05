@@ -8,22 +8,23 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ActionRate extends Model
+class Tarif extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'tarif';
     /**
-     * Get the user that owns the ActionRate
+     * Get the pengguna that owns the Tarif
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class)->withTrashed()->withTrashed();
+        return $this->belongsTo(Pengguna::class)->withTrashed()->withTrashed();
     }
 
     /**
-     * Get all of the paymentTreatment for the ActionRate
+     * Get all of the paymentTreatment for the Tarif
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

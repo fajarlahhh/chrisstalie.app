@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Practitioner;
+use App\Models\Nakes;
 use App\Models\PaymentTreatment;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -19,41 +19,41 @@ class PembagianjasapelayananExport implements FromView
         $this->date2 = $date2;
     }
 
-    public function getPractitioner()
+    public function getNakes()
     {
-        return (Practitioner::with('employee')->withTrashed()->whereIn('id', PaymentTreatment::whereHas('payment', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->get()->map(function ($item) {
+        return (Nakes::with('pegawai')->withTrashed()->whereIn('id', PaymentTreatment::whereHas('payment', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->get()->map(function ($item) {
             return [
-                'practitioner_id' => $item->practitioner_id,
+                'nakes_id' => $item->nakes_id,
                 'beautician_id' => $item->beautician_id,
             ];
         })->flatten()->unique()->filter(function ($value) {
             return $value !== null;
         })->toArray())->get()->map(fn($q) => [
             'id' => $q->id,
-            'name' => $q->employee ? $q->employee->name : $q->name,
+            'name' => $q->pegawai ? $q->pegawai->name : $q->name,
         ]));
     }
 
     public function getData()
     {
         return (PaymentTreatment::with('actionRate')->whereHas('payment', fn($r) => $r->whereBetween('date', [$this->date1, $this->date2]))->get()->map(function ($q) {
-            $dicount = ($q->price * $q->discount / 100) * $q->qty;
-            $profitAfterDicount = $q->profit - $dicount;
-            $practitionerPortion = ($profitAfterDicount - $q->beautician_fee) * $q->practitioner_portion;
+            $dicount = ($q->harga * $q->discount / 100) * $q->qty;
+            $profitAfterDicount = $q->keuntungan - $dicount;
+            $nakesPortion = ($profitAfterDicount - $q->upah_petugas) * $q->porsi_nakes;
             return [
                 'id' => $q->action_rate_id,
                 'name' => $q->actionRate->name,
-                'price' => $q->price,
+                'harga' => $q->harga,
                 'discount_percent' => $q->discount,
                 'qty' => $q->qty,
-                'capital' => $q->capital,
+                'modal' => $q->modal,
                 'discount' => $dicount,
-                'profit' => $profitAfterDicount,
-                'beautician_fee' => $q->beautician_fee,
-                'practitioner_portion' => $q->practitioner_id ? $practitionerPortion : 0,
-                'office_portion' => ($profitAfterDicount - $q->beautician_fee) * $q->office_portion + ($q->practitioner_id ? 0 : $practitionerPortion) + ($q->beautician_id ? 0 : $q->beautician_fee),
+                'keuntungan' => $profitAfterDicount,
+                'upah_petugas' => $q->upah_petugas,
+                'porsi_nakes' => $q->nakes_id ? $nakesPortion : 0,
+                'porsi_kantor' => ($profitAfterDicount - $q->upah_petugas) * $q->porsi_kantor + ($q->nakes_id ? 0 : $nakesPortion) + ($q->beautician_id ? 0 : $q->upah_petugas),
                 'beautician_id' => $q->beautician_id,
-                'practitioner_id' => $q->practitioner_id,
+                'nakes_id' => $q->nakes_id,
             ];
         })->toArray());
     }
@@ -65,7 +65,7 @@ class PembagianjasapelayananExport implements FromView
             'date1' => $this->date1,
             'date2' => $this->date2,
             'data' => ($this->getData()),
-            'practitioner' => ($this->getPractitioner()),
+            'nakes' => ($this->getNakes()),
         ]);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Rekapitulasistok;
 
-use App\Models\Goods;
+use App\Models\Barang;
 use App\Models\GoodsBalance;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -22,8 +22,8 @@ class Index extends Component
     {
         DB::transaction(function () {
             $nextPeriod = Carbon::parse($this->year . '-' . $this->month . '-01')->addMonths(1)->format('Y-m-01');
-            $data = Goods::with(['goodsBalance' => fn($q) => $q->where('period', 'like',  $this->year . '-' . $this->month . '%')])
-                ->with(['incomingStock' => fn($q) => $q->where('date', 'like',  $this->year . '-' . $this->month . '%')])
+            $data = Barang::with(['goodsBalance' => fn($q) => $q->where('period', 'like',  $this->year . '-' . $this->month . '%')])
+                ->with(['stokMasuk' => fn($q) => $q->where('date', 'like',  $this->year . '-' . $this->month . '%')])
                 ->with(['saleDetail' => fn($q) => $q->whereHas('sale', fn($r) => $r->where('date', 'like',  $this->year . '-' . $this->month . '%'))])
                 ->get();
             GoodsBalance::where('period', $nextPeriod)->delete();
@@ -32,7 +32,7 @@ class Index extends Component
                 [
                     'goods_id' => $q->id,
                     'period' =>  $nextPeriod,
-                    'qty' => $q->goodsBalance->sum('qty') + $q->incomingStock->sum('qty') - $q->saleDetail->sum('qty'),
+                    'qty' => $q->goodsBalance->sum('qty') + $q->stokMasuk->sum('qty') - $q->saleDetail->sum('qty'),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]

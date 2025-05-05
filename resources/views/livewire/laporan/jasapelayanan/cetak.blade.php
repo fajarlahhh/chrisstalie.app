@@ -17,12 +17,12 @@
             <th rowspan="2" class="w-100px">Jumlah Diskon</th>
             <th rowspan="2" class="w-100px">Jumlah Modal</th>
             <th rowspan="2" class="w-100px">Jumlah Keuntungan</th>
-            <th colspan="{{ $practitioner->count() + 1 }}">Pembagian</th>
+            <th colspan="{{ $nakes->count() + 1 }}">Pembagian</th>
         </tr>
         <tr>
             <th class="w-100px">Klinik</th>
-            @foreach ($practitioner as $row)
-                <th class="w-100px">{{ $row['name'] }}</th>
+            @foreach ($nakes as $row)
+                <th class="w-100px">{{ $row['nama'] }}</th>
             @endforeach
         </tr>
     </thead>
@@ -33,35 +33,35 @@
         @foreach (collect($data)->groupBy('id')->map(
             fn($q) => [
                 'id' => $q[0]['id'],
-                'name' => $q[0]['name'],
-                'price' => collect($q)->sum('price'),
+                'nama' => $q[0]['nama'],
+                'harga' => collect($q)->sum('harga'),
                 'discount' => collect($q)->sum('discount'),
                 'qty' => collect($q)->sum('qty'),
-                'profit' => collect($q)->sum('profit'),
-                'capital' => collect($q)->sum('capital'),
-                'office_portion' => collect($q)->sum('office_portion'),
+                'keuntungan' => collect($q)->sum('keuntungan'),
+                'modal' => collect($q)->sum('modal'),
+                'porsi_kantor' => collect($q)->sum('porsi_kantor'),
             ],
         )->values()->toArray() as $key => $row)
             <tr>
                 <td>{{ ++$index }}</td>
-                <td>{{ $row['name'] }}</td>
+                <td>{{ $row['nama'] }}</td>
                 <td class="text-center">{{ number_format($row['qty']) }}</td>
-                <td class="text-end">{{ number_format($row['price']) }}</td>
+                <td class="text-end">{{ number_format($row['harga']) }}</td>
                 <td class="text-end">{{ number_format($row['discount']) }}</td>
-                <td class="text-end">{{ number_format($row['capital']) }}</td>
-                <td class="text-end">{{ number_format($row['profit']) }}</td>
-                <td class="text-end">{{ number_format($row['office_portion']) }}</td>
-                @foreach ($practitioner as $subRow)
+                <td class="text-end">{{ number_format($row['modal']) }}</td>
+                <td class="text-end">{{ number_format($row['keuntungan']) }}</td>
+                <td class="text-end">{{ number_format($row['porsi_kantor']) }}</td>
+                @foreach ($nakes as $subRow)
                     <td class="text-end">
                         @php
                             $portion1 = collect($data)
                                 ->where('id', $row['id'])
-                                ->where('practitioner_id', $subRow['id'])
-                                ->sum(fn($q) => $q['practitioner_portion']);
+                                ->where('nakes_id', $subRow['id'])
+                                ->sum(fn($q) => $q['porsi_nakes']);
                             $portion2 = collect($data)
                                 ->where('id', $row['id'])
                                 ->where('beautician_id', $subRow['id'])
-                                ->sum(fn($q) => $q['beautician_fee']);
+                                ->sum(fn($q) => $q['upah_petugas']);
                         @endphp
                         {{ number_format($portion1 + $portion2) }}
                     </td>
@@ -71,29 +71,29 @@
         <tr>
             <th colspan="3">Total</th>
             <th class="text-end">
-                {{ number_format(collect($data)->sum(fn($row) => $row['price'])) }}
+                {{ number_format(collect($data)->sum(fn($row) => $row['harga'])) }}
             </th>
             <th class="text-end">
                 {{ number_format(collect($data)->sum(fn($row) => $row['discount'])) }}
             </th>
             <th class="text-end">
-                {{ number_format(collect($data)->sum(fn($row) => $row['capital'])) }}
+                {{ number_format(collect($data)->sum(fn($row) => $row['modal'])) }}
             </th>
             <th class="text-end">
-                {{ number_format(collect($data)->sum(fn($row) => $row['profit'])) }}
+                {{ number_format(collect($data)->sum(fn($row) => $row['keuntungan'])) }}
             </th>
             <th class="text-end">
-                {{ number_format(collect($data)->sum(fn($row) => $row['office_portion'])) }}
+                {{ number_format(collect($data)->sum(fn($row) => $row['porsi_kantor'])) }}
             </th>
-            @foreach ($practitioner as $subRow)
+            @foreach ($nakes as $subRow)
                 <th class="text-end">
                     @php
                         $portion1 = collect($data)
-                            ->where('practitioner_id', $subRow['id'])
-                            ->sum(fn($q) => $q['practitioner_portion']);
+                            ->where('nakes_id', $subRow['id'])
+                            ->sum(fn($q) => $q['porsi_nakes']);
                         $portion2 = collect($data)
                             ->where('beautician_id', $subRow['id'])
-                            ->sum(fn($q) => $q['beautician_fee']);
+                            ->sum(fn($q) => $q['upah_petugas']);
                     @endphp
                     {{ number_format($portion1 + $portion2) }}
                 </th>

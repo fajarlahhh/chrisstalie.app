@@ -30,14 +30,14 @@
                                 style: '',
                                 showSubtext: true,
                                 styleBase: 'form-control'
-                            })" class="form-control" wire:model="employee_id"
+                            })" class="form-control" wire:model="pegawai_id"
                                 data-width="100%">
                                 <option selected value="">-- Pilih Pegawai --</option>
-                                @foreach ($employeeData as $item)
-                                    <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
+                                @foreach ($pegawaiData as $item)
+                                    <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
                                 @endforeach
                             </select>
-                            @error('employee_id')
+                            @error('pegawai_id')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -57,7 +57,7 @@
                                 })" data-width="100%">
                                 <option selected hidden>-- Pilih Role --</option>
                                 @foreach ($roleData as $row)
-                                    <option value="{{ $row['name'] }}">{{ ucfirst($row['name']) }}</option>
+                                    <option value="{{ $row['nama'] }}">{{ ucfirst($row['nama']) }}</option>
                                 @endforeach
                             </select>
                             @error('role')

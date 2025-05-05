@@ -6,7 +6,7 @@
 <table class="table table-borderless fs-11px">
     <tr>
         <td class="text-nowrap w-50px p-0">Kasir</td>
-        <td class="p-0">: {{ $data->user->employee ? $data->user->employee->name : $data->user->name }}</td>
+        <td class="p-0">: {{ $data->pengguna->pegawai ? $data->pengguna->pegawai->nama : $data->pengguna->nama }}</td>
     </tr>
     <tr>
         <td class="text-nowrap p-0">Tanggal</td>
@@ -17,14 +17,14 @@
 <table class="table table-borderless fs-11px">
     @foreach ($data->saleDetail as $detail)
         <tr>
-            <td class="p-0">{{ $detail->goods->name }}</td>
+            <td class="p-0">{{ $detail->goods->nama }}</td>
         </tr>
         <tr>
             <td class="p-0 ps-2">{{ $detail->qty }} x
-                {{ number_format($detail->price - ($detail->price * $detail->discount) / 100) }}
+                {{ number_format($detail->harga - ($detail->harga * $detail->discount) / 100) }}
             </td>
             <td class="p-0 text-end">Rp.
-                {{ number_format($detail->qty * ($detail->price - ($detail->price * $detail->discount) / 100)) }}
+                {{ number_format($detail->qty * ($detail->harga - ($detail->harga * $detail->discount) / 100)) }}
             </td>
         </tr>
     @endforeach

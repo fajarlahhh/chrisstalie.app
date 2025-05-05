@@ -32,7 +32,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.pengeluaran.index', [
-            'data' => Expenditure::with('user')->with('expenditureDetail')->where('date', 'like', $this->year . '-' . $this->month . '%')->where('description', 'like', '%' . $this->search . '%')
+            'data' => Expenditure::with('pengguna')->with('expenditureDetail')->where('date', 'like', $this->year . '-' . $this->month . '%')->where('uraian', 'like', '%' . $this->search . '%')
                 ->when($this->exist == '2', fn($q) => $q->onlyTrashed())
                 ->orderBy('date', 'desc')->orderBy('id', 'desc')->paginate(10)
         ]);

@@ -24,15 +24,15 @@ class Pengadaan extends Component
             $expenditure = new Expenditure();
             $expenditure->type = 'form';
             $expenditure->date = $this->expenditure[$index]['date'];
-            $expenditure->description = $this->expenditure[$index]['description'];
+            $expenditure->uraian = $this->expenditure[$index]['uraian'];
             $expenditure->purchase_id = $id;
             $expenditure->user_id = auth()->id();
             $expenditure->save();
 
             ExpenditureDetail::insert(collect($purchase->purchaseDetail)->map(fn($q) => [
                 'expenditure_id' => $expenditure->id,
-                'cost' => $q['price'],
-                'description' => $q->goods->nama
+                'cost' => $q['harga'],
+                'uraian' => $q->goods->nama
             ])->toArray());
         });
 
@@ -54,7 +54,7 @@ class Pengadaan extends Component
     public function render()
     {
         return view('livewire.pengeluaran.pengadaan', [
-            'data' => Purchase::with(['purchaseDetail.goods', 'user', 'incomingStock', 'expenditure.user'])->where(fn($q) => $q->where('receipt', 'like', '%' . $this->search . '%')->orWhere('description', 'like', '%' . $this->search . '%'))
+            'data' => Purchase::with(['purchaseDetail.goods', 'pengguna', 'stokMasuk', 'expenditure.pengguna'])->where(fn($q) => $q->where('receipt', 'like', '%' . $this->search . '%')->orWhere('uraian', 'like', '%' . $this->search . '%'))
                 ->when($this->status == 1, fn($q) => $q->whereDoesntHave('expenditure'))
                 ->when($this->status == 2, fn($q) => $q->whereHas('expenditure', fn($r) => $r->where('date', 'like', $this->year . '-' . $this->month . '%')))->whereNotNull('due_date')->orderBy('created_at', 'desc')->get(),
         ]);

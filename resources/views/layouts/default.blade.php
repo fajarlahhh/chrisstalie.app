@@ -26,7 +26,7 @@
         <div id="content" class="app-content">
             @yield('content')
             <div id="footer" class="app-footer mx-0 px-0">
-                &copy; 2024 {{ config('app.name') }} v2024.11.18.1233 - {{ config('app.organization') }}
+                &copy; 2025 {{ config('app.name') }} v2025.05.04.1435 - {{ config('app.organization') }}
             </div>
         </div>
 

@@ -3,58 +3,58 @@
 namespace App\Livewire\Datamaster\Nakes;
 
 use App\Class\SatusehatClass;
-use App\Models\Employee;
+use App\Models\Pegawai;
 use Livewire\Component;
-use App\Models\Practitioner;
+use App\Models\Nakes;
 use Illuminate\Support\Facades\DB;
 
 class Form extends Component
 {
-    public $data, $previous, $employeeData = [];
-    public $nama, $ihs, $nik, $gender, $description, $address, $phone_number, $doctor = false, $employee_id;
+    public $data, $previous, $pegawaiData = [];
+    public $nama, $ihs, $nik, $jenis_kelamin, $deskripsi, $alamat, $no_hp, $dokter = false, $pegawai_id;
 
     public function submit()
     {
-        if (!$this->employee_id) {
+        if (!$this->pegawai_id) {
             $this->validate([
                 'nama' => 'required',
                 'nik' => 'required',
-                'gender' => 'required',
-                'address' => 'required',
-                'phone_number' => 'required',
+                'jenis_kelamin' => 'required',
+                'alamat' => 'required',
+                'no_hp' => 'required',
             ]);
         }
 
         DB::transaction(function () {
-            if ($this->employee_id) {
-                $practitionerSatuSehat = SatusehatClass::getPractitionerByNik(Employee::find($this->employee_id)->nik);
+            if ($this->pegawai_id) {
+                $nakesSatuSehat = SatusehatClass::getNakesByNik(Pegawai::find($this->pegawai_id)->nik);
             } else {
-                $practitionerSatuSehat = SatusehatClass::getPractitionerByNik($this->nik);
+                $nakesSatuSehat = SatusehatClass::getNakesByNik($this->nik);
             }
-            $this->data->employee_id = $this->employee_id;
+            $this->data->pegawai_id = $this->pegawai_id ?: null;
             $this->data->nama = $this->nama;
             $this->data->ihs = $this->ihs;
             $this->data->nik = $this->nik;
-            $this->data->description = $this->description;
-            $this->data->gender = $this->gender;
-            $this->data->address = $this->address;
-            $this->data->phone_number = $this->phone_number;
-            $this->data->doctor = $this->doctor ? 1 : 0;
+            $this->data->deskripsi = $this->deskripsi;
+            $this->data->jenis_kelamin = $this->jenis_kelamin;
+            $this->data->alamat = $this->alamat;
+            $this->data->no_hp = $this->no_hp;
+            $this->data->dokter = $this->dokter ? 1 : 0;
             $this->data->user_id = auth()->id();
-            $this->data->ihs = $practitionerSatuSehat ? ($practitionerSatuSehat['entry'] ? $practitionerSatuSehat['entry']['0']['resource']['id'] : null)  : null;
+            $this->data->ihs = $nakesSatuSehat ? ($nakesSatuSehat['entry'] ? $nakesSatuSehat['entry']['0']['resource']['id'] : null)  : null;
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });
         $this->redirect($this->previous);
     }
 
-    public function mount(Practitioner $data)
+    public function mount(Nakes $data)
     {
         $this->previous = url()->previous();
-        $this->employeeData = Employee::orderBy('nama')->with('user')->get()->toArray();
+        $this->pegawaiData = Pegawai::orderBy('nama')->with('pengguna')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
-        $this->doctor = $this->data->doctor == 1 ? true : false;
+        $this->dokter = $this->data->dokter == 1 ? true : false;
     }
 
     public function render()

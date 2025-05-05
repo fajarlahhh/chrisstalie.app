@@ -3,13 +3,13 @@
 namespace App\Livewire\Pelayanan\Kasir;
 
 use App\Models\Sale;
-use App\Models\Goods;
-use App\Models\Stock;
+use App\Models\Barang;
+use App\Models\Stok;
 use App\Models\Payment;
 use Livewire\Component;
-use App\Models\ActionRate;
+use App\Models\Tarif;
 use App\Models\SaleDetail;
-use App\Models\Practitioner;
+use App\Models\Nakes;
 use App\Models\Registration;
 use App\Models\PaymentTreatment;
 use Illuminate\Support\Facades\DB;
@@ -17,29 +17,29 @@ use App\Models\PaymentToolMaterial;
 
 class Form extends Component
 {
-    public $date, $data, $dataActionRate = [], $dataPractitioner = [], $treatment = [], $toolsAndMaterial = [], $dataGoods = [];
+    public $date, $data, $dataTarif = [], $dataNakes = [], $treatment = [], $toolsAndMaterial = [], $dataGoods = [];
     public $adminFee = 10000, $type = "Cash", $cash, $remainder;
 
     public function mount(Registration $data)
     {
-        $this->dataPractitioner = Practitioner::with('employee')->orderBy('nama')->get()->toArray();
-        $this->dataActionRate = ActionRate::orderBy('nama')->get()->toArray();
-        $this->dataGoods = Goods::orderBy('nama')->get()->toArray();
+        $this->dataNakes = Nakes::with('pegawai')->orderBy('nama')->get()->toArray();
+        $this->dataTarif = Tarif::orderBy('nama')->get()->toArray();
+        $this->dataGoods = Barang::orderBy('nama')->get()->toArray();
         $this->date = $this->date ?: date('Y-m-d');
         $this->data = $data;
         $this->treatment = $data->treatment->map(function ($q) {
-            $dataActionRate = collect($this->dataActionRate)->where('id', $q->action_rate_id)->first();
+            $dataTarif = collect($this->dataTarif)->where('id', $q->action_rate_id)->first();
             return [
                 'action_rate_id' => $q->action_rate_id,
                 'discount' => 0,
                 'qty' => $q->qty,
-                'price' => $dataActionRate['price'],
-                'profit' => $dataActionRate['profit'],
-                'capital' => $dataActionRate['capital'],
-                'office_portion' => $dataActionRate['percent_office'],
-                'practitioner_portion' => $dataActionRate['percent_practitioner'],
-                'beautician_fee' => $dataActionRate['beautician_fee'],
-                'practitioner_id' => $q->practitioner_id,
+                'harga' => $dataTarif['harga'],
+                'keuntungan' => $dataTarif['keuntungan'],
+                'modal' => $dataTarif['modal'],
+                'porsi_kantor' => $dataTarif['percent_office'],
+                'porsi_nakes' => $dataTarif['percent_nakes'],
+                'upah_petugas' => $dataTarif['upah_petugas'],
+                'nakes_id' => $q->nakes_id,
                 'beautician_id' => $q->beautician_id
             ];
         })->toArray();
@@ -49,11 +49,11 @@ class Form extends Component
                 'goods_id' => $q->goods_id,
                 'discount' => 0,
                 'qty' => $q->qty,
-                'price' => $dataGoods['price'],
+                'harga' => $dataGoods['harga'],
                 'consignment_id' => $dataGoods['consignment_id'],
-                'capital' => $dataGoods['capital'],
-                'practitioner_portion' => $dataGoods['practitioner_portion'],
-                'office_portion' => $dataGoods['office_portion']
+                'modal' => $dataGoods['modal'],
+                'porsi_nakes' => $dataGoods['porsi_nakes'],
+                'porsi_kantor' => $dataGoods['porsi_kantor']
             ];
         })->toArray();
     }
@@ -64,7 +64,7 @@ class Form extends Component
             'type' => 'required',
         ]);
 
-        $bill = $this->adminFee + collect($this->treatment)->sum(fn($q) => ($q['price'] - (($q['discount'] ?: 0) / 100) * $q['price']) * $q['qty']) + collect($this->toolsAndMaterial)->sum(fn($q) => ($q['price'] - (($q['discount'] ?: 0) / 100) * $q['price']) * $q['qty']);
+        $bill = $this->adminFee + collect($this->treatment)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty']) + collect($this->toolsAndMaterial)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty']);
 
         if ($this->type == "Cash") {
             $this->validate([
@@ -76,12 +76,12 @@ class Form extends Component
             $this->validate([
                 // 'toolsAndMaterial.*.goods_id' => ['required', function ($attribute, $value, $fail) {
                 //     $data = explode('.', $attribute);
-                //     $stok = Stock::where('goods_id', $value)->available()->count();
+                //     $stok = Stok::where('goods_id', $value)->available()->count();
                 //     if ($this->toolsAndMaterial[$data[1]]['qty'] > $stok) {
-                //         $fail("There are $stok left in stock");
+                //         $fail("There are $stok left in stok");
                 //     }
                 // }],
-                'toolsAndMaterial.*.price' => 'required|integer',
+                'toolsAndMaterial.*.harga' => 'required|integer',
                 'toolsAndMaterial.*.qty' => 'required|integer',
             ]);
         }
@@ -99,14 +99,14 @@ class Form extends Component
 
             PaymentTreatment::insert(collect($this->treatment)->map(fn($q) => [
                 'qty' => $q['qty'],
-                'price' => $q['price'],
-                'profit' => $q['profit'],
+                'harga' => $q['harga'],
+                'keuntungan' => $q['keuntungan'],
                 'discount' => $q['discount'],
-                'capital' => $q['capital'],
-                'office_portion' => $q['office_portion'],
-                'practitioner_portion' => $q['practitioner_portion'],
-                'beautician_fee' => $q['beautician_fee'],
-                'practitioner_id' => $q['practitioner_id'],
+                'modal' => $q['modal'],
+                'porsi_kantor' => $q['porsi_kantor'],
+                'porsi_nakes' => $q['porsi_nakes'],
+                'upah_petugas' => $q['upah_petugas'],
+                'nakes_id' => $q['nakes_id'],
                 'beautician_id' => $q['beautician_id'],
                 'action_rate_id' => $q['action_rate_id'],
                 'payment_id' => $payment->id,
@@ -115,9 +115,9 @@ class Form extends Component
             if (collect($this->toolsAndMaterial)->count() > 0) {
                 $sale = new Sale();
                 $sale->payment_id = $payment->id;
-                $sale->patient_id = $this->data->patient_id;
+                $sale->pasien_id = $this->data->pasien_id;
                 $sale->date = $this->date;
-                $sale->amount = collect($this->toolsAndMaterial)->sum(fn($q) => $q['price'] * $q['qty']);
+                $sale->amount = collect($this->toolsAndMaterial)->sum(fn($q) => $q['harga'] * $q['qty']);
                 $sale->date = $this->date;
                 $sale->user_id = auth()->id();
                 $sale->save();
@@ -127,12 +127,12 @@ class Form extends Component
                     [
                         'discount' => $q['discount'],
                         'qty' => $q['qty'],
-                        'price' => $q['price'],
+                        'harga' => $q['harga'],
                         'sale_id' => $sale->id,
                         'consignment_id' => $q['consignment_id'],
-                        'capital' => $q['capital'],
-                        'office_portion' => $q['office_portion'],
-                        'practitioner_portion' => $q['practitioner_portion'],
+                        'modal' => $q['modal'],
+                        'porsi_kantor' => $q['porsi_kantor'],
+                        'porsi_nakes' => $q['porsi_nakes'],
                         'goods_id' => $q['goods_id'],
                     ]
                 )->toArray());
@@ -140,12 +140,12 @@ class Form extends Component
 
 
             // foreach ($this->toolsAndMaterial as $row) {
-            //     Stock::where('goods_id', $row['goods_id'])->available()->orderBy('created_at', 'asc')->limit($row['qty'])->update([
-            //         'date_out_stock' => $this->date,
-            //         'selling_price' => $row['price'],
+            //     Stok::where('goods_id', $row['goods_id'])->available()->orderBy('created_at', 'asc')->limit($row['qty'])->update([
+            //         'date_out_stok' => $this->date,
+            //         'selling_harga' => $row['harga'],
             //         'sale_id' => $sale->id,
-            //         'discount' => $row['price'] * $row['discount'] / 100,
-            //         'office_portion' => $row['office_portion'],
+            //         'discount' => $row['harga'] * $row['discount'] / 100,
+            //         'porsi_kantor' => $row['porsi_kantor'],
             //     ]);
             // }
 

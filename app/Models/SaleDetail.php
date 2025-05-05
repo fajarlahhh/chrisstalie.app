@@ -16,7 +16,7 @@ class SaleDetail extends Model
      */
     public function goods(): BelongsTo
     {
-        return $this->belongsTo(Goods::class);
+        return $this->belongsTo(Barang::class);
     }
 
     /**
@@ -29,13 +29,13 @@ class SaleDetail extends Model
         return $this->belongsTo(Sale::class);
     }
 
-    public function consignment(): BelongsTo
+    public function konsinyasi(): BelongsTo
     {
         return $this->belongsTo(Supplier::class);
     }
 
-    public function practitioner(): BelongsTo
+    public function nakes(): BelongsTo
     {
-        return $this->belongsTo(Practitioner::class);
+        return $this->belongsTo(Nakes::class);
     }
 }

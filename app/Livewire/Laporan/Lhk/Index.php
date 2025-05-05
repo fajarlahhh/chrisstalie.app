@@ -20,7 +20,7 @@ class Index extends Component
 
     public function getData()
     {
-        return Expenditure::with(['employee', 'user'])->where('type', 'form')->when($this->office, fn($q) => $q->where('office', $this->office))->where('date', $this->date)->get();
+        return Expenditure::with(['pegawai', 'pengguna'])->where('type', 'form')->when($this->office, fn($q) => $q->where('office', $this->office))->where('date', $this->date)->get();
     }
 
 

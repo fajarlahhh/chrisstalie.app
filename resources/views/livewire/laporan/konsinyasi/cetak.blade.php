@@ -16,15 +16,15 @@
             <th rowspan="2" class="w-100px">Jumlah Harga</th>
             <th rowspan="2" class="w-100px">Jumlah Diskon</th>
             <th rowspan="2" class="w-100px">Jumlah Penerimaan</th>
-            <th colspan="{{ collect($consignment)->count()}}">Modal Konsinyasi</th>
-            <th colspan="{{ collect($practitioner)->count() + 1 }}">Pembagian</th>
+            <th colspan="{{ collect($konsinyasi)->count()}}">Modal Konsinyasi</th>
+            <th colspan="{{ collect($nakes)->count() + 1 }}">Pembagian</th>
         </tr>
         <tr>
-            @foreach ($consignment as $row)
-                <th class="w-100px">{{ $row['name'] }}</th>
+            @foreach ($konsinyasi as $row)
+                <th class="w-100px">{{ $row['nama'] }}</th>
             @endforeach
-            @foreach ($practitioner as $row)
-                <th class="w-100px">{{ $row['name'] }}</th>
+            @foreach ($nakes as $row)
+                <th class="w-100px">{{ $row['nama'] }}</th>
             @endforeach
             <th class="w-100px">Apotek</th>
         </tr>
@@ -36,67 +36,67 @@
         @foreach (collect($data)->groupBy('id')->map(
             fn($q) => [
                 'id' => $q[0]['id'],
-                'name' => $q[0]['name'],
-                'price' => collect($q)->sum(fn($r) => $r['price'] * $r['qty']),
+                'nama' => $q[0]['nama'],
+                'harga' => collect($q)->sum(fn($r) => $r['harga'] * $r['qty']),
                 'discount' => collect($q)->sum(fn($r) => $r['discount'] * $r['qty']),
-                'price_discount' => collect($q)->sum(fn($r) => $r['price_discount'] * $r['qty']),
+                'harga_discount' => collect($q)->sum(fn($r) => $r['harga_discount'] * $r['qty']),
                 'qty' => collect($q)->sum('qty'),
-                'capital' => collect($q)->sum(fn($r) => $r['capital'] * $r['qty']),
-                'office_portion' => collect($q)->sum(fn($r) => ($r['price_discount']-$r['capital']) * $r['office_portion']/100 * $r['qty']),
-                'practitioner_portion' => collect($q)->sum(fn($r) => ($r['price_discount']-$r['capital']) * $r['practitioner_portion']/100 * $r['qty']),
+                'modal' => collect($q)->sum(fn($r) => $r['modal'] * $r['qty']),
+                'porsi_kantor' => collect($q)->sum(fn($r) => ($r['harga_discount']-$r['modal']) * $r['porsi_kantor']/100 * $r['qty']),
+                'porsi_nakes' => collect($q)->sum(fn($r) => ($r['harga_discount']-$r['modal']) * $r['porsi_nakes']/100 * $r['qty']),
             ],
         )->values()->toArray() as $key => $row)
             <tr>
                 <td>{{ ++$index }}</td>
-                <td>{{ $row['name'] }}</td>
+                <td>{{ $row['nama'] }}</td>
                 <td class="text-center">{{ number_format($row['qty']) }}</td>
-                <td class="text-end">{{ number_format($row['price']) }}</td>
+                <td class="text-end">{{ number_format($row['harga']) }}</td>
                 <td class="text-end">{{ number_format($row['discount']) }}</td>
-                <td class="text-end">{{ number_format($row['price_discount']) }}</td>
-                @foreach ($consignment as $subRow)
+                <td class="text-end">{{ number_format($row['harga_discount']) }}</td>
+                @foreach ($konsinyasi as $subRow)
                     <td class="w-100px text-end">
                         {{ number_format(
-                            collect($data)->where('id', $row['id'])->where('consignment_id', $subRow['id'])->sum(fn($r) => $r['capital'] * $r['qty']),
+                            collect($data)->where('id', $row['id'])->where('consignment_id', $subRow['id'])->sum(fn($r) => $r['modal'] * $r['qty']),
                         ) }}
                     </td>
                 @endforeach
-                @foreach ($practitioner as $subRow)
+                @foreach ($nakes as $subRow)
                     <td class="w-100px text-end">
                         {{ number_format(
-                            collect($data)->where('id', $row['id'])->where('practitioner_id', $subRow['id'])->sum(fn($r) => ($r['price_discount']-$r['capital']) * $r['practitioner_portion']/100 * $r['qty']),
+                            collect($data)->where('id', $row['id'])->where('nakes_id', $subRow['id'])->sum(fn($r) => ($r['harga_discount']-$r['modal']) * $r['porsi_nakes']/100 * $r['qty']),
                         ) }}
                     </td>
                 @endforeach
-                <td class="text-end">{{ number_format(collect($data)->where('id', $row['id'])->sum(fn($r) => ($r['price_discount']-$r['capital']) * $r['office_portion']/100 * $r['qty'])) }}</td>
+                <td class="text-end">{{ number_format(collect($data)->where('id', $row['id'])->sum(fn($r) => ($r['harga_discount']-$r['modal']) * $r['porsi_kantor']/100 * $r['qty'])) }}</td>
             </tr>
         @endforeach
         <tr>
             <th colspan="3">TOTAL</th>
             <th class="text-end">
-                {{ number_format(collect($data)->sum('price')) }}
+                {{ number_format(collect($data)->sum('harga')) }}
             </th>
             <th class="text-end">
                 {{ number_format(collect($data)->sum('discount')) }}
             </th>
             <th class="text-end">
-                {{ number_format(collect($data)->sum(fn($row) => $row['price'] - $row['discount'])) }}
+                {{ number_format(collect($data)->sum(fn($row) => $row['harga'] - $row['discount'])) }}
             </th>
-            @foreach ($consignment as $subRow)
+            @foreach ($konsinyasi as $subRow)
                 <th class="w-100px text-end">
                     {{ number_format(
-                        collect($data)->where('consignment_id', $subRow['id'])->sum(fn($r) => $r['capital'] * $r['qty']),
+                        collect($data)->where('consignment_id', $subRow['id'])->sum(fn($r) => $r['modal'] * $r['qty']),
                     ) }}
                 </th>
             @endforeach
-            @foreach ($practitioner as $subRow)
+            @foreach ($nakes as $subRow)
                 <th class="w-100px text-end">
                     {{ number_format(
-                        collect($data)->where('practitioner_id', $subRow['id'])->sum(fn($r) => ($r['price_discount']-$r['capital']) * $r['practitioner_portion']/100 * $r['qty']),
+                        collect($data)->where('nakes_id', $subRow['id'])->sum(fn($r) => ($r['harga_discount']-$r['modal']) * $r['porsi_nakes']/100 * $r['qty']),
                     ) }}
                 </th>
             @endforeach
             <th class="text-end">
-                {{ number_format(collect($data)->sum(fn($r) => ($r['price_discount']-$r['capital']) * $r['office_portion']/100 * $r['qty'])) }}
+                {{ number_format(collect($data)->sum(fn($r) => ($r['harga_discount']-$r['modal']) * $r['porsi_kantor']/100 * $r['qty'])) }}
             </th>
         </tr>
     </tbody>

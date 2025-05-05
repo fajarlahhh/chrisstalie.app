@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Datamaster\Pasien;
+namespace App\Livewire\Datamaster\Tarif;
 
-use App\Models\Pasien;
 use Livewire\Component;
+use App\Models\Tarif;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 
@@ -17,23 +17,23 @@ class Index extends Component
 
     public function delete($id)
     {
-        Pasien::findOrFail($id)->delete();
+        Tarif::findOrFail($id)->delete();
     }
 
     public function permanentDelete($id)
     {
-        Pasien::findOrFail($id)->forceDelete();
+        Tarif::findOrFail($id)->forceDelete();
     }
 
     public function restore($id)
     {
-        Pasien::withTrashed()->findOrFail($id)->restore();
+        Tarif::withTrashed()->findOrFail($id)->restore();
     }
 
     public function render()
     {
-        return view('livewire.datamaster.pasien.index', [
-            'data' => Pasien::where(fn($q) => $q->where('nama', 'like', '%' . $this->search . '%')->orWhere('rm', 'like', '%' . $this->search . '%'))
+        return view('livewire.datamaster.tarif.index', [
+            'data' => Tarif::where(fn($q) => $q->where('nama', 'like', '%' . $this->search . '%')->orWhere('deskripsi', 'like', '%' . $this->search . '%'))
                 ->when($this->exist == '2', fn($q) => $q->onlyTrashed())->with('pengguna')
                 ->orderBy('nama')->paginate(10)
         ]);

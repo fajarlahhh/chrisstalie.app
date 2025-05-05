@@ -18,7 +18,7 @@ class Index extends Component
 
     public function getData()
     {
-        return Expenditure::with(['employee', 'user'])->where('type', 'form')->when($this->office, fn($q) => $q->where('office', $this->office))->whereBetween('date', [$this->date1, $this->date2])->get();
+        return Expenditure::with(['pegawai', 'pengguna'])->where('type', 'form')->when($this->office, fn($q) => $q->where('office', $this->office))->whereBetween('date', [$this->date1, $this->date2])->get();
     }
 
     public function print()

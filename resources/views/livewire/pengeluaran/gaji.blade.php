@@ -44,12 +44,12 @@
                             @foreach ($detail as $index => $row)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td class="text-nowrap">{{ $row['name'] }}</td>
-                                    <td class="text-end text-nowrap">{{ number_format($row['wages']) }}</td>
-                                    <td class="text-end text-nowrap">{{ number_format($row['allowance']) }}</td>
-                                    <td class="text-end text-nowrap">{{ number_format($row['transport_allowance']) }}
+                                    <td class="text-nowrap">{{ $row['nama'] }}</td>
+                                    <td class="text-end text-nowrap">{{ number_format($row['gaji']) }}</td>
+                                    <td class="text-end text-nowrap">{{ number_format($row['tunjangan']) }}</td>
+                                    <td class="text-end text-nowrap">{{ number_format($row['tunjangan_transport']) }}
                                     </td>
-                                    <td class="text-end bg-red-100">{{ number_format($row['bpjs_health_cost']) }}</td>
+                                    <td class="text-end bg-red-100">{{ number_format($row['tunjangan_bpjs']) }}</td>
                                     @foreach (collect($otherCost)->where('id', $row['id'])->all() as $subIndex => $subRow)
                                         <td>
                                             <input class="form-control w-150px" type="number"
@@ -68,10 +68,10 @@
                             @endforeach
                             <tr>
                                 <th colspan="2">TOTAL</th>
-                                <th class="text-end">{{ number_format(collect($detail)->sum('wages')) }}</th>
-                                <th class="text-end">{{ number_format(collect($detail)->sum('allowance')) }}</th>
-                                <th class="text-end">{{ number_format(collect($detail)->sum('transport_allowance')) }}</th>
-                                <th class="text-end">{{ number_format(collect($detail)->sum('bpjs_health_cost')) }}</th>
+                                <th class="text-end">{{ number_format(collect($detail)->sum('gaji')) }}</th>
+                                <th class="text-end">{{ number_format(collect($detail)->sum('tunjangan')) }}</th>
+                                <th class="text-end">{{ number_format(collect($detail)->sum('tunjangan_transport')) }}</th>
+                                <th class="text-end">{{ number_format(collect($detail)->sum('tunjangan_bpjs')) }}</th>
                                 <th class="text-end">{{ number_format(collect($otherCost)->sum('uang_makan')) }}</th>
                                 <th class="text-end">{{ number_format(collect($otherCost)->sum('jasa_pelayanan')) }}</th>
                                 <th class="text-end">{{ number_format(collect($otherCost)->sum('bonus')) }}</th>

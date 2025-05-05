@@ -23,7 +23,7 @@
         @foreach ($data['Pengeluaran'] as $index => $detail)
             <tr>
                 <td class="w-10px">{{ $index + 1 }}</td>
-                <td>{{ $detail->description }}</td>
+                <td>{{ $detail->uraian }}</td>
                 <td class="text-end">{{ number_format($detail->cost) }}</td>
             </tr>
         @endforeach

@@ -57,13 +57,13 @@
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
                             <td>{{ $row->date }}</td>
-                            <td>{{ $row->goods?->name }}</td>
+                            <td>{{ $row->goods?->nama }}</td>
                             <td>{{ $row->qty }}</td>
-                            <td>{{ $row->purchase_price }}</td>
+                            <td>{{ $row->purchase_harga }}</td>
                             <td>{{ $row->expired_date }}</td>
-                            <td>{{ $row->purchase?->supplier?->name }}</td>
-                            <td>{{ $row->purchase?->supplier?->consignment == 1 ? 'Ya' : '' }}</td>
-                            <td>{{ $row->description }}</td>
+                            <td>{{ $row->purchase?->supplier?->nama }}</td>
+                            <td>{{ $row->purchase?->supplier?->konsinyasi == 1 ? 'Ya' : '' }}</td>
+                            <td>{{ $row->uraian }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
                                     <x-action :row="$row" custom="" :detail="false" :edit="false"

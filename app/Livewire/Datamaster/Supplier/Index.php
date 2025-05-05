@@ -32,8 +32,8 @@ class Index extends Component
     public function render()
     {
         return view('livewire.datamaster.supplier.index', [
-            'data' => Supplier::where(fn($q) => $q->where('nama', 'like', '%' . $this->search . '%')->orWhere('description', 'like', '%' . $this->search . '%'))
-                ->when($this->exist == '2', fn($q) => $q->onlyTrashed())->with('user')
+            'data' => Supplier::where(fn($q) => $q->where('nama', 'like', '%' . $this->search . '%')->orWhere('deskripsi', 'like', '%' . $this->search . '%'))
+                ->when($this->exist == '2', fn($q) => $q->onlyTrashed())->with('pengguna')
                 ->orderBy('nama')->paginate(10)
         ]);
     }

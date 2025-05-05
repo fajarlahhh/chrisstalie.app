@@ -34,42 +34,42 @@
                                 @endif
                                 <div class="mb-3">
                                     <label class="form-label">No. RM</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->rm }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->rm }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">No. KTP</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->nik }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->nik }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Nama</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->name }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->nama }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Alamat</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->address }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->alamat }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Tempat Lahir</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->birth_place }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->tempat_lahir }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Tanggal Lahir</label>
-                                    <input class="form-control" type="date" value="{{ $data->patient->birth_date }}"
+                                    <input class="form-control" type="date" value="{{ $data->pasien->tanggal_lahir }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Jenis Kelamin</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->gender }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->jenis_kelamin }}"
                                         disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">No. Telpon</label>
-                                    <input class="form-control" type="text" value="{{ $data->patient->phone }}"
+                                    <input class="form-control" type="text" value="{{ $data->pasien->no_telpon }}"
                                         disabled />
                                 </div>
                             </div>
@@ -101,10 +101,10 @@
                                             <select data-container="body" class="form-control"
                                                 wire:model.lazy="treatment.{{ $index }}.action_rate_id" disabled
                                                 data-width="100%">
-                                                @foreach ($dataActionRate as $actionRate)
+                                                @foreach ($dataTarif as $actionRate)
                                                     <option value="{{ $actionRate['id'] }}">
-                                                        {{ $actionRate['name'] }} - Rp.
-                                                        {{ number_format($actionRate['price']) }}
+                                                        {{ $actionRate['nama'] }} - Rp.
+                                                        {{ number_format($actionRate['harga']) }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -119,7 +119,7 @@
                                         </th>
                                         <th>
                                             <input class="form-control text-end" type="text"
-                                                value="{{ number_format(($row['price'] - (($row['discount'] ?: 0) / 100) * $row['price']) * $row['qty']) }}"
+                                                value="{{ number_format(($row['harga'] - (($row['discount'] ?: 0) / 100) * $row['harga']) * $row['qty']) }}"
                                                 disabled />
                                         </th>
                                     </tr>
@@ -146,9 +146,9 @@
                                                 data-width="100%" disabled>
                                                 @foreach ($dataGoods as $goods)
                                                     <option value="{{ $goods['id'] }}"
-                                                        data-subtext="{{ number_format($goods['price']) }}">
-                                                        {{ $goods['name'] }} - Rp.
-                                                        {{ number_format($goods['price']) }}
+                                                        data-subtext="{{ number_format($goods['harga']) }}">
+                                                        {{ $goods['nama'] }} - Rp.
+                                                        {{ number_format($goods['harga']) }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -166,7 +166,7 @@
                                         </th>
                                         <th>
                                             <input class="form-control text-end" type="text"
-                                                value="{{ number_format(($row['price'] - (($row['discount'] ?: 0) / 100) * $row['price']) * $row['qty']) }}"
+                                                value="{{ number_format(($row['harga'] - (($row['discount'] ?: 0) / 100) * $row['harga']) * $row['qty']) }}"
                                                 disabled />
                                         </th>
                                     </tr>
@@ -184,7 +184,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Total Tagihan</label>
                                 <input class="form-control text-end" type="text"
-                                    value="{{ number_format(($adminFee ?: 0) + collect($treatment)->sum(fn($q) => ($q['price'] - (($q['discount'] ?: 0) / 100) * $q['price']) * $q['qty']) + collect($toolsAndMaterial)->sum(fn($q) => ($q['price'] - (($q['discount'] ?: 0) / 100) * $q['price']) * $q['qty'])) }}"
+                                    value="{{ number_format(($adminFee ?: 0) + collect($treatment)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty']) + collect($toolsAndMaterial)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty'])) }}"
                                     disabled />
                                 @error('adminFee')
                                     <span class="text-danger">{{ $message }}</span>
@@ -218,7 +218,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Uang Kembali</label>
                                         <input class="form-control text-end" type="text" disabled
-                                            value="{{ number_format(($cash ?: 0) - (($adminFee ?: 0) + collect($treatment)->sum(fn($q) => ($q['price'] - (($q['discount'] ?: 0) / 100) * $q['price']) * $q['qty']) + collect($toolsAndMaterial)->sum(fn($q) => ($q['price'] - (($q['discount'] ?: 0) / 100) * $q['price']) * $q['qty']))) }}" />
+                                            value="{{ number_format(($cash ?: 0) - (($adminFee ?: 0) + collect($treatment)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty']) + collect($toolsAndMaterial)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty']))) }}" />
                                         @error('remainder')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror

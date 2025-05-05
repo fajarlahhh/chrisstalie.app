@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Manajemenstok\Pengadaan;
 
-use App\Models\Goods;
+use App\Models\Barang;
 use Livewire\Component;
 use App\Models\Purchase;
 use App\Models\Supplier;
@@ -14,14 +14,14 @@ use Illuminate\Support\Facades\DB;
 class Form extends Component
 {
     public $data, $previous, $goodsData = [], $supplierData = [];
-    public $date, $description, $due_date, $receipt, $supplier_id, $procurement = [], $cost = [], $status = "Jatuh Tempo", $ppn, $discount;
+    public $date, $uraian, $due_date, $receipt, $supplier_id, $procurement = [], $cost = [], $status = "Jatuh Tempo", $ppn, $discount;
 
     public function addCost()
     {
         $this->cost[] = [
             'nama' => null,
             'qty' => 0,
-            'price' => null,
+            'harga' => null,
         ];
     }
 
@@ -37,7 +37,7 @@ class Form extends Component
             'goods_id' => null,
             'qty' => 0,
             'expired_date' => null,
-            'price' => null,
+            'harga' => null,
         ];
     }
 
@@ -51,7 +51,7 @@ class Form extends Component
     {
         $this->date = $this->date ?: date('Y-m-d');
         $this->previous = url()->previous();
-        $this->goodsData = Goods::orderBy('nama')->whereNull('consignment_id')->get()->toArray();
+        $this->goodsData = Barang::orderBy('nama')->whereNull('consignment_id')->get()->toArray();
         $this->supplierData = Supplier::general()->orderBy('nama')->get()->toArray();
     }
 
@@ -59,12 +59,12 @@ class Form extends Component
     {
         $this->validate([
             'receipt' => 'required|unique:purchases,receipt',
-            'description' => 'required',
+            'uraian' => 'required',
             'date' => 'required',
             'procurement' => 'required|array',
             'procurement.*.goods_id' => 'required|integer',
             'procurement.*.qty' => 'required|integer',
-            'procurement.*.price' => 'required|integer',
+            'procurement.*.harga' => 'required|integer',
         ]);
 
         DB::transaction(function () {
@@ -72,7 +72,7 @@ class Form extends Component
             $data->receipt = $this->receipt;
             $data->date = $this->date;
             $data->due_date = $this->status == "Jatuh Tempo" ? $this->due_date : null;
-            $data->description = $this->description;
+            $data->uraian = $this->uraian;
             $data->supplier_id = $this->status == "Opname" ? null : $this->supplier_id;
             $data->ppn = $this->ppn;
             $data->discount = $this->discount;
@@ -83,7 +83,7 @@ class Form extends Component
                 $expenditure = new Expenditure();
                 $expenditure->type = 'form';
                 $expenditure->date = $this->date;
-                $expenditure->description = "Pengadaan Barang " . $data->description;
+                $expenditure->uraian = "Pengadaan Barang " . $data->uraian;
                 $expenditure->receipt = $this->receipt;
                 $expenditure->purchase_id = $this->data->id;
                 $expenditure->user_id = auth()->id();
@@ -91,15 +91,15 @@ class Form extends Component
 
                 ExpenditureDetail::insert(collect($this->procurement)->map(fn($q) => [
                     'expenditure_id' => $expenditure->id,
-                    'cost' => $q['price'],
-                    'description' => collect($this->goodsData)->where('id', $q['goods_id'])->first()->nama
+                    'cost' => $q['harga'],
+                    'uraian' => collect($this->goodsData)->where('id', $q['goods_id'])->first()->nama
                 ])->toArray());
             }
 
             if (collect($this->procurement)->count() > 0) {
                 PurchaseDetail::insert(collect($this->procurement)->map(fn($q) => [
                     'qty' => $q['qty'],
-                    'price' => $q['price'],
+                    'harga' => $q['harga'],
                     'goods_id' => $q['goods_id'],
                     'purchase_id' => $data->id,
                 ])->toArray());

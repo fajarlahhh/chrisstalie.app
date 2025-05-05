@@ -34,14 +34,13 @@
                         <th class="w-10px">No.</th>
                         <th>Nama</th>
                         <th>Kategori</th>
-                        <th>Biaya</th>
-                        <th>Modal</th>
-                        <th>Keuntungan</th>
-                        <th>Upah Beautician</th>
-                        <th>Porsi Klinik</th>
-                        <th>Porsi Nakes</th>
-                        <th>Kode ICD 9 CM</th>
                         <th>Deskripsi</th>
+                        <th>Kode ICD 9 CM</th>
+                        <th>Modal</th>
+                        <th>Porsi Beautician</th>
+                        <th>Porsi Nakes</th>
+                        <th>Porsi Klinik</th>
+                        <th>Biaya</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -51,16 +50,15 @@
                             <td>
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
-                            <td>{{ $row->name }}</td>
-                            <td class="text-end">{{ $row->category }}</td>
-                            <td class="text-end">{{ number_format($row->price) }}</td>
-                            <td class="text-end">{{ number_format($row->profit) }}</td>
-                            <td class="text-end">{{ number_format($row->capital) }}</td>
-                            <td class="text-end">{{ number_format($row->beautician_fee) }}</td>
-                            <td class="text-end">{{ number_format($row->office_portion) }}</td>
-                            <td class="text-end">{{ number_format($row->practitioner_portion) }}</td>
-                            <td>{{ $row->icd_9_cm_code }}</td>
-                            <td>{{ $row->description }}</td>
+                            <td>{{ $row->nama }}</td>
+                            <td class="text-end">{{ $row->kategori }}</td>
+                            <td>{{ $row->deskripsi }}</td>
+                            <td>{{ $row->icd_9_cm }}</td>
+                            <td class="text-end">{{ number_format($row->modal) }}</td>
+                            <td class="text-end">{{ number_format($row->porsi_petugas) }}</td>
+                            <td class="text-end">{{ number_format($row->porsi_kantor) }}</td>
+                            <td class="text-end">{{ number_format($row->porsi_nakes) }}</td>
+                            <td class="text-end">{{ number_format($row->biaya) }}</td>
                             <td class="with-btn-group text-end" nowrap>
                 @role('administrator|supervisor|operator')
                                     @if ($row->trashed())

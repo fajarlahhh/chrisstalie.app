@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Hakakses;
 
-use App\Models\Employee;
-use App\Models\User;
+use App\Models\Pegawai;
+use App\Models\Pengguna;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
@@ -12,8 +12,8 @@ use Spatie\Permission\Models\Permission;
 
 class Form extends Component
 {
-    public $data, $previous, $roleData = [], $employeeData = [];
-    public $email, $employee_id, $password, $role, $hakAkses = [];
+    public $data, $previous, $roleData = [], $pegawaiData = [];
+    public $email, $pegawai_id, $password, $role, $hakAkses = [];
 
     public function submit()
     {
@@ -21,19 +21,19 @@ class Form extends Component
             'hakAkses' => 'required',
             'role' => 'required',
             'email' => 'required|email|unique:users,email,' . $this->data->id,
-            'employee_id' => 'required',
+            'pegawai_id' => 'required',
         ]);
 
         DB::transaction(function () {
             if (!$this->data->exists) {
-                if (User::where('email', $this->email)->withTrashed()->count() > 0) {
+                if (Pengguna::where('email', $this->email)->withTrashed()->count() > 0) {
                     session()->flash('danger', 'Email ' . $this->email . ' sudah ada');
                     return $this->render();
                 }
                 $this->data->email = $this->email;
                 $this->data->password = Hash::make($this->email);
             }
-            $this->data->employee_id = $this->employee_id;
+            $this->data->pegawai_id = $this->pegawai_id;
             $this->data->save();
 
             $this->data->syncPermissions($this->hakAkses);
@@ -44,11 +44,11 @@ class Form extends Component
         $this->redirect($this->previous);
     }
 
-    public function mount(User $data)
+    public function mount(Pengguna $data)
     {
         $this->previous = url()->previous();
         $this->roleData = Role::all()->toArray();
-        $this->employeeData = Employee::orderBy('nama')->get()->toArray();
+        $this->pegawaiData = Pegawai::orderBy('nama')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
         $this->role = $this->data->getRoleNames()?->first();

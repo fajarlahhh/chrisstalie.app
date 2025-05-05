@@ -30,8 +30,8 @@ class Index extends Component
             return [
                 'id' => $q->action_rate_id,
                 'nama' => $q->actionRate->nama,
-                'price' => $q->price * $q->qty,
-                'priceAfterDiscount' => ($q->price - ($q->price * $q->discount / 100)) * $q->qty,
+                'harga' => $q->harga * $q->qty,
+                'hargaAfterDiscount' => ($q->harga - ($q->harga * $q->discount / 100)) * $q->qty,
                 'qty' => $q->qty,
             ];
         })->toArray();

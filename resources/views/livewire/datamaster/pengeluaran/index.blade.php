@@ -40,9 +40,9 @@
                             <td>
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
-                            <td>{{ $row->name }}</td>
+                            <td>{{ $row->nama }}</td>
                             <td>{{ $row->office }}</td>
-                            <td>{{ $row->description }}</td>
+                            <td>{{ $row->uraian }}</td>
                             <td class="with-btn-group text-end" nowrap>
                 @role('administrator|supervisor|operator')
                                     <x-action :row="$row"  custom="" :detail="false" :edit="true" :print="false"

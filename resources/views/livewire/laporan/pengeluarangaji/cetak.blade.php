@@ -23,12 +23,12 @@
         @foreach ($data as $index => $row)
             <tr>
                 <td>{{ $index + 1 }}</td>
-                <td colspan="3">{{ $row->employee->name }}</td>
+                <td colspan="3">{{ $row->pegawai->nama }}</td>
             </tr>
             @foreach ($row->expenditureDetail as $detail)
                 <tr>
                     <td colspan="2"></td>
-                    <td>{{ str_replace(['+ ', '- '], '', $detail->description) }}</td>
+                    <td>{{ str_replace(['+ ', '- '], '', $detail->uraian) }}</td>
                     <td class="text-end">{{ number_format($detail->cost) }}</td>
                 </tr>
                 @php

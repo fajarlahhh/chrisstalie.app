@@ -38,8 +38,8 @@ class Index extends Component
     public function render()
     {
         return view('livewire.pelayanan.kasir.index', [
-            'data' => Registration::with('patient')->with('practitioner')->with('user')
-                ->whereHas('patient', fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'))
+            'data' => Registration::with('pasien')->with('nakes')->with('pengguna')
+                ->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'))
                 ->when($this->status == '2', fn($q) => $q->whereHas('payment', fn($q) => $q->where('date', $this->date)))
                 ->when($this->status == '1', fn($q) => $q->whereDoesntHave('payment'))
                 ->whereHas('treatment')

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class Form extends Component
 {
     public $data, $previous, $officeData = [];
-    public $nama, $description, $office;
+    public $nama, $uraian, $office;
 
     public function submit()
     {
@@ -22,7 +22,7 @@ class Form extends Component
         DB::transaction(function () {
             $this->data->nama = $this->nama;
             $this->data->office = $this->office;
-            $this->data->description = $this->description;
+            $this->data->uraian = $this->uraian;
             $this->data->user_id = auth()->id();
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');

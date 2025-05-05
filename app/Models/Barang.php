@@ -9,53 +9,54 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Goods extends Model
+class Barang extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $table = 'barang';
     /**
-     * Get the user that owns the Goods
+     * Get the pengguna that owns the Barang
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(Pengguna::class)->withTrashed();
     }
 
     /**
-     * Get the consignment that owns the Goods
+     * Get the konsinyasi that owns the Barang
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function consignment(): BelongsTo
+    public function konsinyasi(): BelongsTo
     {
-        return $this->belongsTo(Supplier::class)->withTrashed();
+        return $this->belongsTo(Supplier::class, 'konsinyator_id')->withTrashed();
     }
 
     /**
-     * Get the availableStock that owns the Goods
+     * Get the availableStok that owns the Barang
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function availableStock(): HasMany
+    public function availableStok(): HasMany
     {
-        return $this->hasMany(Stock::class)->whereNull('date_out_stock')->whereNull('sale_id')->whereNull('selling_price');
+        return $this->hasMany(Stok::class)->whereNull('date_out_stok')->whereNull('sale_id')->whereNull('selling_harga');
     }
 
     /**
-     * Get all of the stock for the Goods
+     * Get all of the stok for the Barang
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function stock(): HasMany
+    public function stok(): HasMany
     {
-        return $this->hasMany(Stock::class);
+        return $this->hasMany(Stok::class);
     }
 
-    public function stockSold(): HasMany
+    public function stokSold(): HasMany
     {
-        return $this->hasMany(Stock::class)->sold();
+        return $this->hasMany(Stok::class)->sold();
     }
 
     public function scopeAlkes(Builder $query): void
@@ -69,7 +70,7 @@ class Goods extends Model
     }
 
     /**
-     * Get all of the goodsBalance for the Goods
+     * Get all of the goodsBalance for the Barang
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -79,17 +80,17 @@ class Goods extends Model
     }
 
     /**
-     * Get all of the incomingStock for the Goods
+     * Get all of the stokMasuk for the Barang
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function incomingStock(): HasMany
+    public function stokMasuk(): HasMany
     {
-        return $this->hasMany(IncomingStock::class);
+        return $this->hasMany(IncomingStok::class);
     }
 
     /**
-     * Get all of the saleDetail for the Goods
+     * Get all of the saleDetail for the Barang
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

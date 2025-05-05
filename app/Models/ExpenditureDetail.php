@@ -9,13 +9,13 @@ class ExpenditureDetail extends Model
 {
     //
     /**
-     * Get the employee that owns the ExpenditureDetail
+     * Get the pegawai that owns the ExpenditureDetail
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function employee(): BelongsTo
+    public function pegawai(): BelongsTo
     {
-        return $this->belongsTo(Employee::class)->withTrashed();
+        return $this->belongsTo(Pegawai::class)->withTrashed();
     }
 
     /**
