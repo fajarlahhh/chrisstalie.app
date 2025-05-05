@@ -5,29 +5,29 @@ namespace App\Livewire\Pelayanan\Kasir;
 use App\Models\Sale;
 use App\Models\Barang;
 use App\Models\Stok;
-use App\Models\Payment;
+use App\Models\Kasir;
 use Livewire\Component;
 use App\Models\Tarif;
 use App\Models\SaleDetail;
 use App\Models\Nakes;
-use App\Models\Registration;
-use App\Models\PaymentTreatment;
+use App\Models\Pendaftaran;
+use App\Models\KasirPelayananTindakan;
 use Illuminate\Support\Facades\DB;
-use App\Models\PaymentToolMaterial;
+use App\Models\KasirToolMaterial;
 
 class Form extends Component
 {
-    public $date, $data, $dataTarif = [], $dataNakes = [], $treatment = [], $toolsAndMaterial = [], $dataGoods = [];
+    public $date, $data, $dataTarif = [], $dataNakes = [], $pelayananTindakan = [], $toolsAndMaterial = [], $dataGoods = [];
     public $adminFee = 10000, $type = "Cash", $cash, $remainder;
 
-    public function mount(Registration $data)
+    public function mount(Pendaftaran $data)
     {
         $this->dataNakes = Nakes::with('pegawai')->orderBy('nama')->get()->toArray();
         $this->dataTarif = Tarif::orderBy('nama')->get()->toArray();
         $this->dataGoods = Barang::orderBy('nama')->get()->toArray();
         $this->date = $this->date ?: date('Y-m-d');
         $this->data = $data;
-        $this->treatment = $data->treatment->map(function ($q) {
+        $this->pelayananTindakan = $data->pelayananTindakan->map(function ($q) {
             $dataTarif = collect($this->dataTarif)->where('id', $q->action_rate_id)->first();
             return [
                 'action_rate_id' => $q->action_rate_id,
@@ -64,7 +64,7 @@ class Form extends Component
             'type' => 'required',
         ]);
 
-        $bill = $this->adminFee + collect($this->treatment)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty']) + collect($this->toolsAndMaterial)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty']);
+        $bill = $this->adminFee + collect($this->pelayananTindakan)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty']) + collect($this->toolsAndMaterial)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty']);
 
         if ($this->type == "Cash") {
             $this->validate([
@@ -87,17 +87,17 @@ class Form extends Component
         }
 
         DB::transaction(function () use ($bill) {
-            $payment = new Payment();
-            $payment->date = $this->date;
-            $payment->type = $this->type;
-            $payment->admin = $this->adminFee;
-            $payment->amount = $bill;
-            $payment->cash = $this->cash;
-            $payment->registration_id = $this->data->id;
-            $payment->user_id = auth()->id();
-            $payment->save();
+            $kasir = new Kasir();
+            $kasir->date = $this->date;
+            $kasir->type = $this->type;
+            $kasir->admin = $this->adminFee;
+            $kasir->amount = $bill;
+            $kasir->cash = $this->cash;
+            $kasir->pendaftaran_id = $this->data->id;
+            $kasir->pengguna_id = auth()->id();
+            $kasir->save();
 
-            PaymentTreatment::insert(collect($this->treatment)->map(fn($q) => [
+            KasirPelayananTindakan::insert(collect($this->pelayananTindakan)->map(fn($q) => [
                 'qty' => $q['qty'],
                 'harga' => $q['harga'],
                 'keuntungan' => $q['keuntungan'],
@@ -109,17 +109,17 @@ class Form extends Component
                 'nakes_id' => $q['nakes_id'],
                 'beautician_id' => $q['beautician_id'],
                 'action_rate_id' => $q['action_rate_id'],
-                'payment_id' => $payment->id,
+                'kasir_id' => $kasir->id,
             ])->toArray());
 
             if (collect($this->toolsAndMaterial)->count() > 0) {
                 $sale = new Sale();
-                $sale->payment_id = $payment->id;
+                $sale->kasir_id = $kasir->id;
                 $sale->pasien_id = $this->data->pasien_id;
                 $sale->date = $this->date;
                 $sale->amount = collect($this->toolsAndMaterial)->sum(fn($q) => $q['harga'] * $q['qty']);
                 $sale->date = $this->date;
-                $sale->user_id = auth()->id();
+                $sale->pengguna_id = auth()->id();
                 $sale->save();
 
                 SaleDetail::insert(collect($this->toolsAndMaterial)->map(
@@ -149,11 +149,11 @@ class Form extends Component
             //     ]);
             // }
 
-            Registration::where('id', $this->data->id)->update(['go_home' => now()]);
+            Pendaftaran::where('id', $this->data->id)->update(['go_home' => now()]);
             
             $cetak = view('livewire.pelayanan.kasir.cetak', [
                 'cetak' => true,
-                'data' => Payment::findOrFail($payment->id),
+                'data' => Kasir::findOrFail($kasir->id),
             ])->render();
             session()->flash('cetak', $cetak);
             session()->flash('success', 'Berhasil menyimpan data');

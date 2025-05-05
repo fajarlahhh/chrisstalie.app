@@ -4,11 +4,11 @@ namespace App\Livewire\Laporan\Jasapelayanan;
 
 use App\Exports\PembagianjasapelayananExport;
 use Livewire\Component;
-use App\Models\Treatment;
+use App\Models\PelayananTindakan;
 use App\Models\Tarif;
 use App\Models\Nakes;
 use Livewire\Attributes\Url;
-use App\Models\PaymentTreatment;
+use App\Models\KasirPelayananTindakan;
 
 class Index extends Component
 {
@@ -28,7 +28,7 @@ class Index extends Component
 
     public function getNakes()
     {
-        return (Nakes::with('pegawai')->withTrashed()->whereIn('id', PaymentTreatment::whereHas('payment', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->get()->map(function ($item) {
+        return (Nakes::with('pegawai')->withTrashed()->whereIn('id', KasirPelayananTindakan::whereHas('kasir', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->get()->map(function ($item) {
             return [
                 'nakes_id' => $item->nakes_id,
                 'beautician_id' => $item->beautician_id,
@@ -43,7 +43,7 @@ class Index extends Component
 
     public function getData()
     {
-        return (PaymentTreatment::with('actionRate')->whereHas('payment', fn($r) => $r->whereBetween('date', [$this->date1, $this->date2]))->get()->map(function ($q) {
+        return (KasirPelayananTindakan::with('tarif')->whereHas('kasir', fn($r) => $r->whereBetween('date', [$this->date1, $this->date2]))->get()->map(function ($q) {
             $harga = $q->harga * $q->qty;
             $keuntungan = $q->keuntungan * $q->qty;
             $modal = $q->modal * $q->qty;
@@ -53,7 +53,7 @@ class Index extends Component
             $nakesPortion = ($profitAfterDicount - $beauticianFee) * $q->porsi_nakes;
             return [
                 'id' => $q->action_rate_id,
-                'nama' => $q->actionRate->nama,
+                'nama' => $q->tarif->nama,
                 'harga' => $harga,
                 'discount_percent' => $q->discount,
                 'qty' => $q->qty,

@@ -3,10 +3,10 @@
 namespace App\Livewire\Pelayanan\Pemeriksaanawal;
 
 use Livewire\Component;
-use App\Models\Registration;
+use App\Models\Pendaftaran;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
-use App\Models\InitialExamination;
+use App\Models\PelayananPemeriksaanAwal;
 
 class Index extends Component
 {
@@ -21,15 +21,15 @@ class Index extends Component
 
     public function delete($id)
     {
-        InitialExamination::where('registration_id', $id)->whereDoesntHave('registration.payment')->delete();
+        PelayananPemeriksaanAwal::where('pendaftaran_id', $id)->whereDoesntHave('pendaftaran.kasir')->delete();
     }
 
     public function render()
     {
         return view('livewire.pelayanan.pemeriksaanawal.index', [
-            'data' => Registration::with('pasien')->with('nakes')->with('pengguna')
-                ->when($this->status == '2', fn($q) => $q->whereHas('initialExamination', fn($q) => $q->where('date', $this->date)))
-                ->when($this->status == '1', fn($q) => $q->whereDoesntHave('initialExamination'))
+            'data' => Pendaftaran::with('pasien')->with('nakes')->with('pengguna')
+                ->when($this->status == '2', fn($q) => $q->whereHas('pelayananPemeriksaanAwal', fn($q) => $q->where('date', $this->date)))
+                ->when($this->status == '1', fn($q) => $q->whereDoesntHave('pelayananPemeriksaanAwal'))
                 ->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'))
                 ->orderBy('created_at', 'desc')->paginate(10)
         ]);

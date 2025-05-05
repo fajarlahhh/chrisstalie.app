@@ -3,7 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Nakes;
-use App\Models\PaymentTreatment;
+use App\Models\KasirPelayananTindakan;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -21,7 +21,7 @@ class PembagianjasapelayananExport implements FromView
 
     public function getNakes()
     {
-        return (Nakes::with('pegawai')->withTrashed()->whereIn('id', PaymentTreatment::whereHas('payment', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->get()->map(function ($item) {
+        return (Nakes::with('pegawai')->withTrashed()->whereIn('id', KasirPelayananTindakan::whereHas('kasir', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->get()->map(function ($item) {
             return [
                 'nakes_id' => $item->nakes_id,
                 'beautician_id' => $item->beautician_id,
@@ -36,13 +36,13 @@ class PembagianjasapelayananExport implements FromView
 
     public function getData()
     {
-        return (PaymentTreatment::with('actionRate')->whereHas('payment', fn($r) => $r->whereBetween('date', [$this->date1, $this->date2]))->get()->map(function ($q) {
+        return (KasirPelayananTindakan::with('tarif')->whereHas('kasir', fn($r) => $r->whereBetween('date', [$this->date1, $this->date2]))->get()->map(function ($q) {
             $dicount = ($q->harga * $q->discount / 100) * $q->qty;
             $profitAfterDicount = $q->keuntungan - $dicount;
             $nakesPortion = ($profitAfterDicount - $q->upah_petugas) * $q->porsi_nakes;
             return [
                 'id' => $q->action_rate_id,
-                'name' => $q->actionRate->name,
+                'name' => $q->tarif->name,
                 'harga' => $q->harga,
                 'discount_percent' => $q->discount,
                 'qty' => $q->qty,

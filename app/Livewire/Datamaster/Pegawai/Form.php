@@ -30,6 +30,7 @@ class Form extends Component
             $this->data->nama = $this->nama;
             $this->data->alamat = $this->alamat;
             $this->data->no_hp = $this->no_hp;
+            $this->data->tanggal_lahir = $this->tanggal_lahir;
             $this->data->tanggal_masuk = $this->tanggal_masuk;
             $this->data->jenis_kelamin = $this->jenis_kelamin;
             $this->data->nik = $this->nik;
@@ -40,7 +41,7 @@ class Form extends Component
             $this->data->tunjangan_transport = $this->tunjangan_transport;
             $this->data->tunjangan_bpjs = $this->tunjangan_bpjs;
             $this->data->posisi = $this->posisi;
-            $this->data->user_id = auth()->id();
+            $this->data->pengguna_id = auth()->id();
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });

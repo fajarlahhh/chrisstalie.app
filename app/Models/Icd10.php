@@ -18,7 +18,7 @@ class Icd10 extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user(): BelongsTo
+    public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class)->withTrashed();
     }

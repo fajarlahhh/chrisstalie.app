@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Registration extends Model
+class Pendaftaran extends Model
 {
     use HasFactory;
+    protected $table = 'pendaftaran';
 
     /**
-     * Get the pasien that owns the Registration
+     * Get the pasien that owns the Pendaftaran
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -24,7 +25,7 @@ class Registration extends Model
     }
 
     /**
-     * Get the nakes that owns the Registration
+     * Get the nakes that owns the Pendaftaran
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -34,57 +35,57 @@ class Registration extends Model
     }
 
     /**
-     * Get the pengguna that owns the Registration
+     * Get the pengguna that owns the Pendaftaran
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user(): BelongsTo
+    public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class);
     }
 
     /**
-     * Get the initialExamination associated with the Registration
+     * Get the pelayananPemeriksaanAwal associated with the Pendaftaran
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function initialExamination(): HasOne
+    public function pelayananPemeriksaanAwal(): HasOne
     {
-        return $this->hasOne(InitialExamination::class);
+        return $this->hasOne(PelayananPemeriksaanAwal::class);
     }
 
     /**
-     * Get the diagnosis associated with the Registration
+     * Get the pelayananDiagnosa associated with the Pendaftaran
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function diagnosis(): HasMany
+    public function pelayananDiagnosa(): HasMany
     {
-        return $this->hasMany(Diagnosis::class);
+        return $this->hasMany(PelayananDiagnosa::class);
     }
 
     /**
-     * Get all of the treatment for the Registration
+     * Get all of the pelayananTindakan for the Pendaftaran
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function treatment(): HasMany
+    public function pelayananTindakan(): HasMany
     {
-        return $this->hasMany(Treatment::class);
+        return $this->hasMany(PelayananTindakan::class);
     }
 
     /**
-     * Get the payment associated with the Registration
+     * Get the kasir associated with the Pendaftaran
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function payment(): HasOne
+    public function kasir(): HasOne
     {
-        return $this->hasOne(Payment::class);
+        return $this->hasOne(Kasir::class);
     }
 
     /**
-     * Get all of the toolMaterial for the Registration
+     * Get all of the toolMaterial for the Pendaftaran
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

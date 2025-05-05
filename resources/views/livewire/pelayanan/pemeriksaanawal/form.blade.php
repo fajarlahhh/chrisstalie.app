@@ -68,8 +68,8 @@
                                         disabled />
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">No. Telpon</label>
-                                    <input class="form-control" type="text" value="{{ $data->pasien->no_telpon }}"
+                                    <label class="form-label">No. Hp</label>
+                                    <input class="form-control" type="text" value="{{ $data->pasien->no_hp }}"
                                         disabled />
                                 </div>
                             </div>
@@ -96,12 +96,12 @@
                             <div class="note-content">
                                 <h3>Pemeriksaan Fisik</h3>
                                 <div class="row">
-                                    @foreach ($physicalExamination as $key => $row)
+                                    @foreach ($pemeriksaanFisik as $key => $row)
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">{{ $key }}</label>
                                                 <input class="form-control" type="text"
-                                                    wire:model="physicalExamination.{{ $key }}" />
+                                                    wire:model="pemeriksaanFisik.{{ $key }}" />
                                             </div>
                                         </div>
                                     @endforeach

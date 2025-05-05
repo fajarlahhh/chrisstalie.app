@@ -1,5 +1,5 @@
 <div>
-    @section('title', (!$data->exists ? 'Tambah' : 'Edit') . ' Diagnosa')
+    @section('title', (!$data->exists ? 'Tambah' : 'Edit') . ' PelayananDiagnosa')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Data Master</li>

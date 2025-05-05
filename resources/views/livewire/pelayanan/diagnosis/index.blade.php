@@ -1,12 +1,12 @@
 <div>
-    @section('title', 'Diagnosis')
+    @section('title', 'PelayananDiagnosa')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Pelayanan</li>
-        <li class="breadcrumb-item active">Diagnosis</li>
+        <li class="breadcrumb-item active">PelayananDiagnosa</li>
     @endsection
 
-    <h1 class="page-header">Diagnosis</h1>
+    <h1 class="page-header">PelayananDiagnosa</h1>
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
@@ -57,12 +57,12 @@
                             <td>{{ $row->pasien->tanggal_lahir }}</td>
                             <td>{{ $row->pasien->jenis_kelamin }}</td>
                             <td>{{ $row->pasien->alamat }}</td>
-                            <td>{{ $row->pasien->no_telpon }}</td>
+                            <td>{{ $row->pasien->no_hp }}</td>
                             <td>{{ $row->uraian }}</td>
                             <td>{{ $row->note }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
-                                    @if ($row->diagnosis->count() == 0)
+                                    @if ($row->pelayananDiagnosa->count() == 0)
                                         <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form/{{ $row['id'] }}'"
                                             class="btn btn-primary btn-sm">
                                             Input

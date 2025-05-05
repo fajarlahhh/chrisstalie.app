@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Pelayanan\Catatanpasien;
 
-use App\Models\Registration;
+use App\Models\Pendaftaran;
 use Livewire\Component;
 
 class Form extends Component
 {
     public $data, $note;
 
-    public function mount(Registration $data)
+    public function mount(Pendaftaran $data)
     {
         $this->data = $data;
         $this->note = $data->note;

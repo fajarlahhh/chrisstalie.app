@@ -58,7 +58,7 @@ class Gaji extends Component
             foreach ($this->detail as $key => $row) {
                 $expenditure[] = [
                     'date' => $this->date,
-                    'user_id' => auth()->id(),
+                    'pengguna_id' => auth()->id(),
                     'type' => 'gaji',
                     'uraian' => 'Gaji ' . $row['nama'],
                     'pegawai_id' => $row['id'],
@@ -68,7 +68,7 @@ class Gaji extends Component
                 ];
                 $expenditure[] = [
                     'date' => $this->date,
-                    'user_id' => auth()->id(),
+                    'pengguna_id' => auth()->id(),
                     'type' => 'gaji',
                     'uraian' => 'Tunjangan ' . $row['nama'],
                     'pegawai_id' => $row['id'],
@@ -78,7 +78,7 @@ class Gaji extends Component
                 ];
                 $expenditure[] = [
                     'date' => $this->date,
-                    'user_id' => auth()->id(),
+                    'pengguna_id' => auth()->id(),
                     'type' => 'gaji',
                     'uraian' => 'Tunjangan Transport ' . $row['nama'],
                     'pegawai_id' => $row['id'],
@@ -88,7 +88,7 @@ class Gaji extends Component
                 ];
                 $expenditure[] = [
                     'date' => $this->date,
-                    'user_id' => auth()->id(),
+                    'pengguna_id' => auth()->id(),
                     'type' => 'gaji',
                     'uraian' => 'BPJS Kesehatan ' . $row['nama'],
                     'pegawai_id' => $row['id'],
@@ -100,7 +100,7 @@ class Gaji extends Component
             foreach ($this->otherCost as $key => $row) {
                 $expenditure[] = [
                     'date' => $this->date,
-                    'user_id' => auth()->id(),
+                    'pengguna_id' => auth()->id(),
                     'type' => 'gaji',
                     'uraian' => 'Uang Makan ' . $row['nama'],
                     'pegawai_id' => $row['id'],
@@ -110,7 +110,7 @@ class Gaji extends Component
                 ];
                 $expenditure[] = [
                     'date' => $this->date,
-                    'user_id' => auth()->id(),
+                    'pengguna_id' => auth()->id(),
                     'type' => 'gaji',
                     'uraian' => 'Jasa Pelayanan ' . $row['nama'],
                     'pegawai_id' => $row['id'],
@@ -120,7 +120,7 @@ class Gaji extends Component
                 ];
                 $expenditure[] = [
                     'date' => $this->date,
-                    'user_id' => auth()->id(),
+                    'pengguna_id' => auth()->id(),
                     'type' => 'gaji',
                     'uraian' => 'Bonus ' . $row['nama'],
                     'pegawai_id' => $row['id'],

@@ -3,21 +3,21 @@
 namespace App\Livewire\Pelayanan\Pemeriksaanawal;
 
 use Livewire\Component;
-use App\Models\Registration;
-use App\Models\InitialExamination;
-use App\Models\PhysicalExamination;
-use App\Models\Ttv;
+use App\Models\Pendaftaran;
+use App\Models\PelayananPemeriksaanAwal;
+use App\Models\PelayananPemeriksaanFisik;
+use App\Models\PelayananPemeriksaanTtv;
 use Illuminate\Support\Facades\DB;
 
 class Form extends Component
 {
-    public $date, $data, $complaint, $snomedCode, $anamnesis, $physicalExamination = [], $ttv = [];
+    public $date, $data, $complaint, $snomedCode, $anamnesis, $pemeriksaanFisik = [], $ttv = [];
 
-    public function mount(Registration $data)
+    public function mount(Pendaftaran $data)
     {
         $this->date = $this->date ?: date('Y-m-d');
         $this->data = $data;
-        $this->physicalExamination = [
+        $this->pemeriksaanFisik = [
             'Kepala' => 'Normal',
             'Mata' => 'Normal',
             'Telinga' => 'Normal',
@@ -41,13 +41,13 @@ class Form extends Component
             'Diastole' => '80',
             'Kesadaran' => '01',
         ];
-        if ($data->initialExamination) {
+        if ($data->pelayananPemeriksaanAwal) {
             
-            $this->fill($this->data->initialExamination->toArray());
-            foreach ($this->data->initialExamination->physicalExamination as $key => $row) {
-                $this->physicalExamination[$row->key] = $row->value;
+            $this->fill($this->data->pelayananPemeriksaanAwal->toArray());
+            foreach ($this->data->pelayananPemeriksaanAwal->pemeriksaanFisik as $key => $row) {
+                $this->pemeriksaanFisik[$row->key] = $row->value;
             }
-            foreach ($this->data->initialExamination->ttv as $key => $row) {
+            foreach ($this->data->pelayananPemeriksaanAwal->ttv as $key => $row) {
                 $this->ttv[$row->key] = $row->value;
             }
         }
@@ -61,24 +61,24 @@ class Form extends Component
         ]);
 
         DB::transaction(function () {
-            InitialExamination::where('registration_id', $this->data->id)->delete();
+            PelayananPemeriksaanAwal::where('pendaftaran_id', $this->data->id)->delete();
 
-            $initialExamination = new InitialExamination();
-            $initialExamination->registration_id = $this->data->id;
-            $initialExamination->date = $this->date;
-            $initialExamination->complaint = $this->complaint;
-            $initialExamination->snomed_code = $this->snomedCode;
-            $initialExamination->user_id = auth()->id();
-            $initialExamination->save();
+            $pelayananPemeriksaanAwal = new PelayananPemeriksaanAwal();
+            $pelayananPemeriksaanAwal->pendaftaran_id = $this->data->id;
+            $pelayananPemeriksaanAwal->date = $this->date;
+            $pelayananPemeriksaanAwal->complaint = $this->complaint;
+            $pelayananPemeriksaanAwal->snomed_code = $this->snomedCode;
+            $pelayananPemeriksaanAwal->pengguna_id = auth()->id();
+            $pelayananPemeriksaanAwal->save();
 
-            PhysicalExamination::insert(collect($this->physicalExamination)->map(fn($q, $key) => [
-                'initial_examination_id' => $initialExamination->id,
+            PelayananPemeriksaanFisik::insert(collect($this->pemeriksaanFisik)->map(fn($q, $key) => [
+                'initial_examination_id' => $pelayananPemeriksaanAwal->id,
                 'key' => $key,
                 'value' => $q
             ])->toArray());
 
-            Ttv::insert(collect($this->ttv)->map(fn($q, $key) => [
-                'initial_examination_id' => $initialExamination->id,
+            PelayananPemeriksaanTtv::insert(collect($this->ttv)->map(fn($q, $key) => [
+                'initial_examination_id' => $pelayananPemeriksaanAwal->id,
                 'key' => $key,
                 'value' => $q
             ])->toArray());

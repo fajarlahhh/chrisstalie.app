@@ -251,7 +251,7 @@
                     <div class="mb-3">
                         <label class="form-label">Total Tagihan</label>
                         <input class="form-control text-end" type="text"
-                            value="{{ number_format($adminFee + collect($treatment)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty']) + collect($toolsAndMaterial)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty'])) }}"
+                            value="{{ number_format($adminFee + collect($pelayananTindakan)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty']) + collect($toolsAndMaterial)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty'])) }}"
                             disabled />
                         @error('adminFee')
                             <span class="text-danger">{{ $message }}</span>
@@ -266,7 +266,7 @@
                             <label class="form-label">Jenis Bayar</label>
                             <select class="form-control" wire:model.lazy="type" data-width="100%" disabled>
                                 <option hidden selected>-- Pilih Jenis Bayar --</option>
-                                @foreach (\App\Enums\PaymentEnum::cases() as $item)
+                                @foreach (\App\Enums\KasirEnum::cases() as $item)
                                     <option value="{{ $item->value }}">{{ $item->label() }}</option>
                                 @endforeach
                             </select>
@@ -292,7 +292,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Keterangan Bayar</label>
-                                <input class="form-control" type="text" wire:model.live="payment_description" />
+                                <input class="form-control" type="text" wire:model.live="kasir_description" />
                                 @error('cash')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror

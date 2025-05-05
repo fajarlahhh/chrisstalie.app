@@ -76,7 +76,7 @@ class Form extends Component
             $data->supplier_id = $this->status == "Opname" ? null : $this->supplier_id;
             $data->ppn = $this->ppn;
             $data->discount = $this->discount;
-            $data->user_id = auth()->id();
+            $data->pengguna_id = auth()->id();
             $data->save();
 
             if ($this->status == "Lunas") {
@@ -86,7 +86,7 @@ class Form extends Component
                 $expenditure->uraian = "Pengadaan Barang " . $data->uraian;
                 $expenditure->receipt = $this->receipt;
                 $expenditure->purchase_id = $this->data->id;
-                $expenditure->user_id = auth()->id();
+                $expenditure->pengguna_id = auth()->id();
                 $expenditure->save();
 
                 ExpenditureDetail::insert(collect($this->procurement)->map(fn($q) => [

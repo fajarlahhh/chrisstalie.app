@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
-    public $pasien_id, $pasien, $goodsData = [],  $date, $uraian, $powerFee = 2000, $receiptFee = 3000,  $receipt = [], $type = "Cash", $cash = 0,  $total = 0, $payment_description, $nakes_id, $nakesData = [];
+    public $pasien_id, $pasien, $goodsData = [],  $date, $uraian, $powerFee = 2000, $receiptFee = 3000,  $receipt = [], $type = "Cash", $cash = 0,  $total = 0, $kasir_description, $nakes_id, $nakesData = [];
 
     public function addGoods($index)
     {
@@ -105,8 +105,8 @@ class Index extends Component
             $data->nakes_id = $this->nakes_id;
             $data->date = $this->date;
             $data->uraian = $this->uraian;
-            $data->payment_description = $this->payment_description;
-            $data->user_id = auth()->id();
+            $data->kasir_description = $this->kasir_description;
+            $data->pengguna_id = auth()->id();
             $data->amount = $bill;
             $data->power_fee = $this->powerFee;
             $data->receipt_fee = $this->receiptFee;

@@ -1,13 +1,13 @@
 <div>
-    @section('title', (!$data->exists ? 'Tambah' : 'Edit') . ' Diagnosa')
+    @section('title', (!$data->exists ? 'Tambah' : 'Edit') . ' PelayananDiagnosa')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Data Master</li>
-        <li class="breadcrumb-item">Diagnosa</li>
+        <li class="breadcrumb-item">PelayananDiagnosa</li>
         <li class="breadcrumb-item active">{{ !$data->exists ? 'Tambah' : 'Edit' }}</li>
     @endsection
 
-    <h1 class="page-header">Diagnosa <small>{{ !$data->exists ? 'Tambah' : 'Edit' }}</small></h1>
+    <h1 class="page-header">PelayananDiagnosa <small>{{ !$data->exists ? 'Tambah' : 'Edit' }}</small></h1>
 
     <x-alert />
 

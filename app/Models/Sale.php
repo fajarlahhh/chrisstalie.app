@@ -20,7 +20,7 @@ class Sale extends Model
         return $this->hasMany(SaleDetail::class);
     }
     
-    public function user(): BelongsTo
+    public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class);
     }

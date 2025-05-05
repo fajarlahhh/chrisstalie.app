@@ -7,47 +7,48 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Payment extends Model
+class Kasir extends Model
 {
     //
+    protected $table = 'kasir';
 
-    public function user(): BelongsTo
+    public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class);
     }
 
     /**
-     * Get all of the paymentTreatment for the Payment
+     * Get all of the kasirPelayananTindakan for the Kasir
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function paymentTreatment(): HasMany
+    public function kasirPelayananTindakan(): HasMany
     {
-        return $this->hasMany(PaymentTreatment::class);
+        return $this->hasMany(KasirPelayananTindakan::class);
     }
 
     /**
-     * Get all of the paymentToolMaterial for the Payment
+     * Get all of the kasirToolMaterial for the Kasir
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function paymentToolMaterial(): HasMany
+    public function kasirToolMaterial(): HasMany
     {
-        return $this->hasMany(PaymentToolMaterial::class);
+        return $this->hasMany(KasirToolMaterial::class);
     }
 
     /**
-     * Get the registration that owns the Payment
+     * Get the pendaftaran that owns the Kasir
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function registration(): BelongsTo
+    public function pendaftaran(): BelongsTo
     {
-        return $this->belongsTo(Registration::class);
+        return $this->belongsTo(Pendaftaran::class);
     }
 
     /**
-     * Get the sale associated with the Payment
+     * Get the sale associated with the Kasir
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */

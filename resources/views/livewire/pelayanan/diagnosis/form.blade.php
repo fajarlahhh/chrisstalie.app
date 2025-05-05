@@ -1,13 +1,13 @@
 <div>
-    @section('title', 'Tambah Diagnosis')
+    @section('title', 'Tambah PelayananDiagnosa')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Pelayanan</li>
-        <li class="breadcrumb-item">Diagnosis</li>
+        <li class="breadcrumb-item">PelayananDiagnosa</li>
         <li class="breadcrumb-item active">Tambah</li>
     @endsection
 
-    <h1 class="page-header">Diagnosis <small>Tambah</small></h1>
+    <h1 class="page-header">PelayananDiagnosa <small>Tambah</small></h1>
 
     <x-alert />
 
@@ -68,8 +68,8 @@
                                         disabled />
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">No. Telpon</label>
-                                    <input class="form-control" type="text" value="{{ $data->pasien->no_telpon }}"
+                                    <label class="form-label">No. Hp</label>
+                                    <input class="form-control" type="text" value="{{ $data->pasien->no_hp }}"
                                         disabled />
                                 </div>
                             </div>
@@ -92,7 +92,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($diagnosis as $index => $row)
+                                @foreach ($pelayananDiagnosa as $index => $row)
                                     <tr>
                                         <th class="align-middle">{{ $index + 1 }}</th>
                                         <th>
@@ -105,7 +105,7 @@
                                                 showSubtext: true,
                                                 styleBase: 'form-control'
                                             })"
-                                                wire:model="diagnosis.{{ $index }}.icd10" data-width="100%" required>
+                                                wire:model="pelayananDiagnosa.{{ $index }}.icd10" data-width="100%" required>
                                                 <option value="" selected hidden>-- Pilih ICD 10 --</option>
                                                 @foreach ($dataIcd10 as $icd)
                                                     <option value="{{ $icd['id'] }}">
@@ -116,7 +116,7 @@
                                         </th>
                                         <th class="align-middle">
                                             <a href="javascript:;" class="btn btn-danger btn-sm"
-                                                wire:click="deleteDiagnosis({{ $index }})">x</a>
+                                                wire:click="deletePelayananDiagnosa({{ $index }})">x</a>
                                         </th>
                                     </tr>
                                 @endforeach
@@ -125,7 +125,7 @@
                                 <tr>
                                     <td colspan="3" class="text-center">
                                         <a href="javascript:;" class="btn btn-primary btn-sm"
-                                            wire:click="addDiagnosis">Tambah Diagnosis</a>
+                                            wire:click="addPelayananDiagnosa">Tambah PelayananDiagnosa</a>
                                     </td>
                                 </tr>
                             </tfoot>

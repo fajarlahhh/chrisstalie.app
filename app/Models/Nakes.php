@@ -14,12 +14,12 @@ class Nakes extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'nakes';
 
-    public function scopeDoctor(Builder $query): void
+    public function scopeDokter(Builder $query): void
     {
         $query->where('dokter', 1);
     }
 
-    public function scopeNotDcotor(Builder $query): void
+    public function scopeBukanDokter(Builder $query): void
     {
         $query->where('dokter', 0);
     }
@@ -29,7 +29,7 @@ class Nakes extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user(): BelongsTo
+    public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class)->withTrashed();
     }
@@ -42,15 +42,5 @@ class Nakes extends Model
     public function pegawai(): BelongsTo
     {
         return $this->belongsTo(Pegawai::class)->withTrashed();
-    }
-
-    /**
-     * Get all of the paymentTreatment for the Nakes
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function paymentTreatment(): HasMany
-    {
-        return $this->hasMany(paymentTreatment::class);
     }
 }

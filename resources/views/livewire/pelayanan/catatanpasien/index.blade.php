@@ -51,14 +51,14 @@
                             <td>{{ $row->pasien->tanggal_lahir }}</td>
                             <td>{{ $row->pasien->jenis_kelamin }}</td>
                             <td>{{ $row->pasien->alamat }}</td>
-                            <td>{{ $row->pasien->no_telpon }}</td>
+                            <td>{{ $row->pasien->no_hp }}</td>
                             <td>{{ $row->uraian }}</td>
                             <td>
                                 {!! nl2br(e($row->note)) !!}
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
-                                    @if (!$row->payment)
+                                    @if (!$row->kasir)
                                         @if (!$row->note)
                                             <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form/{{ $row['id'] }}'"
                                                 class="btn btn-primary btn-sm">

@@ -15,16 +15,16 @@
 </table>
 <hr>
 <table class="table table-borderless fs-11px">
-    @foreach ($data->paymentTreatment as $treatment)
+    @foreach ($data->kasirPelayananTindakan as $pelayananTindakan)
         <tr>
-            <td class="p-0">{{ $treatment->actionRate->nama }}</td>
+            <td class="p-0">{{ $pelayananTindakan->tarif->nama }}</td>
         </tr>
         <tr>
-            <td class="p-0 ps-2">{{ number_format($treatment->qty) }} x
-                {{ number_format($treatment->harga - ($treatment->harga * $treatment->discount) / 100) }}
+            <td class="p-0 ps-2">{{ number_format($pelayananTindakan->qty) }} x
+                {{ number_format($pelayananTindakan->harga - ($pelayananTindakan->harga * $pelayananTindakan->discount) / 100) }}
             </td>
             <td class="p-0 text-end">Rp.
-                {{ number_format($treatment->qty * ($treatment->harga - ($treatment->harga * $treatment->discount) / 100)) }}
+                {{ number_format($pelayananTindakan->qty * ($pelayananTindakan->harga - ($pelayananTindakan->harga * $pelayananTindakan->discount) / 100)) }}
             </td>
         </tr>
     @endforeach

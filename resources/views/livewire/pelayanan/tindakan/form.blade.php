@@ -1,13 +1,13 @@
 <div>
-    @section('title', 'Tambah Tindakan')
+    @section('title', 'Tambah PelayananTindakan')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Pelayanan</li>
-        <li class="breadcrumb-item">Tindakan</li>
+        <li class="breadcrumb-item">PelayananTindakan</li>
         <li class="breadcrumb-item active">Tambah</li>
     @endsection
 
-    <h1 class="page-header">Tindakan <small>Tambah</small></h1>
+    <h1 class="page-header">PelayananTindakan <small>Tambah</small></h1>
 
     <x-alert />
 
@@ -68,8 +68,8 @@
                                         disabled />
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">No. Telpon</label>
-                                    <input class="form-control" type="text" value="{{ $data->pasien->no_telpon }}"
+                                    <label class="form-label">No. Hp</label>
+                                    <input class="form-control" type="text" value="{{ $data->pasien->no_hp }}"
                                         disabled />
                                 </div>
                             </div>
@@ -88,14 +88,14 @@
                                 <thead>
                                     <tr>
                                         <th class="w-5px">No.</th>
-                                        <th>Tindakan</th>
+                                        <th>PelayananTindakan</th>
                                         <th class="w-100px">Qty</th>
                                         <th class="w-400px" colspan="2">Nakes</th>
                                         <th class="w-5px"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($treatment as $index => $row)
+                                    @foreach ($pelayananTindakan as $index => $row)
                                         <tr>
                                             <th class="align-middle">{{ $index + 1 }}</th>
                                             <th>
@@ -109,21 +109,21 @@
                                                         showSubtext: true,
                                                         styleBase: 'form-control'
                                                     })"
-                                                    wire:model.lazy="treatment.{{ $index }}.action_rate_id"
+                                                    wire:model.lazy="pelayananTindakan.{{ $index }}.action_rate_id"
                                                     wire:change="changeTarif({{ $index }})" required
                                                     data-width="100%">
-                                                    <option value="" selected hidden>-- Pilih Tindakan --</option>
-                                                    @foreach ($dataTarif as $actionRate)
-                                                        <option value="{{ $actionRate['id'] }}"
-                                                            data-subtext="{{ number_format($actionRate['harga']) }}">
-                                                            {{ $actionRate['nama'] }}
+                                                    <option value="" selected hidden>-- Pilih PelayananTindakan --</option>
+                                                    @foreach ($dataTarif as $tarif)
+                                                        <option value="{{ $tarif['id'] }}"
+                                                            data-subtext="{{ number_format($tarif['harga']) }}">
+                                                            {{ $tarif['nama'] }}
                                                         </option>
                                                     @endforeach
                                                 </select>
                                             </th>
                                             <th>
                                                 <input class="form-control w-100px" min="0" step="1"
-                                                    type="number" wire:model="treatment.{{ $index }}.qty" />
+                                                    type="number" wire:model="pelayananTindakan.{{ $index }}.qty" />
                                             </th>
                                             <th>
                                                 @if ($row['action_rate_id'])
@@ -138,7 +138,7 @@
                                                                 showSubtext: true,
                                                                 styleBase: 'form-control'
                                                             })"
-                                                            wire:model="treatment.{{ $index }}.nakes_id"
+                                                            wire:model="pelayananTindakan.{{ $index }}.nakes_id"
                                                             data-width="100%" required>
                                                             <option value="" selected>-- Pilih Nakes --</option>
                                                             @foreach ($dataNakes as $petugas)
@@ -163,7 +163,7 @@
                                                                 showSubtext: true,
                                                                 styleBase: 'form-control'
                                                             })"
-                                                            wire:model="treatment.{{ $index }}.beautician_id"
+                                                            wire:model="pelayananTindakan.{{ $index }}.beautician_id"
                                                             data-width="100%" required>
                                                             <option value="" selected>-- Pilih Beautician --
                                                             </option>
@@ -178,7 +178,7 @@
                                             </th>
                                             <th class="align-middle">
                                                 <a href="javascript:;" class="btn btn-danger btn-sm"
-                                                    wire:click="deleteTreatment({{ $index }})">x</a>
+                                                    wire:click="deletePelayananTindakan({{ $index }})">x</a>
                                             </th>
                                         </tr>
                                     @endforeach
@@ -187,7 +187,7 @@
                                     <tr>
                                         <td colspan="6" class="text-center">
                                             <a href="javascript:;" class="btn btn-primary btn-sm"
-                                                wire:click="addTreatment">Tambah Tindakan</a>
+                                                wire:click="addPelayananTindakan">Tambah PelayananTindakan</a>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -221,7 +221,7 @@
                                                     })"
                                                     wire:model.lazy="toolsAndMaterial.{{ $index }}.goods_id"
                                                     data-width="100%">
-                                                    <option value="" selected hidden>-- Pilih Tindakan --
+                                                    <option value="" selected hidden>-- Pilih PelayananTindakan --
                                                     </option>
                                                     @foreach ($dataGoods as $goods)
                                                         <option value="{{ $goods['id'] }}"

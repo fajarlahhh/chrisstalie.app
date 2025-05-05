@@ -87,7 +87,7 @@ class Form extends Component
             $this->data->cost = collect($this->detail)->where('uraian', '!=', 'Discount')->sum('cost') - collect($this->detail)->where('uraian', 'Discount')->sum('cost');
             $this->data->purchase_id = $this->purchase_id;
             $this->data->uraian = "Pelunasan Pengadaan " . collect($this->detail)->pluck('uraian')->join(',');
-            $this->data->user_id = auth()->id();
+            $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
             ExpenditureDetail::where('expenditure_id', $this->data->id)->delete();

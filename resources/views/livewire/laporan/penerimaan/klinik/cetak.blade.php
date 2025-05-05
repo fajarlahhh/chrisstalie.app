@@ -12,7 +12,7 @@
         <thead>
             <tr>
                 <th rowspan="2" class="w-10px">No.</th>
-                <th rowspan="2">Tindakan</th>
+                <th rowspan="2">PelayananTindakan</th>
                 <th rowspan="2" class="w-70px">Qty</th>
                 <th rowspan="2" class="w-100px">Jumlah Harga</th>
                 <th rowspan="2" class="w-100px">Jumlah Harga Setelah Diskon</th>
@@ -63,7 +63,7 @@
                 <th class="w-10px">No.</th>
                 <th>Tanggal</th>
                 <th>Pasien</th>
-                <th>Tindakan</th>
+                <th>PelayananTindakan</th>
                 <th class="w-70px">Qty</th>
                 <th class="w-100px">Harga</th>
                 <th class="w-100px">Diskon</th>
@@ -82,9 +82,9 @@
                 @endphp
                 <tr>
                     <td>{{ ++$index }}</td>
-                    <td>{{ $row->payment->date }}</td>
-                    <td>{{ $row->payment->registration->pasien->nama }}</td>
-                    <td>{{ $row->actionRate->nama }}</td>
+                    <td>{{ $row->kasir->date }}</td>
+                    <td>{{ $row->kasir->pendaftaran->pasien->nama }}</td>
+                    <td>{{ $row->tarif->nama }}</td>
                     <td class="text-center">{{ number_format($row['qty']) }}</td>
                     <td class="text-end">{{ number_format($row['harga']) }}</td>
                     <td class="text-end">{{ number_format(($row['harga'] * $row['discount']) / 100) }}</td>

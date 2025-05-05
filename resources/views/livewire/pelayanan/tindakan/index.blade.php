@@ -1,12 +1,12 @@
 <div>
-    @section('title', 'Tindakan')
+    @section('title', 'PelayananTindakan')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Pelayanan</li>
-        <li class="breadcrumb-item active">Tindakan</li>
+        <li class="breadcrumb-item active">PelayananTindakan</li>
     @endsection
 
-    <h1 class="page-header">Tindakan</h1>
+    <h1 class="page-header">PelayananTindakan</h1>
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
@@ -36,7 +36,7 @@
                         <th>Nama</th>
                         <th>Jenis Kelamin</th>
                         <th>Alamat</th>
-                        <th>Tindakan</th>
+                        <th>PelayananTindakan</th>
                         <th>Alat Bahan</th>
                         <th>Keterangan</th>
                         <th class="w-10px"></th>
@@ -55,9 +55,9 @@
                             <td>{{ $row->pasien->alamat }}</td>
                             <td class="text-nowrap">
                                 <ul>
-                                    @foreach ($row->treatment as $subRow)
-                                        <li>{{ $subRow->actionRate->nama }} ({{ $subRow->qty }} x
-                                            {{ number_format($subRow->actionRate->harga, 2) }})</li>
+                                    @foreach ($row->pelayananTindakan as $subRow)
+                                        <li>{{ $subRow->tarif->nama }} ({{ $subRow->qty }} x
+                                            {{ number_format($subRow->tarif->harga, 2) }})</li>
                                     @endforeach
                                 </ul>
                             </td>
@@ -71,13 +71,13 @@
                             <td>{{ $row->uraian }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
-                                    @if ($row->treatment->count() == 0)
+                                    @if ($row->pelayananTindakan->count() == 0)
                                         <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form/{{ $row['id'] }}'"
                                             class="btn btn-primary btn-sm">
                                             Input
                                         </a>
                                     @else
-                                        @if ($row->payment)
+                                        @if ($row->kasir)
                                             <x-action :row="$row" custom="" :detail="false" :edit="false"
                                                 :print="false" :permanentDelete="false" :restore="false" :delete="false" />
                                         @else

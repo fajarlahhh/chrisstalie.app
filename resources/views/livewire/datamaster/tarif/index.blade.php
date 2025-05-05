@@ -1,12 +1,12 @@
 <div>
-    @section('title', 'Tindakan')
+    @section('title', 'PelayananTindakan')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Data Master</li>
-        <li class="breadcrumb-item active">Tindakan</li>
+        <li class="breadcrumb-item active">PelayananTindakan</li>
     @endsection
 
-    <h1 class="page-header">Tindakan</h1>
+    <h1 class="page-header">PelayananTindakan</h1>
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">
@@ -40,7 +40,7 @@
                         <th>Porsi Beautician</th>
                         <th>Porsi Nakes</th>
                         <th>Porsi Klinik</th>
-                        <th>Biaya</th>
+                        <th>Total Biaya</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -51,22 +51,22 @@
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
                             <td>{{ $row->nama }}</td>
-                            <td class="text-end">{{ $row->kategori }}</td>
+                            <td>{{ $row->kategori }}</td>
                             <td>{{ $row->deskripsi }}</td>
                             <td>{{ $row->icd_9_cm }}</td>
                             <td class="text-end">{{ number_format($row->modal) }}</td>
                             <td class="text-end">{{ number_format($row->porsi_petugas) }}</td>
                             <td class="text-end">{{ number_format($row->porsi_kantor) }}</td>
                             <td class="text-end">{{ number_format($row->porsi_nakes) }}</td>
-                            <td class="text-end">{{ number_format($row->biaya) }}</td>
+                            <th class="text-end">{{ number_format($row->biaya) }}</th>
                             <td class="with-btn-group text-end" nowrap>
-                @role('administrator|supervisor|operator')
+                                @role('administrator|supervisor|operator')
                                     @if ($row->trashed())
-                                        <x-action :row="$row"  custom="" :detail="false" :edit="false" :print="false"
-                                            :permanentDelete="false" :restore="true" :delete="false" />
+                                        <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                            :print="false" :permanentDelete="false" :restore="true" :delete="false" />
                                     @else
-                                        <x-action :row="$row"  custom="" :detail="false" :edit="true" :print="false"
-                                            :permanentDelete="true" :restore="false" :delete="true" />
+                                        <x-action :row="$row" custom="" :detail="false" :edit="true"
+                                            :print="false" :permanentDelete="true" :restore="false" :delete="true" />
                                     @endif
                                 @endrole
                             </td>

@@ -218,7 +218,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Keterangan Bayar</label>
-                                <input class="form-control" type="text" wire:model.live="payment_description" />
+                                <input class="form-control" type="text" wire:model.live="kasir_description" />
                                 @error('cash')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror

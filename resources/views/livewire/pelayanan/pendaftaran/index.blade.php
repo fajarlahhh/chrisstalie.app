@@ -45,7 +45,7 @@
                                 <hr>
                                 <div class="mb-3">
                                     <label class="form-label">No. KTP</label>
-                                    <input class="form-control" type="text" wire:model="nik" />
+                                    <input class="form-control" type="number" minlength="16" wire:model="nik" />
                                     @error('nik')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -91,9 +91,9 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">No. Telpon</label>
-                                    <input class="form-control" type="text" wire:model="no_telpon" />
-                                    @error('no_telpon')
+                                    <label class="form-label">No. Hp</label>
+                                    <input class="form-control" type="text" wire:model="no_hp" />
+                                    @error('no_hp')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -140,7 +140,7 @@
                                                 }
                                                 var $data = $('<table><tr><th>No. RM</th><th>:</th><th>' + data.rm + '</th></tr>' +
                                                     '<tr><th>No. KTP</th><th>:</th><th>' + data.nik + '</th></tr>' +
-                                                    '<tr><th>Nama</th><th>:</th><th>' + data.name + '</th></tr>' +
+                                                    '<tr><th>Nama</th><th>:</th><th>' + data.nama + '</th></tr>' +
                                                     '<tr><th>Alamat</th><th>:</th><th>' + data.alamat + '</th></tr></table>');
                                                 return $data;
                                             }">
@@ -166,7 +166,7 @@
                                 <div class="mb-3">
                                     <label class="form-label">Nama</label>
                                     <input class="form-control" type="text" wire:model="nama"
-                                        @if ($name) disabled @endif
+                                        @if ($nama) disabled @endif
                                         @if (!$pasien_id) disabled @endif />
                                     @error('nama')
                                         <span class="text-danger">{{ $message }}</span>
@@ -206,9 +206,9 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">No. Telpon</label>
-                                    <input class="form-control" type="text" wire:model="no_telpon"
-                                        @if ($no_telpon) disabled @endif
+                                    <label class="form-label">No. Hp</label>
+                                    <input class="form-control" type="text" wire:model="no_hp"
+                                        @if ($no_hp) disabled @endif
                                         @if (!$pasien_id) disabled @endif />
                                 </div>
                             </div>
@@ -219,8 +219,8 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">Tanggal</label>
-                            <input class="form-control" type="date" wire:model="date" />
-                            @error('date')
+                            <input class="form-control" type="date" min="{{ date('Y-m-d') }}" wire:model="tanggal" />
+                            @error('tanggal')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -237,7 +237,7 @@
                             })"
                                 wire:model="nakes_id" data-width="100%">
                                 <option selected value="">-- Pilih Dokter --</option>
-                                @foreach ($nakesData as $row)
+                                @foreach ($dataNakes as $row)
                                     <option value="{{ $row['id'] }}" data-subtext="{{ $row['dokter'] }}">
                                         {{ $row['nama'] }}
                                     </option>
@@ -248,9 +248,9 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Keterangan</label>
-                            <textarea class="form-control" wire:model="uraian" rows="5"></textarea>
-                            @error('uraian')
+                            <label class="form-label">Catatan</label>
+                            <textarea class="form-control" wire:model="catatan" rows="5"></textarea>
+                            @error('catatan')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -262,7 +262,6 @@
                     <input type="submit" value="Simpan" class="btn btn-success" />
                 @endrole
                 <a href="/pelayanan/pendaftaran/data" class="btn btn-warning m-r-3">Data</a>
-                <a href="javascript:;" wire:click="resetPasien" class="btn btn-secondary m-r-3">Reset</a>
             </div>
         </form>
     </div>

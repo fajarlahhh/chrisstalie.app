@@ -44,7 +44,7 @@ class Form extends Component
             $this->data->porsi_kantor = $this->konsinyator_id ? $this->porsi_kantor : 100;
             $this->data->porsi_nakes = $this->konsinyator_id ? $this->porsi_nakes : 0;
             $this->data->kfa = $this->kfa;
-            $this->data->user_id = auth()->id();
+            $this->data->pengguna_id = auth()->id();
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });

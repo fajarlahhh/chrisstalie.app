@@ -18,19 +18,19 @@ class Pasien extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user(): BelongsTo
+    public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class)->withTrashed();
     }
 
     /**
-     * Get all of the registration for the Pasien
+     * Get all of the pendaftaran for the Pasien
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function registration(): HasMany
+    public function pendaftaran(): HasMany
     {
-        return $this->hasMany(Registration::class);
+        return $this->hasMany(Pendaftaran::class);
     }
 
     /**

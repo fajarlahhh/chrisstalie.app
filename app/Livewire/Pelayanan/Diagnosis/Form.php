@@ -1,61 +1,61 @@
 <?php
 
-namespace App\Livewire\Pelayanan\Diagnosis;
+namespace App\Livewire\Pelayanan\PelayananDiagnosa;
 
-use App\Models\Diagnosis;
+use App\Models\PelayananDiagnosa;
 use App\Models\Icd10;
 use Livewire\Component;
-use App\Models\Registration;
+use App\Models\Pendaftaran;
 use Illuminate\Support\Facades\DB;
 
 class Form extends Component
 {
-    public $date, $data, $dataIcd10 = [], $diagnosis = [];
+    public $date, $data, $dataIcd10 = [], $pelayananDiagnosa = [];
 
-    public function mount(Registration $data)
+    public function mount(Pendaftaran $data)
     {
         $this->date = $this->date ?: date('Y-m-d');
         $this->data = $data;
         $this->dataIcd10 = Icd10::orderBy('uraian')->get()->toArray();
-        $this->diagnosis = $data->diagnosis->map(fn($q) => ['icd10' => $q->icd10_id])->toArray();
+        $this->pelayananDiagnosa = $data->pelayananDiagnosa->map(fn($q) => ['icd10' => $q->icd10_id])->toArray();
     }
 
-    public function addDiagnosis()
+    public function addPelayananDiagnosa()
     {
-        $this->diagnosis[] = ['icd10' => null];
+        $this->pelayananDiagnosa[] = ['icd10' => null];
     }
 
-    public function deleteDiagnosis($index)
+    public function deletePelayananDiagnosa($index)
     {
-        unset($this->diagnosis[$index]);
-        $this->diagnosis = array_merge($this->diagnosis);
+        unset($this->pelayananDiagnosa[$index]);
+        $this->pelayananDiagnosa = array_merge($this->pelayananDiagnosa);
     }
 
     public function submit()
     {
         $this->validate([
             'date' => 'required',
-            'diagnosis' => 'required',
+            'pelayananDiagnosa' => 'required',
         ]);
 
         DB::transaction(function () {
-            Diagnosis::where('registration_id', $this->data->id)->delete();
-            Diagnosis::insert(collect($this->diagnosis)->map(fn($q, $key) => [
-                'registration_id' => $this->data->id,
+            PelayananDiagnosa::where('pendaftaran_id', $this->data->id)->delete();
+            PelayananDiagnosa::insert(collect($this->pelayananDiagnosa)->map(fn($q, $key) => [
+                'pendaftaran_id' => $this->data->id,
                 'icd10_id' => $q['icd10'],
                 'date' => $this->date,
-                'user_id' => auth()->id(),
+                'pengguna_id' => auth()->id(),
                 'created_at' => now(),
                 'updated_at' => now()
             ])->toArray());
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('/pelayanan/diagnosis');
+        $this->redirect('/pelayanan/pelayananDiagnosa');
     }
 
     public function render()
     {
-        return view('livewire.pelayanan.diagnosis.form');
+        return view('livewire.pelayanan.pelayananDiagnosa.form');
     }
 }

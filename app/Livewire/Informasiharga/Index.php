@@ -6,7 +6,7 @@ use App\Models\Tarif;
 use App\Models\Barang;
 use Livewire\Component;
 use Illuminate\Support\Str;
-use App\Models\Treatment;
+use App\Models\PelayananTindakan;
 
 class Index extends Component
 {
@@ -22,7 +22,7 @@ class Index extends Component
         $goods = Barang::orderBy('nama')->with('availableStok')->get()->map(fn($q) => [
             'id' => 'goods' . Str::random(10),
             'goods_id' => $q->id,
-            'medical_treatment_id' => null,
+            'medical_pelayananTindakan_id' => null,
             'nama' => ucFirst($q->nama),
             'satuan' => $q->satuan,
             'type' =>  $q->type,
@@ -31,19 +31,19 @@ class Index extends Component
             'kode' => $q->kfa,
         ])->toArray();
 
-        $medicalTreatment = Tarif::orderBy('nama')->get()->map(fn($q) => [
-            'id' => 'medicaltreatment' . Str::random(10),
+        $medicalPelayananTindakan = Tarif::orderBy('nama')->get()->map(fn($q) => [
+            'id' => 'medicalpelayananTindakan' . Str::random(10),
             'goods_id' => $q->id,
-            'medical_treatment_id' => $q->id,
+            'medical_pelayananTindakan_id' => $q->id,
             'nama' => ucFirst($q->nama),
             'satuan' => null,
-            'type' =>  "Tindakan Medis",
+            'type' =>  "PelayananTindakan Medis",
             'harga' => $q->harga,
             'stok' => null,
             'kode' => $q->icd_9_cm,
         ])->toArray();
 
-        $this->informationData = collect(array_merge($goods, $medicalTreatment))->sortBy('nama');
+        $this->informationData = collect(array_merge($goods, $medicalPelayananTindakan))->sortBy('nama');
     }
 
     public function render()

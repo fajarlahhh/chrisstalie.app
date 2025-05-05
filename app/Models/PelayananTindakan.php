@@ -9,27 +9,33 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Treatment extends Model
+class PelayananTindakan extends Model
 {
     use HasFactory;
 
+    protected $table = 'pelayanan_tindakan';
+
     /**
-     * Get the pengguna that owns the Treatment
+     * Get the pengguna that owns the PelayananTindakan
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user(): BelongsTo
+    public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class)->withTrashed()->withTrashed();
     }
 
     /**
-     * Get the actionRate that owns the Treatment
+     * Get the tarif that owns the PelayananTindakan
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function actionRate(): BelongsTo
+    public function tarif(): BelongsTo
     {
         return $this->belongsTo(Tarif::class);
+    }
+    public function pendaftaran(): BelongsTo
+    {
+        return $this->belongsTo(Pendaftaran::class);
     }
 }

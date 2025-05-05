@@ -35,8 +35,8 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">No. Telp.</label>
-                    <input class="form-control" type="text" wire:model="no_telpon" />
-                    @error('no_telpon')
+                    <input class="form-control" type="text" wire:model="no_hp" />
+                    @error('no_hp')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

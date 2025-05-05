@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class PaymentTreatment extends Model
+class KasirPelayananTindakan extends Model
 {
     //
 
     /**
-     * Get the nakes that owns the PaymentTreatment
+     * Get the nakes that owns the KasirPelayananTindakan
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -20,7 +20,7 @@ class PaymentTreatment extends Model
     }
 
     /**
-     * Get the beautician that owns the PaymentTreatment
+     * Get the beautician that owns the KasirPelayananTindakan
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -30,21 +30,21 @@ class PaymentTreatment extends Model
     }
 
     /**
-     * Get the payment that owns the PaymentTreatment
+     * Get the kasir that owns the KasirPelayananTindakan
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function payment(): BelongsTo
+    public function kasir(): BelongsTo
     {
-        return $this->belongsTo(Payment::class);
+        return $this->belongsTo(Kasir::class);
     }
 
     /**
-     * Get the actionRate that owns the PaymentTreatment
+     * Get the tarif that owns the KasirPelayananTindakan
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function actionRate(): BelongsTo
+    public function tarif(): BelongsTo
     {
         return $this->belongsTo(Tarif::class);
     }

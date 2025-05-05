@@ -166,7 +166,7 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
-                    "title" => "Diagnosis",
+                    "title" => "Diagnosa",
                     "method" => ["Index", "Form"],
                 ],
                 [

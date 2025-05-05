@@ -68,8 +68,8 @@
                                         disabled />
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">No. Telpon</label>
-                                    <input class="form-control" type="text" value="{{ $data->pasien->no_telpon }}"
+                                    <label class="form-label">No. Hp</label>
+                                    <input class="form-control" type="text" value="{{ $data->pasien->no_hp }}"
                                         disabled />
                                 </div>
                             </div>
@@ -87,24 +87,24 @@
                             <thead>
                                 <tr>
                                     <th class="w-5px">No.</th>
-                                    <th>Tindakan</th>
+                                    <th>PelayananTindakan</th>
                                     <th class="w-70px">Qty</th>
                                     <th class="w-90px">Diskon</th>
                                     <th class="w-100px">Harga</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($treatment as $index => $row)
+                                @foreach ($pelayananTindakan as $index => $row)
                                     <tr>
                                         <th class="align-middle">{{ $index + 1 }}</th>
                                         <th>
                                             <select data-container="body" class="form-control"
-                                                wire:model.lazy="treatment.{{ $index }}.action_rate_id" disabled
+                                                wire:model.lazy="pelayananTindakan.{{ $index }}.action_rate_id" disabled
                                                 data-width="100%">
-                                                @foreach ($dataTarif as $actionRate)
-                                                    <option value="{{ $actionRate['id'] }}">
-                                                        {{ $actionRate['nama'] }} - Rp.
-                                                        {{ number_format($actionRate['harga']) }}
+                                                @foreach ($dataTarif as $tarif)
+                                                    <option value="{{ $tarif['id'] }}">
+                                                        {{ $tarif['nama'] }} - Rp.
+                                                        {{ number_format($tarif['harga']) }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -115,7 +115,7 @@
                                         </th>
                                         <th>
                                             <input class="form-control" type="number" max="100" maxlength="3"
-                                                wire:model.lazy="treatment.{{ $index }}.discount" />
+                                                wire:model.lazy="pelayananTindakan.{{ $index }}.discount" />
                                         </th>
                                         <th>
                                             <input class="form-control text-end" type="text"
@@ -184,7 +184,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Total Tagihan</label>
                                 <input class="form-control text-end" type="text"
-                                    value="{{ number_format(($adminFee ?: 0) + collect($treatment)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty']) + collect($toolsAndMaterial)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty'])) }}"
+                                    value="{{ number_format(($adminFee ?: 0) + collect($pelayananTindakan)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty']) + collect($toolsAndMaterial)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty'])) }}"
                                     disabled />
                                 @error('adminFee')
                                     <span class="text-danger">{{ $message }}</span>
@@ -199,7 +199,7 @@
                                     <label class="form-label">Jenis Bayar</label>
                                     <select class="form-control" wire:model.lazy="type" data-width="100%">
                                         <option hidden selected>-- Pilih Jenis Bayar --</option>
-                                        @foreach (\App\Enums\PaymentEnum::cases() as $item)
+                                        @foreach (\App\Enums\KasirEnum::cases() as $item)
                                             <option value="{{ $item->value }}">{{ $item->label() }}</option>
                                         @endforeach
                                     </select>
@@ -218,7 +218,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Uang Kembali</label>
                                         <input class="form-control text-end" type="text" disabled
-                                            value="{{ number_format(($cash ?: 0) - (($adminFee ?: 0) + collect($treatment)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty']) + collect($toolsAndMaterial)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty']))) }}" />
+                                            value="{{ number_format(($cash ?: 0) - (($adminFee ?: 0) + collect($pelayananTindakan)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty']) + collect($toolsAndMaterial)->sum(fn($q) => ($q['harga'] - (($q['discount'] ?: 0) / 100) * $q['harga']) * $q['qty']))) }}" />
                                         @error('remainder')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror

@@ -33,7 +33,7 @@ class SatusehatClass
         return json_decode($res->getBody()->getContents())->access_token;
     }
 
-    public static function getPatientByNik($nik)
+    public static function getPasienByNik($nik)
     {
         try {
             $client = new Client();
@@ -51,7 +51,7 @@ class SatusehatClass
         }
     }
 
-    public static function getPractitionerByNik($nik)
+    public static function getNakesByNik($nik)
     {
         try {
             $client = new Client();

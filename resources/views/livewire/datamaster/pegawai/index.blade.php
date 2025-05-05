@@ -31,19 +31,20 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th class="w-10px">No.</th>
-                        <th>NIK</th>
-                        <th>Nama</th>
-                        <th>Alamat</th>
-                        <th>No. Telpon</th>
-                        <th>Jenis Kelamin</th>
-                        <th>Tanggal Mulai</th>
-                        <th>Posisi</th>
-                        <th>NPWP</th>
-                        <th>No. BPJS Ketenagakerjaan</th>
-                        <th>No. BPJS Kesehatan</th>
-                        <th>Penggajian</th>
-                        <th class="w-10px"></th>
+                        <th rowspan="2" class="w-10px">No.</th>
+                        <th rowspan="2">NIK</th>
+                        <th rowspan="2">Nama</th>
+                        <th rowspan="2">Alamat</th>
+                        <th rowspan="2">No. Hp</th>
+                        <th rowspan="2">Tanggal Masuk</th>
+                        <th colspan="4">Penggajian</th>
+                        <th rowspan="2" class="w-10px"></th>
+                    </tr>
+                    <tr>
+                        <th class="w-100px">Gaji</th>
+                        <th class="w-100px">Tunjangan</th>
+                        <th class="w-100px">Transport</th>
+                        <th class="w-100px">BPJS</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,18 +57,11 @@
                             <td>{{ $row->nama }}</td>
                             <td>{{ $row->alamat }}</td>
                             <td>{{ $row->no_hp }}</td>
-                            <td>{{ $row->jenis_kelamin }}</td>
                             <td>{{ $row->tanggal_masuk }}</td>
-                            <td>{{ $row->posisi }}</td>
-                            <td>{{ $row->npwp }}</td>
-                            <td>{{ $row->no_bpjs }}</td>
-                            <td>{{ $row->no_bpjs }}</td>
-                            <td class="text-nowrap">
-                                Gaji Pokok : {{ number_format($row->gaji) }}<br>
-                                Tunjangan : {{ number_format($row->tunjangan) }}<br>
-                                Transport : {{ number_format($row->tunjangan_transport) }}<br>
-                                BPJS Kesehatan : {{ number_format($row->tunjangan_bpjs) }}
-                            </td>
+                            <td class="text-end">{{ number_format($row->gaji) }}</td>
+                            <td class="text-end">{{ number_format($row->tunjangan) }}</td>
+                            <td class="text-end">{{ number_format($row->tunjangan_transport) }}</td>
+                            <td class="text-end">{{ number_format($row->tunjangan_bpjs) }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
                                     @if ($row->trashed())

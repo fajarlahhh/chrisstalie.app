@@ -32,7 +32,7 @@ class Form extends Component
             $this->data->porsi_nakes = $this->porsi_nakes;
             $this->data->porsi_kantor = $this->porsi_kantor;
             $this->data->icd_9_cm = $this->icd_9_cm;
-            $this->data->user_id = auth()->id();
+            $this->data->pengguna_id = auth()->id();
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });

@@ -11,7 +11,7 @@
     <thead>
         <tr>
             <th rowspan="2" class="w-10px">No.</th>
-            <th rowspan="2">Tindakan</th>
+            <th rowspan="2">PelayananTindakan</th>
             <th rowspan="2" class="w-70px">Qty</th>
             <th rowspan="2" class="w-100px">Jumlah Harga</th>
             <th rowspan="2" class="w-100px">Jumlah Diskon</th>

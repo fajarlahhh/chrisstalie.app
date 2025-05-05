@@ -42,7 +42,7 @@
                             </td>
                             <td>{{ $row->date }}</td>
                             <td>{{ $row->uraian }}</td>
-                            <td>{{ $row->payment_description }}</td>
+                            <td>{{ $row->kasir_description }}</td>
                             <td>
                                 <ul>
                                     @foreach ($row->saleDetail as $subRow)
@@ -56,7 +56,7 @@
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    @if ($row->payment_id == null)
+                                    @if ($row->kasir_id == null)
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
                                             :print="true" :permanentDelete="false" :restore="false" :delete="true" />
                                     @endif

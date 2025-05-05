@@ -94,11 +94,11 @@
                                 </tr>
                                 <tr>
                                     <th>No. Telp</th>
-                                    <td>{{ $pasien->no_telpon }}</td>
+                                    <td>{{ $pasien->no_hp }}</td>
                                 </tr>
                                 <tr>
                                     <th>Tgl. Registrasi</th>
-                                    <td>{{ $pasien->tanggal_registrasi }}</td>
+                                    <td>{{ $pasien->tanggal_daftar }}</td>
                                 </tr>
                             </table>
                         </div>
@@ -107,25 +107,25 @@
                                 <table class="table table-bordered">
                                     <tr>
                                         <th>Tanggal</th>
-                                        <th>Diagnosa</th>
-                                        <th>Tindakan</th>
+                                        <th>PelayananDiagnosa</th>
+                                        <th>PelayananTindakan</th>
                                     </tr>
-                                    @foreach ($pasien->registration as $registration)
+                                    @foreach ($pasien->pendaftaran as $pendaftaran)
                                         <tr>
-                                            <td>{{ substr($registration->created_at, 0, 10) }}</td>
+                                            <td>{{ substr($pendaftaran->created_at, 0, 10) }}</td>
                                             <td>
                                                 <ul>
-                                                    @foreach ($registration->diagnosis as $diagnosis)
-                                                        <li>{{ $diagnosis->icd10?->code }} -
-                                                            {{ $diagnosis->icd10?->uraian }}
+                                                    @foreach ($pendaftaran->pelayananDiagnosa as $pelayananDiagnosa)
+                                                        <li>{{ $pelayananDiagnosa->icd10?->code }} -
+                                                            {{ $pelayananDiagnosa->icd10?->uraian }}
                                                         </li>
                                                     @endforeach
                                                 </ul>
                                             </td>
                                             <td>
                                                 <ul>
-                                                    @foreach ($registration->treatment as $treatment)
-                                                        <li>{{ $treatment->actionRate->nama }} ({{ $treatment->qty }} x)
+                                                    @foreach ($pendaftaran->pelayananTindakan as $pelayananTindakan)
+                                                        <li>{{ $pelayananTindakan->tarif->nama }} ({{ $pelayananTindakan->qty }} x)
                                                         </li>
                                                     @endforeach
                                                 </ul>

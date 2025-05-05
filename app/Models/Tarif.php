@@ -18,18 +18,18 @@ class Tarif extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user(): BelongsTo
+    public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class)->withTrashed()->withTrashed();
     }
 
     /**
-     * Get all of the paymentTreatment for the Tarif
+     * Get all of the kasirPelayananTindakan for the Tarif
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function paymentTreatment(): HasMany
+    public function kasirPelayananTindakan(): HasMany
     {
-        return $this->hasMany(PaymentTreatment::class);
+        return $this->hasMany(KasirPelayananTindakan::class);
     }
 }

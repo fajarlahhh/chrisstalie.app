@@ -20,7 +20,7 @@ class Form extends Component
         DB::transaction(function () {
             $this->data->uraian = $this->uraian;
             $this->data->id = $this->kode;
-            $this->data->user_id = auth()->id();
+            $this->data->pengguna_id = auth()->id();
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });

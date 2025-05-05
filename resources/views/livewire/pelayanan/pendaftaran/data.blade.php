@@ -12,12 +12,16 @@
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">
+            @role('administrator|supervisor|operator')
+                <a href="/pelayanan/pendaftaran" class="btn btn-primary">
+                    Tambah</a>
+            @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input class="form-control" type="date" wire:model.lazy="date" />&nbsp;
+                    <input class="form-control" type="date" wire:model.lazy="tanggal" />&nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
-                        wire:model.lazy="search">
+                        wire:model.lazy="cari">
                 </div>
             </div>
         </div>
@@ -26,7 +30,7 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
-                        <th>Waktu Daftar</th>
+                        <th>Tanggal Daftar</th>
                         <th>RM</th>
                         <th>Nama</th>
                         <th>NIK</th>
@@ -34,7 +38,7 @@
                         <th>Jenis Kelamin</th>
                         <th>Alamat</th>
                         <th>No. Telp.</th>
-                        <th>Keterangan</th>
+                        <th>Catatan</th>
                         <th>Proses</th>
                         <th class="w-10px"></th>
                     </tr>
@@ -45,24 +49,24 @@
                             <td>
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
-                            <td>{{ $row->datetime }}</td>
+                            <td>{{ $row->tanggal }}</td>
                             <td>{{ $row->pasien->rm }}</td>
                             <td>{{ $row->pasien->nama }}</td>
                             <td>{{ $row->pasien->nik }}</td>
                             <td>{{ $row->pasien->tanggal_lahir }}</td>
                             <td>{{ $row->pasien->jenis_kelamin }}</td>
                             <td>{{ $row->pasien->alamat }}</td>
-                            <td>{{ $row->pasien->no_telpon }}</td>
-                            <td>{{ $row->uraian }}</td>
+                            <td>{{ $row->pasien->no_hp }}</td>
+                            <td>{{ $row->catatan }}</td>
                             <td>
-                                {{ $row->initialExamination ? '1. Pemeriksaan Awal ' . $row->initialExamination->pengguna->nama . ' (' . $row->initialExamination->created_at . ')' : '' }}<br>
-                                {{ $row->diagnosis->count() > 0 ? '2. Diagnosis ' . $row->diagnosis->first()->pengguna->nama . ' (' . $row->diagnosis->first()->created_at . ')' : '' }}<br>
-                                {{ $row->treatment->count() > 0 ? '3. Tindakan ' . $row->treatment->first()->pengguna->nama . ' (' . $row->treatment->first()->created_at . ')' : '' }}<br>
-                                {{ $row->payment ? '4. Kasir ' . $row->payment->pengguna->nama . ' (' . $row->payment->created_at . ')' : '' }}
+                                {{ $row->pelayananPemeriksaanAwal ? '1. Pemeriksaan Awal ' . $row->pelayananPemeriksaanAwal->pengguna->nama . ' (' . $row->pelayananPemeriksaanAwal->created_at . ')' : '' }}<br>
+                                {{ $row->pelayananDiagnosa->count() > 0 ? '2. PelayananDiagnosa ' . $row->pelayananDiagnosa->first()->pengguna->nama . ' (' . $row->pelayananDiagnosa->first()->created_at . ')' : '' }}<br>
+                                {{ $row->pelayananTindakan->count() > 0 ? '3. PelayananTindakan ' . $row->pelayananTindakan->first()->pengguna->nama . ' (' . $row->pelayananTindakan->first()->created_at . ')' : '' }}<br>
+                                {{ $row->kasir ? '4. Kasir ' . $row->kasir->pengguna->nama . ' (' . $row->kasir->created_at . ')' : '' }}
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
-                                    @if (!$row->payment)
+                                    @if (!$row->kasir)
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                     @endif

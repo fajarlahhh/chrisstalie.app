@@ -1,13 +1,13 @@
 <div>
-    @section('title', (!$data->exists ? 'Tambah' : 'Edit') . ' Tindakan')
+    @section('title', (!$data->exists ? 'Tambah' : 'Edit') . ' PelayananTindakan')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Data Master</li>
-        <li class="breadcrumb-item">Tindakan</li>
+        <li class="breadcrumb-item">PelayananTindakan</li>
         <li class="breadcrumb-item active">{{ !$data->exists ? 'Tambah' : 'Edit' }}</li>
     @endsection
 
-    <h1 class="page-header">Tindakan <small>{{ !$data->exists ? 'Tambah' : 'Edit' }}</small></h1>
+    <h1 class="page-header">PelayananTindakan <small>{{ !$data->exists ? 'Tambah' : 'Edit' }}</small></h1>
 
     <x-alert />
 
@@ -83,7 +83,6 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        {{ $modal }}
                         <label class="form-label">Biaya</label>
                         <input class="form-control" type="number" disabled
                             value="{{ $modal + $porsi_petugas + $porsi_kantor + $porsi_nakes }}" />

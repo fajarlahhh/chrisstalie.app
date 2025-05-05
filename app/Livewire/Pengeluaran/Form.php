@@ -44,7 +44,7 @@ class Form extends Component
             $this->data->expenditure_type = $this->expenditure_type;
             $this->data->cost = $this->cost;
             $this->data->office = $this->office;
-            $this->data->user_id = auth()->id();
+            $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
             // ExpenditureDetail::where('expenditure_id', $this->data->id)->delete();

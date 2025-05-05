@@ -82,7 +82,7 @@ class Form extends Component
                 $data->konsinyasi = $this->purchase['konsinyasi'];
                 $data->purchase_id = $this->purchase['id'];
                 $data->goods_id = $row['goods_id'];
-                $data->user_id = auth()->id();
+                $data->pengguna_id = auth()->id();
                 $data->save();
 
                 // for ($i = 0; $i < $row['qty']; $i++) {

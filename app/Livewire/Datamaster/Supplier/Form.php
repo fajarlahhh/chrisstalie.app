@@ -9,23 +9,23 @@ use Illuminate\Support\Facades\DB;
 class Form extends Component
 {
     public $data, $previous;
-    public $nama, $deskripsi, $alamat, $no_telpon, $konsinyator = false;
+    public $nama, $deskripsi, $alamat, $no_hp, $konsinyator = false;
 
     public function submit()
     {
         $this->validate([
             'nama' => 'required',
             'alamat' => 'required',
-            'no_telpon' => 'required',
+            'no_hp' => 'required',
         ]);
 
         DB::transaction(function () {
             $this->data->nama = $this->nama;
             $this->data->deskripsi = $this->deskripsi;
             $this->data->alamat = $this->alamat;
-            $this->data->no_telpon = $this->no_telpon;
+            $this->data->no_hp = $this->no_hp;
             $this->data->konsinyator = $this->konsinyator ? 1 : 0;
-            $this->data->user_id = auth()->id();
+            $this->data->pengguna_id = auth()->id();
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });

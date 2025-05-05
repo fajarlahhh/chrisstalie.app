@@ -3,29 +3,29 @@
 namespace App\Livewire\Pelayanan\Pendaftaran;
 
 use Livewire\Component;
-use App\Models\Registration;
+use App\Models\Pendaftaran;
 use Livewire\Attributes\Url;
 
 class Data extends Component
 {
     #[Url]
-    public $search, $date;
+    public $cari, $tanggal;
 
     public function mount()
     {
-        $this->date = $this->date ?: date('Y-m-d');
+        $this->tanggal = $this->tanggal ?: date('Y-m-d');
     }
 
     public function delete($id)
     {
-        Registration::where('id', $id)->whereDoesntHave('payment')->delete();
+        Pendaftaran::where('id', $id)->whereDoesntHave('kasir')->delete();
     }
 
     public function render()
     {
         return view('livewire.pelayanan.pendaftaran.data', [
-            'data' => Registration::with(['initialExamination', 'diagnosis', 'treatment', 'payment'])->with('pasien')->with('nakes')->with('pengguna')->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'))
-                ->where('datetime', 'like', $this->date . '%')
+            'data' => Pendaftaran::with(['pelayananPemeriksaanAwal', 'pelayananDiagnosa', 'pelayananTindakan', 'kasir'])->with('pasien')->with('nakes')->with('pengguna')->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
+                ->where('tanggal', 'like', $this->tanggal . '%')
                 ->orderBy('created_at', 'desc')->paginate(10)
         ]);
     }

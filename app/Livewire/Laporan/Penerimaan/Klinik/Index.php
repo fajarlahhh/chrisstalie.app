@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Laporan\Penerimaan\Klinik;
 
-use App\Models\Payment;
+use App\Models\Kasir;
 use Livewire\Component;
 use Livewire\Attributes\Url;
-use App\Models\PaymentTreatment;
+use App\Models\KasirPelayananTindakan;
 
 class Index extends Component
 {
@@ -21,15 +21,15 @@ class Index extends Component
 
     public function getDetail()
     {
-        return PaymentTreatment::with(['actionRate', 'payment.registration'])->whereHas('payment', fn($r) => $r->whereBetween('date', [$this->date1, $this->date2]))->get();
+        return KasirPelayananTindakan::with(['tarif', 'kasir.pendaftaran'])->whereHas('kasir', fn($r) => $r->whereBetween('date', [$this->date1, $this->date2]))->get();
     }
 
     public function getRekap()
     {
-        return PaymentTreatment::with('actionRate')->whereHas('payment', fn($r) => $r->whereBetween('date', [$this->date1, $this->date2]))->get()->map(function ($q) {
+        return KasirPelayananTindakan::with('tarif')->whereHas('kasir', fn($r) => $r->whereBetween('date', [$this->date1, $this->date2]))->get()->map(function ($q) {
             return [
                 'id' => $q->action_rate_id,
-                'nama' => $q->actionRate->nama,
+                'nama' => $q->tarif->nama,
                 'harga' => $q->harga * $q->qty,
                 'hargaAfterDiscount' => ($q->harga - ($q->harga * $q->discount / 100)) * $q->qty,
                 'qty' => $q->qty,
@@ -45,7 +45,7 @@ class Index extends Component
             'date1' => $this->date1,
             'date2' => $this->date2,
             'data' => $this->type == "Rekap" ? $this->getRekap() : $this->getDetail(),
-            'admin'=> (Payment::whereBetween('date', [$this->date1, $this->date2])->get()),
+            'admin'=> (Kasir::whereBetween('date', [$this->date1, $this->date2])->get()),
         ])->render();
         session()->flash('cetak', $cetak);
     }
@@ -54,7 +54,7 @@ class Index extends Component
     {
         return view('livewire.laporan.penerimaan.klinik.index', [
             'data' => $this->type == "Rekap" ? $this->getRekap() : ($this->getDetail()),
-            'admin'=> (Payment::whereBetween('date', [$this->date1, $this->date2])->get()),
+            'admin'=> (Kasir::whereBetween('date', [$this->date1, $this->date2])->get()),
         ]);
     }
 }

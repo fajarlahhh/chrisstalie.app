@@ -4,7 +4,7 @@ namespace App\Livewire\Laporan\Lhk;
 
 use Livewire\Component;
 use App\Models\Expenditure;
-use App\Models\Payment;
+use App\Models\Kasir;
 use App\Models\Sale;
 use Livewire\Attributes\Url;
 
@@ -24,9 +24,9 @@ class Index extends Component
     }
 
 
-    public function getPenerimaanTindakan()
+    public function getPenerimaanPelayananTindakan()
     {
-        return Payment::where('date', $this->date)->get();
+        return Kasir::where('date', $this->date)->get();
     }
 
 
@@ -42,7 +42,7 @@ class Index extends Component
             'date' => $this->date,
             'data' => [
                 'Pengeluaran' => $this->getData(),
-                'Penerimaan Klinik' => $this->getPenerimaanTindakan(),
+                'Penerimaan Klinik' => $this->getPenerimaanPelayananTindakan(),
                 'Penerimaan Apotek' => $this->getPenerimaanPenjualan(),
             ]
         ])->render();
@@ -54,7 +54,7 @@ class Index extends Component
         return view('livewire.laporan.lhk.index', [
             'data' => [
                 'Pengeluaran' => $this->getData(),
-                'Penerimaan Klinik' => $this->getPenerimaanTindakan(),
+                'Penerimaan Klinik' => $this->getPenerimaanPelayananTindakan(),
                 'Penerimaan Apotek' => $this->getPenerimaanPenjualan(),
             ]
         ]);

@@ -48,7 +48,7 @@
                             </td>
                             <td>{{ $row->nama }}</td>
                             <td>{{ $row->alamat }}</td>
-                            <td>{{ $row->no_telpon }}</td>
+                            <td>{{ $row->no_hp }}</td>
                             <td>{{ $row->konsinyator == 1 ? 'Ya' : '' }}</td>
                             <td>{{ $row->deskripsi }}</td>
                             <td class="with-btn-group text-end" nowrap>

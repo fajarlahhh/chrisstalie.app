@@ -74,7 +74,7 @@ class Form extends Component
             $data->konsinyasi = 1;
             $data->uraian = $this->uraian;
             $data->supplier_id = $this->supplier_id;
-            $data->user_id = auth()->id();
+            $data->pengguna_id = auth()->id();
             $data->save();
 
             if (collect($this->procurement)->count() > 0) {

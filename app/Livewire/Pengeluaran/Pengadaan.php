@@ -4,7 +4,7 @@ namespace App\Livewire\Pengeluaran;
 
 use Livewire\Component;
 use App\Models\Purchase;
-use App\Models\Repayment;
+use App\Models\Rekasir;
 use App\Models\Expenditure;
 use Livewire\Attributes\Url;
 use App\Models\ExpenditureDetail;
@@ -26,7 +26,7 @@ class Pengadaan extends Component
             $expenditure->date = $this->expenditure[$index]['date'];
             $expenditure->uraian = $this->expenditure[$index]['uraian'];
             $expenditure->purchase_id = $id;
-            $expenditure->user_id = auth()->id();
+            $expenditure->pengguna_id = auth()->id();
             $expenditure->save();
 
             ExpenditureDetail::insert(collect($purchase->purchaseDetail)->map(fn($q) => [

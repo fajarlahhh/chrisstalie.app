@@ -53,8 +53,8 @@
                             <td>{{ $row->tanggal_lahir }}</td>
                             <td>{{ $row->jenis_kelamin }}</td>
                             <td>{{ $row->alamat }}</td>
-                            <td>{{ $row->no_telpon }}</td>
-                            <td>{{ $row->tanggal_registrasi }}</td>
+                            <td>{{ $row->no_hp }}</td>
+                            <td>{{ $row->tanggal_daftar }}</td>
                             <td>{{ $row->uraian }}</td>
                             <td class="with-btn-group text-end" nowrap>
                 @role('administrator|supervisor|operator')

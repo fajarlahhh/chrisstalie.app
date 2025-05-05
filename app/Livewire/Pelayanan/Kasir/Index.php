@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Pelayanan\Kasir;
 
-use App\Models\Payment;
+use App\Models\Kasir;
 use Livewire\Component;
-use App\Models\Registration;
+use App\Models\Pendaftaran;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 
@@ -21,12 +21,12 @@ class Index extends Component
 
     public function delete($id)
     {
-        Payment::where('registration_id', $id)->delete();
+        Kasir::where('pendaftaran_id', $id)->delete();
     }
 
     public function print($id)
     {
-        $data = Payment::where('registration_id', $id)->first();
+        $data = Kasir::where('pendaftaran_id', $id)->first();
         $cetak = view('livewire.pelayanan.kasir.cetak', [
             'cetak' => true,
             'data' => $data,
@@ -38,11 +38,11 @@ class Index extends Component
     public function render()
     {
         return view('livewire.pelayanan.kasir.index', [
-            'data' => Registration::with('pasien')->with('nakes')->with('pengguna')
+            'data' => Pendaftaran::with('pasien')->with('nakes')->with('pengguna')
                 ->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'))
-                ->when($this->status == '2', fn($q) => $q->whereHas('payment', fn($q) => $q->where('date', $this->date)))
-                ->when($this->status == '1', fn($q) => $q->whereDoesntHave('payment'))
-                ->whereHas('treatment')
+                ->when($this->status == '2', fn($q) => $q->whereHas('kasir', fn($q) => $q->where('date', $this->date)))
+                ->when($this->status == '1', fn($q) => $q->whereDoesntHave('kasir'))
+                ->whereHas('pelayananTindakan')
                 ->orderBy('created_at', 'desc')->paginate(10)
         ]);
     }

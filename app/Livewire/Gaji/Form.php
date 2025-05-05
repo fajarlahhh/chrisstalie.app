@@ -94,7 +94,7 @@ class Form extends Component
             $this->data->cost = $total;
             $this->data->pegawai_id = $this->pegawai_id;
             $this->data->uraian = "Gaji " . $this->pegawai['nama'] . ' bulan ' . $this->month . '-' . $this->year;
-            $this->data->user_id = auth()->id();
+            $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
             ExpenditureDetail::where('expenditure_id', $this->data->id)->delete();

@@ -40,7 +40,7 @@ class Form extends Component
             $this->data->alamat = $this->alamat;
             $this->data->no_hp = $this->no_hp;
             $this->data->dokter = $this->dokter ? 1 : 0;
-            $this->data->user_id = auth()->id();
+            $this->data->pengguna_id = auth()->id();
             $this->data->ihs = $nakesSatuSehat ? ($nakesSatuSehat['entry'] ? $nakesSatuSehat['entry']['0']['resource']['id'] : null)  : null;
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');

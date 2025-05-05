@@ -44,7 +44,7 @@
                         <input class="form-control" type="text" value="{{ number_format($information['harga']) }}"
                             readonly />
                     </div>
-                    @if ($information['type'] != 'Tindakan Medis')
+                    @if ($information['type'] != 'PelayananTindakan Medis')
                         <hr>
                         <div class="mb-3">
                             <label class="form-label">Stok <small>({{ $information['satuan'] }})</small></label>
