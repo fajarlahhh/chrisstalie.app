@@ -159,7 +159,7 @@ return [
             "sub_menu" => [
                 [
                     "title" => "Pendaftaran",
-                    "method" => ["Index", "Data"],
+                    "method" => ["Index", "Form"],
                 ],
                 // [
                 //     "title" => "Pemeriksaan Awal",

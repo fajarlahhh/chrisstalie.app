@@ -11,7 +11,7 @@ class Index extends Component
 {
     use WithPagination;
 
-    #[Url] 
+    #[Url]
     public $search, $exist = 1;
 
 
@@ -33,7 +33,12 @@ class Index extends Component
     public function render()
     {
         return view('livewire.datamaster.pasien.index', [
-            'data' => Pasien::where(fn($q) => $q->where('nama', 'like', '%' . $this->search . '%')->orWhere('rm', 'like', '%' . $this->search . '%'))
+            'data' => Pasien::where(
+                fn($q) => $q
+                    ->where('nama', 'like', '%' . $this->search . '%')
+                    ->orWhere('rm', 'like', '%' . $this->search . '%')
+                    ->orWhere('alamat', 'like', '%' . $this->search . '%')
+            )
                 ->when($this->exist == '2', fn($q) => $q->onlyTrashed())->with('pengguna')
                 ->orderBy('nama')->paginate(10)
         ]);

@@ -49,6 +49,20 @@
                     @enderror
                 </div>
                 <div class="mb-3">
+                    <label class="form-label">Alamat</label>
+                    <input class="form-control" type="text" wire:model="alamat" />
+                    @error('alamat')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">No. Hp</label>
+                    <input class="form-control" type="text" wire:model="no_hp" />
+                    @error('no_hp')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
                     <label class="form-label">Tempat Lahir</label>
                     <input class="form-control" type="text" wire:model="tempat_lahir" />
                     @error('tempat_lahir')
@@ -70,27 +84,6 @@
                         <option value="Perempuan">Perempuan</option>
                     </select>
                     @error('jenis_kelamin')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Alamat</label>
-                    <input class="form-control" type="text" wire:model="alamat" />
-                    @error('alamat')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">No. Telp.</label>
-                    <input class="form-control" type="text" wire:model="no_hp" />
-                    @error('no_hp')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Deskripsi</label>
-                    <input class="form-control" type="text" wire:model="uraian" />
-                    @error('uraian')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

@@ -14,6 +14,11 @@ class Pendaftaran extends Model
     use HasFactory;
     protected $table = 'pendaftaran';
 
+    protected $cast = [
+        'tanggal' => 'date',
+        'baru' => 'boolean'
+    ];
+
     /**
      * Get the pasien that owns the Pendaftaran
      *

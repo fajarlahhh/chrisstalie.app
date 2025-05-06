@@ -36,7 +36,6 @@
                         <th>Alamat</th>
                         <th>No. Telp.</th>
                         <th>Tanggal Daftar</th>
-                        <th>Deskripsi</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -55,15 +54,14 @@
                             <td>{{ $row->alamat }}</td>
                             <td>{{ $row->no_hp }}</td>
                             <td>{{ $row->tanggal_daftar }}</td>
-                            <td>{{ $row->uraian }}</td>
                             <td class="with-btn-group text-end" nowrap>
-                @role('administrator|supervisor|operator')
+                                @role('administrator|supervisor|operator')
                                     @if ($row->trashed())
-                                        <x-action :row="$row"  custom="" :detail="false" :edit="false" :print="false"
-                                            :permanentDelete="false" :restore="true" :delete="false" />
+                                        <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                            :print="false" :permanentDelete="false" :restore="true" :delete="false" />
                                     @else
-                                        <x-action :row="$row"  custom="" :detail="false" :edit="true" :print="false"
-                                            :permanentDelete="true" :restore="false" :delete="true" />
+                                        <x-action :row="$row" custom="" :detail="false" :edit="true"
+                                            :print="false" :permanentDelete="true" :restore="false" :delete="true" />
                                     @endif
                                 @endrole
                             </td>

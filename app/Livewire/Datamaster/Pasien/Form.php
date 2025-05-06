@@ -26,11 +26,9 @@ class Form extends Component
             $this->data->nama = $this->nama;
             $this->data->ihs = $this->ihs;
             $this->data->nik = $this->nik;
-            $this->data->uraian = $this->uraian;
             $this->data->jenis_kelamin = $this->jenis_kelamin;
             $this->data->alamat = $this->alamat;
             $this->data->no_hp = $this->no_hp;
-            $this->data->dokter = $this->dokter ? 1 : 0;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
