@@ -161,18 +161,18 @@ return [
                     "title" => "Pendaftaran",
                     "method" => ["Index", "Data"],
                 ],
-                [
-                    "title" => "Pemeriksaan Awal",
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Diagnosa",
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Tindakan",
-                    "method" => ["Index", "Form"],
-                ]
+                // [
+                //     "title" => "Pemeriksaan Awal",
+                //     "method" => ["Index", "Form"],
+                // ],
+                // [
+                //     "title" => "Diagnosa",
+                //     "method" => ["Index", "Form"],
+                // ],
+                // [
+                //     "title" => "Tindakan",
+                //     "method" => ["Index", "Form"],
+                // ]
             ]
         ],
         [
