@@ -7,6 +7,10 @@ return [
             "icon" => "<i class='fas fa-database'></i>",
             "sub_menu" => [
                 [
+                    "title" => "Kode Akun",
+                    "method" => ["Index", "Form"],
+                ],
+                [
                     "title" => "Barang",
                     "method" => ["Index", "Form"],
                 ],
@@ -135,11 +139,11 @@ return [
         //     "title" => "Gaji",
         //     "method" => ["Index", "Form"],
         // ],
-        [
-            "icon" => "<i class='fas fa-dollar'></i>",
-            "title" => "Pengeluaran",
-            "method" => ["Index", "Form"],
-        ],
+        // [
+        //     "icon" => "<i class='fas fa-dollar'></i>",
+        //     "title" => "Pengeluaran",
+        //     "method" => ["Index", "Form"],
+        // ],
         // [
         //     "icon" => "<i class='fas fa-dollar'></i>",
         //     "title" => "Pelunasan Pengadaan",

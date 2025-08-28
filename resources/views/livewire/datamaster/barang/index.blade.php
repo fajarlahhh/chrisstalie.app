@@ -46,7 +46,7 @@
                     <tbody>
                         @foreach ($data as $item)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
                                 <td>{{ $item->nama }}</td>
                                 <td>{{ $item->satuan }}</td>
                                 <td class="text-end">{{ number_format($item->harga_jual, 0, ',', '.') }}</td>

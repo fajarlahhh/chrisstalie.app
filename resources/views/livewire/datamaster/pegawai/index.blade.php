@@ -45,7 +45,7 @@
                     @foreach ($data as $index => $row)
                         <tr>
                             <td>
-                                {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
+                                {{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}
                             </td>
                             <td>{{ $row->nik }}</td>
                             <td>{{ $row->nama }}</td>
