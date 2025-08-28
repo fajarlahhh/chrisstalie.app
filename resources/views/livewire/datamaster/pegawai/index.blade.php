@@ -17,9 +17,9 @@
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <select data-container="body" class="form-control "wire:model.lazy="exist">
-                        <option value="1">Exist</option>
-                        <option value="2">Deleted</option>
+                    <select data-container="body" class="form-control "wire:model.lazy="status">
+                        <option value="Aktif">Aktif</option>
+                        <option value="Non Aktif">Non Aktif</option>
                     </select>&nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
@@ -31,20 +31,14 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th rowspan="2" class="w-10px">No.</th>
-                        <th rowspan="2">NIK</th>
-                        <th rowspan="2">Nama</th>
-                        <th rowspan="2">Alamat</th>
-                        <th rowspan="2">No. Hp</th>
-                        <th rowspan="2">Tanggal Masuk</th>
-                        <th colspan="4">Penggajian</th>
-                        <th rowspan="2" class="w-10px"></th>
-                    </tr>
-                    <tr>
-                        <th class="w-100px">Gaji</th>
-                        <th class="w-100px">Tunjangan</th>
-                        <th class="w-100px">Transport</th>
-                        <th class="w-100px">BPJS</th>
+                        <th class="w-10px">No.</th>
+                        <th>NIK</th>
+                        <th>Nama</th>
+                        <th>Alamat</th>
+                        <th>No. Hp</th>
+                        <th>Tanggal Masuk</th>
+                        <th>Satuan Tugas</th>
+                        <th class="w-10px"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,20 +52,19 @@
                             <td>{{ $row->alamat }}</td>
                             <td>{{ $row->no_hp }}</td>
                             <td>{{ $row->tanggal_masuk }}</td>
-                            <td class="text-end">{{ number_format($row->gaji) }}</td>
-                            <td class="text-end">{{ number_format($row->tunjangan) }}</td>
-                            <td class="text-end">{{ number_format($row->tunjangan_transport) }}</td>
-                            <td class="text-end">{{ number_format($row->tunjangan_bpjs) }}</td>
+                            <td>{{ $row->satuan_tugas }}</td>
                             <td class="with-btn-group text-end" nowrap>
-                                @role('administrator|supervisor|operator')
-                                    @if ($row->trashed())
-                                        <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                            :print="false" :permanentDelete="false" :restore="true" :delete="false" />
-                                    @else
+                                @if ($row->status == 'Aktif')
+                                    @role('administrator|supervisor')
                                         <x-action :row="$row" custom="" :detail="false" :edit="true"
-                                            :print="false" :permanentDelete="true" :restore="false" :delete="true" />
-                                    @endif
-                                @endrole
+                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                    @endrole
+                                @else
+                                    @role('administrator')
+                                        <x-action :row="$row" custom="" :detail="false" :edit="true"
+                                            :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                    @endrole
+                                @endif
                             </td>
                         </tr>
                     @endforeach

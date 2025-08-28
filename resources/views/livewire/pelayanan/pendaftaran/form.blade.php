@@ -4,10 +4,24 @@
     @section('breadcrumb')
         <li class="breadcrumb-item">Pelayanan</li>
         <li class="breadcrumb-item">Pendaftaran</li>
-        <li class="breadcrumb-item active">Tambah</li>
+        <li class="breadcrumb-item active">
+            @if ($data->exists)
+                Edit
+            @else
+                Tambah
+            @endif
+        </li>
     @endsection
 
-    <h1 class="page-header">Pendaftaran <small>Tambah</small></h1>
+    <h1 class="page-header">Pendaftaran
+        <small>
+            @if ($data->exists)
+                Edit
+            @else
+                Tambah
+            @endif
+        </small>
+    </h1>
 
     <x-alert />
 

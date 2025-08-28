@@ -11,31 +11,31 @@ class Index extends Component
 {
     use WithPagination;
 
-    #[Url] 
-    public $search, $exist = 1, $type = 1;
-
+    #[Url]
+    public $search, $status = 'Aktif';
 
     public function delete($id)
     {
-        Pegawai::findOrFail($id)->delete();
-    }
-
-    public function permanentDelete($id)
-    {
-        Pegawai::findOrFail($id)->forceDelete();
+        Pegawai::findOrFail($id)
+            ->forceDelete();
     }
 
     public function restore($id)
     {
-        Pegawai::withTrashed()->findOrFail($id)->restore();
+        Pegawai::withTrashed()
+            ->findOrFail($id)
+            ->restore();
     }
 
     public function render()
     {
         return view('livewire.datamaster.pegawai.index', [
-            'data' => Pegawai::where(fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'))
-                ->when($this->exist == '2', fn($q) => $q->onlyTrashed())->with('pengguna')
-                ->orderBy('nama')->paginate(10)
+            'data' => Pegawai::where(fn($q) => $q
+                ->where('nama', 'like', '%' . $this->search . '%')
+                ->where('status', $this->status))
+                ->with('pengguna')
+                ->orderBy('nama')
+                ->paginate(10)
         ]);
     }
 }

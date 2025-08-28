@@ -3,17 +3,17 @@
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Pelayanan</li>
-        <li class="breadcrumb-item">Pendaftaran</li>
-        <li class="breadcrumb-item active">Data</li>
+        <li class="breadcrumb-item active">Pendaftaran</li>
     @endsection
 
-    <h1 class="page-header">Pendaftaran <small>Data</small></h1>
+    <h1 class="page-header">Pendaftaran</h1>
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">
             @role('administrator|supervisor|operator')
-                <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'" class="btn btn-primary">
+                <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
+                    class="btn btn-primary">
                     Tambah</a>
             @endrole
             <div class="w-100">
@@ -30,7 +30,6 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
-                        <th>No. Pendaftaran</th>
                         <th>RM</th>
                         <th>Nama</th>
                         <th>NIK</th>
@@ -45,9 +44,6 @@
                 <tbody>
                     @foreach ($data as $index => $row)
                         <tr>
-                            <td>
-                                {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
-                            </td>
                             <td>{{ $row->nomor }}</td>
                             <td>{{ $row->pasien->rm }}</td>
                             <td>{{ $row->pasien->nama }}</td>

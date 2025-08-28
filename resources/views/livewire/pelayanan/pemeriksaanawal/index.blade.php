@@ -11,18 +11,17 @@
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">
+            @role('administrator|supervisor|operator')
+                <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
+                    class="btn btn-primary">
+                    Tambah</a>
+            @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <select data-container="body" class="form-control" wire:model.lazy="status">
-                        <option value="1">Belum Proses</option>
-                        <option value="2">Sudah Proses</option>
-                    </select>&nbsp;
-                    @if ($status == 2)
-                        <input class="form-control" type="date" wire:model.lazy="date" />&nbsp;
-                    @endif
+                    <input class="form-control" type="date" wire:model.lazy="tanggal" />&nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
-                        wire:model.lazy="search">
+                        wire:model.lazy="cari">
                 </div>
             </div>
         </div>
@@ -31,7 +30,6 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
-                        <th>Waktu Daftar</th>
                         <th>RM</th>
                         <th>Nama</th>
                         <th>NIK</th>
@@ -39,18 +37,14 @@
                         <th>Jenis Kelamin</th>
                         <th>Alamat</th>
                         <th>No. Telp.</th>
-                        <th>Keterangan</th>
-                        <th>Catatan Pasien</th>
+                        <th>Catatan</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($data as $index => $row)
                         <tr>
-                            <td>
-                                {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
-                            </td>
-                            <td>{{ $row->datetime }}</td>
+                            <td>{{ $row->nomor }}</td>
                             <td>{{ $row->pasien->rm }}</td>
                             <td>{{ $row->pasien->nama }}</td>
                             <td>{{ $row->pasien->nik }}</td>
@@ -58,27 +52,20 @@
                             <td>{{ $row->pasien->jenis_kelamin }}</td>
                             <td>{{ $row->pasien->alamat }}</td>
                             <td>{{ $row->pasien->no_hp }}</td>
-                            <td>{{ $row->uraian }}</td>
-                            <td>{{ $row->note }}</td>
+                            <td>{{ $row->catatan }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
-                                    @if (!$row->pelayananPemeriksaanAwal)
-                                        <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form/{{ $row['id'] }}'"
-                                            class="btn btn-primary btn-sm">
-                                            Input
-                                        </a>
-                                    @else
-                                        @if ($row->upload != '' || $row->upload != null)
-                                            <x-action :row="$row" custom="" :detail="false"
-                                                :edit="false" :print="false" :permanentDelete="false" :restore="false"
-                                                :delete="false" />
-                                        @else
-                                            <x-action :row="$row"
-                                                custom="<li><hr class='dropdown-divider'></li><a href='javascript:;'class='dropdown-item fs-8px'>{{ $row->pelayananPemeriksaanAwal->pengguna?->nama }}<br>{{ $row->pelayananPemeriksaanAwal->updated_at }}</a>"
-                                                :detail="false" :edit="true" :information="false" :print="false"
-                                                :permanentDelete="false" :restore="false" :delete="true" />
-                                        @endif
-                                    @endif
+                                    @php
+                                        if ($row->kasir) {
+                                            $edit = false;
+                                            $delete = false;
+                                        } else {
+                                            $edit = true;
+                                            $delete = true;
+                                        }
+                                    @endphp
+                                    <x-action :row="$row" :detail="false" :edit="$edit" :print="false"
+                                        :permanentDelete="false" :restore="false" :delete="$delete" />
                                 @endrole
                             </td>
                         </tr>

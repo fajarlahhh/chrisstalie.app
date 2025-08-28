@@ -10,6 +10,9 @@ class PelayananPemeriksaanAwal extends Model
 {
     //
     protected $table = 'pelayanan_pemeriksaan_awal';
+    protected $primaryKey = 'nomor';
+    public $incrementing = false;
+    protected $keyType = 'string';
     
     public function pengguna(): BelongsTo
     {
@@ -21,9 +24,9 @@ class PelayananPemeriksaanAwal extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function ttv(): HasMany
+    public function pelayananPemeriksaanAwalDetail(): HasMany
     {
-        return $this->hasMany(PelayananPemeriksaanTtv::class);
+        return $this->hasMany(PelayananPemeriksaanAwalDetail::class);
     }
 
     /**
@@ -33,6 +36,6 @@ class PelayananPemeriksaanAwal extends Model
      */
     public function pendaftaran(): BelongsTo
     {
-        return $this->belongsTo(Pendaftaran::class);
+        return $this->belongsTo(PelayananPendaftaran::class);
     }
 }

@@ -1,12 +1,12 @@
 <div>
-    @section('title', 'Data Barang')
+    @section('title', 'Data Barang Konsinyasi')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Data Master</li>
-        <li class="breadcrumb-item active">Barang</li>
+        <li class="breadcrumb-item active">Barang Konsinyasi</li>
     @endsection
 
-    <h1 class="page-header">Barang</h1>
+    <h1 class="page-header">Barang Konsinyasi</h1>
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">
@@ -38,7 +38,7 @@
                             <th>Harga Jual</th>
                             <th>Bentuk</th>
                             <th>Golongan</th>
-                            <th>KFA</th>
+                            <th>Konsinyator</th>
                             <th>Perlu Resep</th>
                             <th></th>
                         </tr>
@@ -49,10 +49,10 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama }}</td>
                                 <td>{{ $item->satuan }}</td>
-                                <td class="text-end">{{ number_format($item->harga_jual, 0, ',', '.') }}</td>
+                                <td>{{ number_format($item->harga_jual, 0, ',', '.') }}</td>
                                 <td>{{ $item->bentuk }}</td>
                                 <td>{{ $item->golongan }}</td>
-                                <td>{{ $item->kfa }}</td>
+                                <td>{{ $item->konsinyator->nama }}</td>
                                 <td>{{ $item->perlu_resep ? 'Ya' : 'Tidak' }}</td>
                                 <td class="with-btn-group text-end" nowrap>
                                     @role('administrator|supervisor')
@@ -70,6 +70,7 @@
                             <th>Satuan</th>
                             <th>Harga Jual</th>
                             <th>Garansi</th>
+                            <th>Konsinyator</th>
                             <th></th>
                         </tr>
                     </thead>

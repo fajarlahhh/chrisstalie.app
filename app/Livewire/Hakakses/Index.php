@@ -11,14 +11,15 @@ class Index extends Component
 {
     use WithPagination;
 
-    #[Url] 
+    #[Url]
     public $search, $exist = 1;
-    
+
 
     public function delete($id)
     {
         if ($this->key != 1) {
-            Pengguna::findOrFail($id)->delete();
+            Pengguna::findOrFail($id)
+                ->delete();
             $this->reset(['key']);
         }
     }
@@ -26,22 +27,31 @@ class Index extends Component
     public function permanentDelete($id)
     {
         if ($this->key != 1) {
-            Pengguna::findOrFail($id)->forceDelete();
+            Pengguna::findOrFail($id)
+                ->forceDelete();
             $this->reset(['key']);
         }
     }
 
     public function restore($id)
     {
-        Pengguna::withTrashed()->findOrFail($id)->restore();
+        Pengguna::withTrashed()
+            ->findOrFail($id)
+            ->restore();
     }
 
     public function render()
     {
         return view('livewire.hakakses.index', [
-            'data' => Pengguna::where('uid', '!=', 'rafaskinclinic@gmail.com')->where(fn($q) => $q->where('uid', 'like', '%' . $this->search . '%')->orWhere('nama', 'like', '%' . $this->search . '%'))
+            'data' => Pengguna::where('uid', '!=', 'rafaskinclinic@gmail.com')
+                ->where(
+                    fn($q) => $q
+                        ->where('uid', 'like', '%' . $this->search . '%')
+                        ->orWhere('nama', 'like', '%' . $this->search . '%')
+                )
                 ->when($this->exist == '2', fn($q) => $q->onlyTrashed())
-                ->orderBy('nama')->paginate(10)
+                ->orderBy('nama')
+                ->paginate(10)
         ]);
     }
 }

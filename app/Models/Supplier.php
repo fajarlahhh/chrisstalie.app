@@ -13,11 +13,7 @@ class Supplier extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'supplier';
-    /**
-     * Get the pengguna that owns the Supplier
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
+    
     public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class)->withTrashed();

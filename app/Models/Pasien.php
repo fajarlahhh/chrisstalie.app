@@ -30,7 +30,7 @@ class Pasien extends Model
      */
     public function pendaftaran(): HasMany
     {
-        return $this->hasMany(Pendaftaran::class);
+        return $this->hasMany(PelayananPendaftaran::class);
     }
 
     /**

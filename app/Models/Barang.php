@@ -24,12 +24,7 @@ class Barang extends Model
         return $this->belongsTo(Pengguna::class)->withTrashed();
     }
 
-    /**
-     * Get the konsinyasi that owns the Barang
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function konsinyasi(): BelongsTo
+    public function konsinyator(): BelongsTo
     {
         return $this->belongsTo(Supplier::class, 'konsinyator_id')->withTrashed();
     }
@@ -70,16 +65,6 @@ class Barang extends Model
     }
 
     /**
-     * Get all of the goodsBalance for the Barang
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function goodsBalance(): HasMany
-    {
-        return $this->hasMany(GoodsBalance::class);
-    }
-
-    /**
      * Get all of the stokMasuk for the Barang
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -97,5 +82,22 @@ class Barang extends Model
     public function saleDetail(): HasMany
     {
         return $this->hasMany(SaleDetail::class);
+    }
+
+    public function scopePersediaan(Builder $query): void
+    {
+        $query->whereNull('konsinyator_id');
+    }
+
+    public function scopeKonsinyasi(Builder $query): void
+    {
+        $query->whereNotNull('konsinyator_id');
+    }
+    
+    protected static function booted()
+    {
+        static::addGlobalScope('kantor_apotek', function ($query) {
+            $query->where('kantor', 'Apotek');
+        });
     }
 }

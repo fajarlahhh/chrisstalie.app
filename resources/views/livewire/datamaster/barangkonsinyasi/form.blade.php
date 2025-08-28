@@ -1,13 +1,13 @@
 <div>
-    @section('title', (!$data->exists ? 'Tambah' : 'Edit') . ' Data Barang')
+    @section('title', (!$data->exists ? 'Tambah' : 'Edit') . ' Data Barang Konsinyasi')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Data Master</li>
-        <li class="breadcrumb-item">Barang</li>
+        <li class="breadcrumb-item">Barang Konsinyasi</li>
         <li class="breadcrumb-item active">{{ !$data->exists ? 'Tambah' : 'Edit' }}</li>
     @endsection
 
-    <h1 class="page-header">Barang <small>{{ !$data->exists ? 'Tambah' : 'Edit' }}</small></h1>
+    <h1 class="page-header">Barang Konsinyasi <small>{{ !$data->exists ? 'Tambah' : 'Edit' }}</small></h1>
 
     <x-alert />
 
@@ -50,6 +50,18 @@
                             <label class="form-label">Harga Jual</label>
                             <input class="form-control" type="number" wire:model="harga_jual" />
                             @error('harga_jual')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Konsinyator</label>
+                            <select class="form-control" wire:model="konsinyator_id" data-width="100%">
+                                <option hidden selected>-- Pilih Konsinyator --</option>
+                                @foreach ($dataSupplier as $item)
+                                    <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                @endforeach
+                            </select>
+                            @error('konsinyator_id')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -112,13 +124,6 @@
                                     <label class="form-label">Efek Samping</label>
                                     <input class="form-control" type="text" wire:model="efek_samping" />
                                     @error('efek_samping')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">KFA</label>
-                                    <input class="form-control" type="text" wire:model="kfa" />
-                                    @error('kfa')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>

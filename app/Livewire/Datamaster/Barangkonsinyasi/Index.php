@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Datamaster\Barang;
+namespace App\Livewire\Datamaster\Barangkonsinyasi;
 
 use App\Models\Barang;
 use Livewire\Component;
@@ -27,10 +27,11 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.datamaster.barang.index', [
+        return view('livewire.datamaster.barangkonsinyasi.index', [
             'data' => Barang::with([
+                'konsinyasi',
                 'pengguna'
-            ])->where('jenis', $this->jenis)->persediaan()
+            ])->where('jenis', $this->jenis)->konsinyasi()
                 ->where(fn($q) => $q
                     ->where('nama', 'like', '%' . $this->search . '%'))
                 ->orderBy('nama')

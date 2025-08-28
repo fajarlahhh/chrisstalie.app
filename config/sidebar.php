@@ -11,19 +11,11 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
+                    "title" => "Barang Konsinyasi",
+                    "method" => ["Index", "Form"],
+                ],
+                [
                     "title" => "Pegawai",
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Icd 10",
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Nakes",
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Pasien",
                     "method" => ["Index", "Form"],
                 ],
                 [
@@ -31,16 +23,16 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
-                    "title" => "Tarif",
+                    "title" => "Aset/Inventaris",
                     "method" => ["Index", "Form"],
                 ],
             ]
         ],
-        // [
-        //     "title" => "Rekapitulasi Stok",
-        //     "method" => ["Index"],
-        //     "icon" => "<i class='fa fa-legal'></i>",
-        // ],
+        [
+            "title" => "Rekapitulasi Stok",
+            "method" => ["Index"],
+            "icon" => "<i class='fa fa-legal'></i>",
+        ],
         // [
         //     "title" => "Laporan",
         //     "icon" => "<i class='fa fa-file-text'></i>",
@@ -92,24 +84,24 @@ return [
         //         ]
         //     ]
         // ],
-        // [
-        //     "title" => "Manajemen Stok",
-        //     "icon" => "<i class='fas fa-cubes'></i>",
-        //     "sub_menu" => [
-        //         [
-        //             "title" => "Pengadaan Konsinyasi",
-        //             "method" => ["Index", "Form"],
-        //         ],
-        //         [
-        //             "title" => "Pengadaan",
-        //             "method" => ["Index", "Form"],
-        //         ],
-        //         [
-        //             "title" => "Barang Masuk",
-        //             "method" => ["Index", "Form"],
-        //         ]
-        //     ]
-        // ],
+        [
+            "title" => "Pengadaan",
+            "icon" => "<i class='fas fa-cubes'></i>",
+            "sub_menu" => [
+                [
+                    "title" => "Permintaan",
+                    "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Pembelian",
+                    "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Barang Masuk",
+                    "method" => ["Index", "Form"],
+                ]
+            ]
+        ],
         // [
         //     "title" => "Penjualan",
         //     "icon" => "<i class='fas fa-cash-register'></i>",
@@ -128,11 +120,11 @@ return [
         //         ]
         //     ]
         // ],
-        // [
-        //     "icon" => "<i class='fas fa-info-circle'></i>",
-        //     "title" => "Informasi Harga",
-        //     "method" => ["Index"],
-        // ],
+        [
+            "icon" => "<i class='fas fa-info-circle'></i>",
+            "title" => "Informasi Harga",
+            "method" => ["Index"],
+        ],
         // [
         //     "icon" => "<i class='fas fa-users'></i>",
         //     "title" => "Informasi Pasien",
@@ -143,38 +135,16 @@ return [
         //     "title" => "Gaji",
         //     "method" => ["Index", "Form"],
         // ],
-        // [
-        //     "icon" => "<i class='fas fa-dollar'></i>",
-        //     "title" => "Pengeluaran",
-        //     "method" => ["Index", "Form"],
-        // ],
+        [
+            "icon" => "<i class='fas fa-dollar'></i>",
+            "title" => "Pengeluaran",
+            "method" => ["Index", "Form"],
+        ],
         // [
         //     "icon" => "<i class='fas fa-dollar'></i>",
         //     "title" => "Pelunasan Pengadaan",
         //     "method" => ["Index", "Form"],
-        // ],
-        [
-            "title" => "Pelayanan",
-            "icon" => "<i class='fas fa-stethoscope'></i>",
-            "sub_menu" => [
-                [
-                    "title" => "Pendaftaran",
-                    "method" => ["Index", "Form"],
-                ],
-                // [
-                //     "title" => "Pemeriksaan Awal",
-                //     "method" => ["Index", "Form"],
-                // ],
-                // [
-                //     "title" => "Diagnosa",
-                //     "method" => ["Index", "Form"],
-                // ],
-                // [
-                //     "title" => "Tindakan",
-                //     "method" => ["Index", "Form"],
-                // ]
-            ]
-        ],
+        // ],       
         [
             "title" => "Kasir",
             "icon" => "<i class='fa fa-shopping-cart'></i>",

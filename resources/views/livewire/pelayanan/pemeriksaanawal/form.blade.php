@@ -1,13 +1,27 @@
 <div>
-    @section('title', 'Tambah Pemeriksaan Awal')
+    @section('title', 'Pemeriksaan Awal')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Pelayanan</li>
         <li class="breadcrumb-item">Pemeriksaan Awal</li>
-        <li class="breadcrumb-item active">Tambah</li>
+        <li class="breadcrumb-item active">
+            @if ($data->exists)
+                Edit
+            @else
+                Tambah
+            @endif
+        </li>
     @endsection
 
-    <h1 class="page-header">Pemeriksaan Awal <small>Tambah</small></h1>
+    <h1 class="page-header">Pemeriksaan Awal
+        <small>
+            @if ($data->exists)
+                Edit
+            @else
+                Tambah
+            @endif
+        </small>
+    </h1>
 
     <x-alert />
 
@@ -59,13 +73,13 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Tanggal Lahir</label>
-                                    <input class="form-control" type="date" value="{{ $data->pasien->tanggal_lahir }}"
-                                        disabled />
+                                    <input class="form-control" type="date"
+                                        value="{{ $data->pasien->tanggal_lahir }}" disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Jenis Kelamin</label>
-                                    <input class="form-control" type="text" value="{{ $data->pasien->jenis_kelamin }}"
-                                        disabled />
+                                    <input class="form-control" type="text"
+                                        value="{{ $data->pasien->jenis_kelamin }}" disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">No. Hp</label>

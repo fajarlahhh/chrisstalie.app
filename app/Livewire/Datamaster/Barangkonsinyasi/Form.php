@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Datamaster\Barang;
+namespace App\Livewire\Datamaster\Barangkonsinyasi;
 
 use App\Models\Barang;
 use Livewire\Component;
@@ -17,11 +17,12 @@ class Form extends Component
     public $harga_jual;
     public $jenis = "Obat";
     public $golongan;
-    public $kfa;
     public $indikasi;
     public $kontraindikasi;
     public $perlu_resep = 0;
     public $garansi;
+    public $konsinyator_id;
+    public $dataSupplier = [];
 
 
     public function submit()
@@ -34,7 +35,7 @@ class Form extends Component
                 'harga_jual' => 'required',
                 'bentuk' => 'required',
                 'golongan' => 'required',
-                'kfa' => 'required',
+                'konsinyator_id' => 'required',
             ]);
         } else {
             $this->validate([
@@ -42,6 +43,7 @@ class Form extends Component
                 'nama' => 'required',
                 'satuan' => 'required',
                 'harga_jual' => 'required',
+                'konsinyator_id' => 'required',
             ]);
         }
 
@@ -52,11 +54,11 @@ class Form extends Component
             $this->data->harga_jual = $this->harga_jual;
             $this->data->bentuk = $this->jenis == 'Obat' ? $this->bentuk : null;
             $this->data->golongan = $this->jenis == 'Obat' ? $this->golongan : null;
-            $this->data->kfa = $this->jenis == 'Obat' ? $this->kfa : null;
             $this->data->indikasi = $this->jenis == 'Obat' ? $this->indikasi : null;
             $this->data->kontraindikasi = $this->jenis == 'Obat' ? $this->kontraindikasi : null;
             $this->data->perlu_resep = $this->jenis == 'Obat' ? $this->perlu_resep : null;
             $this->data->garansi = $this->jenis == 'Alat Kesehatan' ? $this->garansi : null;
+            $this->data->konsinyator_id = $this->konsinyator_id;
             $this->data->kantor = 'Apotek';
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
@@ -70,6 +72,7 @@ class Form extends Component
         $this->previous = url()->previous();
         $this->data = $data;
         $this->fill($this->data->toArray());
+        $this->dataSupplier = Supplier::whereNotNull('konsinyator')->orderBy('nama')->get();
     }
 
     public function updatedJenis()
@@ -77,7 +80,6 @@ class Form extends Component
         if ($this->jenis == 'Obat') {
             $this->bentuk = null;
             $this->golongan = null;
-            $this->kfa = null;
             $this->indikasi = null;
             $this->kontraindikasi = null;
             $this->perlu_resep = 0;
@@ -89,6 +91,6 @@ class Form extends Component
 
     public function render()
     {
-        return view('livewire.datamaster.barang.form');
+        return view('livewire.datamaster.barangkonsinyasi.form');
     }
 }

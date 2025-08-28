@@ -36,6 +36,6 @@ class PelayananTindakan extends Model
     }
     public function pendaftaran(): BelongsTo
     {
-        return $this->belongsTo(Pendaftaran::class);
+        return $this->belongsTo(PelayananPendaftaran::class);
     }
 }

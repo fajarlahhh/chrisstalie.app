@@ -2,7 +2,7 @@
 
 namespace App\Class;
 
-use App\Models\Pendaftaran;
+use App\Models\PelayananPendaftaran;
 
 class PelayananClass
 {
@@ -16,7 +16,7 @@ class PelayananClass
 
     public static function getNomor($tanggal)
     {
-        $data = Pendaftaran::orderBy('nomor', 'desc')->where('tanggal', $tanggal)->first();
+        $data = PelayananPendaftaran::orderBy('nomor', 'desc')->where('tanggal', $tanggal)->first();
         if ($data) {
             $nomor = str_replace('-', '', $tanggal) . sprintf('%05s', (int) substr($data->nomor, 8, 5) + 1);
         } else {

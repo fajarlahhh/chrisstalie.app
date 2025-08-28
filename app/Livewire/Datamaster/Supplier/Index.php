@@ -11,30 +11,32 @@ class Index extends Component
 {
     use WithPagination;
 
-    #[Url] 
+    #[Url]
     public $search, $exist = 1;
-
+    
     public function delete($id)
     {
-        Supplier::findOrFail($id)->delete();
-    }
-
-    public function permanentDelete($id)
-    {
-        Supplier::findOrFail($id)->forceDelete();
+        Supplier::findOrFail($id)
+            ->forceDelete();
     }
 
     public function restore($id)
     {
-        Supplier::withTrashed()->findOrFail($id)->restore();
+        Supplier::withTrashed()
+            ->findOrFail($id)
+            ->restore();
     }
 
     public function render()
     {
         return view('livewire.datamaster.supplier.index', [
-            'data' => Supplier::where(fn($q) => $q->where('nama', 'like', '%' . $this->search . '%')->orWhere('deskripsi', 'like', '%' . $this->search . '%'))
-                ->when($this->exist == '2', fn($q) => $q->onlyTrashed())->with('pengguna')
-                ->orderBy('nama')->paginate(10)
+            'data' => Supplier::where(fn($q) => $q
+                ->where('nama', 'like', '%' . $this->search . '%')
+                ->orWhere('deskripsi', 'like', '%' . $this->search . '%'))
+                ->when($this->exist == '2', fn($q) => $q->onlyTrashed())
+                ->with('pengguna')
+                ->orderBy('nama')
+                ->paginate(10)
         ]);
     }
 }

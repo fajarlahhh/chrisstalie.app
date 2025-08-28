@@ -3,7 +3,7 @@
 namespace App\Class;
 
 use App\Models\Pasien;
-use App\Models\Pendaftaran;
+use App\Models\PelayananPendaftaran;
 
 class PasienClass
 {

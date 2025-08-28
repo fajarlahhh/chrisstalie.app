@@ -1,0 +1,73 @@
+<div>
+    @section('title', 'Data Barang Konsinyasi')
+
+    @section('breadcrumb')
+        <li class="breadcrumb-item">Data Master</li>
+        <li class="breadcrumb-item active">Barang Konsinyasi</li>
+    @endsection
+
+    <h1 class="page-header">Barang Konsinyasi</h1>
+    <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+        <!-- begin panel-heading -->
+        <div class="panel-heading">
+            
+            <div class="w-100">
+                <div class="panel-heading-btn float-end">
+                    <select class="form-control w-auto" wire:model.lazy="kategori">
+                        <option value="">-- Semua Kategori --</option>
+                        <option value="Alat Medis">Alat Medis</option>
+                        <option value="Bangunan">Bangunan</option>
+                        <option value="Elektronik">Elektronik</option>
+                        <option value="Komputer">Komputer</option>
+                        <option value="Kendaraan">Kendaraan</option>
+                        <option value="Perabot">Perabot</option>
+                    </select>&nbsp;
+                    <input type="text" class="form-control w-200px" placeholder="Cari"
+                        aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
+                        wire:model.lazy="search">
+                </div>
+            </div>
+        </div>
+        <div class="panel-body table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="w-10px">No.</th>
+                        <th>Kode</th>
+                        <th>Nama</th>
+                        <th>Kategori</th>
+                        <th>Tanggal Perolehan</th>
+                        <th>Harga Perolehan</th>
+                        <th>Masa Manfaat</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($data as $item)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $item->nama }}</td>
+                            <td>{{ $item->satuan }}</td>
+                            <td>{{ number_format($item->harga_jual, 0, ',', '.') }}</td>
+                            <td>{{ $item->bentuk }}</td>
+                            <td>{{ $item->golongan }}</td>
+                            <td>{{ $item->konsinyator->nama }}</td>
+                            <td>{{ $item->perlu_resep ? 'Ya' : 'Tidak' }}</td>
+                            <td class="with-btn-group text-end" nowrap>
+                                @role('administrator|supervisor')
+                                    <x-action :row="$item" custom="" :detail="false" :edit="true"
+                                        :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                @endrole
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="panel-footer">
+            {{ $data->links() }}
+        </div>
+    </div>
+    <x-alert />
+</div>
