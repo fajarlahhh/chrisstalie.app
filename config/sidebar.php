@@ -101,6 +101,10 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
+                    "title" => "Verifikasi",
+                    "method" => ["Index", "Form"],
+                ],
+                [
                     "title" => "Barang Masuk",
                     "method" => ["Index", "Form"],
                 ]
