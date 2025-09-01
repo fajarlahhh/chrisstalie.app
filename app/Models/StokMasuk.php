@@ -8,12 +8,16 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class StokMasuk extends Model
 {
     use HasFactory;
 
     protected $table = 'stok_masuk';
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     public function barang(): BelongsTo
     {
@@ -30,14 +34,9 @@ class StokMasuk extends Model
         return $this->belongsTo(Pengguna::class)->withTrashed();
     }
 
-    public function stok(): HasMany
+    public function stok(): HasOne
     {
-        return $this->hasMany(Stok::class);
-    }
-
-    public function availableStok(): HasMany
-    {
-        return $this->hasMany(Stok::class)->available();
+        return $this->hasOne(Stok::class, 'id', 'id');
     }
 
     public function pembelian(): BelongsTo

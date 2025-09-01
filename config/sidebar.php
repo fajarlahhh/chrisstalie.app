@@ -154,7 +154,7 @@ return [
         //     "method" => ["Index", "Form"],
         // ],       
         [
-            "title" => "Kasir",
+            "title" => "Penjualan",
             "icon" => "<i class='fa fa-shopping-cart'></i>",
             "method" => ["Index", "Form"],
         ],

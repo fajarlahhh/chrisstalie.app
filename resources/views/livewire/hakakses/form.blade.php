@@ -8,8 +8,6 @@
 
     <h1 class="page-header">Hak Akses <small>{{ !$data->exists ? 'Tambah' : 'Edit' }}</small></h1>
 
-    <x-alert />
-
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading ui-sortable-handle">
@@ -148,4 +146,7 @@
             </div>
         </form>
     </div>
+
+    <x-alert />
+
 </div>
