@@ -61,20 +61,20 @@
                                     <thead>
                                         <tr>
                                             <th>Barang</th>
+                                            <th>Satuan</th>
                                             <th>Qty Permintaan</th>
                                             <th>Qty Disetujui</th>
-                                            <th>Satuan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($item->permintaanPembelianDetail as $detail)
                                             <tr>
                                                 <td class="text-nowrap w-300px">{{ $detail->barang->nama }}</td>
+                                                <td class="text-nowrap w-80px">{{ $detail->barang->barangSatuanTerkecil->nama }}</td>
                                                 <td class="text-nowrap text-end w-80px">{{ $detail->qty_permintaan }}
                                                 </td>
                                                 <td class="text-nowrap text-end w-80px">{{ $detail->qty_disetujui }}
                                                 </td>
-                                                <td class="text-nowrap w-80px">{{ $detail->barang->satuan }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

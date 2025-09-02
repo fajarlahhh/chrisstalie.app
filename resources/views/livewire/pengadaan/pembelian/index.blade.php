@@ -70,7 +70,7 @@
                                             <td class="p-1">
                                                 {{ $subRow->barang->nama }}</td>
                                             <td class="text-end p-1  text-nowrap">
-                                                {{ $subRow->barang->satuan }}</td>
+                                                {{ $subRow->barang->barangSatuanTerkecil->nama }}</td>
                                             <td class="text-end p-1  text-nowrap">
                                                 {{ number_format($subRow->harga_beli) }}</td>
                                             <td class="text-end p-1  text-nowrap">

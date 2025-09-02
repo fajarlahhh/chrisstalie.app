@@ -38,21 +38,7 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Satuan</label>
-                            <input class="form-control" type="text" wire:model="satuan" />
-                            @error('satuan')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Harga Jual</label>
-                            <input class="form-control" type="number" wire:model="harga_jual" />
-                            @error('harga_jual')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        @if ($jenis == 'Obat')
+                        @if ($jenis == 'Obat' || $jenis == 'Produk Kecantikan')
                             <div class="mb-3">
                                 <label class="form-label">Bentuk</label>
                                 <select class="form-control" wire:model="bentuk" data-width="100%">
@@ -78,6 +64,65 @@
                         @endif
                     </div>
                     <div class="col-md-6">
+                        <div class="alert alert-secondary">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Satuan </th>
+                                        <th>Harga</th>
+                                        <th class="w-100px">Rasio dari Terkecil</th>
+                                        <th class="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($barangSatuan as $index => $satuan)
+                                        <tr>
+                                            <td>
+                                                <input class="form-control" type="text"
+                                                    wire:model="barangSatuan.{{ $index }}.nama" />
+                                                @error('barangSatuan.{{ $index }}.nama')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </td>
+                                            <td>
+                                                <input class="form-control" type="number"
+                                                    wire:model="barangSatuan.{{ $index }}.harga_jual" />
+                                                @error('barangSatuan.{{ $index }}.harga_jual')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </td>
+                                            @if ($satuan['rasio_dari_terkecil'] == 1)
+                                                <td class="text-center align-middle">
+                                                    <span class="badge bg-success">Utama</span>
+                                                </td>
+                                            @else
+                                                <td>
+                                                    <input class="form-control" type="number"
+                                                        wire:model="barangSatuan.{{ $index }}.rasio_dari_terkecil" />
+                                                    @error('barangSatuan.{{ $index }}.rasio_dari_terkecil')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </td>
+                                            @endif
+                                            <td class="text-center">
+                                                @if ($satuan['rasio_dari_terkecil'] != 1)
+                                                    <button type="button" class="btn btn-sm btn-danger"
+                                                        wire:click="hapusSatuan({{ $index }})">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    <tr>
+                                        <td colspan="4" class="text-center">
+                                            <button type="button" class="btn btn-sm btn-secondary"
+                                                wire:click="tambahSatuan">Tambah Satuan</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                         <div class="alert alert-info">
                             @if ($jenis == 'Obat' || $jenis == 'Produk Kecantikan')
                                 <div class="mb-3">

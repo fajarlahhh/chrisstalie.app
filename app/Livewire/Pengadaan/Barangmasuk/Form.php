@@ -25,7 +25,7 @@ class Form extends Component
         $barang = PembelianDetail::where('pembelian_id', $this->pembelian_id)->with('barang')->get()->map(fn($q) => [
             'id' => $q->barang_id,
             'nama' => $q->barang->nama,
-            'satuan' => $q->barang->satuan,
+            'satuan' => $q->barang->barangSatuanTerkecil->nama,
             'qty' => $q->qty - ($stokMasuk->where('id', $q->barang_id)->first()['qty_masuk'] ?? 0),
             'qty_masuk' => null,
         ])->toArray();
