@@ -1,12 +1,12 @@
 <div>
-    @section('title', 'Barang')
+    @section('title', 'Harga Jual')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Data Master</li>
-        <li class="breadcrumb-item active">Barang</li>
+        <li class="breadcrumb-item active">Harga Jual</li>
     @endsection
 
-    <h1 class="page-header">Barang</h1>
+    <h1 class="page-header">Harga Jual</h1>
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">
@@ -34,11 +34,10 @@
                     <thead>
                         <tr>
                             <th class="w-10px">No.</th>
-                            <th>Nama</th>
-                            <th>Bentuk</th>
-                            <th>KFA</th>
-                            <th>Perlu Resep</th>
+                            <th>Nama Barang</th>
                             <th>Satuan</th>
+                            <th>Harga Jual</th>
+                            <th>Konversi Satuan</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -46,31 +45,22 @@
                         @foreach ($data as $item)
                             <tr>
                                 <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
+                                <td>{{ $item->barang_nama }}</td>
                                 <td>{{ $item->nama }}</td>
-                                <td>{{ $item->bentuk }}</td>
-                                <td>{{ $item->kfa }}</td>
-                                <td>{{ $item->perlu_resep ? 'Ya' : 'Tidak' }}</td>
-                                <td>
-                                    <table class="table table-bordered fs-11px">
-                                        <tbody>
-                                            @foreach ($item->barangSatuan as $satuan)
-                                                <tr>
-                                                    <td class="p-1">{{ $satuan->nama }}</td>
-                                                    <td class="text-end w-100px p-1">
-                                                        {{ number_format($satuan->harga_jual, 0, ',', '.') }}</td>
-                                                    <td class="text-center p-1 text-nowrap w-50px">
-                                                        {!! $satuan->rasio_dari_terkecil == 1
-                                                            ? '<span class="badge bg-success">Terkecil</span>'
-                                                            : '1/' . $satuan->rasio_dari_terkecil !!} </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </td>
+                                <td>{{ number_format($item->harga_jual, 0, ',', '.') }}</td>
+                                <td>{!! $item->rasio_dari_terkecil == 1
+                                    ? '<span class="badge bg-success">Terkecil</span>'
+                                    : $item->rasio_dari_terkecil/$item->satuanKonversi->rasio_dari_terkecil . ' ' . $item->satuanKonversi->nama !!}</td>
                                 <td class="with-btn-group text-end" nowrap>
                                     @role('administrator|supervisor')
-                                        <x-action :row="$item" custom="" :detail="false" :edit="true"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                        @if ($item->rasio_dari_terkecil == 1)
+                                            <x-action :row="$item" custom="" :detail="false" :edit="true"
+                                                :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                        @else
+                                            <x-action :row="$item" custom="" :detail="false" :edit="true"
+                                                :print="false" :permanentDelete="false" :restore="false"
+                                                :delete="true" />
+                                        @endif
                                     @endrole
                                 </td>
                             </tr>
@@ -100,6 +90,10 @@
                                                     <td class="p-1">{{ $satuan->nama }}</td>
                                                     <td class="text-end w-100px p-1">
                                                         {{ number_format($satuan->harga_jual, 0, ',', '.') }}</td>
+                                                    <td class="text-center p-1 text-nowrap w-50px">
+                                                        {!! $satuan->rasio_dari_terkecil == 1
+                                                            ? '<span class="badge bg-success">Terkecil</span>'
+                                                            : '1/' . $satuan->rasio_dari_terkecil !!} </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

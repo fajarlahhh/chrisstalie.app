@@ -19,6 +19,7 @@ class Form extends Component
     {
         array_push($this->barang, [
             'id' => null,
+            'satuan' => null,
             'qty' => 0,
         ]);
     }
@@ -35,6 +36,7 @@ class Form extends Component
             'deskripsi' => 'required',
             'barang' => 'required|array',
             'barang.*.id' => 'required',
+            'barang.*.satuan' => 'required',
             'barang.*.qty' => 'required',
         ]);
 
@@ -74,7 +76,11 @@ class Form extends Component
     public function mount(PermintaanPembelian $data)
     {
         $this->previous = url()->previous();
-        $this->dataBarang = Barang::orderBy('nama')->get()->toArray();
+        $this->dataBarang = Barang::with('barangSatuan')->orderBy('nama')->get()->map(fn($q) => [
+            'id' => $q['id'],
+            'nama' => $q['nama'],
+            'barangSatuan' => $q['barangSatuan'],
+        ])->toArray();
         $this->dataPengguna = Pengguna::where(fn($q) => $q->whereHas('permissions', function ($q) {
             $q->where('name', 'pengadaanverifikasi');
         })->orWhere(fn($q) => $q->whereHas('roles', fn($q) => $q->where('name', 'administrator'))))->orderBy('nama')->get()->toArray();

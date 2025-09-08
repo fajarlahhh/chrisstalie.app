@@ -15,6 +15,10 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
+                    "title" => "Harga Jual",
+                    "method" => ["Index", "Form"],
+                ],
+                [
                     "title" => "Barang Konsinyasi",
                     "method" => ["Index", "Form"],
                 ],

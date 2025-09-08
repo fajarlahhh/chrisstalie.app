@@ -18,6 +18,7 @@ class Form extends Component
     public $golongan;
     public $kfa;
     public $indikasi;
+    public $harga;
     public $kontraindikasi;
     public $perlu_resep = 0;
     public $garansi;
@@ -76,13 +77,25 @@ class Form extends Component
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
-            $this->data->barangSatuan()->delete();
-            $this->data->barangSatuan()->insert(collect($this->barangSatuan)->map(fn($q) => [
-                'nama' => $q['nama'],
-                'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
-                'harga_jual' => $q['harga_jual'],
-                'barang_id' => $this->data->id,
-            ])->toArray());
+            $timestamp = now();
+            if (!$this->data->exists) {
+                $this->data->barangSatuan()->insert([
+                    'nama' => $this->satuan,
+                    'rasio_dari_terkecil' => 1,
+                    'harga_jual' => $this->harga,
+                    'barang_id' => $this->data->id,
+                    'pengguna_id' => auth()->id(),
+                    'created_at' => $timestamp,
+                    'updated_at' => $timestamp,
+                ]);
+            } else {
+                $this->data->barangSatuan()->where('rasio_dari_terkecil', 1)->update([
+                    'harga_jual' => $this->harga,
+                    'pengguna_id' => auth()->id(),
+                    'created_at' => $timestamp,
+                    'updated_at' => $timestamp,
+                ]);
+            }
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
@@ -101,6 +114,9 @@ class Form extends Component
                 'rasio_dari_terkecil' => 1,
                 'harga_jual' => 0
             ];
+        } else {
+            $this->satuan = $this->data->barangSatuanTerkecil->nama;
+            $this->harga = $this->data->barangSatuanTerkecil->harga_jual;
         }
     }
 

@@ -13,7 +13,7 @@ use Illuminate\Validation\Rule;
 
 class Form extends Component
 {
-    public $data, $previous, $dataBarang = [], $dataSupplier = [], $dataPermintaanPembelian = [], $barang = [];
+    public $data, $previous, $dataSupplier = [], $dataPermintaanPembelian = [], $barang = [];
     public $tanggal, $uraian, $jatuh_tempo, $permintaan_pembelian_id, $pembayaran = "Jatuh Tempo", $ppn, $diskon, $totalHargaBeli, $supplier_id;
 
     public function updatedBarang()
@@ -27,7 +27,7 @@ class Form extends Component
         $this->barang = PermintaanPembelianDetail::where('permintaan_pembelian_id', $this->permintaan_pembelian_id)->with('barang')->get()->map(fn($q) => [
             'id' => $q->barang_id,
             'nama' => $q->barang->nama,
-            'satuan' => $q->barang->satuan,
+            'satuan' => $q->barang->barangSatuanTerkecil->nama,
             'qty' => $q->qty_permintaan,
             'harga_beli' => 0,
         ])->toArray();
@@ -53,7 +53,6 @@ class Form extends Component
     {
         $this->tanggal = $this->tanggal ?: date('Y-m-d');
         $this->previous = url()->previous();
-        $this->dataBarang = Barang::orderBy('jenis', 'asc')->orderBy('nama', 'asc')->whereNull('konsinyator_id')->get()->toArray();
         $this->dataSupplier = Supplier::whereNotNull('konsinyator')->orderBy('nama')->get()->toArray();
         $this->dataPermintaanPembelian = PermintaanPembelian::whereNotIn(
             'id',

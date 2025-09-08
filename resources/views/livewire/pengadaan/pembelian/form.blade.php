@@ -104,7 +104,7 @@
                             <thead>
                                 <tr>
                                     <th>Barang/Item</th>
-                                    <th>Satuan</th>
+                                    <th class="w-100px">Satuan</th>
                                     <th class="w-100px">Qty</th>
                                     <th class="w-150px">Harga Beli</th>
                                 </tr>
