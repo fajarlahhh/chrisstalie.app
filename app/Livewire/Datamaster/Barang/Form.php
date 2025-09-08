@@ -19,6 +19,7 @@ class Form extends Component
     public $kfa;
     public $indikasi;
     public $harga;
+    public $efek_samping;
     public $kontraindikasi;
     public $perlu_resep = 0;
     public $garansi;
@@ -73,6 +74,7 @@ class Form extends Component
             $this->data->kontraindikasi = $this->jenis == 'Obat' ? $this->kontraindikasi : null;
             $this->data->perlu_resep = $this->jenis == 'Obat' ? $this->perlu_resep : null;
             $this->data->garansi = $this->jenis == 'Alat Kesehatan' ? $this->garansi : null;
+            $this->data->efek_samping = $this->jenis == 'Obat' ? $this->efek_samping : null;
             $this->data->kantor = 'Apotek';
             $this->data->pengguna_id = auth()->id();
             $this->data->save();

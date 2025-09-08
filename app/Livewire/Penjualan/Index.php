@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Penjualan\Bebas;
+namespace App\Livewire\Penjualan;
 
 use App\Models\Sale;
 use App\Models\Barang;
