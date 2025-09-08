@@ -34,9 +34,14 @@ class StokMasuk extends Model
         return $this->belongsTo(Pengguna::class)->withTrashed();
     }
 
-    public function stok(): HasOne
+    public function stok(): HasMany
     {
-        return $this->hasOne(Stok::class, 'id', 'id');
+        return $this->hasMany(Stok::class);
+    }
+
+    public function keluar(): HasMany
+    {
+        return $this->hasMany(Stok::class)->whereNotNull('stok_keluar_id');
     }
 
     public function pembelian(): BelongsTo

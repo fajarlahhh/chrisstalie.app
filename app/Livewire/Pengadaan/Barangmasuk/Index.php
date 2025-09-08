@@ -23,7 +23,7 @@ class Index extends Component
     public function delete($id)
     {
         $data = StokMasuk::find($id);
-        if ($data->stok->keluar == 0) {
+        if ($data->keluar->count() == 0) {
             $data->delete();
         }
     }
@@ -31,7 +31,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.pengadaan.barangmasuk.index', [
-            'data' => StokMasuk::with(['pengguna', 'barang', 'pembelian'])
+            'data' => StokMasuk::with(['pengguna', 'barang', 'pembelian', 'keluar'])
                 ->where('created_at', 'like', $this->bulan . '%')
                 ->whereHas('barang', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
                 ->whereHas('pembelian', fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))

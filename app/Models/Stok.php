@@ -23,6 +23,6 @@ class Stok extends Model
 
     public function stokMasuk(): BelongsTo
     {
-        return $this->belongsTo(StokMasuk::class, 'id', 'id');
+        return $this->belongsTo(StokMasuk::class);
     }
 }

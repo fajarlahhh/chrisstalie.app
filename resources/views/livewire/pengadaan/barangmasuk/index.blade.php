@@ -54,13 +54,14 @@
                                 <small>
                                     <ul>
                                         <li><strong>{{ $row->pembelian->uraian }}</strong></li>
-                                        <li>{{ $row->pembelian->supplier->nama }}</li>
+                                        <li>Supplier : {{ $row->pembelian->supplier->nama }}</li>
+                                        <li>Tanggal : {{ $row->pembelian->tanggal }}</li>
                                     </ul>
                                 </small>
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    @if ($row->keluar == 0)
+                                    @if ($row->keluar->count() == 0)
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                     @endif
