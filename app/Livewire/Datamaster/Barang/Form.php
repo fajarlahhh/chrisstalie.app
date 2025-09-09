@@ -4,25 +4,20 @@ namespace App\Livewire\Datamaster\Barang;
 
 use App\Models\Barang;
 use Livewire\Component;
-use App\Models\Supplier;
+use App\Models\KodeAkun;
 use Illuminate\Support\Facades\DB;
 
 class Form extends Component
 {
-    public $data;
+    public $data, $dataKodeAkun = [];
     public $previous;
     public $nama;
     public $satuan;
-    public $bentuk;
-    public $jenis = "Obat";
-    public $golongan;
+    public $kode_akun_id;
     public $kfa;
     public $indikasi;
     public $harga;
-    public $efek_samping;
-    public $kontraindikasi;
     public $perlu_resep = 0;
-    public $garansi;
     public $kantor;
     public $barangSatuan = [];
 
@@ -43,42 +38,22 @@ class Form extends Component
 
     public function submit()
     {
-        if ($this->jenis == 'Obat') {
-            $this->validate([
-                'jenis' => 'required',
-                'barangSatuan' => 'required',
-                'barangSatuan.*.rasio_dari_terkecil' => 'required|numeric|min:1',
-                'barangSatuan.*.harga_jual' => 'required',
-                'barangSatuan.*.nama' => 'required',
-                'nama' => 'required',
-                'bentuk' => 'required',
-                'golongan' => 'required',
-                'kantor' => 'required',
-            ]);
-        } else {
-            $this->validate([
-                'jenis' => 'required',
-                'barangSatuan' => 'required',
-                'barangSatuan.*.rasio_dari_terkecil' => 'required|numeric|min:1',
-                'barangSatuan.*.harga_jual' => 'required',
-                'barangSatuan.*.nama' => 'required',
-                'nama' => 'required',
-                'kantor' => 'required',
-            ]);
-        }
+        $this->validate([
+            'kode_akun_id' => 'required',
+            'barangSatuan' => 'required',
+            'barangSatuan.*.rasio_dari_terkecil' => 'required|numeric|min:1',
+            'barangSatuan.*.harga_jual' => 'required',
+            'barangSatuan.*.nama' => 'required',
+            'nama' => 'required',
+            'kantor' => 'required',
+        ]);
 
         DB::transaction(function () {
-            $this->data->jenis = $this->jenis;
             $this->data->nama = $this->nama;
-            $this->data->bentuk = $this->jenis == 'Obat' ? $this->bentuk : null;
-            $this->data->golongan = $this->jenis == 'Obat' ? $this->golongan : null;
-            $this->data->kfa = $this->jenis == 'Obat' ? $this->kfa : null;
-            $this->data->indikasi = $this->jenis == 'Obat' ? $this->indikasi : null;
-            $this->data->kontraindikasi = $this->jenis == 'Obat' ? $this->kontraindikasi : null;
-            $this->data->perlu_resep = $this->jenis == 'Obat' ? $this->perlu_resep : null;
-            $this->data->garansi = $this->jenis == 'Alat Kesehatan' ? $this->garansi : null;
-            $this->data->efek_samping = $this->jenis == 'Obat' ? $this->efek_samping : null;
+            $this->data->kfa = $this->kfa;
+            $this->data->perlu_resep = $this->perlu_resep;
             $this->data->kantor = $this->kantor;
+            $this->data->kode_akun_id = $this->kode_akun_id;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
@@ -120,24 +95,15 @@ class Form extends Component
                 'harga_jual' => 0
             ];
         } else {
+            $this->dataKodeAkun = KodeAkun::where('kantor', $this->kantor)->where('detail', 2)->where('kategori', 'Aktiva')->get()->toArray();
             $this->satuan = $this->data->barangSatuanTerkecil->nama;
             $this->harga = $this->data->barangSatuanTerkecil->harga_jual;
         }
     }
 
-    public function updatedJenis()
+    public function updatedKantor($value)
     {
-        if ($this->jenis == 'Obat') {
-            $this->bentuk = null;
-            $this->golongan = null;
-            $this->kfa = null;
-            $this->indikasi = null;
-            $this->kontraindikasi = null;
-            $this->perlu_resep = 0;
-        }
-        if ($this->jenis == 'Alat Kesehatan') {
-            $this->garansi = null;
-        }
+        $this->dataKodeAkun = KodeAkun::where('kantor', $value)->where('detail', 2)->where('kategori', 'Aktiva')->get()->toArray();
     }
 
     public function render()

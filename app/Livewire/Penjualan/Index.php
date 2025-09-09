@@ -7,7 +7,6 @@ use App\Models\Stok;
 use App\Models\Barang;
 use Livewire\Component;
 use App\Models\Penjualan;
-use App\Models\SaleDetail;
 use App\Models\StokKeluar;
 use Illuminate\Support\Str;
 use App\Models\PenjualanDetail;

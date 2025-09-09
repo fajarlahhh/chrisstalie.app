@@ -75,5 +75,9 @@ class Barang extends Model
     {
         return $this->hasOne(BarangSatuan::class)->where('rasio_dari_terkecil', 1);
     }
-    
+
+    public function kodeAkun(): BelongsTo
+    {
+        return $this->belongsTo(KodeAkun::class);
+    }
 }

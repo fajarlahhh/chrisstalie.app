@@ -61,7 +61,7 @@
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')
-                    <input type="submit" value="Simpan" class="btn btn-success" />
+                    <input wire:loading.remove type="submit" value="Simpan" class="btn btn-success" />
                 @endrole
             </div>
         </form>

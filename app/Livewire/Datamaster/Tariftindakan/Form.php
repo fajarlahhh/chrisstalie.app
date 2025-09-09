@@ -99,6 +99,7 @@ class Form extends Component
             $this->data->biaya_jasa_perawat = $this->biaya_jasa_perawat;
             $this->data->biaya_tidak_langsung = $this->biaya_tidak_langsung;
             $this->data->biaya_keuntungan_klinik = $this->biaya_keuntungan_klinik;
+            
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 

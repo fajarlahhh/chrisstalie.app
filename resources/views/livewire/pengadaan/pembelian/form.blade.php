@@ -162,9 +162,9 @@
             </div>
             <div class="panel-footer" wire:loading.remove wire:target="submit">
                 @unlessrole('guest')
-                    <input type="submit" value="Simpan" class="btn btn-success" />
+                    <input wire:loading.remove type="submit" value="Simpan" class="btn btn-success" />
                 @endunlessrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore>Batal</a>
+                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove >Batal</a>
             </div>
         </form>
     </div>

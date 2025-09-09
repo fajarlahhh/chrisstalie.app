@@ -46,7 +46,8 @@
                                 <ul class="mb-0 ps-3">
                                     @foreach ($row->penjualanDetail as $subRow)
                                         <li>
-                                            {{ $subRow->barang->nama ?? '-' }} ({{ $subRow->qty }} {{ $subRow->barangSatuan->nama }} x {{ number_format($subRow->harga, 2) }})
+                                            {{ $subRow->barang->nama ?? '-' }} ({{ $subRow->qty }}
+                                            {{ $subRow->barangSatuan->nama }} x {{ number_format($subRow->harga, 2) }})
                                         </li>
                                     @endforeach
                                 </ul>
@@ -62,9 +63,16 @@
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator')
-                                    @if (is_null($row->payment_id))
+                                    <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                        :print="true" :permanentDelete="false" :restore="false" :delete="true" />
+                                @endrole
+                                @role('supervisor')
+                                    @if (substr($row->created_at, 0, 10) == date('Y-m-d'))
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
                                             :print="true" :permanentDelete="false" :restore="false" :delete="true" />
+                                    @else
+                                        <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                            :print="true" :permanentDelete="false" :restore="false" :delete="false" />
                                     @endif
                                 @endrole
                             </td>

@@ -38,6 +38,10 @@ return [
                     "title" => "Aset/Inventaris",
                     "method" => ["Index", "Form"],
                 ],
+                [
+                    "title" => "Unsur Gaji",
+                    "method" => ["Index"],
+                ],
             ]
         ],
         [
@@ -135,6 +139,37 @@ return [
                     "method" => ["Index", "Form"],
                 ]
             ]
+        ],
+        [
+            "title" => "Klinik",
+            "icon" => "<i class='fas fa-stethoscope'></i>",
+            "sub_menu" => [
+                [
+                    "title" => "Registrasi",
+                    "method" => ["Index", "Data"],
+                ],
+                [
+                    "title" => "Pemeriksaan Awal",
+                    "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Diagnosis",
+                    "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Tindakan",
+                    "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Kasir",
+                    "method" => ["Index", "Form"],
+                ]
+            ]
+        ],
+        [
+            "title" => "Jurnal Keuangan",
+            "method" => ["Index", "Form"],
+            "icon" => "<i class='fas fa-book'></i>"
         ],
         // [
         //     "title" => "Penjualan",

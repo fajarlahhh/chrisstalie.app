@@ -19,4 +19,8 @@ class Pegawai extends Model
         return $this->belongsTo(Pengguna::class)->withTrashed();
     }
     
+    public function pegawaiUnsurGaji(): HasMany
+    {
+        return $this->hasMany(PegawaiUnsurGaji::class);
+    }
 }

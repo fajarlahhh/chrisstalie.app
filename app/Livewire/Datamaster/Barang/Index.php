@@ -12,7 +12,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $jenis = 'Obat', $kantor;
+    public $cari, $kantor;
 
     public function delete($id)
     {
@@ -30,7 +30,8 @@ class Index extends Component
         return view('livewire.datamaster.barang.index', [
             'data' => Barang::with(['barangSatuan' => fn($q) => $q->orderBy('rasio_dari_terkecil', 'desc')])->with([
                 'pengguna',
-            ])->where('jenis', $this->jenis)->persediaan()
+                'kodeAkun'
+            ])->persediaan()
                 ->when($this->kantor, fn($q) => $q->where('kantor', $this->kantor))
                 ->where(fn($q) => $q
                     ->where('nama', 'like', '%' . $this->cari . '%'))

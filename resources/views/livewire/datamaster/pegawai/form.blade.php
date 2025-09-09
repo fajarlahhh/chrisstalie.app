@@ -21,7 +21,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">Kantor</label>
-                            <select class="form-control" wire:model="kantor" data-width="100%">
+                            <select class="form-control" wire:model.live="kantor" data-width="100%">
                                 <option hidden selected>-- Pilih Kantor --</option>
                                 @foreach (\App\Enums\KantorEnum::cases() as $item)
                                     <option value="{{ $item->value }}">{{ $item->label() }}</option>
@@ -130,40 +130,13 @@
                             <div class="note-content">
                                 <h4>Gaji & Tunjangan</h4>
                                 <hr>
-                                <div class="mb-3">
-                                    <label class="form-label">Gaji Pokok</label>
-                                    <input class="form-control" type="number" step="1" min="0"
-                                        wire:model="gaji" @if ($status == 'Non Aktif') disabled @endif />
-                                    @error('gaji')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Tunjangan</label>
-                                    <input class="form-control" type="number" step="1" min="0"
-                                        wire:model="tunjangan" @if ($status == 'Non Aktif') disabled @endif />
-                                    @error('tunjangan')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Uang Makan</label>
-                                    <input class="form-control" type="number" step="1" min="0"
-                                        wire:model="tunjangan_transport"
-                                        @if ($status == 'Non Aktif') disabled @endif />
-                                    @error('tunjangan_transport')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">BPJS Kesehatan</label>
-                                    <input class="form-control" type="number" step="1" min="0"
-                                        wire:model="tunjangan_bpjs"
-                                        @if ($status == 'Non Aktif') disabled @endif />
-                                    @error('tunjangan_bpjs')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
+                                @foreach ($unsurGaji as $index => $item)
+                                    <div class="mb-3">
+                                        <label class="form-label">{{ $item['nama'] }}</label>
+                                        <input class="form-control" type="number" step="1" min="0"
+                                            wire:model="unsurGaji.{{ $index }}.nilai" @if ($status == 'Non Aktif') disabled @endif />
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -171,9 +144,9 @@
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')
-                    <input type="submit" value="Simpan" class="btn btn-success" />
+                    <input wire:loading.remove type="submit" value="Simpan" class="btn btn-success" />
                 @endrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore>Batal</a>
+                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove >Batal</a>
             </div>
         </form>
     </div>

@@ -72,9 +72,9 @@
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')
-                    <input type="submit" value="Simpan" class="btn btn-success" />
+                    <input wire:loading.remove type="submit" value="Simpan" class="btn btn-success" />
                 @endrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore>Batal</a>
+                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove >Batal</a>
             </div>
         </form>
     </div>
