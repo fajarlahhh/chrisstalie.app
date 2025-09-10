@@ -61,7 +61,11 @@
                                                 <td class="text-center p-1 text-nowrap w-50px">
                                                     {!! $satuan->rasio_dari_terkecil == 1
                                                         ? '<span class="badge bg-success">Terkecil</span>'
-                                                        : '1/' . $satuan->rasio_dari_terkecil !!} </td>
+                                                        : '1/' . $satuan->rasio_dari_terkecil !!}
+                                                    {!! $satuan->utama == 1
+                                                        ? '<span class="badge bg-info">Utama</span>'
+                                                        : '' !!}
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>

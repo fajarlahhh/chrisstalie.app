@@ -15,7 +15,7 @@ class JurnalClass
         //
     }
 
-    public static function pengeluaranBarang($jenis, $data, $detail)
+    public static function insert($jenis, $data, $detail)
     {
         $id = Str::uuid();
 

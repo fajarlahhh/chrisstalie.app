@@ -20,7 +20,9 @@ class Index extends Component
             'data' => Aset::with([
                 'pengguna'
             ])
-                ->where('kategori', $this->kategori)
+                ->when($this->kategori, function($q) {
+                    $q->where('kategori', $this->kategori);
+                })
                 ->where(fn($q) => $q
                     ->where('nama', 'like', '%' . $this->cari . '%'))
                 ->orderBy('nama')

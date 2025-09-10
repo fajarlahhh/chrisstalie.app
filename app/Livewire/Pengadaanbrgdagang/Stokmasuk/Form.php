@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Livewire\Pengadaan\Barangmasuk;
+namespace App\Livewire\Pengadaanbrgdagang\Stokmasuk;
 
 use App\Models\Stok;
+use App\Models\Jurnal;
 use Livewire\Component;
 use App\Models\Pembelian;
 use App\Models\StokMasuk;
@@ -30,6 +31,7 @@ class Form extends Component
             'satuan' => $q->barangSatuan?->nama . ' (' . $q->barangSatuan?->konversi_satuan . ')',
             'qty' => $q->qty - ($stokMasuk->where('id', $q->barang_id)->first()['qty_masuk'] ?? 0),
             'qty_masuk' => null,
+            'harga_beli' => $q->harga_beli,
             'no_batch' => null,
             'tanggal_kedaluarsa' => null,
         ])->toArray();
@@ -82,6 +84,7 @@ class Form extends Component
                         'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
                         'stok_masuk_id' => $id,
                         'tanggal_masuk' => now(),
+                        'harga_beli' => $value['harga_beli'],
                         'created_at' => now(),
                         'updated_at' => now(),
                     ];
@@ -91,13 +94,14 @@ class Form extends Component
             foreach (array_chunk($stok, 1000) as $chunk) {
                 Stok::insert($chunk);
             }
+
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('/pengadaan/barangmasuk/form');
+        $this->redirect('/pengadaan/stokmasuk/form');
     }
 
     public function render()
     {
-        return view('livewire.pengadaan.barangmasuk.form');
+        return view('livewire.pengadaanbrgdagang.stokmasuk.form');
     }
 }

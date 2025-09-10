@@ -23,7 +23,7 @@ class Index extends Component
 
     public function print()
     {
-        $cetak = view('livewire.laporan.pengadaan.cetak', [
+        $cetak = view('livewire.laporan.pengadaanbrgdagang.cetak', [
             'cetak' => true,
             'date1' => $this->date1,
             'date2' => $this->date2,
@@ -34,7 +34,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.laporan.pengadaan.index', [
+        return view('livewire.laporan.pengadaanbrgdagang.index', [
             'data' => $this->getData()
         ]);
     }

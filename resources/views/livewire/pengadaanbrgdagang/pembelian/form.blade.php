@@ -2,7 +2,7 @@
     @section('title', 'Pembelian')
 
     @section('breadcrumb')
-        <li class="breadcrumb-item">Apotek</li>
+        <li class="breadcrumb-item">Pengadaan Barang Dagang</li>
         <li class="breadcrumb-item">Pembelian</li>
         <li class="breadcrumb-item active">Tambah</li>
     @endsection
@@ -42,7 +42,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tanggal</label>
-                    <input class="form-control" type="date" wire:model="date" required />
+                    <input class="form-control" type="date" wire:model="date" max="{{ now()->format('Y-m-d') }}" required />
                     @error('date')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

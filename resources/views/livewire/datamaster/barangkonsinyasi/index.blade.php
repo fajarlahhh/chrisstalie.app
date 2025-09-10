@@ -19,7 +19,7 @@
                 <div class="panel-heading-btn float-end">
                     <select class="form-control w-auto" wire:model.lazy="unit_bisnis">
                         <option value="">Semua Unit Bisnis</option>
-                        @foreach (\App\Enums\KantorEnum::cases() as $item)
+                        @foreach (\App\Enums\UnitBisnisEnum::cases() as $item)
                             <option value="{{ $item->value }}">{{ $item->label() }}</option>
                         @endforeach
                     </select>&nbsp;

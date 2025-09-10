@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Pengadaan\Barangmasuk;
+namespace App\Livewire\Pengadaanbrgdagang\Stokmasuk;
 
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -30,7 +30,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.pengadaan.barangmasuk.index', [
+        return view('livewire.pengadaanbrgdagang.stokmasuk.index', [
             'data' => StokMasuk::with(['pengguna', 'barang', 'pembelian', 'keluar'])
                 ->where('created_at', 'like', $this->bulan . '%')
                 ->whereHas('barang', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))

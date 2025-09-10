@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Pengadaan\Pembelian;
+namespace App\Livewire\Pengadaanbrgdagang\Pembelian;
 
 use App\Models\Barang;
 use Livewire\Component;
@@ -89,6 +89,24 @@ class Form extends Component
                 'pembelian_id' => $data->id,
             ])->toArray());
 
+
+            $id = Str::uuid();
+
+            $jurnal = new Jurnal();
+            $jurnal->id = $id;
+            $jurnal->jenis = 'Pembelian Barang';
+            $jurnal->tanggal = $this->tanggal;
+            $jurnal->uraian = $this->uraian;
+            $jurnal->unit_bisnis = $data['unit_bisnis'];
+            $jurnal->pengguna_id = auth()->id();
+            $jurnal->save();
+
+            $jurnal->jurnalDetail()->delete();
+            $jurnal->jurnalDetail()->insert(collect($detail)->map(fn($q, $index) => [
+                'debit' => $q['debit'],
+                'kredit' => $q['kredit'],
+                'kode_akun_id' => $q['kode_akun_id']
+            ])->toArray());
             session()->flash('success', 'Berhasil menyimpan data');
         });
         $this->redirect($this->previous);
@@ -96,6 +114,6 @@ class Form extends Component
 
     public function render()
     {
-        return view('livewire.pengadaan.pembelian.form');
+        return view('livewire.pengadaanbrgdagang.pembelian.form');
     }
 }

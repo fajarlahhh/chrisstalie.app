@@ -123,7 +123,7 @@ return [
         //     ]
         // ],
         [
-            "title" => "Pengadaan",
+            "title" => "Pengadaan Brg. Dagang",
             "icon" => "<i class='fas fa-cubes'></i>",
             "sub_menu" => [
                 [
@@ -139,7 +139,7 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
-                    "title" => "Barang Masuk",
+                    "title" => "Stok Masuk",
                     "method" => ["Index", "Form"],
                 ]
             ]

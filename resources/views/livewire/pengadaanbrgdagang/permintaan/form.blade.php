@@ -2,7 +2,7 @@
     @section('title', 'Permintaan')
 
     @section('breadcrumb')
-        <li class="breadcrumb-item">Pengadaan</li>
+        <li class="breadcrumb-item">Pengadaan Barang Dagang</li>
         <li class="breadcrumb-item">Permintaan</li>
         <li class="breadcrumb-item active">Form</li>
     @endsection

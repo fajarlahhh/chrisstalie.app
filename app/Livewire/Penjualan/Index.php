@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Penjualan;
 
-use App\Models\Sale;
 use App\Models\Stok;
 use App\Models\Barang;
 use Livewire\Component;
@@ -10,11 +9,12 @@ use App\Models\Penjualan;
 use App\Models\StokKeluar;
 use Illuminate\Support\Str;
 use App\Models\PenjualanDetail;
+use App\Models\MetodeBayar;
 use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
-    public $dataBarang = [];
+    public $dataBarang = [], $dataMetodeBayar = [];
     public $barang = [];
     public $keterangan;
     public $metode_bayar = "Cash";
@@ -148,7 +148,8 @@ class Index extends Component
     }
 
     public function mount()
-    {
+    {   
+        $this->dataMetodeBayar = MetodeBayar::get()->toArray();
         $this->dataBarang = Barang::with('barangSatuan.satuanKonversi')->where('perlu_resep', 0)->orderBy('nama')->get()->map(fn($q) => [
             'id' => $q['id'],
             'nama' => $q['nama'],

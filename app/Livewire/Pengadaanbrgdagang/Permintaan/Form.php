@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Pengadaan\Permintaan;
+namespace App\Livewire\Pengadaanbrgdagang\Permintaan;
 
 use App\Models\Barang;
 use Livewire\Component;
@@ -143,6 +143,6 @@ class Form extends Component
 
     public function render()
     {
-        return view('livewire.pengadaan.permintaan.form');
+        return view('livewire.pengadaanbrgdagang.permintaan.form');
     }
 }

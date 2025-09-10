@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
-            @include('livewire.laporan.pengadaan.cetak', ['cetak' => false])
+            @include('livewire.laporan.pengadaanbrgdagang.cetak', ['cetak' => false])
         </div>
     </div>
     <x-alert />

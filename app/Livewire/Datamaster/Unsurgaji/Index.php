@@ -11,7 +11,6 @@ class Index extends Component
 {
     public $dataKodeAkun = [];
     public $unsurGaji = [];
-    public $unit_bisnis;
 
     public function tambahUnsurGaji()
     {
@@ -28,22 +27,21 @@ class Index extends Component
         $this->unsurGaji = array_merge($this->unsurGaji);
     }
 
-    public function submit()
+    public function submit($unit_bisnis)
     {
         $this->validate([
-            'unit_bisnis' => 'required',
             'unsurGaji' => 'required|array',
             'unsurGaji.*.nama' => 'required',
             'unsurGaji.*.sifat' => 'required',
             'unsurGaji.*.kode_akun_id' => 'required',
         ]);
 
-        DB::transaction(function () {
-            UnsurGaji::where('unit_bisnis', $this->unit_bisnis)->delete();
+        DB::transaction(function () use ($unit_bisnis) {
+            UnsurGaji::where('unit_bisnis', $unit_bisnis)->delete();
             UnsurGaji::insert(collect($this->unsurGaji)->map(fn($q) => [
                 'nama' => $q['nama'],
                 'sifat' => $q['sifat'],
-                'unit_bisnis' => $this->unit_bisnis,
+                'unit_bisnis' => $unit_bisnis,
                 'kode_akun_id' => $q['kode_akun_id'],
                 'pengguna_id' => auth()->id(),
                 'created_at' => now(),
@@ -57,14 +55,9 @@ class Index extends Component
     public function mount()
     {
         $this->dataKodeAkun = KodeAkun::where('detail', 1)->where('kategori', 'Beban')->get()->toArray();
+        $this->unsurGaji = UnsurGaji::all()->toArray();
     }
 
-    public function updatedKantor($value)
-    {
-        $this->dataKodeAkun = KodeAkun::where('detail', 1)->where('kategori', 'Beban')->get()->toArray();
-        $this->unsurGaji = UnsurGaji::where('unit_bisnis', $value)->get()->toArray();
-    }
-    
     public function render()
     {
         return view('livewire.datamaster.unsurgaji.index');

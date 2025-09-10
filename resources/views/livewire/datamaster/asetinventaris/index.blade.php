@@ -1,26 +1,23 @@
 <div>
-    @section('title', 'Data Barang Konsinyasi')
+    @section('title', 'Data Aset/Inventaris')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Data Master</li>
-        <li class="breadcrumb-item active">Barang Konsinyasi</li>
+        <li class="breadcrumb-item active">Aset/Inventaris</li>
     @endsection
 
-    <h1 class="page-header">Barang Konsinyasi</h1>
+    <h1 class="page-header">Aset/Inventaris</h1>
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">
-            
+
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
                     <select class="form-control w-auto" wire:model.lazy="kategori">
                         <option value="">-- Semua Kategori --</option>
-                        <option value="Alat Medis">Alat Medis</option>
-                        <option value="Bangunan">Bangunan</option>
-                        <option value="Elektronik">Elektronik</option>
-                        <option value="Komputer">Komputer</option>
-                        <option value="Kendaraan">Kendaraan</option>
-                        <option value="Perabot">Perabot</option>
+                        @foreach (\App\Enums\KategoriAsetEnum::cases() as $item)
+                            <option value="{{ $item->value }}">{{ $item->label() }}</option>
+                        @endforeach
                     </select>&nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
@@ -33,8 +30,8 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
-                        <th>Kode</th>
                         <th>Nama</th>
+                        <th>Satuan</th>
                         <th>Kategori</th>
                         <th>Tanggal Perolehan</th>
                         <th>Harga Perolehan</th>
@@ -49,15 +46,27 @@
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
                             <td>{{ $item->nama }}</td>
                             <td>{{ $item->satuan }}</td>
-                            <td>{{ number_format($item->harga_jual, 0, ',', '.') }}</td>
-                            <td>{{ $item->bentuk }}</td>
-                            <td>{{ $item->golongan }}</td>
-                            <td>{{ $item->konsinyator->nama }}</td>
-                            <td>{{ $item->perlu_resep ? 'Ya' : 'Tidak' }}</td>
+                            <td>{{ $item->kategori }}</td>
+                            <td>{{ $item->tanggal_perolehan }}</td>
+                            <td>{{ $item->harga_perolehan }}</td>
+                            <td>{{ $item->masa_manfaat }}</td>
+                            <td>
+                                @switch($item->status)
+                                    @case('Aktif')
+                                        <span class="badge bg-success">Aktif</span>
+                                    @break
+
+                                    @case('Tidak Aktif')
+                                        <span class="badge bg-danger">Tidak Aktif</span>
+                                    @break
+
+                                    @default
+                                @endswitch
+                            </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    <x-action :row="$item" custom="" :detail="false" :edit="true"
-                                        :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                    <x-action :row="$item" custom="" :detail="false" :edit="false"
+                                        :print="false" :permanentDelete="false" :restore="false" :delete="false" />
                                 @endrole
                             </td>
                         </tr>

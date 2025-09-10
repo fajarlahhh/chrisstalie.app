@@ -65,15 +65,11 @@
                         $GLOBALS['subparent_level'] = '';
 
                         $url = str_replace(
-                            [' ', '&', '\''],
+                            [' ', '&', ',', '.', '\''],
                             '',
                             strtolower($parent . '/' . str_replace('/', '', $row['title'])),
                         );
-                        if (
-                            auth()
-                                ->user()
-                                ->can(str_replace('/', '', $url))
-                        ) {
+                        if (auth()->user()->can(str_replace('/', '', $url))) {
                             $GLOBALS['subparent_level'] = '';
 
                             $subSubMenu = '';
@@ -88,9 +84,7 @@
                                 $subSubMenu .= '<div class="menu-submenu">';
                                 $subSubMenu .= renderSubMenu(
                                     $parent . '/' . $row['title'],
-                                    collect($row['sub_menu'])
-                                        ->sortBy('title')
-                                        ->toArray(),
+                                    collect($row['sub_menu'])->sortBy('title')->toArray(),
                                     $currentUrl,
                                 );
                                 $subSubMenu .= '</div>';
@@ -126,7 +120,7 @@
                 }
 
                 foreach ($menu as $key => $row) {
-                    $url = str_replace([' ', '/', '&', '\''], '', strtolower($row['title']));
+                    $url = str_replace([' ', '/', '&', ',', '.', '\''], '', strtolower($row['title']));
                     if (auth()->user()->can($url)) {
                         $GLOBALS['parent_active'] = '';
 
@@ -142,9 +136,7 @@
                             $subMenu .= '<div class="menu-submenu">';
                             $subMenu .= renderSubMenu(
                                 $row['title'],
-                                collect($row['sub_menu'])
-                                    ->sortBy('title')
-                                    ->all(),
+                                collect($row['sub_menu'])->sortBy('title')->all(),
                                 $currentUrl,
                             );
                             $subMenu .= '</div>';

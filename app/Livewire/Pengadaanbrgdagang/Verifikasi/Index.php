@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Livewire\Pengadaan\Permintaan;
+namespace App\Livewire\Pengadaanbrgdagang\Verifikasi;
 
 use Livewire\Component;
-use App\Models\PermintaanPembelian;
+use App\Models\Verifikasi;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
+use App\Models\PermintaanPembelian;
 
 class Index extends Component
 {
@@ -17,7 +18,7 @@ class Index extends Component
     public function delete($id)
     {
         try {
-            PermintaanPembelian::findOrFail($id)
+            Verifikasi::findOrFail($id)
                 ->forceDelete();
             session()->flash('success', 'Berhasil menghapus data');
         } catch (\Throwable $th) {
@@ -27,21 +28,19 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.pengadaan.permintaan.index', [
+        return view('livewire.pengadaanbrgdagang.verifikasi.index', [
             'data' => PermintaanPembelian::with([
                 'pengguna',
                 'permintaanPembelianDetail',
-                'verifikasiPending',
-                'verifikasiDisetujui',
-                'verifikasiDitolak'
-            ])
-                ->where(fn($q) => $q
-                    ->where('deskripsi', 'like', '%' . $this->cari . '%'))
+            ])->with(['verifikasi' => fn($q) => $q->whereNotNull('status')])
                 ->when($this->status == 'Pending', fn($q) => $q->whereHas('verifikasi', function ($q) {
                     $q->whereNull('status');
-                })->orWhereDoesntHave('verifikasi'))
-                ->when($this->status == 'Disetujui', fn($q) => $q->whereHas('verifikasiDisetujui'))
-                ->when($this->status == 'Ditolak', fn($q) => $q->whereHas('verifikasiDitolak'))
+                }))
+                ->when($this->status == 'Terverifikasi', fn($q) => $q->whereHas('verifikasi', function ($q) {
+                    $q->whereNotNull('status');
+                }))
+                ->where(fn($q) => $q
+                    ->where('deskripsi', 'like', '%' . $this->cari . '%'))
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
         ]);

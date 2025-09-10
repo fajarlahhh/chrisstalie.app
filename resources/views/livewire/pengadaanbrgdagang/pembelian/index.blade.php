@@ -2,7 +2,7 @@
     @section('title', 'Pembelian')
 
     @section('breadcrumb')
-        <li class="breadcrumb-item">Data Master</li>
+        <li class="breadcrumb-item">Pengadaan Barang Dagang</li>
         <li class="breadcrumb-item active">Pembelian</li>
     @endsection
 

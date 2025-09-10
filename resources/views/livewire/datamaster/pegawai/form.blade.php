@@ -23,7 +23,7 @@
                             <label class="form-label">Unit Bisnis</label>
                             <select class="form-control" wire:model.live="unit_bisnis" data-width="100%">
                                 <option hidden selected>-- Pilih Unit Bisnis --</option>
-                                @foreach (\App\Enums\KantorEnum::cases() as $item)
+                                @foreach (\App\Enums\UnitBisnisEnum::cases() as $item)
                                     <option value="{{ $item->value }}">{{ $item->label() }}</option>
                                 @endforeach
                             </select>

@@ -2,12 +2,12 @@
     @section('title', 'Verifikasi')
 
     @section('breadcrumb')
-        <li class="breadcrumb-item">Pengadaan</li>
+        <li class="breadcrumb-item">Pengadaan Barang Dagang</li>
         <li class="breadcrumb-item">Verifikasi</li>
         <li class="breadcrumb-item active">Form</li>
     @endsection
 
-    <h1 class="page-header">Verifikasi <small>Pengadaan</small></h1>
+    <h1 class="page-header">Verifikasi <small>Pengadaan Barang Dagang</small></h1>
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->

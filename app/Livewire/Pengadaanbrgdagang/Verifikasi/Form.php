@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Pengadaan\Verifikasi;
+namespace App\Livewire\Pengadaanbrgdagang\Verifikasi;
 
 use Livewire\Component;
 use App\Models\Verifikasi;
@@ -70,6 +70,6 @@ class Form extends Component
 
     public function render()
     {
-        return view('livewire.pengadaan.verifikasi.form');
+        return view('livewire.pengadaanbrgdagang.verifikasi.form');
     }
 }

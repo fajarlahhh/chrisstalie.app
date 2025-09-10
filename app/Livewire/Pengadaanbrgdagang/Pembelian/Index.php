@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Pengadaan\Pembelian;
+namespace App\Livewire\Pengadaanbrgdagang\Pembelian;
 
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -30,7 +30,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.pengadaan.pembelian.index', [
+        return view('livewire.pengadaanbrgdagang.pembelian.index', [
             'data' => Pembelian::with(['pembelianDetail.barang', 'pengguna', 'stokMasuk'])
                 ->where('tanggal', 'like', $this->bulan . '%')
                 ->where(fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))
