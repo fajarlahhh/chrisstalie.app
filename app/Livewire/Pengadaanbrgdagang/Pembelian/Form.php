@@ -2,19 +2,30 @@
 
 namespace App\Livewire\Pengadaanbrgdagang\Pembelian;
 
-use App\Models\Barang;
+use App\Models\Jurnal;
 use Livewire\Component;
 use App\Models\Supplier;
 use App\Models\Pembelian;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Models\PermintaanPembelian;
 use App\Models\PermintaanPembelianDetail;
-use Illuminate\Validation\Rule;
+use App\Models\KodeAkun;
 
 class Form extends Component
 {
-    public $data, $previous, $dataSupplier = [], $dataPermintaanPembelian = [], $barang = [];
-    public $tanggal, $uraian, $jatuh_tempo, $permintaan_pembelian_id, $pembayaran = "Jatuh Tempo", $ppn, $diskon, $totalHargaBeli, $supplier_id;
+    public $data, $previous, $dataSupplier = [], $dataPermintaanPembelian = [], $barang = [], $dataKodeAkun = [];
+    public $tanggal, $uraian, $jatuh_tempo, $permintaan_pembelian_id, $pembayaran = "Jatuh Tempo", $ppn, $diskon, $totalHargaBeli, $supplier_id, $kode_akun_id;
+
+    public function updatedPembayaran()
+    {
+        if ($this->pembayaran == "Jatuh Tempo") {
+            $this->dataKodeAkun = KodeAkun::where('kategori', 'Kewajiban')->where('pembayaran', 1)->detail()->get()->toArray();
+        } else {
+            $this->dataKodeAkun = KodeAkun::where('kategori', 'Aktiva')->where('pembayaran', 1)->detail()->get()->toArray();
+        }
+    }
 
     public function updatedBarang()
     {
@@ -32,6 +43,7 @@ class Form extends Component
             'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
             'barang_satuan_id' => $q->barang_satuan_id,
             'harga_beli' => 0,
+            'kode_akun_id' => $q->barang->kode_akun_id,
         ])->toArray();
     }
 
@@ -44,6 +56,7 @@ class Form extends Component
             'id',
             Pembelian::pluck('permintaan_pembelian_id')->filter()->all()
         )->whereHas('verifikasiDisetujui')->orderBy('created_at')->get()->toArray();
+        $this->updatedPembayaran();
     }
 
     public function submit()
@@ -66,7 +79,7 @@ class Form extends Component
             'barang.*.qty' => 'required|numeric',
             'barang.*.harga_beli' => 'required|integer',
         ]);
-        
+
         DB::transaction(function () {
             $data = new Pembelian();
             $data->tanggal = $this->tanggal;
@@ -94,19 +107,32 @@ class Form extends Component
 
             $jurnal = new Jurnal();
             $jurnal->id = $id;
-            $jurnal->jenis = 'Pembelian Barang';
+            $jurnal->jenis = 'Pembelian Barang Dagang';
             $jurnal->tanggal = $this->tanggal;
             $jurnal->uraian = $this->uraian;
-            $jurnal->unit_bisnis = $data['unit_bisnis'];
+            $jurnal->unit_bisnis = 'Apotek';
+            $jurnal->referensi_id = $data->id;
             $jurnal->pengguna_id = auth()->id();
             $jurnal->save();
 
             $jurnal->jurnalDetail()->delete();
-            $jurnal->jurnalDetail()->insert(collect($detail)->map(fn($q, $index) => [
-                'debit' => $q['debit'],
-                'kredit' => $q['kredit'],
-                'kode_akun_id' => $q['kode_akun_id']
+            $jurnal->jurnalDetail()->insert(collect($this->barang)->map(fn($q, $index) => [
+                'jurnal_id' => $id,
+                'debet' => 0,
+                'kredit' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']),
+                'kode_akun_id' => $this->kode_akun_id
             ])->toArray());
+
+            foreach (
+                collect($this->barang)->groupBy('kode_akun_id')->map(fn($q) => [
+                    'jurnal_id' => $id,
+                    'debet' => $q->sum(fn($q) => $q['harga_beli'] * $q['qty']),
+                    'kredit' => 0,
+                    'kode_akun_id' => $q->first()['kode_akun_id']
+                ]) as $key => $value
+            ) {
+                $jurnal->jurnalDetail()->insert($value);
+            }
             session()->flash('success', 'Berhasil menyimpan data');
         });
         $this->redirect($this->previous);

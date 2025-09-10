@@ -24,6 +24,7 @@ class Index extends Component
     {
         $data = Pembelian::findOrFail($id);
         if ($data->stokMasuk->count() == 0) {
+            $data->jurnal->delete();
             $data->delete();
         }
     }

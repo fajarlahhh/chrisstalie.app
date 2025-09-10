@@ -9,7 +9,7 @@
                 style="display: none" class="delete{{ $row['id'] }} delete btn btn-danger">Hapus Permanen</a>
         @endif
         <a href="javascript:;" onclick="deleteOrCancel('{{ $row['id'] }}')" wire:loading.disable style="display: none"
-            class="delete{{ $row['id'] }} delete btn btn-secondary" wire:loading.remove >Batal</a>
+            class="delete{{ $row['id'] }} delete btn btn-secondary" wire:loading.disable >Batal</a>
         @if ($edit)
             <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form/{{ $row['id'] }}'"
                 class="btn btn-white action">

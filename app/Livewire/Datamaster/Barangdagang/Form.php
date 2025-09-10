@@ -95,7 +95,7 @@ class Form extends Component
                 'harga_jual' => 0
             ];
         } else {
-            $this->dataKodeAkun = KodeAkun::where('detail', 1)->where('kategori', 'Aktiva')->get()->toArray();
+            $this->dataKodeAkun = KodeAkun::detail()->where('kategori', 'Aktiva')->get()->toArray();
             $this->satuan = $this->data->barangSatuanTerkecil->nama;
             $this->harga = $this->data->barangSatuanTerkecil->harga_jual;
         }
@@ -103,7 +103,7 @@ class Form extends Component
 
     public function updatedKantor($value)
     {
-        $this->dataKodeAkun = KodeAkun::where('detail', 1)->where('kategori', 'Aktiva')->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::detail()->where('kategori', 'Aktiva')->get()->toArray();
     }
 
     public function render()

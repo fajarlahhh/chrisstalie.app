@@ -42,7 +42,8 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tanggal</label>
-                    <input class="form-control" type="date" wire:model="date" max="{{ now()->format('Y-m-d') }}" required />
+                    <input class="form-control" type="date" wire:model="date" max="{{ now()->format('Y-m-d') }}"
+                        required />
                     @error('date')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -86,6 +87,19 @@
                                 <option selected value="Jatuh Tempo">Jatuh Tempo</option>
                                 <option value="Lunas">Lunas</option>
                             </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kode Akun</label>
+                            <select data-container="body" class="form-control" wire:model="kode_akun_id"
+                                data-width="100%">
+                                <option selected value="">-- Pilih Kode Akun --</option>
+                                @foreach ($dataKodeAkun as $row)
+                                    <option value="{{ $row['id'] }}">{{ $row['nama'] }}</option>
+                                @endforeach
+                            </select>
+                            @error('kode_akun_id')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                         @if ($pembayaran == 'Jatuh Tempo')
                             <div class="mb-3">
@@ -164,7 +178,7 @@
                 @unlessrole('guest')
                     <input wire:loading.remove type="submit" value="Simpan" class="btn btn-success" />
                 @endunlessrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove >Batal</a>
+                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove>Batal</a>
             </div>
         </form>
     </div>
