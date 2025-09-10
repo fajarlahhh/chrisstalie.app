@@ -9,7 +9,7 @@
     <h1 class="page-header">Unsur Gaji</h1>
     <ul class="nav nav-tabs" role="tablist">
         @foreach (\App\Enums\UnitBisnisEnum::cases() as $key => $item)
-            <li class="nav-item" role="presentation">
+            <li class="nav-item" role="presentation" wire:ignore>
                 <a href="#default-tab-{{ $key }}" data-bs-toggle="tab"
                     class="nav-link {{ $key == 0 ? 'active' : '' }}" aria-selected="true" role="tab">
                     <span class="d-sm-none">{{ $item->label() }}</span>
@@ -21,7 +21,7 @@
     <div class="tab-content panel rounded-0 p-3 m-0">
         @foreach (\App\Enums\UnitBisnisEnum::cases() as $key => $item)
             <div class="tab-pane fade {{ $key == 0 ? 'active show' : '' }}" id="default-tab-{{ $key }}"
-                role="tabpanel">
+                role="tabpanel" wire:ignore.self>
                 <form wire:submit.prevent="submit('{{ $item->value }}')">
                     <table class="table">
                         <thead>
@@ -80,7 +80,7 @@
                                 <td colspan="5">
                                     <div class="text-center">
                                         <a class="btn btn-secondary" href="javascript:;"
-                                            wire:click="tambahUnsurGaji">Tambah
+                                            wire:click="tambahUnsurGaji('{{ $item->value }}')">Tambah
                                             Unsur Gaji</a>
                                         <br>
                                         @error('unsurGaji')
@@ -91,7 +91,6 @@
                             </tr>
                         </tfoot>
                     </table>
-                    <hr>
                     @role('administrator|supervisor')
                         <input wire:loading.remove type="submit" value="Simpan" class="btn btn-success" />
                     @endrole

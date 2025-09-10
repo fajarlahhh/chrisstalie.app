@@ -12,12 +12,13 @@ class Index extends Component
     public $dataKodeAkun = [];
     public $unsurGaji = [];
 
-    public function tambahUnsurGaji()
+    public function tambahUnsurGaji($unit_bisnis)
     {
         array_push($this->unsurGaji, [
             'nama' => null,
             'sifat' => '+',
             'kode_akun_id' => null,
+            'unit_bisnis' => $unit_bisnis,
         ]);
     }
 
@@ -38,7 +39,7 @@ class Index extends Component
 
         DB::transaction(function () use ($unit_bisnis) {
             UnsurGaji::where('unit_bisnis', $unit_bisnis)->delete();
-            UnsurGaji::insert(collect($this->unsurGaji)->map(fn($q) => [
+            UnsurGaji::insert(collect($this->unsurGaji)->where('unit_bisnis', $unit_bisnis)->map(fn($q) => [
                 'nama' => $q['nama'],
                 'sifat' => $q['sifat'],
                 'unit_bisnis' => $unit_bisnis,

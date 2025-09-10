@@ -8,11 +8,12 @@ use App\Models\BarangSatuan;
 use App\Models\TarifTindakan;
 use Illuminate\Support\Facades\DB;
 use App\Models\KodeAkun;
+use App\Models\Aset;
 
 class Form extends Component
 {
     public $data;
-    public $dataBarang = [], $dataKodeAkun = [];
+    public $dataBarang = [], $dataKodeAkun = [], $dataAset = [];
     public $previous;
     public $nama;
     public $kode_akun_id;
@@ -25,10 +26,11 @@ class Form extends Component
     public $biaya_keuntungan_klinik = 0;
     public $alatBahan = [];
 
-    public function tambahAlatBahan()
+    public function tambahAlatBahan($jenis)
     {
         array_push($this->alatBahan, [
             'id' => null,
+            'jenis' => $jenis,
             'barang_satuan_id' => null,
             'barangSatuan' => [],
             'qty' => 0,
@@ -42,36 +44,44 @@ class Form extends Component
         $index = explode('.', $key);
         if ($value) {
             if ($index[1] == 'id') {
-                $alatBahan = collect($this->dataBarang)->where('id', $value)->first();
-                $barangSatuan = collect($alatBahan['barangSatuan']);
-                $this->alatBahan[$index[0]]['id'] = $alatBahan['id'] ?? null;
-                $this->alatBahan[$index[0]]['barang_satuan_id'] = null;
-                $this->alatBahan[$index[0]]['barangSatuan'] = $barangSatuan->toArray();
-                $this->alatBahan[$index[0]]['qty'] = $this->alatBahan[$index[0]]['qty'] ?? 0;
-                $this->alatBahan[$index[0]]['rasio_dari_terkecil'] = null;
-                $this->alatBahan[$index[0]]['harga'] = 0;
+                if ($this->alatBahan[$index[0]]['jenis'] == 'Bahan') {
+                    $alatBahan = collect($this->dataBarang)->where('id', $value)->first();
+                    $barangSatuan = collect($alatBahan['barangSatuan']);
+                    $this->alatBahan[$index[0]]['id'] = $alatBahan['id'] ?? null;
+                    $this->alatBahan[$index[0]]['barang_satuan_id'] = null;
+                    $this->alatBahan[$index[0]]['barangSatuan'] = $barangSatuan->toArray();
+                    $this->alatBahan[$index[0]]['qty'] = $this->alatBahan[$index[0]]['qty'] ?? 0;
+                    $this->alatBahan[$index[0]]['rasio_dari_terkecil'] = null;
+                    $this->alatBahan[$index[0]]['harga'] = 0;
+                }
             }
 
             if ($index[1] == 'barang_satuan_id') {
-                $alatBahan = collect($this->dataBarang)->where('id', $this->alatBahan[$index[0]]['id'])->first();
-                $barangSatuan = collect($alatBahan['barangSatuan']);
-                $selectedSatuan = $barangSatuan->where('id', $this->alatBahan[$index[0]]['barang_satuan_id'])->first();
-                $this->alatBahan[$index[0]]['barang_satuan_id'] = $this->alatBahan[$index[0]]['barang_satuan_id'];
-                $this->alatBahan[$index[0]]['rasio_dari_terkecil'] = $selectedSatuan['rasio_dari_terkecil'];
-                $this->alatBahan[$index[0]]['harga'] = $selectedSatuan['harga_jual'] ?? 0;
+                if ($this->alatBahan[$index[0]]['jenis'] == 'Bahan') {
+                    $alatBahan = collect($this->dataBarang)->where('id', $this->alatBahan[$index[0]]['id'])->first();
+                    $barangSatuan = collect($alatBahan['barangSatuan']);
+                    $selectedSatuan = $barangSatuan->where('id', $this->alatBahan[$index[0]]['barang_satuan_id'])->first();
+                    $this->alatBahan[$index[0]]['barang_satuan_id'] = $this->alatBahan[$index[0]]['barang_satuan_id'];
+                    $this->alatBahan[$index[0]]['rasio_dari_terkecil'] = $selectedSatuan['rasio_dari_terkecil'];
+                    $this->alatBahan[$index[0]]['harga'] = $selectedSatuan['harga_jual'] ?? 0;
+                }
             }
         } else {
-            $this->alatBahan[$index[0]]['id'] = null;
-            $this->alatBahan[$index[0]]['barang_satuan_id'] = null;
-            $this->alatBahan[$index[0]]['barangSatuan'] = [];
-            $this->alatBahan[$index[0]]['qty'] = 0;
-            $this->alatBahan[$index[0]]['rasio_dari_terkecil'] = null;
-            $this->alatBahan[$index[0]]['harga'] = 0;
+            if ($this->alatBahan[$index[0]]['jenis'] == 'Bahan') {
+                $this->alatBahan[$index[0]]['id'] = null;
+                $this->alatBahan[$index[0]]['barang_satuan_id'] = null;
+                $this->alatBahan[$index[0]]['barangSatuan'] = [];
+                $this->alatBahan[$index[0]]['qty'] = 0;
+                $this->alatBahan[$index[0]]['rasio_dari_terkecil'] = null;
+                $this->alatBahan[$index[0]]['harga'] = 0;
+            }
         }
-        $harga = (int) ($this->alatBahan[$index[0]]['harga'] ?? 0);
-        $qty = (int) ($this->alatBahan[$index[0]]['qty'] ?? 0);
-        $this->alatBahan[$index[0]]['sub_total'] = $harga * $qty;
-        $this->biaya_alat_bahan = collect($this->alatBahan)->count() > 0 ? collect($this->alatBahan)->sum(fn($q) => $q['sub_total'] ?? 0) : 0;
+        if ($this->alatBahan[$index[0]]['jenis'] == 'Bahan') {
+            $harga = (int) ($this->alatBahan[$index[0]]['harga'] ?? 0);
+            $qty = (int) ($this->alatBahan[$index[0]]['qty'] ?? 0);
+            $this->alatBahan[$index[0]]['sub_total'] = $harga * $qty;
+            $this->biaya_alat_bahan = collect($this->alatBahan)->count() > 0 ? collect($this->alatBahan)->sum(fn($q) => $q['sub_total'] ?? 0) : 0;
+        }
     }
 
     public function hapusAlatBahan($key)
@@ -111,6 +121,7 @@ class Form extends Component
             $this->data->tarifTindakanAlatBahan()->insert(collect($this->alatBahan)->map(fn($q) => [
                 'barang_id' => $q['id'],
                 'tarif_tindakan_id' => $this->data->id,
+                'jenis' => $q['jenis'],
                 'qty' => $q['qty'],
                 'barang_satuan_id' => $q['barang_satuan_id'],
                 'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
@@ -140,14 +151,16 @@ class Form extends Component
                 ] : null,
             ]),
         ])->toArray();
+        $this->dataAset = Aset::where('kategori', 'Alat Medis')->orderBy('nama')->get()->toArray();
         $this->dataKodeAkun = KodeAkun::where('detail', 1)->where('kategori', 'Pendapatan')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
         if ($this->data->exists) {
             $this->alatBahan = $this->data->tarifTindakanAlatBahan->map(fn($q) => [
                 'id' => $q->barang_id,
+                'jenis' => $q->jenis,
                 'barang_satuan_id' => $q->barang_satuan_id,
-                'harga' => $q->barangSatuan->harga_jual,
+                'harga' => $q->barangSatuan?->harga_jual,
                 'barangSatuan' => BarangSatuan::where('barang_id', $q->barang_id)->get()->map(fn($r) => [
                     'id' => $r->id,
                     'nama' => $r->nama,
@@ -157,7 +170,7 @@ class Form extends Component
                 ]),
                 'qty' => $q->qty,
                 'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
-                'sub_total' => $q->barangSatuan->harga_jual * $q->qty,
+                'sub_total' => $q->barangSatuan?->harga_jual * $q->qty,
             ])->toArray();
             $this->biaya_alat_bahan = collect($this->alatBahan)->count() > 0 ? collect($this->alatBahan)->sum(fn($q) => $q['sub_total'] ?? 0) : 0;
         }

@@ -34,7 +34,7 @@
                         <th>Satuan</th>
                         <th>Kategori</th>
                         <th>Tanggal Perolehan</th>
-                        <th>Harga Perolehan</th>
+                        <th class="text-end">Harga Perolehan</th>
                         <th>Masa Manfaat</th>
                         <th>Status</th>
                         <th></th>
@@ -48,8 +48,8 @@
                             <td>{{ $item->satuan }}</td>
                             <td>{{ $item->kategori }}</td>
                             <td>{{ $item->tanggal_perolehan }}</td>
-                            <td>{{ $item->harga_perolehan }}</td>
-                            <td>{{ $item->masa_manfaat }}</td>
+                            <td class="text-end">{{ number_format($item->harga_perolehan) }}</td>
+                            <td>{{ $item->masa_manfaat }} <small>bulan</small></td>
                             <td>
                                 @switch($item->status)
                                     @case('Aktif')

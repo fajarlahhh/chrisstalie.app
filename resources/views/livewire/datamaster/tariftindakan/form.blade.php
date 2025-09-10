@@ -59,11 +59,78 @@
                     </div>
                     <div class="col-md-8">
                         <div class="alert alert-secondary">
-                            <h4>Biaya Alat Bahan</h4>
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>Barang</th>
+                                        <th>Alat</th>
+                                        <th class="w-100px">Qty</th>
+                                        <th class="w-5px"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (collect($alatBahan)->where('jenis', 'Alat Pendukung') as $index => $row)
+                                        <tr>
+                                            <td class="with-btn">
+                                                <select class="form-control" x-init="$($el).selectpicker({
+                                                    liveSearch: true,
+                                                    width: 'auto',
+                                                    size: 10,
+                                                    container: 'body',
+                                                    style: '',
+                                                    showSubtext: true,
+                                                    styleBase: 'form-control'
+                                                })"
+                                                    wire:model.live="alatBahan.{{ $index }}.id">
+                                                    <option value="">-- Pilih Alat --</option>
+                                                    @foreach ($dataAset as $subRow)
+                                                        <option value="{{ $subRow['id'] }}">
+                                                            {{ $subRow['nama'] }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('alatBahan.' . $index . '.id')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </td>
+                                            <td class="with-btn">
+                                                <input type="number" class="form-control" min="0" step="1"
+                                                    min="0" wire:model.live="alatBahan.{{ $index }}.qty"
+                                                    autocomplete="off">
+                                                @error('alatBahan.' . $index . '.qty')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </td>
+                                            <td class="with-btn">
+                                                <a href="javascript:;" class="btn btn-danger"
+                                                    wire:click="hapusAlatBahan({{ $index }})">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4">
+                                            <div class="text-center">
+                                                <a class="btn btn-secondary" href="javascript:;"
+                                                    wire:click="tambahAlatBahan('Alat Pendukung')">Tambah
+                                                    Alat Pendukung</a>
+                                                <br>
+                                                @error('alatBahan')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="alert alert-secondary">
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th>Biaya Bahan</th>
                                         <th class="w-150px">Satuan</th>
                                         <th class="w-100px">Qty</th>
                                         <th class="w-150px">Sub Total</th>
@@ -71,7 +138,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($alatBahan as $index => $row)
+                                    @foreach (collect($alatBahan)->where('jenis', 'Bahan') as $index => $row)
                                         <tr>
                                             <td class="with-btn">
                                                 <select class="form-control" x-init="$($el).selectpicker({
@@ -111,8 +178,9 @@
                                                 @enderror
                                             </td>
                                             <td class="with-btn">
-                                                <input type="number" class="form-control" min="0" step="1"
-                                                    min="0" wire:model.live="alatBahan.{{ $index }}.qty"
+                                                <input type="number" class="form-control" min="0"
+                                                    step="1" min="0"
+                                                    wire:model.live="alatBahan.{{ $index }}.qty"
                                                     autocomplete="off">
                                                 @error('alatBahan.' . $index . '.qty')
                                                     <span class="text-danger">{{ $message }}</span>
@@ -132,7 +200,8 @@
                                         </tr>
                                     @endforeach
                                     <tr>
-                                        <th colspan="3" class="text-end align-middle">Total Biaya Alat & Bahan</th">
+                                        <th colspan="3" class="text-end align-middle">Total Biaya Alat & Bahan
+                                            </th">
                                         <th>
                                             <input type="text" class="form-control text-end"
                                                 value="{{ number_format($biaya_alat_bahan) }}" disabled
@@ -146,7 +215,7 @@
                                         <td colspan="4">
                                             <div class="text-center">
                                                 <a class="btn btn-secondary" href="javascript:;"
-                                                    wire:click="tambahAlatBahan">Tambah
+                                                    wire:click="tambahAlatBahan('Bahan')">Tambah
                                                     Alat Bahan</a>
                                                 <br>
                                                 @error('alatBahan')
@@ -214,7 +283,7 @@
                 @role('administrator|supervisor|operator')
                     <input wire:loading.remove type="submit" value="Simpan" class="btn btn-success" />
                 @endrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove >Batal</a>
+                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove>Batal</a>
             </div>
         </form>
     </div>
