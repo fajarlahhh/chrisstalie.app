@@ -85,7 +85,7 @@
                                 @role('administrator|supervisor')
                                     @if ($item->verifikasiDisetujui->count() > 0 || $item->verifikasiDitolak->count() > 0)
                                         <x-action :row="$item" custom="" :detail="false" :edit="false"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                     @else
                                         <x-action :row="$item" custom="" :detail="false" :edit="true"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="false" />
