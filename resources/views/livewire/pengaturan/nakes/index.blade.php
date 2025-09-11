@@ -38,6 +38,7 @@
                         <th>Alamat</th>
                         <th>No. Telp.</th>
                         <th>Dokter</th>
+                        <th>Pegawai</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -53,6 +54,7 @@
                             <td>{{ $row->alamat }}</td>
                             <td>{{ $row->no_hp }}</td>
                             <td>{{ $row->dokter == 1 ? 'Ya' : '' }}</td>
+                            <td>{{ $row->pegawai ? 'Ya': '' }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
                                     <x-action :row="$row" custom="" :detail="false" :edit="true"

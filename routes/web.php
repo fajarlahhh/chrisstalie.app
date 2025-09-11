@@ -58,9 +58,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', \App\Livewire\Home::class)->name('home');
     Route::get('/gantipassword', \App\Livewire\Gantipassword::class);
 
-    Route::prefix('search')->group(function () {
+    Route::prefix('cari')->group(function () {
         Route::get('pasien', function (Request $req) {
-            return Pasien::where(fn($q) => $q->where('nik', 'like', "%$req->search%")->orWhere('alamat', 'like', "%$req->search%")->orWhere('nama', 'like', "%$req->search%"))->orderBy('nama', 'asc')->get()
+            return Pasien::where(fn($q) => $q->where('nik', 'like', "%$req->cari%")->orWhere('alamat', 'like', "%$req->cari%")->orWhere('nama', 'like', "%$req->cari%"))->orderBy('nama', 'asc')->get()
                 ->map(fn($q) => [
                     'id' => $q->id,
                     'text' => $q->nama . ' ' . $q->alamat,
@@ -69,14 +69,6 @@ Route::middleware(['auth'])->group(function () {
                     'nama' => $q->nama,
                     'alamat' => $q->alamat,
                 ])->toArray();
-        });
-
-        Route::get('/icd10', function (Request $req) {
-            return Icd10::where('uraian', 'like', '%' . $req->search . '%')->orWhere('code', 'like', '%' . $req->search . '%')->take(100)->get()->map(fn($q) => [
-                'id' => $q->code,
-                'text' => $q->code . " - " . $q->uraian,
-                'uraian' => $q->uraian
-            ]);
         });
     });
 

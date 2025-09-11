@@ -22,21 +22,38 @@ class Nakes extends Model
 
     public function getNamaAttribute()
     {
-        return $this->pegawai_id ? $this->pegawai->nama : $this->nama;
+        if ($this->pegawai_id && $this->pegawai) {
+            return $this->pegawai->nama;
+        }
+        return $this->attributes['nama'] ?? null;
     }
 
     public function getNikAttribute()
     {
-        return $this->pegawai_id ? $this->pegawai->nik : $this->nik;
+        if ($this->pegawai_id && $this->pegawai) {
+            return $this->pegawai->nik;
+        }
+        return $this->attributes['nik'] ?? null;
     }
 
     public function getAlamatAttribute()
     {
-        return $this->pegawai_id ? $this->pegawai->alamat : $this->alamat;
+        if ($this->pegawai_id && $this->pegawai) {
+            return $this->pegawai->alamat;
+        }
+        return $this->attributes['alamat'] ?? null;
     }
     
     public function getNoHpAttribute()
     {
-        return $this->pegawai_id ? $this->pegawai->no_hp : $this->no_hp;
+        if ($this->pegawai_id && $this->pegawai) {
+            return $this->pegawai->no_hp;
+        }
+        return $this->attributes['no_hp'] ?? null;
+    }
+
+    public function scopeDokter($query)
+    {
+        return $query->where('dokter', 1);
     }
 }
