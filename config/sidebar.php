@@ -165,6 +165,10 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
+                    "title" => "TUG",
+                    "method" => ["Index", "Form"],
+                ],
+                [
                     "title" => "Kasir",
                     "method" => ["Index", "Form"],
                 ]

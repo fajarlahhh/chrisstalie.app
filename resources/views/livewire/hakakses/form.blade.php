@@ -21,8 +21,13 @@
                         @if ($data->exists)
                             <div class="mb-3">
                                 <label class="form-label">Nama</label>
-                                <input class="form-control" type="text" wire:model="nama"
-                                    @if ($data->exists) disabled @endif />
+                                @if (!$this->data->pegawai_id)
+                                    <input class="form-control" type="text" wire:model="nama"
+                                        @if ($data->exists) disabled @endif />
+                                @else
+                                    <input class="form-control" type="text" value="{{ $data->pegawai->nama }}"
+                                        @if ($data->exists) disabled @endif />
+                                @endif
                                 @error('nama')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -142,7 +147,7 @@
                 @role('administrator|supervisor|operator')
                     <input wire:loading.remove type="submit" value="Simpan" class="btn btn-success" />
                 @endrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove >Batal</a>
+                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove>Batal</a>
             </div>
         </form>
     </div>

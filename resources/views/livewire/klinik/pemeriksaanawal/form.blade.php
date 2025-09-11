@@ -25,9 +25,9 @@
                             <div class="note-content">
                                 @if ($data->note)
                                     <div class="mb-3">
-                                        <label class="form-label">Catatan Pasien</label>
+                                        <label class="form-label">Catatan</label>
                                         <textarea class="form-control" rows="5" disabled>
-                                            {{ $data->note }}"
+                                            {{ $data->catatan }}"
                                         </textarea>
                                     </div>
                                     <hr>
@@ -80,7 +80,6 @@
                         </div>
                         <hr>
                         <div class="note alert-secondary mb-2">
-                            <!-- BEGIN tab-pane -->
                             <div class="note-content">
                                 <h3>Pemeriksaan Fisik</h3>
                                 <div class="row">
@@ -97,7 +96,6 @@
                             </div>
                         </div>
                         <div class="note alert-secondary mb-2">
-                            <!-- BEGIN tab-pane -->
                             <div class="note-content">
                                 <h3>Tanda-Tanda Vital</h3>
                                 <div class="row">

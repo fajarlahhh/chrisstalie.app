@@ -20,7 +20,7 @@ class Form extends Component
         $this->validate([
             'hakAkses' => 'required',
             'role' => 'required',
-            'uid' => 'required|uid|unique:users,uid,' . $this->data->id,
+            'uid' => 'required|unique:pengguna,uid,' . $this->data->id,
             'pegawai_id' => 'required',
         ]);
 
