@@ -63,6 +63,8 @@ class Form extends Component
             'id' => $q->barang_id,
             'nama' => $q->barang->nama,
             'satuan' => BarangSatuan::find($q->barang_satuan_id)->nama,
+            'barang_satuan_id' => $q->barang_satuan_id,
+            'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
             'qty' => $q->qty_permintaan,
             'qty_disetujui' => 0,
         ])->toArray();
