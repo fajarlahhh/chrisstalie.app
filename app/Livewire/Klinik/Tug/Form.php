@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Klinik\Tug;
 
+
 use Livewire\Component;
 use App\Models\Registrasi;
 use Illuminate\Support\Facades\DB;
