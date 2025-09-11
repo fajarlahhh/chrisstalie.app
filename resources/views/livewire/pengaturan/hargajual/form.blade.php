@@ -40,7 +40,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Nama</label>
+                    <label class="form-label">Nama Satuan</label>
                     <input class="form-control" type="text" wire:model="nama"
                         @if ($data->rasio_dari_terkecil == 1) disabled @endif />
                     @error('nama')
@@ -58,7 +58,6 @@
                     <div class="mb-3" wire:loading.remove wire:target="barang_id">
                         <label class="form-label">Satuan Konversi</label>
                         <div class="input-group">
-                            <input class="form-control" type="text" wire:model="faktor_konversi">
                             <select class="form-control" wire:model="satuan_konversi_id" data-width="100%"
                                 x-init="$($el).selectpicker({
                                     liveSearch: true,
@@ -76,6 +75,7 @@
                                         {{ $item['nama'] }}</option>
                                 @endforeach
                             </select>
+                            <input class="form-control" type="text" wire:model="faktor_konversi">
                         </div>
                         @error('faktor_konversi')
                             <span class="text-danger">{{ $message }}</span>

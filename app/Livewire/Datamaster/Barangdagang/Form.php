@@ -5,6 +5,7 @@ namespace App\Livewire\Datamaster\Barangdagang;
 use App\Models\Barang;
 use Livewire\Component;
 use App\Models\KodeAkun;
+use App\Models\BarangSatuan;
 use Illuminate\Support\Facades\DB;
 
 class Form extends Component
@@ -53,23 +54,23 @@ class Form extends Component
             $this->data->kode_akun_id = $this->kode_akun_id;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
-
+            
             $timestamp = now();
-            if (!$this->data->exists) {
-                $this->data->barangSatuan()->insert([
+            if ($this->data->exists) {
+                $this->data->barangSatuan()->where('rasio_dari_terkecil', 1)->update([
+                    'harga_jual' => $this->harga,
+                    'pengguna_id' => auth()->id(),
+                    'created_at' => $timestamp,
+                    'updated_at' => $timestamp,
+                ]);
+            } else {
+                BarangSatuan::insert([
                     'nama' => $this->satuan,
                     'rasio_dari_terkecil' => 1,
                     'harga_jual' => $this->harga,
                     'barang_id' => $this->data->id,
                     'pengguna_id' => auth()->id(),
                     'utama' => 1,
-                    'created_at' => $timestamp,
-                    'updated_at' => $timestamp,
-                ]);
-            } else {
-                $this->data->barangSatuan()->where('rasio_dari_terkecil', 1)->update([
-                    'harga_jual' => $this->harga,
-                    'pengguna_id' => auth()->id(),
                     'created_at' => $timestamp,
                     'updated_at' => $timestamp,
                 ]);
