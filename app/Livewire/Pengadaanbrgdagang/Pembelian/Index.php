@@ -26,6 +26,7 @@ class Index extends Component
         if ($data->stokMasuk->count() == 0) {
             $data->jurnal->delete();
             $data->delete();
+            session()->flash('success', 'Berhasil menghapus data');
         }
     }
 

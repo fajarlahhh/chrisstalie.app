@@ -32,7 +32,9 @@ class Index extends Component
     {
         $data = StokMasuk::find($id);
         if ($data->keluar->count() == 0) {
+            $data->jurnal->delete();
             $data->delete();
+            session()->flash('success', 'Berhasil menghapus data');
         }
     }
 
