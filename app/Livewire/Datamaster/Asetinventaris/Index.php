@@ -2,17 +2,23 @@
 
 namespace App\Livewire\Datamaster\Asetinventaris;
 
-use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\Attributes\Url;
 use App\Models\Aset;
+use Livewire\Component;
+use App\Models\KodeAkun;
+use Livewire\Attributes\Url;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
     use WithPagination;
 
     #[Url]
-    public $cari, $kategori;
+    public $cari, $kode_akun_id, $dataKodeAkun=[];
+
+    public function mount()
+    {
+        $this->dataKodeAkun = KodeAkun::detail()->where('id', 'like', '151%')->where('kategori', 'Aktiva')->get()->toArray();
+    }
 
     public function render()
     {
@@ -20,8 +26,8 @@ class Index extends Component
             'data' => Aset::with([
                 'pengguna'
             ])
-                ->when($this->kategori, function($q) {
-                    $q->where('kategori', $this->kategori);
+                ->when($this->kode_akun_id, function($q) {
+                    $q->where('kode_akun_id', $this->kode_akun_id);
                 })
                 ->where(fn($q) => $q
                     ->where('nama', 'like', '%' . $this->cari . '%'))

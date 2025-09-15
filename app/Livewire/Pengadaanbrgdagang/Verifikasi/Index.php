@@ -15,17 +15,6 @@ class Index extends Component
     #[Url]
     public $cari, $status = 'Pending';
 
-    public function delete($id)
-    {
-        try {
-            Verifikasi::findOrFail($id)
-                ->forceDelete();
-            session()->flash('success', 'Berhasil menghapus data');
-        } catch (\Throwable $th) {
-            session()->flash('error', 'Gagal menghapus data');
-        };
-    }
-
     public function render()
     {
         return view('livewire.pengadaanbrgdagang.verifikasi.index', [
