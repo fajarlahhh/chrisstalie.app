@@ -30,7 +30,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Kode Akun</label>
+                    <label class="form-label">Kategori</label>
                     <select class="form-control" wire:model.live="kode_akun_id" data-width="100%">
                         <option hidden selected>-- Pilih Kode Akun --</option>
                         @foreach ($dataKodeAkun as $item)

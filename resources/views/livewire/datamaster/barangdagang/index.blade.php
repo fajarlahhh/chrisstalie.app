@@ -17,9 +17,10 @@
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <select class="form-control w-auto" wire:model.lazy="jenis">
-                        @foreach (\App\Enums\JenisBarangEnum::cases() as $item)
-                            <option value="{{ $item->value }}">{{ $item->label() }}</option>
+                    <select class="form-control w-auto" wire:model.lazy="kategori">
+                        <option value="">Semua Kategori</option>
+                        @foreach ($dataKodeAkun as $item)
+                            <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
                         @endforeach
                     </select>&nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
@@ -34,7 +35,7 @@
                     <tr>
                         <th class="w-10px">No.</th>
                         <th>Nama</th>
-                        <th>Kode Akun</th>
+                        <th>Kategori</th>
                         <th>KFA</th>
                         <th>Perlu Resep</th>
                         <th>Satuan</th>

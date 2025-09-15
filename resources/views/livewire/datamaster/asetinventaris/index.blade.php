@@ -18,7 +18,7 @@
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
                     <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
-                        <option value="">-- Semua Kode Akun --</option>
+                        <option value="">-- Semua Kategori --</option>
                         @foreach ($dataKodeAkun as $item)
                             <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
                         @endforeach                        
@@ -36,7 +36,7 @@
                         <th class="w-10px">No.</th>
                         <th>Nama</th>
                         <th>Satuan</th>
-                        <th>Kode Akun</th>
+                        <th>Kategori</th>
                         <th>Tanggal Perolehan</th>
                         <th class="text-end">Harga Perolehan</th>
                         <th>Masa Manfaat</th>

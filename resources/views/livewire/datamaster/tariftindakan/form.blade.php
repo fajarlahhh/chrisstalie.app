@@ -27,17 +27,6 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Kategori</label>
-                            <select class="form-control" wire:model.live="kategori" data-width="100%">
-                                <option hidden selected>-- Pilih Jenis Barang --</option>
-                                <option value="Medis">Medis</option>
-                                <option value="Non Medis">Non Medis</option>
-                            </select>
-                            @error('kategori')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
                             <label class="form-label">ICD 10 CM</label>
                             <input class="form-control" type="text" wire:model="icd_10_cm" />
                             @error('icd_10_cm')
@@ -45,7 +34,7 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Kode Akun</label>
+                            <label class="form-label">Kategori</label>
                             <select class="form-control" wire:model.live="kode_akun_id" data-width="100%">
                                 <option hidden selected>-- Pilih Kode Akun --</option>
                                 @foreach ($dataKodeAkun as $item)

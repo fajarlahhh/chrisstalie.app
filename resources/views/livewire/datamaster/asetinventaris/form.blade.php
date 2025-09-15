@@ -18,6 +18,28 @@
         <form wire:submit.prevent="submit">
             <div class="panel-body">
                 <div class="mb-3">
+                    <label class="form-label">Nama</label>
+                    <input class="form-control" type="text" wire:model="nama" />
+                    @error('nama')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Satuan</label>
+                    <input class="form-control" type="text" wire:model="satuan" />
+                    @error('satuan')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Tanggal Perolehan</label>
+                    <input class="form-control" type="date" wire:model="tanggal_perolehan"
+                        @if ($data->exists) disabled @endif />
+                    @error('tanggal_perolehan')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
                     <label class="form-label">Unit Bisnis</label>
                     <select class="form-control" wire:model.live="unit_bisnis" data-width="100%">
                         <option hidden selected>-- Pilih Unit Bisnis --</option>
@@ -30,7 +52,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Kode Akun</label>
+                    <label class="form-label">Kategori</label>
                     <select class="form-control" wire:model.live="kode_akun_id" data-width="100%">
                         <option hidden selected>-- Pilih Kode Akun --</option>
                         @foreach ($dataKodeAkun as $item)
@@ -54,32 +76,10 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Nama</label>
-                    <input class="form-control" type="text" wire:model="nama" />
-                    @error('nama')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Satuan</label>
-                    <input class="form-control" type="text" wire:model="satuan" />
-                    @error('satuan')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
                     <label class="form-label">Harga Perolehan</label>
                     <input class="form-control" type="text" wire:model="harga_perolehan"
                         @if ($data->exists) disabled @endif />
                     @error('harga_perolehan')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Tanggal Perolehan</label>
-                    <input class="form-control" type="date" wire:model="tanggal_perolehan"
-                        @if ($data->exists) disabled @endif />
-                    @error('tanggal_perolehan')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

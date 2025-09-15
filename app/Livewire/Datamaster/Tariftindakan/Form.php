@@ -18,7 +18,6 @@ class Form extends Component
     public $nama;
     public $kode_akun_id;
     public $icd_10_cm;
-    public $kategori = "Medis";
     public $biaya_jasa_dokter = 0;
     public $biaya_jasa_perawat = 0;
     public $biaya_tidak_langsung = 0;
@@ -94,7 +93,6 @@ class Form extends Component
     public function submit()
     {
         $this->validate([
-            'kategori' => 'required',
             'kode_akun_id' => 'required',
             'nama' => 'required',
             'biaya_jasa_dokter' => 'required|numeric',
@@ -106,7 +104,6 @@ class Form extends Component
 
         DB::transaction(function () {
             $this->data->icd_10_cm = $this->icd_10_cm;
-            $this->data->kategori = $this->kategori;
             $this->data->kode_akun_id = $this->kode_akun_id;
             $this->data->nama = $this->nama;
             $this->data->biaya_jasa_dokter = $this->biaya_jasa_dokter;

@@ -3,6 +3,7 @@
 namespace App\Livewire\Datamaster\Barangdagang;
 
 use App\Models\Barang;
+use App\Models\KodeAkun;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -12,7 +13,12 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $unit_bisnis;
+    public $cari, $unit_bisnis, $kode_akun_id, $dataKodeAkun = [];
+
+    public function mount()
+    {
+        $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '11300')->get()->toArray();    
+    }
 
     public function delete($id)
     {
@@ -33,6 +39,9 @@ class Index extends Component
                 'kodeAkun'
             ])->persediaan()
                 ->when($this->unit_bisnis, fn($q) => $q->where('unit_bisnis', $this->unit_bisnis))
+                ->when($this->kode_akun_id, function($q) {
+                    $q->where('kode_akun_id', $this->kode_akun_id);
+                })
                 ->where(fn($q) => $q
                     ->where('nama', 'like', '%' . $this->cari . '%'))
                 ->orderBy('nama')

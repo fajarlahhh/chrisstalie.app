@@ -6,13 +6,19 @@ use Livewire\Component;
 use App\Models\TarifTindakan;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
+use App\Models\KodeAkun;
 
 class Index extends Component
 {
     use WithPagination;
 
     #[Url]
-    public $cari, $unit_bisnis;
+    public $cari, $kode_akun_id, $dataKodeAkun = [];
+
+    public function mount()
+    {
+        $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '42000')->get()->toArray();
+    }
 
     public function delete($id)
     {
@@ -32,7 +38,9 @@ class Index extends Component
                 'pengguna',
                 'tarifTindakanAlatBahan',
             ])
-                ->when($this->unit_bisnis, fn($q) => $q->where('unit_bisnis', $this->unit_bisnis))
+                ->when($this->kode_akun_id, function($q) {
+                    $q->where('kode_akun_id', $this->kode_akun_id);
+                })
                 ->where(fn($q) => $q
                     ->where('nama', 'like', '%' . $this->cari . '%'))
                 ->orderBy('nama')

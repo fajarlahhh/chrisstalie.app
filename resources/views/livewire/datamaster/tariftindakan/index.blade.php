@@ -17,10 +17,11 @@
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <select class="form-control w-auto" wire:model.lazy="unit_bisnis">
+                    <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
                         <option value="">Semua Kategori</option>
-                        <option value="Medis">Medis</option>
-                        <option value="Non Medis">Non Medis</option>
+                        @foreach ($dataKodeAkun as $item)
+                            <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
+                        @endforeach
                     </select>&nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
