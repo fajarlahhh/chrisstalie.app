@@ -18,7 +18,7 @@
                         <option value="2">Sudah Proses</option>
                     </select>&nbsp;
                     @if ($status == 2)
-                        <input class="form-control" type="date" wire:model.lazy="tanggal" min="{{ date('Y-m-d') }}" />&nbsp;
+                        <input class="form-control" type="date" wire:model.lazy="tanggal" max="{{ date('Y-m-d') }}" />&nbsp;
                     @endif
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"

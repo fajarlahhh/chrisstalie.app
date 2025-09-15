@@ -26,7 +26,7 @@ class Index extends Component
         ])->toArray();
     }
 
-    public function updatedPatientId($id)
+    public function updatedPasienId($id)
     {
         $this->pasien_id = $id;
         $this->pasien = Pasien::find($id);
@@ -35,7 +35,7 @@ class Index extends Component
         $this->nama = $this->pasien->nama;
         $this->alamat = $this->pasien->alamat;
         $this->jenis_kelamin = $this->pasien->jenis_kelamin;
-        $this->tanggal_lahir = $this->pasien->tanggal_lahir;
+        $this->tanggal_lahir = $this->pasien->tanggal_lahir->format('Y-m-d');
         $this->no_hp = $this->pasien->no_hp;
     }
 

@@ -142,6 +142,12 @@
                                     </div>
                                 @endif
                                 <div class="mb-3">
+                                    <label class="form-label">No. RM</label>
+                                    <input class="form-control" type="text" wire:model="rm"
+                                        @if ($nik) disabled @endif
+                                        @if (!$pasien_id) disabled @endif />
+                                </div>
+                                <div class="mb-3">
                                     <label class="form-label">No. KTP</label>
                                     <input class="form-control" type="text" wire:model="nik"
                                         @if ($nik) disabled @endif
@@ -226,7 +232,7 @@
                     </div>
                 </div>
             </div>
-            <div class="panel-footer">
+            <div class="panel-footer" wire:loading.remove>
                 @role('administrator|supervisor|operator')
                     <input wire:loading.remove type="submit" value="Simpan" class="btn btn-success" />
                 @endrole

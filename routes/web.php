@@ -63,8 +63,8 @@ Route::middleware(['auth'])->group(function () {
             return Pasien::where(fn($q) => $q->where('nik', 'like', "%$req->cari%")->orWhere('alamat', 'like', "%$req->cari%")->orWhere('nama', 'like', "%$req->cari%"))->orderBy('nama', 'asc')->get()
                 ->map(fn($q) => [
                     'id' => $q->id,
-                    'text' => $q->nama . ' ' . $q->alamat,
-                    'rm' => $q->rm,
+                    'text' => $q->id . ' - ' . $q->nama . ', ' . $q->alamat,
+                    'rm' => $q->id,
                     'nik' => $q->nik ?: '',
                     'nama' => $q->nama,
                     'alamat' => $q->alamat,

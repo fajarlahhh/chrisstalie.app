@@ -66,6 +66,7 @@ class Form extends Component
             $pemeriksaanAwal = new PemeriksaanAwal();
             $pemeriksaanAwal->id = $this->data->id;
             $pemeriksaanAwal->keluhan = $this->keluhan;
+            $pemeriksaanAwal->pasien_id = $this->data->pasien_id;
             $pemeriksaanAwal->pengguna_id = auth()->id();
             $pemeriksaanAwal->save();
 
