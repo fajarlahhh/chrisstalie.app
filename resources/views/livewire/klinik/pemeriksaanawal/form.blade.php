@@ -136,7 +136,7 @@
                 @role('administrator|supervisor|operator')
                     <input type="submit" value="Simpan" class="btn btn-success" />
                 @endrole
-                <a href="/pelayanan/pemeriksaanawal" class="btn btn-warning m-r-3">Data</a>
+                <a href="/klinik/pemeriksaanawal" class="btn btn-warning m-r-3">Data</a>
             </div>
         </form>
     </div>
