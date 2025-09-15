@@ -43,6 +43,7 @@
                         <th>Masa Manfaat</th>
                         <th>Lokasi</th>
                         <th>Status</th>
+                        <th>Unit Bisnis</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -75,6 +76,7 @@
                                     @default
                                 @endswitch
                             </td>
+                            <td>{{ $item->unit_bisnis }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     <x-action :row="$item" custom="" :detail="false" :edit="true"

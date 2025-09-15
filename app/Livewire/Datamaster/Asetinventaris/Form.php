@@ -23,7 +23,7 @@ class Form extends Component
     public $satuan;
     public $deskripsi;
     public $lokasi;
-    public $unit_bisnis;
+    public $unit_bisnis = 'Klinik';
     public $kode_akun_id;
     public $kode_akun_sumber_dana_id;
 

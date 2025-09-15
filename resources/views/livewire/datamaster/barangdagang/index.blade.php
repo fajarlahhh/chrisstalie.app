@@ -35,11 +35,11 @@
                     <tr>
                         <th class="w-10px">No.</th>
                         <th>Nama</th>
-                        <th>Kategori</th>
-                        <th>KFA</th>
-                        <th>Perlu Resep</th>
                         <th>Satuan</th>
+                        <th>Kategori</th>
+                        <th>Perlu Resep</th>
                         <th>Unit Bisnis</th>
+                        <th>KFA</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -48,9 +48,6 @@
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
                             <td>{{ $item->nama }}</td>
-                            <td>{{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
-                            <td>{{ $item->kfa }}</td>
-                            <td>{{ $item->perlu_resep ? 'Ya' : 'Tidak' }}</td>
                             <td>
                                 <table class="table table-bordered fs-11px">
                                     <tbody>
@@ -72,7 +69,10 @@
                                     </tbody>
                                 </table>
                             </td>
+                            <td>{{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
+                            <td>{{ $item->perlu_resep ? 'Ya' : 'Tidak' }}</td>
                             <td>{{ $item->unit_bisnis }}</td>
+                            <td>{{ $item->kfa }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     <x-action :row="$item" custom="" :detail="false" :edit="true"

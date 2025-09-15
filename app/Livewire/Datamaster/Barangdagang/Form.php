@@ -18,7 +18,7 @@ class Form extends Component
     public $indikasi;
     public $harga;
     public $perlu_resep = 0;
-    public $unit_bisnis;
+    public $unit_bisnis = 'Apotek';
     public $barangSatuan = [];
 
     public function tambahSatuan()
