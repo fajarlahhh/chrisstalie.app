@@ -194,7 +194,8 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">Tanggal</label>
-                            <input class="form-control" type="date" wire:model="tanggal" min="{{ date('Y-m-d') }}" />
+                            <input class="form-control" type="date" wire:model="tanggal"
+                                min="{{ date('Y-m-d') }}" />
                             @error('tanggal')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -223,9 +224,9 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Catatan</label>
-                            <textarea class="form-control" wire:model="catatan" rows="5"></textarea>
-                            @error('catatan')
+                            <label class="form-label">Keluhan Awal</label>
+                            <textarea class="form-control" wire:model="keluhan_awal" rows="5"></textarea>
+                            @error('keluhan_awal')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -234,10 +235,21 @@
             </div>
             <div class="panel-footer" wire:loading.remove>
                 @role('administrator|supervisor|operator')
-                    <input wire:loading.remove type="submit" value="Simpan" class="btn btn-success" />
+                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                        <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                        Simpan
+                    </button>
                 @endrole
-                <a href="/klinik/registrasi/data" class="btn btn-warning m-r-3">Data</a>
-                <a href="javascript:;" wire:click="resetPatient" class="btn btn-secondary m-r-3">Reset</a>
+                <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
+                    onclick="window.location.href='/klinik/registrasi/data'">
+                    <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                    Data
+                </button>
+                <button type="button" class="btn btn-secondary m-r-3" onclick="window.location.href='/klinik/registrasi'"
+                    wire:loading.attr="disabled">
+                    <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                    Reset
+                </button>
             </div>
         </form>
     </div>

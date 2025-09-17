@@ -2,7 +2,7 @@
     @section('title', 'Pemeriksaan Awal')
 
     @section('breadcrumb')
-        <li class="breadcrumb-item">Pelayanan</li>
+        <li class="breadcrumb-item">Klinik</li>
         <li class="breadcrumb-item active">Pemeriksaan Awal</li>
     @endsection
 
@@ -22,7 +22,7 @@
                     @endif
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
-                        detail()wire:model.lazy="cari">
+                        wire:model.lazy="cari">
                 </div>
             </div>
         </div>

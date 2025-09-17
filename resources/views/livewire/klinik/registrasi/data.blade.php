@@ -2,7 +2,7 @@
     @section('title', 'Data Pendaftaran')
 
     @section('breadcrumb')
-        <li class="breadcrumb-item">Pelayanan</li>
+        <li class="breadcrumb-item">Klinik</li>
         <li class="breadcrumb-item">Pendaftaran</li>
         <li class="breadcrumb-item active">Data</li>
     @endsection

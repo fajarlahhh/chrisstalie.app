@@ -9,6 +9,8 @@ class Tug extends Model
 {
     //
     protected $table = 'tug';
+    public $incrementing = false;
+    protected $primaryKey = 'id';
 
     public function registrasi(): BelongsTo
     {

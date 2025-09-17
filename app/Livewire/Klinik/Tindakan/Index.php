@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 use App\Models\Tindakan;
+use App\Models\Registrasi;
 
 class Index extends Component
 {
@@ -28,8 +29,8 @@ class Index extends Component
     {
         return view('livewire.klinik.tindakan.index', [
             'data' => Registrasi::with('pasien')->with('nakes')->with('pengguna')
-                ->when($this->status == 2, fn($q) => $q->whereHas('pemeriksaanAwal', fn($q) => $q->where('created_at', 'like', $this->tanggal . '%')))
-                ->when($this->status == 1, fn($q) => $q->whereDoesntHave('pemeriksaanAwal'))
+                ->when($this->status == 2, fn($q) => $q->whereHas('tindakan', fn($q) => $q->where('created_at', 'like', $this->tanggal . '%')))
+                ->when($this->status == 1, fn($q) => $q->whereDoesntHave('tindakan'))
                 ->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
                 ->orderBy('urutan', 'asc')->paginate(10)
         ]);

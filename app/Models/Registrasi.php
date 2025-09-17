@@ -35,4 +35,14 @@ class Registrasi extends Model
     {
         return $this->hasOne(Tug::class, 'id');
     }
+
+    public function tindakan(): HasOne
+    {
+        return $this->hasOne(Tindakan::class, 'id');
+    }
+
+    public function diagnosis(): HasOne
+    {
+        return $this->hasOne(Diagnosis::class, 'id');
+    }
 }

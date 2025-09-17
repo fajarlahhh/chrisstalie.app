@@ -92,7 +92,10 @@
                         </tfoot>
                     </table>
                     @role('administrator|supervisor')
-                        <input wire:loading.remove type="submit" value="Simpan" class="btn btn-success" />
+                        <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                        <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                        Simpan
+                    </button>
                     @endrole
                 </form>
             </div>
