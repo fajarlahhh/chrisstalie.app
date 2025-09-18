@@ -56,7 +56,7 @@ class Form extends Component
             $this->data->save();
             
             $timestamp = now();
-            if ($this->data->exists) {
+            if (!$this->data->wasRecentlyCreated) {
                 $this->data->barangSatuan()->where('rasio_dari_terkecil', 1)->update([
                     'harga_jual' => $this->harga,
                     'pengguna_id' => auth()->id(),
@@ -64,18 +64,17 @@ class Form extends Component
                     'updated_at' => $timestamp,
                 ]);
             } else {
-                BarangSatuan::insert([
-                    'nama' => $this->satuan,
-                    'rasio_dari_terkecil' => 1,
-                    'harga_jual' => $this->harga,
-                    'barang_id' => $this->data->id,
-                    'pengguna_id' => auth()->id(),
-                    'utama' => 1,
-                    'created_at' => $timestamp,
-                    'updated_at' => $timestamp,
-                ]);
+                $barangSatuan = new BarangSatuan();
+                $barangSatuan->nama = $this->satuan;
+                $barangSatuan->rasio_dari_terkecil = 1;
+                $barangSatuan->harga_jual = $this->harga;
+                $barangSatuan->barang_id = $this->data->id;
+                $barangSatuan->pengguna_id = auth()->id();
+                $barangSatuan->utama = 1;
+                $barangSatuan->created_at = $timestamp;
+                $barangSatuan->updated_at = $timestamp;
+                $barangSatuan->save();
             }
-
             session()->flash('success', 'Berhasil menyimpan data');
         });
         $this->redirect($this->previous);

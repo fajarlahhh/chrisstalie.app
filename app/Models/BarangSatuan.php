@@ -9,7 +9,6 @@ class BarangSatuan extends Model
 {
     //
     protected $table = 'barang_satuan';
-    protected $fillable = ['barang_id', 'nama', 'harga_jual', 'rasio_dari_terkecil', 'satuan_konversi_id'];
 
     public function barang(): BelongsTo
     {
