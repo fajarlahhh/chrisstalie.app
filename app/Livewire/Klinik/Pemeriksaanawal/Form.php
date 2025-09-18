@@ -66,10 +66,7 @@ class Form extends Component
             'kesadaran'        => 'required',
             'kesan_sakit'      => 'required',
             'status_gizi'      => 'required',
-            'waktu_tes_detik'  => 'required',
             'observasi'        => 'array|nullable',
-            'risiko_jatuh'     => 'required',
-            'catatan'          => 'required',
             'diagnosis_kerja'  => 'required',
             'rencana_awal'     => 'required',
         ];
