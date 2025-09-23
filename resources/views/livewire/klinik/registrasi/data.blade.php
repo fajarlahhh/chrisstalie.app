@@ -53,8 +53,11 @@
                             <td>{{ $row->catatan }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
+                                    @php
+                                        $custom = "<a href='javascript:;' wire:click=\"hakKewajiban({$row['id']})\" x-on:click=\"setTimeout(() => { $('#modal-hak-kewajiban').modal('show'); }, 100);\" class='dropdown-item'>Hak dan Kewajiban</a>";
+                                    @endphp
                                     @if (!$row->payment)
-                                        <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                        <x-action :row="$row" :custom="$custom" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                     @endif
                                 @endrole
@@ -69,4 +72,22 @@
         </div>
     </div>
     <x-alert />
+    <div wire:ignore.self class="modal fade" id="modal-hak-kewajiban">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <form wire:submit="submitHakKewajiban">
+                    <div class="modal-body overflow-auto height-500">
+                        <div class="form-group">
+                            <label for="hak_kewajiban">Hak dan Kewajiban</label>
+                            <textarea class="form-control" wire:model="hak_kewajiban"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" wire:click="submitHakKewajiban">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

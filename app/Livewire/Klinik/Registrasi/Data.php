@@ -11,7 +11,7 @@ class Data extends Component
 {
     use WithPagination;
     #[Url]
-    public $cari, $tanggal;
+    public $cari, $tanggal, $dataHakKewajiban ;
 
     public function mount()
     {
@@ -21,6 +21,16 @@ class Data extends Component
     public function delete($id)
     {
         Registrasi::where('id', $id)->delete();
+    }
+
+    public function hakKewajiban($id)
+    {
+        $this->dataHakKewajiban = Registrasi::find($id);
+    }
+
+    public function submitHakKewajiban()
+    {
+        dd($this->dataHakKewajiban);
     }
 
     public function render()

@@ -56,7 +56,7 @@
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
                             <td>{{ $item->nama }}</td>
                             <td>{{ $item->kategori }}</td>
-                            <td>{{ $item->icd_10_cm }}</td>
+                            <td>{{ $item->icd_9_cm }}</td>
                             <td>{{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
                             <td class="text-end">{{ number_format($item->biaya_alat_bahan) }}</td>
                             <td class="text-end">{{ number_format($item->biaya_jasa_dokter) }}</td>

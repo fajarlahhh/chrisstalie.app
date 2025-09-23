@@ -27,9 +27,9 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">ICD 10 CM</label>
-                            <input class="form-control" type="text" wire:model="icd_10_cm" />
-                            @error('icd_10_cm')
+                            <label class="form-label">ICD 9 CM</label>
+                            <input class="form-control" type="text" wire:model="icd_9_cm" />
+                            @error('icd_9_cm')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>

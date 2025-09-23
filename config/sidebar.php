@@ -185,12 +185,27 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
+                    "title" => "Inform Consent",
+                    "urutkan" => false,
+                    "method" => ["Index", "Form"],
+                ],
+                [
                     "title" => "Site Marking",
                     "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Tindakan",
+                    "urutkan" => false,
+                    "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Laporan Operasi",
+                    "urutkan" => false,
+                    "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Resep Obat",
                     "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],

@@ -17,7 +17,7 @@ class Form extends Component
     public $previous;
     public $nama;
     public $kode_akun_id;
-    public $icd_10_cm;
+    public $icd_9_cm;
     public $biaya_jasa_dokter = 0;
     public $biaya_jasa_perawat = 0;
     public $biaya_tidak_langsung = 0;
@@ -103,7 +103,7 @@ class Form extends Component
         ]);
 
         DB::transaction(function () {
-            $this->data->icd_10_cm = $this->icd_10_cm;
+            $this->data->icd_9_cm = $this->icd_9_cm;
             $this->data->kode_akun_id = $this->kode_akun_id;
             $this->data->nama = $this->nama;
             $this->data->biaya_jasa_dokter = $this->biaya_jasa_dokter;
