@@ -190,17 +190,7 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
-                    "title" => "Informed Consent",
-                    "urutkan" => false,
-                    "method" => ["Index", "Data"],
-                ],
-                [
                     "title" => "Site Marking",
-                    "urutkan" => false,
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Laporan Operasi",
                     "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
@@ -213,7 +203,28 @@ return [
                     "title" => "Kasir",
                     "urutkan" => false,
                     "method" => ["Index", "Form"],
-                ]
+                ],
+                [
+                    "title" => "Upload",
+                    "urutkan" => false,
+                    "sub_menu" => [
+                        [
+                            "title" => "Pemeriksaan Penunjang",
+                            "urutkan" => false,
+                            "method" => ["Index", "Form"],
+                        ],
+                        [
+                            "title" => "Informed Consent",
+                            "urutkan" => false,
+                            "method" => ["Index", "Data"],
+                        ],
+                        [
+                            "title" => "Laporan Operasi",
+                            "urutkan" => false,
+                            "method" => ["Index", "Form"],
+                        ]
+                    ]
+                ],
             ]
         ],
         [

@@ -83,6 +83,17 @@
                     @enderror
                 </div>
                 <div class="mb-3">
+                    <label class="form-label">Metode Penyusutan</label>
+                    <select class="form-control" wire:model.live="metode_penyusutan" data-width="100%">
+                        <option hidden selected>-- Pilih Metode Penyusutan --</option>
+                        <option value="Garis Lurus">Garis Lurus</option>
+                        <option value="Satuan Hasil Produksi">Satuan Hasil Produksi</option>
+                    </select>
+                    @error('metode_penyusutan')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
                     <label class="form-label">Harga Perolehan</label>
                     <input class="form-control" type="text" wire:model="harga_perolehan"
                         @if ($data->exists) disabled @endif />
@@ -91,7 +102,13 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Masa Manfaat <small>(bulan)</small></label>
+                    <label class="form-label">
+                        @if ($metode_penyusutan == 'Garis Lurus')
+                            Masa Manfaat <small>(bulan)</small>
+                        @else
+                            Satuan Hasil Produksi <small>(jasa)</small>
+                        @endif
+                    </label>
                     <input class="form-control" type="text" wire:model="masa_manfaat"
                         @if ($data->exists) disabled @endif />
                     @error('masa_manfaat')
@@ -126,7 +143,10 @@
                         Simpan
                     </button>
                 @endrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove>Batal</a>
+                <a href="{{ $previous }}" class="btn btn-danger" wire:loading.attr="disabled">
+                    <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                    Batal
+                </a>
             </div>
         </form>
     </div>

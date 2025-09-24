@@ -78,11 +78,14 @@
                                     @enderror
                                 </th>
                                 <th class="align-middle w-5px pt-0 pb-0 pr-0">
-                                    <button type="button" class="btn btn-danger btn-sm"
-                                        wire:click="hapusDiagnosis({{ $index }})" wire:loading.attr="disabled">
-                                        <span wire:loading class="spinner-border spinner-border-sm"></span>
-                                        <span wire:loading.remove>x</span>
-                                    </button>
+                                    @if ($index > 0)
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            wire:click="hapusDiagnosis({{ $index }})"
+                                            wire:loading.attr="disabled">
+                                            <span wire:loading class="spinner-border spinner-border-sm"></span>
+                                            <span wire:loading.remove>x</span>
+                                        </button>
+                                    @endif
                                 </th>
                             </tr>
                         @endforeach
@@ -104,6 +107,10 @@
                     @error('diagnosis_banding')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
+                </div>
+                <div class="p-3 bg-light border rounded">
+                    Dokumentasi :
+                    <x-upload :fileDiupload="$fileDiupload" :fileDihapus="$fileDihapus" />
                 </div>
             </div>
             <div class="panel-footer">

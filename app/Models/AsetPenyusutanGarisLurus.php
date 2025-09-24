@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class AsetPenyusutan extends Model
+class AsetPenyusutanGarisLurus extends Model
 {
-    protected $table = 'aset_penyusutan';
+    protected $table = 'aset_penyusutan_garis_lurus';
     public $timestamps = false;
 
     public function aset(): BelongsTo

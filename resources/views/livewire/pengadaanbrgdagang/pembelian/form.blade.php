@@ -170,7 +170,10 @@
                         Simpan
                     </button>
                 @endunlessrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove>Batal</a>
+                <a href="{{ $previous }}" class="btn btn-danger" wire:loading.attr="disabled">
+                    <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                    Batal
+                </a>
             </div>
         </form>
     </div>

@@ -8,9 +8,10 @@ use App\Models\Jurnal;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use Illuminate\Support\Str;
-use App\Models\AsetPenyusutan;
-use Illuminate\Support\Facades\DB;
 use App\Models\JurnalDetail;
+use Illuminate\Support\Facades\DB;
+use App\Models\AsetPenyusutanGarisLurus;
+use App\Models\AsetPenyusutanUnitProduksi;
 
 class Form extends Component
 {
@@ -27,6 +28,7 @@ class Form extends Component
     public $kode_akun_id;
     public $kode_akun_sumber_dana_id;
     public $detail;
+    public $metode_penyusutan;
 
     public function submit()
     {
@@ -40,6 +42,7 @@ class Form extends Component
             'lokasi' => 'required',
             'unit_bisnis' => 'required',
             'kode_akun_id' => 'required',
+            'metode_penyusutan' => 'required',
         ]);
 
         DB::transaction(function () {
@@ -54,21 +57,38 @@ class Form extends Component
             $this->data->kode_akun_id = $this->kode_akun_id;
             $this->data->detail = $this->detail;
             $this->data->kode_akun_sumber_dana_id = $this->kode_akun_sumber_dana_id;
+            $this->data->metode_penyusutan = $this->metode_penyusutan;
             $this->data->status = !$this->data->exists ? 'Aktif' : $this->status;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
-            if ($this->data->asetPenyusutan->count() == 0) {
-                $penyusutan = [];
-                for ($i = 1; $i <= $this->masa_manfaat; $i++) {
-                    $penyusutan[] = [
-                        'aset_id' => $this->data->id,
-                        'tanggal' => Carbon::now()->addMonths($i)->format('Y-m-01'),
-                        'nilai' => $this->harga_perolehan / $this->masa_manfaat,
-                        'jurnal_id' => null,
-                    ];
+            if ($this->metode_penyusutan == 'Garis Lurus') {
+                if ($this->data->asetPenyusutanGarisLurus->count() == 0) {
+                    $penyusutan = [];
+                    for ($i = 1; $i <= $this->masa_manfaat; $i++) {
+                        $penyusutan[] = [
+                            'aset_id' => $this->data->id,
+                            'tanggal' => Carbon::now()->addMonths($i)->format('Y-m-01'),
+                            'nilai' => $this->harga_perolehan / $this->masa_manfaat,
+                            'jurnal_id' => null,
+                        ];
+                    }
+                    AsetPenyusutanGarisLurus::insert($penyusutan);
                 }
-                AsetPenyusutan::insert($penyusutan);
+            }
+
+            if ($this->metode_penyusutan == 'Satuan Hasil Produksi') {
+                if ($this->data->asetPenyusutanUnitProduksi->count() == 0) {
+                    $penyusutan = [];
+                    for ($i = 1; $i <= $this->masa_manfaat; $i++) {
+                        $penyusutan[] = [
+                            'aset_id' => $this->data->id,
+                            'nilai' => $this->harga_perolehan / $this->masa_manfaat,
+                            'jurnal_id' => null,
+                        ];
+                    }
+                    AsetPenyusutanUnitProduksi::insert($penyusutan);
+                }
             }
 
             if ($this->data->jurnal) {

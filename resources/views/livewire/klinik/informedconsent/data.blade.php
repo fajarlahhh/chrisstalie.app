@@ -59,7 +59,7 @@
                             <td>{{ $row->catatan }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
-                                    @if ($row->pembayaran)
+                                    @if ($row->siteMarking)
                                         @php
                                             $custom =
                                                 "<a href='" .

@@ -23,6 +23,7 @@ class Form extends Component
     public $biaya_tidak_langsung = 0;
     public $biaya_alat_bahan = 0;
     public $biaya_keuntungan_klinik = 0;
+    public $tarif = 0;
     public $alatBahan = [];
 
     public function tambahAlatBahan($jenis)
@@ -53,6 +54,11 @@ class Form extends Component
                     $this->alatBahan[$index[0]]['rasio_dari_terkecil'] = null;
                     $this->alatBahan[$index[0]]['harga_jual'] = 0;
                 }
+                if ($this->alatBahan[$index[0]]['jenis'] == 'Alat') {
+                    $alatBahan = collect($this->dataAset)->where('id', $value)->first();
+                    $this->alatBahan[$index[0]]['id'] = $alatBahan['id'] ?? null;
+                    $this->alatBahan[$index[0]]['harga_jual'] = $alatBahan['harga_perolehan'] / $alatBahan['masa_manfaat'] ?? 0;
+                }
             }
 
             if ($index[1] == 'barang_satuan_id') {
@@ -81,6 +87,12 @@ class Form extends Component
             $this->alatBahan[$index[0]]['sub_total'] = $harga * $qty;
             $this->biaya_alat_bahan = collect($this->alatBahan)->count() > 0 ? collect($this->alatBahan)->sum(fn($q) => $q['sub_total'] ?? 0) : 0;
         }
+        if ($this->alatBahan[$index[0]]['jenis'] == 'Alat') {
+            $harga = (int) ($this->alatBahan[$index[0]]['harga_jual'] ?? 0);
+            $qty = (int) ($this->alatBahan[$index[0]]['qty'] ?? 0);
+            $this->alatBahan[$index[0]]['sub_total'] = $harga * $qty;
+            $this->biaya_alat_bahan = collect($this->alatBahan)->count() > 0 ? collect($this->alatBahan)->sum(fn($q) => $q['sub_total'] ?? 0) : 0;
+        }
     }
 
     public function hapusAlatBahan($key)
@@ -99,7 +111,7 @@ class Form extends Component
             'biaya_jasa_perawat' => 'required|numeric',
             'biaya_tidak_langsung' => 'required|numeric',
             'biaya_alat_bahan' => 'required|numeric',
-            'biaya_keuntungan_klinik' => 'required|numeric',
+            'tarif' => 'required|numeric',
         ]);
 
         DB::transaction(function () {
@@ -109,7 +121,7 @@ class Form extends Component
             $this->data->biaya_jasa_dokter = $this->biaya_jasa_dokter;
             $this->data->biaya_jasa_perawat = $this->biaya_jasa_perawat;
             $this->data->biaya_tidak_langsung = $this->biaya_tidak_langsung;
-            $this->data->biaya_keuntungan_klinik = $this->biaya_keuntungan_klinik;
+            $this->data->tarif = $this->tarif;
 
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
@@ -149,7 +161,7 @@ class Form extends Component
                 ] : null,
             ]),
         ])->toArray();
-        $this->dataAset = Aset::where('kode_akun_id', '15130')->orderBy('nama')->get()->toArray();
+        $this->dataAset = Aset::where('kode_akun_id', '15130')->with('asetPenyusutanUnitProduksi')->whereHas('asetPenyusutanUnitProduksi')->orderBy('nama')->get()->toArray();
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '42000')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());

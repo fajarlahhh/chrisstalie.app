@@ -82,7 +82,7 @@
                     <input class="form-check-input" type="checkbox" wire:model="klinik"
                         @if ($klinik) checked @endif />
                     <label class="form-check-label" for="klinik">
-                        PersediaanKlinik
+                        Persediaan Klinik
                     </label>
                 </div>
             </div>
@@ -93,7 +93,10 @@
                         Simpan
                     </button>
                 @endrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove>Batal</a>
+                <a href="{{ $previous }}" class="btn btn-danger" wire:loading.attr="disabled">
+                    <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                    Batal
+                </a>
             </div>
         </form>
     </div>

@@ -26,14 +26,24 @@ class Aset extends Model
         return $this->belongsTo(KodeAkun::class, 'kode_akun_sumber_dana_id');
     }
 
-    public function asetPenyusutan(): HasMany
+    public function asetPenyusutanGarisLurus(): HasMany
     {
-        return $this->hasMany(AsetPenyusutan::class);
+        return $this->hasMany(AsetPenyusutanGarisLurus::class);
     }
 
-    public function asetPenyusutanTerjurnal(): HasOne
+    public function asetPenyusutanGarisLurusTerjurnal(): HasOne
     {
-        return $this->hasMany(AsetPenyusutan::class)->whereNotNull('jurnal_id');
+        return $this->hasMany(AsetPenyusutanGarisLurus::class)->whereNotNull('jurnal_id');
+    }
+
+    public function asetPenyusutanUnitProduksiTerjurnal(): HasOne
+    {
+        return $this->hasMany(AsetPenyusutanUnitProduksi::class)->whereNotNull('jurnal_id');
+    }
+
+    public function asetPenyusutanUnitProduksi(): HasMany
+    {
+        return $this->hasMany(AsetPenyusutanUnitProduksi::class);
     }
 
     public function jurnal(): HasOne

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Registrasi;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Diagnosis extends Model
 {
@@ -33,5 +34,10 @@ class Diagnosis extends Model
 
         // Relasi manual ke model Icd10 berdasarkan kode
         return Icd10::whereIn('id', $codes)->get();
+    }
+
+    public function file(): HasMany
+    {
+        return $this->hasMany(File::class, 'referensi_id')->where('jenis', 'Diagnosis');
     }
 }
