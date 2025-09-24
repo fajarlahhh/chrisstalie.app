@@ -82,7 +82,7 @@
                     <input class="form-check-input" type="checkbox" wire:model="klinik"
                         @if ($klinik) checked @endif />
                     <label class="form-check-label" for="klinik">
-                        Persediaan Klinik
+                        Khusus Tarif Tindakan Klinik
                     </label>
                 </div>
             </div>
