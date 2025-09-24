@@ -52,7 +52,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tanggal Perolehan</label>
-                    <input class="form-control" type="date" wire:model="tanggal_perolehan"
+                    <input class="form-control" @if ($data->exists) disabled @endif type="date" wire:model="tanggal_perolehan"
                         @if ($data->exists) disabled @endif />
                     @error('tanggal_perolehan')
                         <span class="text-danger">{{ $message }}</span>
@@ -60,7 +60,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Kategori</label>
-                    <select class="form-control" wire:model.live="kode_akun_id" data-width="100%">
+                    <select class="form-control" wire:model.live="kode_akun_id" @if ($data->exists) disabled @endif data-width="100%">
                         <option hidden selected>-- Pilih Kode Akun --</option>
                         @foreach ($dataKodeAkun as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
@@ -72,7 +72,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Sumber Dana</label>
-                    <select class="form-control" wire:model.live="kode_akun_sumber_dana_id" data-width="100%">
+                    <select class="form-control" wire:model.live="kode_akun_sumber_dana_id" @if ($data->exists) disabled @endif data-width="100%">
                         <option hidden selected>-- Pilih Kode Akun --</option>
                         @foreach ($dataKodeAkunSumberDana as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
@@ -84,7 +84,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Metode Penyusutan</label>
-                    <select class="form-control" wire:model.live="metode_penyusutan" data-width="100%">
+                    <select class="form-control" @if ($data->exists) disabled @endif wire:model.live="metode_penyusutan" data-width="100%">
                         <option hidden selected>-- Pilih Metode Penyusutan --</option>
                         <option value="Garis Lurus">Garis Lurus</option>
                         <option value="Satuan Hasil Produksi">Satuan Hasil Produksi</option>
@@ -143,10 +143,7 @@
                         Simpan
                     </button>
                 @endrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:loading.attr="disabled">
-                    <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
-                    Batal
-                </a>
+                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove>Batal</a>
             </div>
         </form>
     </div>
