@@ -31,12 +31,12 @@ class Aset extends Model
         return $this->hasMany(AsetPenyusutanGarisLurus::class);
     }
 
-    public function asetPenyusutanGarisLurusTerjurnal(): HasOne
+    public function asetPenyusutanGarisLurusTerjurnal(): HasMany
     {
         return $this->hasMany(AsetPenyusutanGarisLurus::class)->whereNotNull('jurnal_id');
     }
 
-    public function asetPenyusutanUnitProduksiTerjurnal(): HasOne
+    public function asetPenyusutanUnitProduksiTerjurnal(): HasMany
     {
         return $this->hasMany(AsetPenyusutanUnitProduksi::class)->whereNotNull('jurnal_id');
     }

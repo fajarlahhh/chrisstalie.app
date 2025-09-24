@@ -148,7 +148,7 @@ class Index extends Component
     }
 
     public function mount()
-    {   
+    {
         $this->dataMetodeBayar = MetodeBayar::get()->toArray();
         $this->dataBarang = Barang::with('barangSatuan.satuanKonversi')->where('perlu_resep', 0)->where('klinik', 0)->orderBy('nama')->get()->map(fn($q) => [
             'id' => $q['id'],
