@@ -38,4 +38,14 @@
         }
         return s.join(dec);
     }
+    
+    $(function() {
+        $('body').on('keydown', '.bs-searchbox .form-control', function(e) {
+            if (e.keyCode === 13) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
+        // ------------------------------
+    });
 </script>
