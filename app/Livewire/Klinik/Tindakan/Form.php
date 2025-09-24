@@ -20,14 +20,14 @@ class Form extends Component
             $this->tindakan = $data->tindakan->map(fn($q) => [
                 'id' => $q->tarif_tindakan_id,
                 'harga' => $q->harga,
-                'deskripsi' => $q->deskripsi,
+                'catatan' => $q->catatan,
                 'membutuhkan_inform_consent' => $q->membutuhkan_inform_consent == 1 ? true : false,
             ])->toArray();
         } else {
             $this->tindakan[] = [
                 'id' => null,
                 'harga' => null,
-                'deskripsi' => null,
+                'catatan' => null,
                 'membutuhkan_inform_consent' => false,
             ];
         }
@@ -43,7 +43,7 @@ class Form extends Component
         $this->tindakan[] = [
             'id' => null,
             'harga' => null,
-            'deskripsi' => null,
+            'catatan' => null,
             'membutuhkan_inform_consent' => false,
         ];
     }
@@ -62,7 +62,7 @@ class Form extends Component
                 'tarif_tindakan_id' => $q['id'],
                 'pasien_id' => $this->data->pasien_id,
                 'biaya' => collect($this->dataTindakan)->firstWhere('id', $q['id'])['biaya_total'],
-                'deskripsi' => $q['deskripsi'],
+                'catatan' => $q['catatan'],
                 'membutuhkan_inform_consent' => $q['membutuhkan_inform_consent'],
                 'pengguna_id' => auth()->id(),
                 'created_at' => now(),

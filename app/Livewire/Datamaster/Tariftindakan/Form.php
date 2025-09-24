@@ -133,7 +133,7 @@ class Form extends Component
                 'jenis' => $q['jenis'],
                 'qty' => $q['qty'],
                 'barang_satuan_id' => $q['barang_satuan_id'],
-                'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
+                'rasio_dari_terkecil' => $q['jenis'] == 'Bahan' ? null : $q['rasio_dari_terkecil'],
                 'harga_jual' => $q['harga_jual'],
             ])->toArray());
 

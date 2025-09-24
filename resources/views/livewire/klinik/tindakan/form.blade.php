@@ -216,56 +216,15 @@
                                         @enderror
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Deskripsi Singkat</label>
-                                        <textarea class="form-control" wire:model="tindakan.{{ $index }}.deskripsi"></textarea>
+                                        <label class="form-label">Catatan</label>
+                                        <textarea class="form-control" wire:model="tindakan.{{ $index }}.catatan"></textarea>
                                     </div>
                                     <div class="form-check form-switch mb-3">
                                         <input class="form-check-input" type="checkbox" id="membutuhkan_inform_consent"
-                                            wire:model.live="tindakan.{{ $index }}.membutuhkan_inform_consent">
+                                            wire:model="tindakan.{{ $index }}.membutuhkan_inform_consent">
                                         <label class="form-check-label" for="membutuhkan_inform_consent">
                                             Butuh Informed Consent</label>
                                     </div>
-                                    <hr>
-                                    @if ($row['membutuhkan_inform_consent'])
-                                        <div class="p-3 bg-light border rounded">
-                                            <div class="mb-3">
-                                                <label for="tujuan_manfaat" class="form-label">Tujuan & Manfaat <span
-                                                        class="text-danger">*</span></label>
-                                                <textarea id="tujuan_manfaat" class="form-control" wire:model="tindakan.{{ $index }}.tujuan_manfaat"
-                                                    rows="2"></textarea>
-                                                @error('tindakan.' . $index . '.tujuan_manfaat')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="risiko_komplikasi" class="form-label">Risiko & Komplikasi
-                                                    <span class="text-danger">*</span></label>
-                                                <textarea id="risiko_komplikasi" class="form-control" wire:model="tindakan.{{ $index }}.risiko_komplikasi"
-                                                    rows="2"></textarea>
-                                                @error('tindakan.' . $index . '.risiko_komplikasi')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="alternatif_risiko" class="form-label">Alternatif & Risikonya
-                                                    <span class="text-danger">*</span></label>
-                                                <textarea id="alternatif_risiko" class="form-control" wire:model="tindakan.{{ $index }}.alternatif_risiko"
-                                                    rows="2"></textarea>
-                                                @error('tindakan.' . $index . '.alternatif_risiko')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="prognosis" class="form-label">Prognosis <span
-                                                        class="text-danger">*</span></label>
-                                                <textarea id="prognosis" class="form-control" wire:model="tindakan.{{ $index }}.prognosis" rows="2"></textarea>
-                                                @error('tindakan.' . $index . '.prognosis')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    @endif
-
                                 </div>
                             @endforeach
                         </td>
