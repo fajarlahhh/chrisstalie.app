@@ -26,6 +26,7 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
+                        <th>Tiket</th>
                         <th>RM</th>
                         <th>Nama</th>
                         <th>NIK</th>
@@ -43,6 +44,7 @@
                             <td>
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
+                            <td>{{ $row->urutan }}</td>
                             <td>{{ $row->pasien->id }}</td>
                             <td>{{ $row->pasien->nama }}</td>
                             <td>{{ $row->pasien->nik }}</td>

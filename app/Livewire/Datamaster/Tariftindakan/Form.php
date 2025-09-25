@@ -20,7 +20,6 @@ class Form extends Component
     public $icd_9_cm;
     public $biaya_jasa_dokter = 0;
     public $biaya_jasa_perawat = 0;
-    public $biaya_tidak_langsung = 0;
     public $biaya_alat_bahan = 0;
     public $biaya_keuntungan_klinik = 0;
     public $tarif = 0;
@@ -109,8 +108,6 @@ class Form extends Component
             'nama' => 'required',
             'biaya_jasa_dokter' => 'required|numeric',
             'biaya_jasa_perawat' => 'required|numeric',
-            'biaya_tidak_langsung' => 'required|numeric',
-            'biaya_alat_bahan' => 'required|numeric',
             'tarif' => 'required|numeric',
         ]);
 
@@ -120,7 +117,6 @@ class Form extends Component
             $this->data->nama = $this->nama;
             $this->data->biaya_jasa_dokter = $this->biaya_jasa_dokter;
             $this->data->biaya_jasa_perawat = $this->biaya_jasa_perawat;
-            $this->data->biaya_tidak_langsung = $this->biaya_tidak_langsung;
             $this->data->tarif = $this->tarif;
 
             $this->data->pengguna_id = auth()->id();

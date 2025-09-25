@@ -7,18 +7,18 @@ use App\Models\Registrasi;
 use App\Models\SiteMarking;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
     use WithPagination;
 
     #[Url]
-    public $cari, $tanggal, $status = 1;
+    public $cari = '', $tanggal, $status = 1;
 
     public function mount()
     {
         $this->tanggal = $this->tanggal ?: date('Y-m-d');
+        $this->cari = $this->cari ?? '';
     }
 
     public function delete($id)
@@ -26,14 +26,39 @@ class Index extends Component
         SiteMarking::where('id', $id)->delete();
     }
 
+    public function getQuery()
+    {
+        $query = Registrasi::query()
+            ->with([
+                'pasien',
+                'nakes',
+                'pengguna',
+                'siteMarking.pengguna'
+            ]);
+
+        if ($this->status == 2) {
+            $query->whereHas('siteMarking', function ($q) {
+                $q->whereDate('created_at', $this->tanggal);
+            });
+        } elseif ($this->status == 1) {
+            $query->whereDoesntHave('siteMarking');
+        }
+
+        if (!empty($this->cari)) {
+            $query->whereHas('pasien', function ($q) {
+                $q->where('nama', 'like', '%' . $this->cari . '%');
+            });
+        }
+
+        return $query->orderBy('urutan', 'asc');
+    }
+
     public function render()
     {
+        $data = $this->getQuery()->paginate(10);
+
         return view('livewire.klinik.sitemarking.index', [
-            'data' => Registrasi::with('pasien')->with('nakes')->with('pengguna')->with('siteMarking')
-                ->when($this->status == 2, fn($q) => $q->whereHas('siteMarking', fn($q) => $q->where('created_at', 'like', $this->tanggal . '%')))
-                ->when($this->status == 1, fn($q) => $q->whereDoesntHave('siteMarking'))
-                ->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
-                ->orderBy('urutan', 'asc')->paginate(10)
+            'data' => $data
         ]);
     }
 }

@@ -68,10 +68,7 @@
                                             <td class="w-20px">{{ $item->label }}</td>
                                             <td>
                                                 <input type="text" class="form-control"
-                                                    wire:model="catatan.{{ $item->label }}">
-                                                @error('catatan.{{ $item->label }}')
-                                                    <div class="text-danger">{{ $message }}</div>
-                                                @enderror
+                                                    wire:model="catatan.{{ $key }}">
                                             </td>
                                         </tr>
                                     @endforeach
@@ -88,15 +85,13 @@
                         </button>
                     @endrole
                     <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
-                        onclick="window.location.href='/klinik/sitemarking/data'">
+                        onclick="window.location.href='/klinik/sitemarking'">
                         <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
                         Data
                     </button>
-                    <button type="button" class="btn btn-secondary m-r-3"
-                        onclick="window.location.href='/klinik/sitemarking'" wire:loading.attr="disabled">
-                        <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
-                        Reset
-                    </button>
+                    @error('catatan')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </form>
         @else

@@ -277,14 +277,6 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Biaya Tidak Langsung</label>
-                                <input class="form-control" type="number" step="1" min="0"
-                                    wire:model.live="biaya_tidak_langsung" />
-                                @error('biaya_tidak_langsung')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
                             <hr>
                             <div class="mb-3">
                                 <label class="form-label">Keuntungan</label>
@@ -293,7 +285,6 @@
                                         ($tarif === '' ? 0 : $tarif ?? 0) -
                                             ($biaya_jasa_dokter === '' ? 0 : $biaya_jasa_dokter ?? 0) -
                                             ($biaya_jasa_perawat === '' ? 0 : $biaya_jasa_perawat ?? 0) -
-                                            ($biaya_tidak_langsung === '' ? 0 : $biaya_tidak_langsung ?? 0) -
                                             ($biaya_alat_bahan === '' ? 0 : $biaya_alat_bahan ?? 0),
                                     ) }}"
                                     disabled />

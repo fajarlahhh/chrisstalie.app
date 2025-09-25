@@ -220,10 +220,20 @@
                                         <textarea class="form-control" wire:model="tindakan.{{ $index }}.catatan"></textarea>
                                     </div>
                                     <div class="form-check form-switch mb-3">
-                                        <input class="form-check-input" type="checkbox" id="membutuhkan_inform_consent"
+                                        <input class="form-check-input" type="checkbox"
+                                            id="membutuhkan_inform_consent{{ $index }}"
                                             wire:model="tindakan.{{ $index }}.membutuhkan_inform_consent">
-                                        <label class="form-check-label" for="membutuhkan_inform_consent">
+                                        <label class="form-check-label"
+                                            for="membutuhkan_inform_consent{{ $index }}">
                                             Butuh Informed Consent</label>
+                                    </div>
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox"
+                                            id="membutuhkan_sitemarking{{ $index }}"
+                                            wire:model="tindakan.{{ $index }}.membutuhkan_sitemarking">
+                                        <label class="form-check-label"
+                                            for="membutuhkan_sitemarking{{ $index }}">
+                                            Butuh Sitemarking</label>
                                     </div>
                                 </div>
                             @endforeach

@@ -16,4 +16,9 @@ class SiteMarking extends Model
     {
         return $this->belongsTo(Registrasi::class);
     }
+
+    public function pengguna(): BelongsTo
+    {
+        return $this->belongsTo(Pengguna::class);
+    }
 }

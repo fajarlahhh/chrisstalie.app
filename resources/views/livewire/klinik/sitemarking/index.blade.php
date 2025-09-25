@@ -33,6 +33,7 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
+                        <th>Tiket</th>
                         <th>RM</th>
                         <th>Nama</th>
                         <th>NIK</th>
@@ -50,6 +51,7 @@
                             <td>
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
+                            <td>{{ $row->urutan }}</td>
                             <td>{{ $row->pasien->id }}</td>
                             <td>{{ $row->pasien->nama }}</td>
                             <td>{{ $row->pasien->nik }}</td>
@@ -60,21 +62,29 @@
                             <td>{{ $row->catatan }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
-                                    @if (!$row->payment)
-                                        <x-action :row="$row" :custom="null" :detail="false" :edit="true"
-                                            :information="false" :print="false" :permanentDelete="false" :restore="false"
-                                            :delete="true" />
+                                    @if ($status == 1)
+                                        <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form/{{ $row['id'] }}'"
+                                            class="btn btn-primary btn-sm">
+                                            Input
+                                        </a>
                                     @else
                                         @php
                                             $custom =
                                                 "<hr class='dropdown-divider'></li><a href='javascript:;'class='dropdown-item fs-8px'>" .
-                                                $row->informedConsent->pengguna->nama .
+                                                $row->siteMarking->first()->pengguna->nama .
                                                 '<br>' .
-                                                $row->informedConsent->updated_at .
+                                                $row->siteMarking->first()->updated_at .
                                                 '</a>';
                                         @endphp
-                                        <x-action :row="$row" :custom="$custom" :detail="false" :edit="false"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                        @if ($row->pembayaran)
+                                            <x-action :row="$row" :custom="$custom" :detail="false"
+                                                :edit="false" :information="false" :print="false" :permanentDelete="false"
+                                                :restore="false" :delete="false" />
+                                        @else
+                                            <x-action :row="$row" :custom="$custom" :detail="false"
+                                                :edit="true" :information="false" :print="false" :permanentDelete="false" :restore="false"
+                                                :delete="true" />
+                                        @endif
                                     @endif
                                 @endrole
                             </td>

@@ -22,6 +22,7 @@ class Form extends Component
                 'harga' => $q->harga,
                 'catatan' => $q->catatan,
                 'membutuhkan_inform_consent' => $q->membutuhkan_inform_consent == 1 ? true : false,
+                'membutuhkan_sitemarking' => $q->membutuhkan_sitemarking == 1 ? true : false,
             ])->toArray();
         } else {
             $this->tindakan[] = [
@@ -29,6 +30,7 @@ class Form extends Component
                 'harga' => null,
                 'catatan' => null,
                 'membutuhkan_inform_consent' => false,
+                'membutuhkan_sitemarking' => false,
             ];
         }
         $this->dataTindakan = TarifTindakan::orderBy('nama')->get()->map(fn($q) => [
@@ -64,6 +66,7 @@ class Form extends Component
                 'biaya' => collect($this->dataTindakan)->firstWhere('id', $q['id'])['biaya_total'],
                 'catatan' => $q['catatan'],
                 'membutuhkan_inform_consent' => $q['membutuhkan_inform_consent'],
+                'membutuhkan_sitemarking' => $q['membutuhkan_sitemarking'],
                 'pengguna_id' => auth()->id(),
                 'created_at' => now(),
                 'updated_at' => now(),

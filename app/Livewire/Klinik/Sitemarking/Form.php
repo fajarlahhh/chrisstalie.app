@@ -29,7 +29,7 @@ class Form extends Component
                     'catatan' => $q->catatan,
                 ])->toArray());
                 foreach ($this->data->siteMarking as $key => $value) {
-                    $this->catatan[$value->label] = $value->catatan;
+                    $this->catatan[$key] = $value->catatan;
                 }
             }
         }
@@ -39,8 +39,19 @@ class Form extends Component
     {
         $this->validate([
             'marker' => 'required',
-            'catatan' => 'required|array',
-            'catatan.*' => 'required',
+            'catatan' => [
+                'required',
+                'array',
+                function ($attribute, $value, $fail) {
+                    if (is_array($value)) {
+                        foreach ($value as $key => $val) {
+                            if (is_null($val) || trim($val) === '') {
+                                $fail("The catatan " . ($key + 1) . " required");
+                            }
+                        }
+                    }
+                },
+            ],
         ]);
 
         DB::transaction(function () {

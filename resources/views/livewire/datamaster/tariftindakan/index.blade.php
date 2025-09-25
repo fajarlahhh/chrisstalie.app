@@ -38,7 +38,7 @@
                         <th rowspan="2">Kategori</th>
                         <th rowspan="2">ICD 9 CM</th>
                         <th rowspan="2" class="text-end">Tarif</th>
-                        <th colspan="4">Biaya</th>
+                        <th colspan="3">Biaya</th>
                         <th rowspan="2" class="text-end">Keuntungan Klinik</th>
                         <th rowspan="2"></th>
                     </tr>
@@ -46,7 +46,6 @@
                         <th class="text-end">Biaya Alat Bahan</th>
                         <th class="text-end">Biaya Jasa Dokter</th>
                         <th class="text-end">Biaya Jasa Perawat</th>
-                        <th class="text-end">Biaya Tidak Langsung</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,13 +59,11 @@
                             <td class="text-end">{{ number_format($item->biaya_alat_bahan) }}</td>
                             <td class="text-end">{{ number_format($item->biaya_jasa_dokter) }}</td>
                             <td class="text-end">{{ number_format($item->biaya_jasa_perawat) }}</td>
-                            <td class="text-end">{{ number_format($item->biaya_tidak_langsung) }}</td>
                             <th class="text-end">
                                 {{ number_format(
                                     $item->tarif -
                                         $item->biaya_jasa_dokter -
                                         $item->biaya_jasa_perawat -
-                                        $item->biaya_tidak_langsung -
                                         $item->biaya_alat_bahan,
                                 ) }}
                             </th>
