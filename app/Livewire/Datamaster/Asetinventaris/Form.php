@@ -36,7 +36,7 @@ class Form extends Component
             'nama' => 'required',
             'tanggal_perolehan' => 'required|date',
             'harga_perolehan' => 'required|numeric',
-            'masa_manfaat' => 'required|numeric',
+            'masa_manfaat' => 'required|integer',
             'kode_akun_sumber_dana_id' => 'required',
             'satuan' => 'required',
             'lokasi' => 'required',
