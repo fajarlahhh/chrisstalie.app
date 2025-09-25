@@ -106,7 +106,7 @@
                         @if ($metode_penyusutan == 'Garis Lurus')
                             Masa Manfaat <small>(bulan)</small>
                         @else
-                            Satuan Hasil Produksi <small>(jasa)</small>
+                            Pemakaian <small>(x)</small>
                         @endif
                     </label>
                     <input class="form-control" type="text" wire:model="masa_manfaat"
