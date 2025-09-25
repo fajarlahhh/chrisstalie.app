@@ -94,7 +94,23 @@ class Index extends Component
             'barang.*.id' => 'required',
             'barang.*.barang_satuan_id' => 'required',
             'barang.*.harga' => 'required|integer',
-            'barang.*.qty' => 'required',
+            'barang.*.qty' => [
+                'required',
+                'integer',
+                'min:1',
+                function ($attribute, $value, $fail) {
+                    $index = explode('.', $attribute)[1];
+                    $barang = $this->barang[$index] ?? null;
+                    if (!$barang) return;
+                    // Cek stok tersedia
+                    $stokTersedia = Stok::where('barang_id', $barang['id'])
+                        ->available()
+                        ->count();
+                    if (($value / ($barang['rasio_dari_terkecil'] ?? 1)) > $stokTersedia) {
+                        $fail('Stok barang tidak mencukupi. Stok tersedia: ' . $stokTersedia);
+                    }
+                }
+            ],
         ]);
 
         DB::transaction(function () {
