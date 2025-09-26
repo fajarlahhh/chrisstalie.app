@@ -116,20 +116,20 @@
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
-                        <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                        <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Simpan
                     </button>
                 @endrole
-                @if ($data->diagnosis)
+                @if ($data->diagnosis->count() > 0)
                     <button type="button" class="btn btn-info m-r-3" wire:loading.attr="disabled"
                         onclick="window.location.href='/klinik/tindakan/form/{{ $data->id }}'">
-                        <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                        <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Lanjut Tindakan
                     </button>
                 @endif
                 <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
                     onclick="window.location.href='/klinik/diagnosis'">
-                    <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                    <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Data
                 </button>
             </div>

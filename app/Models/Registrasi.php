@@ -71,4 +71,9 @@ class Registrasi extends Model
     {
         return $this->hasOne(InformedConsent::class, 'id')->whereNotNull('file');
     }
+
+    public function resepObat(): HasMany
+    {
+        return $this->hasMany(ResepObat::class, 'id');
+    }
 }

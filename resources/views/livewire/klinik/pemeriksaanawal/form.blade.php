@@ -10,7 +10,7 @@
     <h1 class="page-header">Pemeriksaan Awal <small>Input</small></h1>
 
     <x-alert />
-    
+
     <div class="note alert-primary mb-2">
         <div class="note-content">
             <h5>Data Pasien</h5>
@@ -329,20 +329,20 @@
                 <hr>
                 @role('administrator|supervisor|operator')
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
-                        <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                        <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Simpan
                     </button>
                 @endrole
                 @if ($data->pemeriksaanAwal)
                     <button type="button" class="btn btn-info m-r-3" wire:loading.attr="disabled"
                         onclick="window.location.href='/klinik/diagnosis/form/{{ $data->id }}'">
-                        <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                        <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Lanjut Diagnosis
                     </button>
                 @endif
                 <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
                     onclick="window.location.href='/klinik/pemeriksaanawal'">
-                    <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                    <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Data
                 </button>
             </form>
@@ -480,25 +480,25 @@
                 <hr>
                 @role('administrator|supervisor|operator')
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
-                        <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                        <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Simpan
                     </button>
                 @endrole
-                @if ($data->pemeriksaanAwal)
+                @if ($data->pemeriksaanAwal->count() > 0)
                     <button type="button" class="btn btn-info m-r-3" wire:loading.attr="disabled"
                         onclick="window.location.href='/klinik/diagnosis/form/{{ $data->id }}'">
-                        <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                        <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Lanjut Diagnosis
                     </button>
                 @endif
                 <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
                     onclick="window.location.href='/klinik/pemeriksaanawal'">
-                    <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                    <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Data
                 </button>
             </form>
         </div>
     </div>
-
+    <br>
     <x-alert />
 </div>

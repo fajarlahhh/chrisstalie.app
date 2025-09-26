@@ -17,7 +17,12 @@ class TarifTindakanAlatBahan extends Model
 
     public function barang(): BelongsTo
     {
-        return $this->belongsTo(Barang::class);
+        return $this->belongsTo(Barang::class)->where('jenis', 'Bahan');
+    }
+
+    public function alat(): BelongsTo
+    {
+        return $this->belongsTo(Aset::class)->where('jenis', 'Alat');
     }
 
     public function barangSatuan(): BelongsTo

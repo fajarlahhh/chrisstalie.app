@@ -21,7 +21,7 @@ class Gantipassword extends Component
             }],
         ]);
 
-        Pengguna::where('id', auth()->user()->id)->update([
+        Pengguna::where('id', auth()->id())->update([
             'password' => Hash::make($this->newPassword),
         ]);
         session()->flash('success', 'Berhasil menyimpan data');

@@ -20,8 +20,8 @@ class Form extends Component
     public $icd_9_cm;
     public $biaya_jasa_dokter = 0;
     public $biaya_jasa_perawat = 0;
-    public $biaya_alat_bahan = 0;
-    public $biaya_keuntungan_klinik = 0;
+    public $biaya_bahan = 0;
+    public $biaya_alat = 0;
     public $tarif = 0;
     public $alatBahan = [];
 
@@ -84,13 +84,13 @@ class Form extends Component
             $harga = (int) ($this->alatBahan[$index[0]]['harga_jual'] ?? 0);
             $qty = (int) ($this->alatBahan[$index[0]]['qty'] ?? 0);
             $this->alatBahan[$index[0]]['sub_total'] = $harga * $qty;
-            $this->biaya_alat_bahan = collect($this->alatBahan)->count() > 0 ? collect($this->alatBahan)->sum(fn($q) => $q['sub_total'] ?? 0) : 0;
+            $this->biaya_bahan = collect($this->alatBahan)->where('jenis', 'Bahan')->sum(fn($q) => $q['sub_total'] ?? 0);
         }
         if ($this->alatBahan[$index[0]]['jenis'] == 'Alat') {
             $harga = (int) ($this->alatBahan[$index[0]]['harga_jual'] ?? 0);
             $qty = (int) ($this->alatBahan[$index[0]]['qty'] ?? 0);
             $this->alatBahan[$index[0]]['sub_total'] = $harga * $qty;
-            $this->biaya_alat_bahan = collect($this->alatBahan)->count() > 0 ? collect($this->alatBahan)->sum(fn($q) => $q['sub_total'] ?? 0) : 0;
+            $this->biaya_alat = collect($this->alatBahan)->where('jenis', 'Alat')->sum(fn($q) => $q['sub_total'] ?? 0);
         }
     }
 
@@ -98,7 +98,8 @@ class Form extends Component
     {
         unset($this->alatBahan[$key]);
         $this->alatBahan = array_merge($this->alatBahan);
-        $this->biaya_alat_bahan = collect($this->alatBahan)->count() > 0 ? collect($this->alatBahan)->sum(fn($q) => $q['sub_total'] ?? 0) : 0;
+        $this->biaya_bahan = collect($this->alatBahan)->where('jenis', 'Bahan')->sum(fn($q) => $q['sub_total'] ?? 0);
+        $this->biaya_alat = collect($this->alatBahan)->where('jenis', 'Alat')->sum(fn($q) => $q['sub_total'] ?? 0);
     }
 
     public function submit()
@@ -166,7 +167,7 @@ class Form extends Component
                 'id' => $q->barang_id,
                 'jenis' => $q->jenis,
                 'barang_satuan_id' => $q->barang_satuan_id,
-                'harga_jual' => $q->barangSatuan?->harga_jual,
+                'harga_jual' => $q->jenis == 'Bahan' ? $q->barangSatuan?->harga_jual : ($q->harga_jual),
                 'barangSatuan' => BarangSatuan::where('barang_id', $q->barang_id)->get()->map(fn($r) => [
                     'id' => $r->id,
                     'nama' => $r->nama,
@@ -176,9 +177,10 @@ class Form extends Component
                 ]),
                 'qty' => $q->qty,
                 'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
-                'sub_total' => $q->barangSatuan?->harga_jual * $q->qty,
+                'sub_total' => $q->jenis == 'Bahan' ? $q->barangSatuan?->harga_jual * $q->qty : $q->harga_jual * $q->qty,
             ])->toArray();
-            $this->biaya_alat_bahan = collect($this->alatBahan)->count() > 0 ? collect($this->alatBahan)->sum(fn($q) => $q['sub_total'] ?? 0) : 0;
+            $this->biaya_bahan = collect($this->alatBahan)->where('jenis', 'Bahan')->sum(fn($q) => $q['sub_total'] ?? 0);
+            $this->biaya_alat = collect($this->alatBahan)->where('jenis', 'Alat')->sum(fn($q) => $q['sub_total'] ?? 0);
         }
     }
 

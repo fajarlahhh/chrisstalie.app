@@ -29,7 +29,7 @@ class TarifTindakan extends Model
     public function getBiayaAlatBahanAttribute(): int
     {
         return $this->tarifTindakanAlatBahan->sum(function ($q) {
-            return ($q->qty ?? 0) * ($q->barangSatuan->harga_jual ?? 0);
+            return ($q->qty ?? 0) * ($q->jenis == 'Bahan' ? $q->barangSatuan->harga_jual ?? 0 : $q->harga_jual ?? 0);
         });
     }
 

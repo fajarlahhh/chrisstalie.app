@@ -13,26 +13,46 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $tanggal, $status = 1;
-    
+    public $cari = '', $tanggal, $status = 1;
+
     public function mount()
     {
-        $this->tanggal = $this->tanggal ?: date('Y-m-d');
+        if (empty($this->tanggal)) {
+            $this->tanggal = date('Y-m-d');
+        }
     }
 
     public function delete($id)
     {
-        Tindakan::where('id', $id)->delete();
+        Tindakan::find($id)?->delete();
+    }
+
+    public function getQuery()
+    {
+        $query = Registrasi::query()
+            ->with(['pasien', 'nakes', 'pengguna'])
+            ->whereHas('diagnosis')
+            ->whereHas('pasien', function ($q) {
+                if (!empty($this->cari)) {
+                    $q->where('nama', 'like', '%' . $this->cari . '%');
+                }
+            });
+
+        if ($this->status == 2) {
+            $query->whereHas('tindakan', function ($q) {
+                $q->whereDate('created_at', $this->tanggal);
+            });
+        } elseif ($this->status == 1) {
+            $query->whereDoesntHave('tindakan');
+        }
+
+        return $query->orderBy('urutan', 'asc');
     }
 
     public function render()
     {
         return view('livewire.klinik.tindakan.index', [
-            'data' => Registrasi::with('pasien')->with('nakes')->with('pengguna')
-                ->when($this->status == 2, fn($q) => $q->whereHas('tindakan', fn($q) => $q->where('created_at', 'like', $this->tanggal . '%')))
-                ->when($this->status == 1, fn($q) => $q->whereDoesntHave('tindakan'))
-                ->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
-                ->orderBy('urutan', 'asc')->paginate(10)
+            'data' => $this->getQuery()->paginate(10)
         ]);
     }
 }

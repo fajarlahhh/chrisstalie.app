@@ -166,18 +166,18 @@
                 <div class="panel-footer">
                     @role('administrator|supervisor|operator')
                         <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
-                            <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                            <span wire:loading class="spinner-border spinner-border-sm"></span>
                             Simpan
                         </button>
                     @endrole
                     <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
                         onclick="window.location.href='/klinik/informedconsent/data'">
-                        <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                        <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Data
                     </button>
                     <button type="button" class="btn btn-secondary m-r-3"
                         onclick="window.location.href='/klinik/informedconsent'" wire:loading.attr="disabled">
-                        <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                        <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Reset
                     </button>
                 </div>
@@ -214,7 +214,7 @@
             <div class="panel-footer">
                 <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
                     onclick="window.location.href='/klinik/informedconsent/data'">
-                    <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                    <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Data
                 </button>
             </div>

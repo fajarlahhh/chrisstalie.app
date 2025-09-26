@@ -11,16 +11,36 @@ use App\Models\Tug;
 class Form extends Component
 {
     public $data;
-    public $waktu_tes_detik, $observasi = [], $risiko_jatuh, $catatan;
-    public $keluhan_utama, $riwayat_sekarang, $riwayat_dahulu, $riwayat_alergi;
-    public $tekanan_darah = '120/80', $nadi = '70', $pernapasan = '12', $suhu = '36.5', $saturasi_o2 = '98', $berat_badan = '65.5', $tinggi_badan = '170';
-    public $kesadaran = 'Compos Mentis', $kesan_sakit = 'Tidak Tampak Sakit', $status_gizi = 'Baik';
-    public $kepala_normal = false, $kepala_temuan;
-    public $jantung_normal = false, $jantung_temuan;
-    public $paru_normal = false, $paru_temuan;
-    public $abdomen_normal = false, $abdomen_temuan;
-    public $ekstremitas_normal = false, $ekstremitas_temuan;
-    public $diagnosis_kerja, $rencana_awal;
+    public $waktu_tes_detik;
+    public $observasi = [];
+    public $risiko_jatuh;
+    public $catatan;
+    public $keluhan_utama;
+    public $riwayat_sekarang;
+    public $riwayat_dahulu;
+    public $riwayat_alergi;
+    public $tekanan_darah = '120/80';
+    public $nadi = '70';
+    public $pernapasan = '12';
+    public $suhu = '36.5';
+    public $saturasi_o2 = '98';
+    public $berat_badan = '65.5';
+    public $tinggi_badan = '170';
+    public $kesadaran = 'Compos Mentis';
+    public $kesan_sakit = 'Tidak Tampak Sakit';
+    public $status_gizi = 'Baik';
+    public $kepala_normal = false;
+    public $kepala_temuan;
+    public $jantung_normal = false;
+    public $jantung_temuan;
+    public $paru_normal = false;
+    public $paru_temuan;
+    public $abdomen_normal = false;
+    public $abdomen_temuan;
+    public $ekstremitas_normal = false;
+    public $ekstremitas_temuan;
+    public $diagnosis_kerja;
+    public $rencana_awal;
 
     public function mount(Registrasi $data)
     {
@@ -29,15 +49,17 @@ class Form extends Component
 
         if ($data->pemeriksaanAwal) {
             $this->fill($data->pemeriksaanAwal->toArray());
-            $this->kepala_normal = $data->pemeriksaanAwal->kepala_normal == 1 ? true : false;
-            $this->jantung_normal = $data->pemeriksaanAwal->jantung_normal == 1 ? true : false;
-            $this->paru_normal = $data->pemeriksaanAwal->paru_normal == 1 ? true : false;
-            $this->abdomen_normal = $data->pemeriksaanAwal->abdomen_normal == 1 ? true : false;
-            $this->ekstremitas_normal = $data->pemeriksaanAwal->ekstremitas_normal == 1 ? true : false;
+            $this->kepala_normal = (bool) $data->pemeriksaanAwal->kepala_normal;
+            $this->jantung_normal = (bool) $data->pemeriksaanAwal->jantung_normal;
+            $this->paru_normal = (bool) $data->pemeriksaanAwal->paru_normal;
+            $this->abdomen_normal = (bool) $data->pemeriksaanAwal->abdomen_normal;
+            $this->ekstremitas_normal = (bool) $data->pemeriksaanAwal->ekstremitas_normal;
         }
         if ($data->tug) {
             $this->fill($data->tug->toArray());
-            $this->observasi = json_decode($data->tug->observasi_kualitatif, true) ?? [];
+            $this->observasi = is_string($data->tug->observasi_kualitatif)
+                ? (json_decode($data->tug->observasi_kualitatif, true) ?? [])
+                : (is_array($data->tug->observasi_kualitatif) ? $data->tug->observasi_kualitatif : []);
         }
     }
 
@@ -72,11 +94,11 @@ class Form extends Component
         ];
 
         foreach ($headToToeFields as $field) {
-            $rules["{$field}_normal"] = 'required';
+            $rules["{$field}_normal"] = 'required|boolean';
             $rules["{$field}_temuan"] = "required_if:{$field}_normal,false";
         }
 
-        $this->validate($rules);
+        $validated = $this->validate($rules);
 
         DB::transaction(function () {
             // Delete existing records
@@ -86,7 +108,6 @@ class Form extends Component
             $pemeriksaanAwal = new PemeriksaanAwal();
             $pemeriksaanAwal->id = $this->data->id;
             $pemeriksaanAwal->pasien_id = $this->data->pasien_id;
-            $pemeriksaanAwal->pengguna_id = auth()->id();
             $pemeriksaanAwal->keluhan_utama = $this->keluhan_utama;
             $pemeriksaanAwal->riwayat_sekarang = $this->riwayat_sekarang;
             $pemeriksaanAwal->riwayat_dahulu = $this->riwayat_dahulu;
@@ -113,6 +134,7 @@ class Form extends Component
             $pemeriksaanAwal->ekstremitas_temuan = !$this->ekstremitas_normal ? $this->ekstremitas_temuan : null;
             $pemeriksaanAwal->diagnosis_kerja = $this->diagnosis_kerja;
             $pemeriksaanAwal->rencana_awal = $this->rencana_awal;
+            $pemeriksaanAwal->pengguna_id = auth()->id();
             $pemeriksaanAwal->save();
 
             session()->flash('success', 'Berhasil menyimpan data Pemeriksaan Awal');
@@ -122,24 +144,25 @@ class Form extends Component
     public function submitTug()
     {
         $rules = [
-            'waktu_tes_detik'    => 'required',
-            'observasi' => 'required',
-            'risiko_jatuh'   => 'required',
-            'catatan'   => 'required',
+            'waktu_tes_detik' => 'required',
+            'observasi'       => 'required|array',
+            'risiko_jatuh'    => 'required',
+            'catatan'         => 'required',
         ];
 
-        $this->validate($rules);
+        $validated = $this->validate($rules);
 
         DB::transaction(function () {
             Tug::where('id', $this->data->id)->delete();
-            // Create Tug
-            $tug = new Tug();
-            $tug->id = $this->data->id;
-            $tug->waktu_tes_detik = $this->waktu_tes_detik;
-            $tug->observasi_kualitatif = is_array($this->observasi) ? json_encode($this->observasi) : $this->observasi;
-            $tug->risiko_jatuh = is_array($this->risiko_jatuh) ? json_encode($this->risiko_jatuh) : $this->risiko_jatuh;
-            $tug->catatan = $this->catatan;
-            $tug->pengguna_id = auth()->id();
+
+            $tug = new Tug([
+                'id' => $this->data->id,
+                'waktu_tes_detik' => $this->waktu_tes_detik,
+                'observasi_kualitatif' => json_encode($this->observasi),
+                'risiko_jatuh' => is_array($this->risiko_jatuh) ? json_encode($this->risiko_jatuh) : $this->risiko_jatuh,
+                'catatan' => $this->catatan,
+                'pengguna_id' => auth()->id(),
+            ]);
             $tug->save();
 
             session()->flash('success', 'Berhasil menyimpan data TUG');

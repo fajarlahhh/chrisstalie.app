@@ -122,6 +122,16 @@
                                             </td>
                                         </tr>
                                     @endforeach
+                                    <tr>
+                                        <th colspan="2" class="text-end align-middle">Total Biaya Alat
+                                        </th>
+                                        <th>
+                                            <input type="text" class="form-control text-end"
+                                                value="{{ number_format($biaya_alat) }}" disabled
+                                                autocomplete="off">
+                                        </th>
+                                        <th></th>
+                                    </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
@@ -233,7 +243,7 @@
                                         </th>
                                         <th>
                                             <input type="text" class="form-control text-end"
-                                                value="{{ number_format($biaya_alat_bahan) }}" disabled
+                                                value="{{ number_format($biaya_bahan) }}" disabled
                                                 autocomplete="off">
                                         </th>
                                         <th></th>
@@ -285,7 +295,8 @@
                                         ($tarif === '' ? 0 : $tarif ?? 0) -
                                             ($biaya_jasa_dokter === '' ? 0 : $biaya_jasa_dokter ?? 0) -
                                             ($biaya_jasa_perawat === '' ? 0 : $biaya_jasa_perawat ?? 0) -
-                                            ($biaya_alat_bahan === '' ? 0 : $biaya_alat_bahan ?? 0),
+                                            ($biaya_bahan === '' ? 0 : $biaya_bahan ?? 0)-
+                                            ($biaya_alat === '' ? 0 : $biaya_alat ?? 0),
                                     ) }}"
                                     disabled />
                             </div>

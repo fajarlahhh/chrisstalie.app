@@ -13,11 +13,13 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $tanggal, $status = 1;
-    
+    public $cari = '', $tanggal, $status = 1;
+
     public function mount()
     {
-        $this->tanggal = $this->tanggal ?: date('Y-m-d');
+        if (empty($this->tanggal)) {
+            $this->tanggal = date('Y-m-d');
+        }
     }
 
     public function delete($id)
@@ -25,14 +27,32 @@ class Index extends Component
         Diagnosis::where('id', $id)->delete();
     }
 
+    protected function getQuery()
+    {
+        $query = Registrasi::query()
+            ->with(['pasien', 'nakes', 'pengguna'])
+            ->whereHas('pemeriksaanAwal')
+            ->whereHas('pasien', function ($q) {
+                if (!empty($this->cari)) {
+                    $q->where('nama', 'like', '%' . $this->cari . '%');
+                }
+            });
+
+        if ($this->status == 2) {
+            $query->whereHas('diagnosis', function ($q) {
+                $q->whereDate('created_at', $this->tanggal);
+            });
+        } elseif ($this->status == 1) {
+            $query->whereDoesntHave('diagnosis');
+        }
+
+        return $query->orderBy('urutan', 'asc');
+    }
+
     public function render()
     {
         return view('livewire.klinik.diagnosis.index', [
-            'data' => Registrasi::with('pasien')->with('nakes')->with('pengguna')
-                ->when($this->status == 2, fn($q) => $q->whereHas('diagnosis', fn($q) => $q->where('created_at', 'like', $this->tanggal . '%')))
-                ->when($this->status == 1, fn($q) => $q->whereDoesntHave('diagnosis'))
-                ->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
-                ->orderBy('urutan', 'asc')->paginate(10)
+            'data' => $this->getQuery()->paginate(10)
         ]);
     }
 }

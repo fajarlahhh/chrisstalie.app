@@ -99,7 +99,7 @@
             <div class="panel-footer" wire:loading.remove wire:target="submit">
                 @unlessrole('guest')
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
-                        <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                        <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Simpan
                     </button>
                 @endunlessrole

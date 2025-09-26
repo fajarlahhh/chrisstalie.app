@@ -48,6 +48,17 @@
         @if ($data)
             <form wire:submit.prevent="submit">
                 <div class="panel-body">
+                    <div class="border p-3 mb-3">
+                        <strong>Tindakan :</strong>
+                        <ul>
+                            @foreach ($data->tindakan as $row)
+                                @if ($row->membutuhkan_sitemarking)
+                                    <li>{{ $row->tarifTindakan->nama }}</li>
+                                @endif
+                            @endforeach
+                        </ul>
+
+                    </div>
                     <div class="form-container">
                         <fieldset>
                             <div class="form-group">
@@ -80,13 +91,13 @@
                 <div class="panel-footer">
                     @role('administrator|supervisor|operator')
                         <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
-                            <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                            <span wire:loading class="spinner-border spinner-border-sm"></span>
                             Simpan
                         </button>
                     @endrole
                     <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
                         onclick="window.location.href='/klinik/sitemarking'">
-                        <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                        <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Data
                     </button>
                     @error('catatan')
@@ -126,7 +137,7 @@
             <div class="panel-footer">
                 <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
                     onclick="window.location.href='/klinik/sitemarking/data'">
-                    <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                    <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Data
                 </button>
             </div>
