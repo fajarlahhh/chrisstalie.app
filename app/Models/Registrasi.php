@@ -44,7 +44,7 @@ class Registrasi extends Model
 
     public function tindakanBelumPenugasan(): HasMany
     {
-        return $this->hasMany(Tindakan::class, 'id')->whereNull('dokter_id')->whereNull('perawat_id');
+        return $this->hasMany(Tindakan::class, 'id')->whereNull('dokter_id')->orWhereNull('perawat_id');
     }
 
     public function tindakanDenganInformConsent(): HasMany

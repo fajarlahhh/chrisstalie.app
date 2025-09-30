@@ -7,137 +7,6 @@
         <li class="breadcrumb-item active">Input</li>
     @endsection
 
-    @section('css')<style>
-            body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background-color: #f4f7f6;
-                color: #333;
-                line-height: 1.6;
-                margin: 0;
-                padding: 20px;
-            }
-
-            .form-container {
-                max-width: 800px;
-                margin: 20px auto;
-                padding: 25px;
-                background-color: #ffffff;
-                border-radius: 8px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            }
-
-            h1 {
-                text-align: center;
-                color: #2c3e50;
-                margin-bottom: 25px;
-                font-size: 1.8em;
-            }
-
-            fieldset {
-                border: 1px solid #ddd;
-                border-radius: 5px;
-                padding: 20px;
-                margin-bottom: 20px;
-            }
-
-            legend {
-                font-weight: 600;
-                color: #3498db;
-                padding: 0 10px;
-                font-size: 1.2em;
-            }
-
-            .form-group {
-                margin-bottom: 15px;
-            }
-
-            label {
-                display: block;
-                margin-bottom: 5px;
-                font-weight: 500;
-            }
-
-            input[type="text"],
-            input[type="date"],
-            input[type="datetime-local"],
-            textarea {
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                box-sizing: border-box;
-                font-size: 1em;
-            }
-
-            textarea {
-                resize: vertical;
-                min-height: 80px;
-            }
-
-            .radio-group label,
-            .checkbox-group label {
-                font-weight: normal;
-                display: inline-block;
-                margin-right: 15px;
-            }
-
-            .body-diagram-container {
-                /* border: 2px dashed #ccc; */
-                /* Tidak perlu border putus-putus lagi karena sudah ada gambar */
-                padding: 10px;
-                text-align: center;
-                margin-top: 10px;
-                border-radius: 5px;
-                background-color: #fafafa;
-                display: flex;
-                /* Untuk menata gambar secara berdampingan */
-                justify-content: space-around;
-                /* Memberi jarak antar gambar */
-                flex-wrap: wrap;
-                /* Agar gambar bisa wrap ke bawah di layar kecil */
-                gap: 15px;
-                /* Jarak antar gambar */
-            }
-
-            .body-diagram-container img {
-                max-width: 48%;
-                /* Agar dua gambar bisa berdampingan */
-                height: auto;
-                border: 1px solid #eee;
-                /* Sedikit border untuk gambar */
-                border-radius: 4px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-                flex-grow: 1;
-                /* Agar gambar bisa sedikit membesar jika ada ruang */
-                min-width: 250px;
-                /* Lebar minimum agar tidak terlalu kecil */
-            }
-
-            @media (max-width: 600px) {
-                .body-diagram-container img {
-                    max-width: 100%;
-                    /* Satu gambar per baris di layar kecil */
-                }
-            }
-
-            .submit-btn {
-                display: block;
-                width: 100%;
-                padding: 12px;
-                background-color: #3498db;
-                color: #ffffff;
-                border: none;
-                border-radius: 5px;
-                font-size: 1.1em;
-                cursor: pointer;
-                transition: background-color 0.3s ease;
-            }
-
-            .submit-btn:hover {
-                background-color: #2980b9;
-            }
-        </style>
-    @endsection
 
     <h1 class="page-header">Tindakan <small>Input</small></h1>
 
@@ -194,13 +63,21 @@
                                         <div class="row g-2 align-items-center">
                                             <div class="col-md-10">
                                                 <label class="form-label">Tindakan {{ $index + 1 }}</label>
-                                                <select class="form-select"
+                                                <select class="form-control" x-init="$($el).selectpicker({
+                                                    liveSearch: true,
+                                                    width: 'auto',
+                                                    size: 10,
+                                                    container: 'body',
+                                                    style: '',
+                                                    showSubtext: true,
+                                                    styleBase: 'form-control'
+                                                })"
                                                     wire:model.live="tindakan.{{ $index }}.id">
                                                     <option value="" selected hidden>-- Pilih Tindakan --</option>
                                                     @foreach ($dataTindakan as $tindakan)
                                                         <option value="{{ $tindakan['id'] }}">
                                                             {{ $tindakan['nama'] }} (Rp.
-                                                            {{ number_format($tindakan['biaya_total'], 0, ',', '.') }})
+                                                            {{ number_format($tindakan['tarif'], 0, ',', '.') }})
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -210,7 +87,8 @@
                                             </div>
                                             <div class="col-md-2">
                                                 <label class="form-label">Qty</label>
-                                                <input type="number" min="1" class="form-control" placeholder="Qty" wire:model="tindakan.{{ $index }}.qty">
+                                                <input type="number" min="1" class="form-control"
+                                                    placeholder="Qty" wire:model="tindakan.{{ $index }}.qty">
                                                 @error('tindakan.' . $index . '.qty')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror

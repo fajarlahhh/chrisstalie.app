@@ -27,8 +27,8 @@ class Form extends Component
                 'membutuhkan_sitemarking' => $q->membutuhkan_sitemarking == 1 ? true : false,
                 'dokter_id' => $q->dokter_id,
                 'perawat_id' => $q->perawat_id,
-                'biaya_jasa_dokter' => $q->dokter_id ? 1 : 0,
-                'biaya_jasa_perawat' => $q->perawat_id ? 1 : 0,
+                'biaya_jasa_dokter' => $q->biaya_jasa_dokter > 0 ? 1 : ($q->dokter_id ? 1 : 0),
+                'biaya_jasa_perawat' => $q->biaya_jasa_perawat > 0 ? 1 : ($q->perawat_id ? 1 : 0),
                 'biaya' => $q->biaya,
             ])->toArray();
         } else {
@@ -56,48 +56,8 @@ class Form extends Component
             'nama' => $q->nama,
             'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
             'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
-            'biaya_total' => $q->biaya_total
+            'tarif' => $q->tarif
         ])->toArray();
-    }
-
-    public function tambahTindakan()
-    {
-        $this->tindakan[] = [
-            'id' => null,
-            'qty' => 1,
-            'harga' => null,
-            'catatan' => null,
-            'membutuhkan_inform_consent' => false,
-            'membutuhkan_sitemarking' => false,
-            'dokter_id' => auth()->user()->dokter?->id,
-            'perawat_id' => null,
-            'biaya_jasa_dokter' => 0,
-            'biaya_jasa_perawat' => 0,
-            'biaya' => 0,
-        ];
-    }
-
-    public function updatedTindakan($value, $key)
-    {
-        $index = explode('.', $key);
-        if ($value) {
-            if ($index[1] == 'id') {
-                $tindakan = collect($this->dataTindakan)->where('id', $value)->first();
-                $this->tindakan[$index[0]]['id'] = $tindakan['id'] ?? null;
-                $this->tindakan[$index[0]]['biaya_jasa_dokter'] = $tindakan['biaya_jasa_dokter'] ?? 0;
-                $this->tindakan[$index[0]]['biaya_jasa_perawat'] = $tindakan['biaya_jasa_perawat'] ?? 0;
-                $this->tindakan[$index[0]]['dokter_id'] = auth()->user()->dokter?->id;
-                $this->tindakan[$index[0]]['perawat_id'] = null;
-                $this->tindakan[$index[0]]['biaya'] = $tindakan['biaya_total'] ?? 0;
-            }
-        } else {
-            $this->tindakan[$index[0]]['id'] = null;
-            $this->tindakan[$index[0]]['biaya_jasa_dokter'] = null;
-            $this->tindakan[$index[0]]['biaya_jasa_perawat'] = null;
-            $this->tindakan[$index[0]]['dokter_id'] = auth()->user()->dokter?->id;
-            $this->tindakan[$index[0]]['perawat_id'] = null;
-            $this->tindakan[$index[0]]['biaya'] = 0;
-        }
     }
 
     public function submit()
@@ -116,36 +76,28 @@ class Form extends Component
                     $fail('The dokter id field is required.');
                 }
             },
+            'tindakan.*.perawat_id' => function ($attribute, $value, $fail) {
+                $index = explode('.', $attribute)[1];
+                if (
+                    isset($this->tindakan[$index]['biaya_jasa_perawat']) &&
+                    $this->tindakan[$index]['biaya_jasa_perawat'] > 0 &&
+                    (empty($value) || $value < 1)
+                ) {
+                    $fail('The perawat id field is required.');
+                }
+            },
         ]);
 
         DB::transaction(function () {
-            Tindakan::where('id', $this->data->id)->delete();
-            $tindakan = collect($this->tindakan)->map(fn($q) => [
-                'id' => $this->data->id,
-                'tarif_tindakan_id' => $q['id'],
-                'pasien_id' => $this->data->pasien_id,
-                'biaya' => collect($this->dataTindakan)->firstWhere('id', $q['id'])['biaya_total'],
-                'catatan' => $q['catatan'],
-                'membutuhkan_inform_consent' => $q['membutuhkan_inform_consent'],
-                'membutuhkan_sitemarking' => $q['membutuhkan_sitemarking'],
-                'biaya_jasa_dokter' => $q['biaya_jasa_dokter'],
-                'biaya_jasa_perawat' => $q['biaya_jasa_perawat'],
-                'dokter_id' => $q['dokter_id'],
-                'perawat_id' => $q['perawat_id'],
-                'pengguna_id' => auth()->id(),
-                'qty' => $q['qty'],
-                'created_at' => now(),
-                'updated_at' => now(),
-            ])->toArray();
-            Tindakan::insert($tindakan);
+            foreach ($this->tindakan as $tindakan) {
+                Tindakan::where('id', $this->data->id)->where('tarif_tindakan_id', $tindakan['id'])->update([
+                    'dokter_id' => $tindakan['dokter_id'],
+                    'perawat_id' => $tindakan['perawat_id'],
+                    'tanggal_penugasan' => now(),
+                ]);
+            }
             session()->flash('success', 'Berhasil menyimpan data');
         });
-    }
-
-    public function hapusTindakan($index)
-    {
-        unset($this->tindakan[$index]);
-        $this->tindakan = array_merge($this->tindakan);
     }
 
     public function render()
