@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Penjualan;
+namespace App\Livewire\Apotek\Penjualan;
 
 use Livewire\Component;
 use App\Models\Penjualan;
@@ -21,7 +21,7 @@ class Data extends Component
     public function print($id)
     {
         $data = Penjualan::with(['penjualanDetail.barang', 'penjualanDetail.barangSatuan'])->findOrFail($id);
-        $cetak = view('livewire.penjualan.cetak', [
+        $cetak = view('livewire.apotek.penjualan.cetak', [
             'cetak' => true,
             'data' => $data,
         ])->render();
@@ -56,7 +56,7 @@ class Data extends Component
             ->orderBy('id', 'desc')
             ->get();
 
-        return view('livewire.penjualan.data', [
+        return view('livewire.apotek.penjualan.data', [
             'data' => $data
         ]);
     }

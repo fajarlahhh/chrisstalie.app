@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Penjualan;
+namespace App\Livewire\Apotek\Penjualan;
 
 use App\Models\Stok;
 use App\Models\Barang;
@@ -164,7 +164,7 @@ class Index extends Component
 
             $this->jurnalPendapatan($data, $metodeBayar);
 
-            $cetak = view('livewire.penjualan.cetak', [
+            $cetak = view('livewire.apotek.penjualan.cetak', [
                 'cetak' => true,
                 'data' => Penjualan::findOrFail($data->id),
             ])->render();
@@ -241,6 +241,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.penjualan.index');
+        return view('livewire.apotek.penjualan.index');
     }
 }

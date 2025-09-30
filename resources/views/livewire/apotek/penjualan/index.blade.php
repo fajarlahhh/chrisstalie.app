@@ -2,6 +2,7 @@
     @section('title', 'Penjualan')
 
     @section('breadcrumb')
+        <li class="breadcrumb-item">Apotek</li>
         <li class="breadcrumb-item active">Penjualan</li>
     @endsection
 
@@ -186,7 +187,7 @@
                         Simpan
                     </button>
                 @endrole
-                <a href="/penjualan/data" class="btn btn-warning">Data</a>
+                <a href="/apotek/penjualan/data" class="btn btn-warning">Data</a>
             </div>
         </form>
     </div>

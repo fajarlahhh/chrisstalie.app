@@ -81,6 +81,23 @@ return [
             ]
         ],
         [
+            "title" => "Apotek",
+            "icon" => "<i class='fas fa-shopping-cart'></i>",
+            "urutkan" => true,
+            "sub_menu" => [
+                [
+                    "title" => "Penjualan",
+                    "urutkan" => true,
+                    "method" => ["Index", "Data"],
+                ],
+                [
+                    "title" => "Resep Dokter",
+                    "urutkan" => true,
+                    "method" => ["Index", "Form"],
+                ],
+            ]
+        ],
+        [
             "title" => "Rekapitulasi Stok",
             "urutkan" => true,
             "method" => ["Index"],
@@ -281,13 +298,7 @@ return [
         //     "icon" => "<i class='fas fa-dollar'></i>",
         //     "title" => "Pelunasan Pengadaan",
         //     "method" => ["Index", "Form"],
-        // ],       
-        [
-            "title" => "Penjualan",
-            "urutkan" => true,
-            "icon" => "<i class='fa fa-shopping-cart'></i>",
-            "method" => ["Index", "Data"],
-        ],
+        // ],
         [
             "title" => "Hak Akses",
             "urutkan" => true,

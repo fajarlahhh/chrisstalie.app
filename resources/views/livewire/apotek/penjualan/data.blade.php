@@ -1,12 +1,13 @@
 <div>
-    @section('title', 'Penjualan Data')
+    @section('title', 'Penjualan')
 
     @section('breadcrumb')
+        <li class="breadcrumb-item">Apotek</li>
         <li class="breadcrumb-item">Penjualan</li>
         <li class="breadcrumb-item active">Data</li>
     @endsection
 
-    <h1 class="page-header">Penjualan Data</h1>
+    <h1 class="page-header">Penjualan <small>Data</small></h1>
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <div class="panel-heading">
@@ -79,7 +80,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="text-center">Data tidak ditemukan.</td>
+                            <td colspan="9" class="text-center">Tidak ada data.</td>
                         </tr>
                     @endforelse
                     <tr>
