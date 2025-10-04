@@ -81,21 +81,10 @@ return [
             ]
         ],
         [
-            "title" => "Apotek",
-            "icon" => "<i class='fas fa-shopping-cart'></i>",
+            "title" => "Penjualan",
             "urutkan" => true,
-            "sub_menu" => [
-                [
-                    "title" => "Penjualan",
-                    "urutkan" => true,
-                    "method" => ["Index", "Data"],
-                ],
-                [
-                    "title" => "Resep Dokter",
-                    "urutkan" => true,
-                    "method" => ["Index", "Form"],
-                ],
-            ]
+            "method" => ["Index", "Data"],
+            "icon" => "<i class='fas fa-shopping-cart'></i>",
         ],
         [
             "title" => "Rekapitulasi Stok",
@@ -213,11 +202,6 @@ return [
                 ],
                 [
                     "title" => "Resep Obat",
-                    "urutkan" => false,
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Penugasan",
                     "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
