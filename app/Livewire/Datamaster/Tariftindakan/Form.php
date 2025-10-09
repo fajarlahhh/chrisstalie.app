@@ -61,7 +61,7 @@ class Form extends Component
 
             if ($index[1] == 'barang_satuan_id') {
                 if ($this->alatBarang[$index[0]]['jenis'] == 'Barang') {
-                    $barang = collect($this->dataBarang)->where('id', $this->alatBarang[$index[0]]['id'])->first();
+                    $barang = collect($this->dataBarang)->where('id', $this->alatBarang[$index[0]]['barang_id'])->first();
                     $barangSatuan = collect($barang['barangSatuan']);
                     $selectedSatuan = $barangSatuan->where('id', $this->alatBarang[$index[0]]['barang_satuan_id'])->first();
                     $this->alatBarang[$index[0]]['barang_satuan_id'] = $this->alatBarang[$index[0]]['barang_satuan_id'];
