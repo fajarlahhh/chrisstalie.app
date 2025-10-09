@@ -65,8 +65,10 @@ class Form extends Component
                     $barangSatuan = collect($barang['barangSatuan']);
                     $selectedSatuan = $barangSatuan->where('id', $this->alatBarang[$index[0]]['barang_satuan_id'])->first();
                     $this->alatBarang[$index[0]]['barang_satuan_id'] = $this->alatBarang[$index[0]]['barang_satuan_id'];
-                    $this->alatBarang[$index[0]]['rasio_dari_terkecil'] = $selectedSatuan['rasio_dari_terkecil'];
-                    $this->alatBarang[$index[0]]['biaya'] = $selectedSatuan['harga_jual'] ?? 0;
+                    if ($selectedSatuan) {
+                        $this->alatBarang[$index[0]]['rasio_dari_terkecil'] = $selectedSatuan['rasio_dari_terkecil'];
+                        $this->alatBarang[$index[0]]['biaya'] = $selectedSatuan['harga_jual'] ?? 0;
+                    }
                 }
             }
         } else {
