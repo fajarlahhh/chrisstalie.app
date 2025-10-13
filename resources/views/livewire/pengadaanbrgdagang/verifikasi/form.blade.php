@@ -44,7 +44,7 @@
                             <tbody>
                                 @foreach ($barang as $index => $row)
                                     <tr>
-                                        <td class="with-btn">
+                                        <td>
                                             <input type="text" class="form-control"
                                                 wire:model="barang.{{ $index }}.nama" autocomplete="off"
                                                 disabled>
@@ -52,7 +52,7 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
-                                        <td class="with-btn">
+                                        <td>
                                             <input type="text" class="form-control"
                                                 wire:model="barang.{{ $index }}.satuan" autocomplete="off"
                                                 disabled>
@@ -60,7 +60,7 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
-                                        <td class="with-btn">
+                                        <td>
                                             <input type="number" class="form-control w-100px" min="0"
                                                 step="1" min="0" max="100"
                                                 wire:model="barang.{{ $index }}.qty" autocomplete="off" disabled>
@@ -68,7 +68,7 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
-                                        <td class="with-btn">
+                                        <td>
                                             <input type="number" class="form-control w-200px" min="0"
                                                 step="1" min="0" max="{{ $row['qty'] }}"
                                                 wire:model="barang.{{ $index }}.qty_disetujui"

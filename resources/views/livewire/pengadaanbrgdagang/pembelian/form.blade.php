@@ -115,19 +115,19 @@
                             <tbody>
                                 @foreach ($barang as $index => $row)
                                     <tr>
-                                        <td class="with-btn">
+                                        <td>
                                             <input type="text" class="form-control" min="0" step="1"
                                                 value="{{ $row['nama'] }}" disabled autocomplete="off">
                                         </td>
-                                        <td class="with-btn">
+                                        <td>
                                             <input type="text" class="form-control" min="0" step="1"
                                                 value="{{ $row['satuan'] }}" disabled autocomplete="off">
                                         </td>
-                                        <td class="with-btn">
+                                        <td>
                                             <input type="number" class="form-control" min="0" step="1"
                                                 value="{{ $row['qty'] }}" disabled autocomplete="off">
                                         </td>
-                                        <td class="with-btn">
+                                        <td>
                                             <input type="number" class="form-control" min="0" step="1"
                                                 wire:model.lazy="barang.{{ $index }}.harga_beli"
                                                 autocomplete="off">

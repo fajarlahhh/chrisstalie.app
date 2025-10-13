@@ -53,19 +53,19 @@
                             <tbody>
                                 @foreach ($barang as $index => $row)
                                     <tr>
-                                        <td class="with-btn">
+                                        <td>
                                             <input type="text" class="form-control" value="{{ $row['nama'] }}"
                                                 disabled autocomplete="off">
                                         </td>
-                                        <td class="with-btn">
+                                        <td>
                                             <input type="text" class="form-control" value="{{ $row['satuan'] }}"
                                                 disabled autocomplete="off">
                                         </td>
-                                        <td class="with-btn">
+                                        <td>
                                             <input type="number" class="form-control" min="0" step="1"
                                                 value="{{ $row['qty'] }}" disabled autocomplete="off">
                                         </td>
-                                        <td class="with-btn">
+                                        <td>
                                             <input type="number" class="form-control" min="0" max="{{ $row['qty'] }}" step="1"
                                                 wire:model="barang.{{ $index }}.qty_masuk"
                                                 autocomplete="off">
@@ -73,7 +73,7 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
-                                        <td class="with-btn">
+                                        <td>
                                             <input type="text" class="form-control" min="0" step="1"
                                                 wire:model="barang.{{ $index }}.no_batch"
                                                 autocomplete="off">
@@ -81,7 +81,7 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
-                                        <td class="with-btn">
+                                        <td>
                                             <input type="date" class="form-control" min="0" step="1"
                                                 wire:model="barang.{{ $index }}.tanggal_kedaluarsa"
                                                 autocomplete="off">

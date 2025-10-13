@@ -60,19 +60,19 @@
                                     x-for="(row, index) in unsurGaji.filter(u => u.unit_bisnis === '{{ $item->value }}')"
                                     :key="index">
                                     <tr>
-                                        <td class="with-btn">
+                                        <td>
                                             <input type="text" class="form-control"
                                                 :name="'unsurGaji[' + index + '][nama]'" x-model="row.nama"
                                                 autocomplete="off">
                                         </td>
-                                        <td class="with-btn">
+                                        <td>
                                             <select class="form-control" :name="'unsurGaji[' + index + '][sifat]'"
                                                 x-model="row.sifat">
                                                 <option value="+">+</option>
                                                 <option value="-">-</option>
                                             </select>
                                         </td>
-                                        <td class="with-btn">
+                                        <td>
                                             <select class="form-control"
                                                 :name="'unsurGaji[' + index + '][kode_akun_id]'"
                                                 x-model="row.kode_akun_id">
@@ -84,7 +84,7 @@
                                                 @endforeach
                                             </select>
                                         </td>
-                                        <td class="with-btn">
+                                        <td>
                                             <button type="button" class="btn btn-danger"
                                                 @click="hapus('{{ $item->value }}', index)">
                                                 <i class="fa fa-times"></i>

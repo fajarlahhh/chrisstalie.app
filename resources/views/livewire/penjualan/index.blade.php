@@ -1,4 +1,4 @@
-<div>
+<div x-data="penjualanForm()" x-init="init()" x-ref="alpineRoot">
     @section('title', 'Penjualan')
 
     @section('breadcrumb')
@@ -10,26 +10,25 @@
     <x-alert />
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
-        <!-- begin panel-heading -->
         <div class="panel-heading ui-sortable-handle">
             <h4 class="panel-title">Form</h4>
         </div>
-        <form wire:submit.prevent="submit">
+        <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Keterangan</label>
-                    <textarea class="form-control" type="text" wire:model="keterangan"></textarea>
+                    <textarea class="form-control" type="text" wire:model="keterangan" x-model="keterangan"></textarea>
                     @error('keterangan')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+
                 <div class="note alert-secondary mb-0">
                     <div class="note-content table-responsive">
                         <table class="table table-borderless">
                             <thead>
                                 <tr>
                                     <th>Barang</th>
-                                    <th class="w-150px">Satuan</th>
                                     <th class="w-150px">Harga</th>
                                     <th class="w-100px">Qty</th>
                                     <th class="w-150px">Sub Total</th>
@@ -37,79 +36,55 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($barang as $index => $row)
+                                <template x-for="(row, index) in barang" :key="index">
                                     <tr>
-                                        <td class="with-btn">
-                                            <select class="form-control" x-init="$($el).selectpicker({
-                                                liveSearch: true,
-                                                width: 'auto',
-                                                size: 10,
-                                                container: 'body',
-                                                style: '',
-                                                showSubtext: true,
-                                                styleBase: 'form-control'
-                                            })"
-                                                wire:model.lazy="barang.{{ $index }}.id">
-                                                <option value="">-- Pilih Barang --</option>
-                                                @foreach ($dataBarang as $subRow)
-                                                    <option value="{{ $subRow['id'] }}"
-                                                        data-subtext="{{ $subRow['kategori'] }}">
-                                                        {{ $subRow['nama'] }}
+                                        <td wire:ignore>
+                                            <select class="form-control" x-model="row.id" x-init="$($el).select2({
+                                                width: '100%',
+                                                dropdownAutoWidth: true
+                                            });
+                                            $($el).on('change', function(e) {
+                                                row.id = e.target.value;
+                                                updateBarang(index);
+                                            });
+                                            $watch('row.id', (value) => {
+                                                if (value !== $($el).val()) {
+                                                    $($el).val(value).trigger('change');
+                                                }
+                                            });">
+                                                <option value="" selected>-- Pilih Barang --
+                                                </option>
+                                                <template x-for="barang in dataBarang" :key="barang.id">
+                                                    <option :value="barang.id" :selected="row.id == barang.id"
+                                                        x-text="`${barang.nama} (Rp. ${new Intl.NumberFormat('id-ID').format(barang.harga)} / ${barang.satuan})`">
                                                     </option>
-                                                @endforeach
+                                                </template>
                                             </select>
-                                            @error('barang.' . $index . '.id')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
                                         </td>
-                                        <td class="with-btn">
-                                            <select class="form-control"
-                                                wire:model.lazy="barang.{{ $index }}.barang_satuan_id">
-                                                <option value="">-- Pilih Satuan --</option>
-                                                @foreach ($row['barangSatuan'] as $subRow)
-                                                    <option value="{{ $subRow['id'] }}"
-                                                        data-subtext="{{ $subRow['konversi_satuan'] }}">
-                                                        {{ $subRow['nama'] }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('barang.' . $index . '.barang_satuan_id')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                        <td>
+                                            <input type="text" class="form-control text-end w-150px"
+                                                :value="formatNumber(row.harga)" disabled>
                                         </td>
-                                        <td class="with-btn">
-                                            <input type="text" class="form-control text-end"
-                                                id="barang-harga-{{ $index }}"
-                                                value="{{ number_format($row['harga'] ?? 0) }}" disabled
-                                                autocomplete="off">
+                                        <td>
+                                            <input type="number" class="form-control w-100px" min="1"
+                                                step="any" x-model.number="row.qty" @input="calculateBarang(index)">
                                         </td>
-                                        <td class="with-btn">
-                                            <input type="number" class="form-control" min="0" step="1"
-                                                min="0" wire:model.lazy="barang.{{ $index }}.qty"
-                                                autocomplete="off">
-                                            @error('barang.' . $index . '.qty')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                        <td>
+                                            <input type="text" class="form-control text-end w-150px"
+                                                :value="formatNumber(row.subtotal)" disabled>
                                         </td>
-                                        <td class="with-btn">
-                                            <input type="text" class="form-control text-end"
-                                                value="{{ number_format((int) ($row['harga'] ?? 0) * (int) ($row['qty'] ?? 0)) }}"
-                                                disabled autocomplete="off">
-                                        </td>
-                                        <td class="with-btn">
-                                            <a href="javascript:;" class="btn btn-danger"
-                                                wire:click="hapusBarang({{ $index }})">
+                                        <td>
+                                            <button type="button" class="btn btn-danger" @click="hapusBarang(index)">
                                                 <i class="fa fa-times"></i>
-                                            </a>
+                                            </button>
                                         </td>
                                     </tr>
-                                @endforeach
+                                </template>
                                 <tr>
-                                    <th colspan="4" class="text-end align-middle">Total Harga Barang</th">
+                                    <th colspan="3" class="text-end align-middle">Total Harga Barang</th>
                                     <th>
                                         <input type="text" class="form-control text-end"
-                                            value="{{ number_format($total_harga_barang) }}" disabled
-                                            autocomplete="off">
+                                            :value="formatNumber(total_harga_barang)" disabled autocomplete="off">
                                     </th>
                                     <th></th>
                                 </tr>
@@ -118,13 +93,13 @@
                                 <tr>
                                     <td colspan="5">
                                         <div class="text-center">
-                                            <a class="btn btn-secondary" href="javascript:;"
-                                                wire:click="tambahBarang">Tambah
-                                                Barang</a>
+                                            <button type="button" class="btn btn-secondary" @click="addBarang">
+                                                Tambah Barang
+                                            </button>
                                             <br>
-                                            @error('barang')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                            <template x-if="$store.wireErrors?.barang">
+                                                <span class="text-danger" x-text="$store.wireErrors.barang"></span>
+                                            </template>
                                         </div>
                                     </td>
                                 </tr>
@@ -132,15 +107,16 @@
                         </table>
                     </div>
                 </div>
+
                 <br>
                 <div class="mb-3">
-                    <label class="form-label">Diskon</label>
-                    <input class="form-control text-end" type="text" wire:model.lazy="diskon" />
+                    <label class="form-label">Diskon <small>(Rp.)</small></label>
+                    <input class="form-control text-end" type="text" wire:model="diskon" @change="hitungTotal()"
+                        x-model.number="diskon" />
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Total Tagihan</label>
-                    <input class="form-control text-end" type="text" disabled
-                        value="{{ number_format($total_harga_barang - $diskon) }}" />
+                    <input class="form-control text-end" type="text" disabled :value="formatNumber(total_tagihan)" />
                 </div>
                 <hr>
                 <div class="note alert-success mb-2">
@@ -149,33 +125,28 @@
                         <hr>
                         <div class="mb-3">
                             <label class="form-label">Metode Bayar</label>
-                            <select class="form-control" wire:model.lazy="metode_bayar" data-width="100%">
-                                <option hidden selected>-- Pilih Metode Bayar --</option>
-                                @foreach ($dataMetodeBayar as $item)
-                                    <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
-                                @endforeach
+                            <select class="form-control" wire:model="metode_bayar" x-model="metode_bayar"
+                                data-width="100%">
+                                <option hidden>-- Pilih Metode Bayar --</option>
+                                <template x-for="item in dataMetodeBayar" :key="item.id">
+                                    <option :value="item.id" x-text="item.nama" :selected="metode_bayar == item.id"></option>
+                                </template>
                             </select>
-                            @error('metode_bayar')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
                         </div>
-                        @if ($metode_bayar == 1)
-                            <div class="mb-3">
-                                <label class="form-label">Cash</label>
-                                <input class="form-control" type="number" wire:model.lazy="cash" />
-                                @error('cash')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                        <template x-if="metode_bayar == 1">
+                            <div>
+                                <div class="mb-3">
+                                    <label class="form-label">Cash</label>
+                                    <input class="form-control" type="number" wire:model="cash"
+                                        x-model.number="cash" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Uang Kembali</label>
+                                    <input class="form-control text-end" type="text" disabled
+                                        :value="formatNumber((parseInt(cash || 0)) - (total_tagihan || 0))" />
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Uang Kembali</label>
-                                <input class="form-control text-end" type="text" disabled
-                                    value="{{ number_format(($cash ?: 0) - ($total_harga_barang - $diskon ?: 0)) }}" />
-                                @error('remainder')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        @endif
+                        </template>
                     </div>
                 </div>
             </div>
@@ -193,20 +164,96 @@
     <x-modal.cetak judul='Nota' />
 </div>
 
-{{-- @push('scripts') --}}
-{{-- <script>
-        document.addEventListener('livewire:init', () => {
-            Livewire.on('calculation', (data) => {
-                calculation(data.index, data.harga);
-            });
-        });
+@push('scripts')
+    <script>
+        function penjualanForm() {
+            return {
+                barang: @js($barang).map(row => ({
+                    ...row
+                })),
+                dataBarang: @js($dataBarang),
+                dataMetodeBayar: @js($dataMetodeBayar ?? []),
+                total_harga_barang: 0,
+                diskon: @js($diskon),
+                total_tagihan: 0,
+                cash: @js($cash),
+                keterangan: @js($keterangan),
+                metode_bayar: @js($metode_bayar),
+                formatNumber(val) {
+                    if (val === null || val === undefined || isNaN(val)) return '0';
+                    return (val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                },
+                hitungTotal() {
+                    this.total_harga_barang = this.barang.reduce((total, row) => {
+                        let harga = parseInt(row.harga || 0);
+                        let qty = parseInt(row.qty || 0);
+                        return total + (harga * qty);
+                    }, 0);
+                    this.total_tagihan = this.total_harga_barang - (parseInt(this.diskon) || 0);
+                },
+                addBarang() {
+                    this.barang.push({
+                        id: '',
+                        qty: 1,
+                        harga: 0,
+                        subtotal: 0,
+                        kode_akun_id: '',
+                        kode_akun_penjualan_id: '',
+                    });
+                    this.hitungTotal();
+                },
+                hapusBarang(index) {
+                    this.barang.splice(index, 1);
+                    this.hitungTotal();
+                },
+                updateBarang(index) {
+                    let row = this.barang[index];
+                    let selectedBarang = this.dataBarang.find(g => g.id == row.id);
+                    if (selectedBarang) {
+                        row.harga = selectedBarang.harga;
+                        row.kode_akun_id = selectedBarang.kode_akun_id;
+                        row.kode_akun_penjualan_id = selectedBarang.kode_akun_penjualan_id;
+                    } else {
+                        row.harga = 0;
+                    }
+                    this.calculateBarang(index);
+                },
+                calculateBarang(index) {
+                    let row = this.barang[index];
+                    row.subtotal = (parseFloat(row.qty) || 0) * (parseFloat(row.harga) || 0) || 0;
+                    this.total_harga_barang = this.barang.reduce((total, row) => total + (parseFloat(row.subtotal) || 0),
+                        0);
+                    this.hitungTotal();
+                },
+                syncToLivewire() {
+                    if (window.Livewire && window.Livewire.find) {
+                        let componentId = this.$root.closest('[wire\\:id]')?.getAttribute('wire:id');
+                        if (componentId) {
+                            let $wire = window.Livewire.find(componentId);
+                            if ($wire && typeof $wire.set === 'function') {
+                                $wire.set('barang', JSON.parse(JSON.stringify(this.barang)), true);
+                                $wire.set('diskon', this.diskon, true);
+                                $wire.set('keterangan', this.keterangan, true);
+                                $wire.set('cash', this.cash, true);
+                                $wire.set('metode_bayar', this.metode_bayar, true);
+                                $wire.set('total_tagihan', this.total_tagihan, true);
+                                $wire.set('kode_akun_id', this.kode_akun_id, true);
+                                $wire.set('kode_akun_penjualan_id', this.kode_akun_penjualan_id, true);
+                            }
+                        }
+                    }
+                    this.hitungTotal();
+                },
+                init() {
+                    this.hitungTotal();
 
-        function calculation(index, harga = null) {
-            let harga = harga ?? document.getElementById('barang-harga-' + index).value.replace(/\,/g, '');
-            let qty = document.getElementById('barang-qty-' + index).value;
-            let discount = document.getElementById('barang-discount-' + index).value;
-            let total = (harga * qty) - (harga * qty * discount / 100);
-            document.getElementById('barang-total-' + index).value = numberFormat(total);
+                    this.$watch('barang', () => {
+                        this.hitungTotal();
+                    }, {
+                        deep: true
+                    });
+                }
+            }
         }
-    </script> --}}
-{{-- @endpush --}}
+    </script>
+@endpush

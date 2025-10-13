@@ -41,19 +41,16 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Kategori</label>
-                            <select class="form-control"
-                                wire:model="kode_akun_id"
-                                x-model="kode_akun_id"
+                            <select class="form-control" wire:model="kode_akun_id" x-model="kode_akun_id"
                                 x-init="$($el).selectpicker({
-                                liveSearch: true,
-                                width: 'auto',
-                                size: 10,
-                                container: 'body',
-                                style: '',
-                                showSubtext: true,
-                                styleBase: 'form-control'
-                            })"
-                                data-width="100%">
+                                    liveSearch: true,
+                                    width: 'auto',
+                                    size: 10,
+                                    container: 'body',
+                                    style: '',
+                                    showSubtext: true,
+                                    styleBase: 'form-control'
+                                })" data-width="100%">
                                 <option hidden selected>-- Pilih Kode Akun --</option>
                                 @foreach ($dataKodeAkun as $item)
                                     <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}
@@ -129,7 +126,7 @@
                                                                 $($el).val(value).trigger('change');
                                                             }
                                                         });">
-                                                        <option value="" selected disabled>-- Pilih Alat --
+                                                        <option value="" selected>-- Tidak Ada Alat --
                                                         </option>
                                                         <template x-for="alat in dataAlat" :key="alat.id">
                                                             <option :value="alat.id" :selected="row.id == alat.id"
@@ -139,14 +136,14 @@
                                                     </select>
                                                 </div>
                                             </td>
-                                            <td class="with-btn">
+                                            <td>
                                                 <input type="number" class="form-control w-100px" min="1"
                                                     step="any" x-model.number="row.qty"
                                                     @input="calculateAlat(index)">
                                             </td>
                                             <td>
                                                 <input type="text" class="form-control text-end w-150px"
-                                                    x-model="row.subtotal" :value="formatNumber(row.subtotal)" disabled>
+                                                    :value="formatNumber(row.subtotal)" disabled>
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-danger" @click="hapusAlat(index)">
@@ -160,7 +157,7 @@
                                         </th>
                                         <th>
                                             <input type="text" class="form-control text-end"
-                                                x-model="total_biaya_alat" :value="formatNumber(total_biaya_alat)" disabled>
+                                                :value="formatNumber(total_biaya_alat)" disabled>
                                         </th>
                                         <th></th>
                                     </tr>
@@ -226,7 +223,7 @@
                                 <tbody>
                                     <template x-for="(row, index) in barang" :key="index">
                                         <tr>
-                                            <td class="with-btn">
+                                            <td>
                                                 <div wire:ignore>
                                                     <select class="form-control" x-model="row.id"
                                                         x-init="$($el).select2({
@@ -242,7 +239,7 @@
                                                                 $($el).val(value).trigger('change');
                                                             }
                                                         });">
-                                                        <option value="" selected disabled>-- Pilih Barang --
+                                                        <option value="" selected>-- Tidak Ada Barang --
                                                         </option>
                                                         <template x-for="barang in dataBarang" :key="barang.id">
                                                             <option :value="barang.id"
@@ -253,14 +250,14 @@
                                                     </select>
                                                 </div>
                                             </td>
-                                            <td class="with-btn">
+                                            <td>
                                                 <input type="number" class="form-control w-100px" min="1"
                                                     step="any" x-model.number="row.qty"
                                                     @input="calculateBarang(index)">
                                             </td>
                                             <td>
                                                 <input type="text" class="form-control text-end w-150px"
-                                                    x-model="row.subtotal" :value="formatNumber(row.subtotal)" disabled>
+                                                    :value="formatNumber(row.subtotal)" disabled>
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-danger"
@@ -275,7 +272,7 @@
                                         </th>
                                         <th>
                                             <input type="text" class="form-control text-end"
-                                                x-model="total_biaya_barang" :value="formatNumber(total_biaya_barang)" disabled autocomplete="off">
+                                                :value="formatNumber(total_biaya_barang)" disabled autocomplete="off">
                                         </th>
                                         <th></th>
                                     </tr>
@@ -287,6 +284,7 @@
                                                 <button type="button" class="btn btn-secondary" @click="addBarang">
                                                     Tambah Barang
                                                 </button>
+                                                <br>
                                                 <template x-if="$store.wireErrors?.barang">
                                                     <span class="text-danger"
                                                         x-text="$store.wireErrors.barang"></span>
@@ -319,7 +317,7 @@
                             <hr>
                             <div class="mb-3">
                                 <label class="form-label">Keuntungan</label>
-                                <input class="form-control" type="text" x-model="keuntungan" :value="formatNumber(keuntungan)"
+                                <input class="form-control" type="text" :value="formatNumber(keuntungan)"
                                     disabled />
                             </div>
                         </div>
@@ -370,11 +368,13 @@
                 icd_9_cm: @js($icd_9_cm),
                 keuntungan: 0,
                 formatNumber(val) {
-                    return new Intl.NumberFormat('id-ID').format(val || 0);
+                    if (val === null || val === undefined || isNaN(val)) return '0';
+                    return (val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                 },
                 hitungKeuntungan() {
                     this.total_biaya_alat = this.alat.reduce((total, row) => total + (parseFloat(row.subtotal) || 0), 0);
-                    this.total_biaya_barang = this.barang.reduce((total, row) => total + (parseFloat(row.subtotal) || 0), 0);
+                    this.total_biaya_barang = this.barang.reduce((total, row) => total + (parseFloat(row.subtotal) || 0),
+                        0);
                     this.keuntungan =
                         (parseFloat(this.tarif) || 0) -
                         (parseFloat(this.total_biaya_alat) || 0) -
@@ -402,7 +402,8 @@
                 },
                 init() {
                     this.total_biaya_alat = this.alat.reduce((total, row) => total + (parseFloat(row.subtotal) || 0), 0);
-                    this.total_biaya_barang = this.barang.reduce((total, row) => total + (parseFloat(row.subtotal) || 0), 0);
+                    this.total_biaya_barang = this.barang.reduce((total, row) => total + (parseFloat(row.subtotal) || 0),
+                        0);
                     this.hitungKeuntungan();
 
                     this.$watch('biaya_jasa_dokter', () => {
@@ -416,10 +417,14 @@
                     });
                     this.$watch('alat', () => {
                         this.hitungKeuntungan();
-                    }, { deep: true });
+                    }, {
+                        deep: true
+                    });
                     this.$watch('barang', () => {
                         this.hitungKeuntungan();
-                    }, { deep: true });
+                    }, {
+                        deep: true
+                    });
                 }
             }
         }

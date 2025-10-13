@@ -36,7 +36,7 @@
                             <tbody>
                                 @foreach ($barang as $index => $row)
                                     <tr>
-                                        <td class="with-btn">
+                                        <td>
                                             <select class="form-control" x-init="$($el).selectpicker({
                                                 liveSearch: true,
                                                 width: 'auto',
@@ -58,7 +58,7 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
-                                        <td class="with-btn">
+                                        <td>
                                             <select class="form-control" x-init="$($el).selectpicker({
                                                 liveSearch: true,
                                                 width: 'auto',
@@ -80,7 +80,7 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
-                                        <td class="with-btn">
+                                        <td>
                                             <input type="number" class="form-control" min="0" step="1"
                                                 min="1"
                                                 wire:model="barang.{{ $index }}.qty" autocomplete="off">
@@ -88,7 +88,7 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
-                                        <td class="with-btn">
+                                        <td>
                                             <a href="javascript:;" class="btn btn-danger"
                                                 wire:click="hapusbarang({{ $index }})">
                                                 <i class="fa fa-times"></i>

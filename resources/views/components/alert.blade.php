@@ -27,4 +27,13 @@
         </div>
         <br>
     @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show h-100 mb-0">
+            @foreach ($errors->all() as $error)
+                <p>{{ $error }}</p>
+            @endforeach
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
 </div>

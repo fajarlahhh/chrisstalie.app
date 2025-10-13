@@ -72,7 +72,7 @@
                         <tbody>
                             @foreach ($rsp['barang'] as $y => $row)
                                 <tr>
-                                    <td class="with-btn">
+                                    <td>
                                         <select class="form-control" x-init="$($el).selectpicker({
                                             liveSearch: true,
                                             width: 'auto',
@@ -95,7 +95,7 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </td>
-                                    <td class="with-btn">
+                                    <td>
                                         <select class="form-control"
                                             wire:model="resep.{{ $x }}.barang.{{ $y }}.barang_satuan_id">
                                             <option value="">-- Pilih Satuan --</option>
@@ -111,7 +111,7 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </td>
-                                    <td class="with-btn">
+                                    <td>
                                         <input type="number" class="form-control" min="0" step="1"
                                             min="0"
                                             wire:model="resep.{{ $x }}.barang.{{ $y }}.qty"
@@ -120,7 +120,7 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </td>
-                                    <td class="with-btn">
+                                    <td>
                                         <a href="javascript:;" class="btn btn-warning"
                                             wire:click="hapusBarang({{ $x }}, {{ $y }})">
                                             <i class="fa fa-times"></i>
