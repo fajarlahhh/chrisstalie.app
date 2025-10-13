@@ -143,7 +143,7 @@ class Index extends Component
         }
         $jurnalDetail[] = [
             'jurnal_id' => $id,
-            'debet' => $this->total_tagihan + $this->diskon,
+            'debet' => $this->total_tagihan,
             'kredit' => 0,
             'kode_akun_id' => $metodeBayar->kode_akun_id
         ];
