@@ -12,24 +12,8 @@ class Index extends Component
     public $dataKodeAkun = [];
     public $unsurGaji = [];
 
-    public function tambahUnsurGaji($unit_bisnis)
-    {
-        array_push($this->unsurGaji, [
-            'nama' => null,
-            'sifat' => '+',
-            'kode_akun_id' => null,
-            'unit_bisnis' => $unit_bisnis,
-        ]);
-    }
-
-    public function hapusUnsurGaji($key)
-    {
-        unset($this->unsurGaji[$key]);
-        $this->unsurGaji = array_merge($this->unsurGaji);
-    }
-
     public function submit($unit_bisnis)
-    {
+    {   
         $this->validate([
             'unsurGaji' => 'required|array',
             'unsurGaji.*.nama' => 'required',

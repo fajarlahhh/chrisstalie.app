@@ -420,9 +420,6 @@
                     this.$watch('barang', () => {
                         this.hitungKeuntungan();
                     }, { deep: true });
-                    this.$watch('nama', () => {}, {deep: false});
-                    this.$watch('kode_akun_id', () => {}, {deep: false});
-                    this.$watch('icd_9_cm', () => {}, {deep: false});
                 }
             }
         }
