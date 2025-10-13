@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Class;
+
+use App\Models\Barang;
+
+class BarangClass
+{
+    /**
+     * Create a new class instance.
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    public static function getBarang($unit_bisnis = null)
+    {
+        return Barang::select(
+            'barang.id as barang_id',
+            'barang.nama as barang_nama',
+            'barang_satuan.id as barang_satuan_id',
+            'barang_satuan.nama as barang_satuan_nama',
+            'barang_satuan.rasio_dari_terkecil',
+            'barang_satuan.harga_jual',
+        )->leftJoin('barang_satuan', 'barang.id', '=', 'barang_satuan.barang_id')
+            ->with('barangSatuan.satuanKonversi')
+            ->when($unit_bisnis, fn($q) => $q->where('unit_bisnis', $unit_bisnis))
+            ->orderBy('barang.nama')->get()->map(fn($q) => [
+                'id' => $q['barang_satuan_id'],
+                'nama' => $q['barang_nama'],
+                'barang_id' => $q['barang_satuan_id'],
+                'biaya' => $q['harga_jual'],
+                'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
+                'satuan' => $q['barang_satuan_nama'],
+            ])->toArray();
+    }
+}

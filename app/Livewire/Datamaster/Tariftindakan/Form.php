@@ -2,13 +2,14 @@
 
 namespace App\Livewire\Datamaster\Tariftindakan;
 
+use App\Models\Aset;
 use App\Models\Barang;
 use Livewire\Component;
+use App\Models\KodeAkun;
+use App\Class\BarangClass;
 use App\Models\BarangSatuan;
 use App\Models\TarifTindakan;
 use Illuminate\Support\Facades\DB;
-use App\Models\KodeAkun;
-use App\Models\Aset;
 
 class Form extends Component
 {
@@ -86,21 +87,7 @@ class Form extends Component
     public function mount(TarifTindakan $data)
     {
         $this->previous = url()->previous();
-        $this->dataBarang = Barang::select(
-            'barang.id as barang_id',
-            'barang.nama as barang_nama',
-            'barang_satuan.id as barang_satuan_id',
-            'barang_satuan.nama as barang_satuan_nama',
-            'barang_satuan.rasio_dari_terkecil',
-            'barang_satuan.harga_jual',
-        )->leftJoin('barang_satuan', 'barang.id', '=', 'barang_satuan.barang_id')->with('barangSatuan.satuanKonversi')->klinik()->orderBy('barang.nama')->get()->map(fn($q) => [
-            'id' => $q['barang_satuan_id'],
-            'nama' => $q['barang_nama'],
-            'barang_id' => $q['barang_satuan_id'],
-            'biaya' => $q['harga_jual'],
-            'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
-            'satuan' => $q['barang_satuan_nama'],
-        ])->toArray();
+        $this->dataBarang = BarangClass::getBarang('klinik');
         $this->dataAlat = Aset::where('kode_akun_id', '15130')->orderBy('nama')->get()->toArray();
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '42000')->get()->toArray();
         $this->data = $data;
