@@ -101,7 +101,6 @@ class Form extends Component
             $jurnal->jenis = 'Pembelian Barang Dagang';
             $jurnal->tanggal = $this->tanggal;
             $jurnal->uraian = $this->uraian;
-            $jurnal->unit_bisnis = 'Apotek';
             $jurnal->referensi_id = $data->id;
             $jurnal->pengguna_id = auth()->id();
             $jurnal->save();

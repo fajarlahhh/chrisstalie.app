@@ -19,7 +19,6 @@
                             });
                         },
                         hapus(index) {
-                            // Find all items with matching unit_bisnis
                             const filteredIndexes = this.unsurGaji
                                 .map((item, i) => ({ item, i }))
                                 .map(({ i }) => i);

@@ -224,7 +224,6 @@ class Form extends Component
             \App\Class\JurnalClass::insert($id, 'Penjualan', [
                 'tanggal' => now(),
                 'uraian' => 'Penjualan Barang Bebas ' . ($data->id ?? ''),
-                'unit_bisnis' => 'Apotek',
                 'referensi_id' => $data->id ?? null,
                 'pengguna_id' => auth()->id(),
             ], $jurnalDetail);

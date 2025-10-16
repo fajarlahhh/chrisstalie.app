@@ -46,6 +46,16 @@ class Form extends Component
         ]);
 
         DB::transaction(function () {
+            if (!$this->data->exists) {
+                $terakhir = Aset::where('created_at', 'like', date('Y-m') . '%')
+                    ->where('kode_akun_id', $this->kode_akun_id)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+        
+                $nomor = $terakhir ? (int)substr($terakhir->nomor, 6,4) : 0;
+                $this->data->nomor = $this->kode_akun_id . sprintf('%04d', $nomor + 1);
+            }
+            
             $this->data->nama = $this->nama;
             $this->data->tanggal_perolehan = $this->tanggal_perolehan;
             $this->data->harga_perolehan = $this->harga_perolehan;
@@ -99,7 +109,6 @@ class Form extends Component
                 $jurnal->jenis = 'Pembelian Aset';
                 $jurnal->tanggal = $this->tanggal_perolehan;
                 $jurnal->uraian = 'Pembelian Aset ' . $this->nama;
-                $jurnal->unit_bisnis = $this->unit_bisnis;
                 $jurnal->referensi_id = $this->data->id;
                 $jurnal->pengguna_id = auth()->id();
                 $jurnal->save();
@@ -119,7 +128,12 @@ class Form extends Component
                 ];
                 JurnalDetail::insert($jurnalDetail);
             }
-
+            $data = Aset::findOrFail($this->data->id);
+            $cetak = view('livewire.datamaster.asetinventaris.qr', [
+                'cetak' => true,
+                'data' => $data,
+            ])->render();
+            session()->flash('cetak', $cetak);
             session()->flash('success', 'Berhasil menyimpan data');
         });
         $this->redirect($this->previous);

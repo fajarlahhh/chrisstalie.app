@@ -47,8 +47,8 @@
             @php
                 $currentUrl = '/' . request()->path();
             @endphp
-            <div class="menu-item  @if (strpos($currentUrl, '/dashboard') === 0) active @endif">
-                <a href="/dashboard" class="menu-link">
+            <div class="menu-item  @if (strpos($currentUrl, '/home') === 0) active @endif">
+                <a href="/home" class="menu-link">
                     <div class="menu-icon"><i class="fas fa-dashboard"></i></div>
                     <div class="menu-text">Dashboard
                     </div>

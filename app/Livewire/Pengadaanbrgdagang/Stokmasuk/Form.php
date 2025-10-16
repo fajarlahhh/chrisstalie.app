@@ -117,7 +117,6 @@ class Form extends Component
                     'jenis' => 'Stok Masuk Barang Dagang',
                     'tanggal' => now(),
                     'uraian' => 'Stok Masuk Barang Dagang ' . $value['nama'],
-                    'unit_bisnis' => 'Apotek',
                     'referensi_id' => $id,
                     'pengguna_id' => auth()->id(),
                     'created_at' => now(),

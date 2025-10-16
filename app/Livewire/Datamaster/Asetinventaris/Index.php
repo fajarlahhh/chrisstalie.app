@@ -20,6 +20,16 @@ class Index extends Component
         $this->dataKodeAkun = KodeAkun::detail()->where('id', 'like', '151%')->where('kategori', 'Aktiva')->get()->toArray();
     }
 
+    public function print($id)
+    {
+        $data = Aset::findOrFail($id);
+        $cetak = view('livewire.datamaster.asetinventaris.qr', [
+            'cetak' => true,
+            'data' => $data,
+        ])->render();
+        session()->flash('cetak', $cetak);
+    }
+
     public function delete($id)
     {
         $data = Aset::findOrFail($id);

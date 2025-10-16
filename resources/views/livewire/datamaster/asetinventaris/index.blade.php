@@ -84,7 +84,7 @@
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     <x-action :row="$item" custom="" :detail="false" :edit="true"
-                                        :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                        :print="true" :permanentDelete="false" :restore="false" :delete="true" />
                                 @endrole
                             </td>
                         </tr>
@@ -103,4 +103,5 @@
         </div>
     </div>
     <x-alert />
+    <x-modal.cetak judul='QR' />
 </div>
