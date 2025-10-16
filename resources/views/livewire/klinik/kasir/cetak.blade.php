@@ -20,7 +20,7 @@
 <table class="table table-borderless fs-11px">
     <tr>
         <th class="p-0">Item<br><br></th>
-        <th class="p-0 text-end">Qty<br><br></th>
+        <th class="p-0 text-end">Harga<br><br></th>
         <th class="p-0 text-end">Diskon<br><br></th>
         <th class="p-0 text-end">Total<br><br></th>
     </tr>
@@ -28,10 +28,10 @@
         <tr>
             <td class="p-0">
                 {{ $tindakan->tarifTindakan->nama }}<br>
-                x {{ $tindakan->qty }}
+                Rp. {{ number_format($tindakan->biaya) }}
             </td>
             <td class="p-0 ps-2 text-end text-nowrap w-100px">
-                {{ number_format($tindakan->biaya) }}<br>
+                {{ $tindakan->qty }}<br>
 
             </td>
             <td class="p-0 text-end">
@@ -46,10 +46,10 @@
         <tr>
             <td class="p-0">
                 {{ $resep->first()->nama }}<br>
-                x 1
+                Rp.{{ number_format($resep->sum(fn ($q) => $q->harga * $q->qty)) }}
             </td>
             <td class="p-0 ps-2 text-end text-nowrap w-100px">
-                {{ number_format($resep->sum(fn ($q) => $q->harga * $q->qty)) }}
+                1
             </td>
             <td class="p-0 text-end">
                 0
