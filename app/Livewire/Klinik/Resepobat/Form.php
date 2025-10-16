@@ -53,7 +53,7 @@ class Form extends Component
                         'barang_satuan_id' => $barang['id'],
                         'resep' => $i + 1,
                         'qty' => $barang['qty'],
-                        'qty_asli' => $barang['qty_asli'],
+                        'qty_asli' => $barang['qty'],
                         'harga' => collect($this->dataBarang)->firstWhere('id', $barang['id'])['harga'],
                         'catatan' => $catatan,
                         'pengguna_id' => $userId,
