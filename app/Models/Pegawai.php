@@ -23,4 +23,14 @@ class Pegawai extends Model
     {
         return $this->hasMany(PegawaiUnsurGaji::class);
     }
+
+    public function scopeAktif($query)
+    {
+        return $query->where('status', 'Aktif');
+    }
+
+    public function scopeNonAktif($query)
+    {
+        return $query->where('status', 'Non Aktif');
+    }
 }

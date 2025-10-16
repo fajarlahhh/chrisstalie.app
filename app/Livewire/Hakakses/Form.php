@@ -53,7 +53,7 @@ class Form extends Component
         }
         $this->previous = url()->previous();
         $this->dataRole = Role::all()->toArray();
-        $this->pegawaiData = Pegawai::orderBy('nama')->get()->toArray();
+        $this->pegawaiData = Pegawai::aktif()->orderBy('nama')->get()->toArray();
         $this->fill($this->data->toArray());
         $this->role = $this->data->getRoleNames()?->first();
         $this->hakAkses = $this->data->getPermissionNames()->toArray();

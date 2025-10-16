@@ -41,7 +41,6 @@ class Form extends Component
             } else {
                 $this->data->status = 'Aktif';
             }
-            $this->data->status = $this->status == 'Aktif' ? 'Aktif' : 'Non Aktif';
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
