@@ -22,7 +22,6 @@ class JurnalClass
         $jurnal->jenis = $jenis;
         $jurnal->tanggal = $data['tanggal'];
         $jurnal->uraian = $data['uraian'];
-        $jurnal->unit_bisnis = $data['unit_bisnis'];
         $jurnal->referensi_id = $data['referensi_id'];
         $jurnal->pengguna_id = auth()->id();
         $jurnal->save();

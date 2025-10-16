@@ -159,7 +159,6 @@ class Index extends Component
         JurnalClass::insert($id, 'Penjualan Barang Bebas', [
             'tanggal' => now(),
             'uraian' => 'Penjualan Barang Bebas ' . $pembayaran->id,
-            'unit_bisnis' => 'Apotek',
             'referensi_id' => $pembayaran->id,
             'pengguna_id' => auth()->id(),
         ], $jurnalDetail);
