@@ -66,15 +66,11 @@
                             $GLOBALS['subparent_level'] = '';
 
                             $url = str_replace(
-                                [' ', '&', '\'', ',', '(', ')', '.'],
+                                [' ', '&', '\''],
                                 '',
                                 strtolower($parent . '/' . str_replace('/', '', $row['title'])),
                             );
-                            if (
-                                auth()
-                                    ->user()
-                                    ->can(strtolower(config('app.name')) . str_replace('/', '', $url))
-                            ) {
+                            if (auth()->user()->can(str_replace('/', '', $url))) {
                                 $GLOBALS['subparent_level'] = '';
 
                                 $subSubMenu = '';
@@ -130,20 +126,9 @@
                     }
                 }
 
-                foreach (
-                    collect($menu)
-                        ->sortBy('title')
-                        ->all()
-                    as $key => $row
-                ) {
-                    $url = str_replace([' ', '/', '&', '\'', ',', '(', ')', '.'], '', strtolower($row['title']));
-                    if (
-                        auth()
-                            ->user()
-                            ->can(
-                                str_replace([' ', '/', '&', '\'', ',', '(', ')', '.'], '', config('app.name')) . "$url",
-                            )
-                    ) {
+                foreach (collect($menu)->sortBy('title')->all() as $key => $row) {
+                    $url = str_replace([' ', '/', '&', '\''], '', strtolower($row['title']));
+                    if (auth()->user()->can($url)) {
                         $GLOBALS['parent_active'] = '';
 
                         $hasSub = !empty($row['sub_menu']) ? 'has-sub' : '';
