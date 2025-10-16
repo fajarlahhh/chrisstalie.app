@@ -23,7 +23,17 @@ class Form extends Component
     public $perlu_resep = 0;
     public $persediaan = 'Apotek';
     public $barangSatuan = [];
+    public $khusus = 0;
 
+
+    public function updatedPersediaan()
+    {
+        if ($this->persediaan == 'Apotek') {
+            $this->dataKodeAkunPenjualan = KodeAkun::detail()->where('parent_id', '41000')->get()->toArray();
+        } else {
+            $this->dataKodeAkunPenjualan = KodeAkun::detail()->where('parent_id', '50000')->get()->toArray();
+        }
+    }
     public function tambahSatuan()
     {
         $this->barangSatuan[] = [
@@ -64,10 +74,11 @@ class Form extends Component
             $this->data->perlu_resep = $this->perlu_resep == 1 ? 1 : 0;
             $this->data->persediaan = $this->persediaan;
             $this->data->kode_akun_id = $this->kode_akun_id;
+            $this->data->khusus = $this->khusus;
             $this->data->kode_akun_penjualan_id = $this->kode_akun_penjualan_id;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
-            
+
             $timestamp = now();
             if (!$this->data->wasRecentlyCreated) {
                 $this->data->barangSatuan()->where('rasio_dari_terkecil', 1)->update([

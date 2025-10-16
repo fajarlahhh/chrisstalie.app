@@ -100,11 +100,20 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+                @if ($persediaan == 'Apotek')
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" wire:model="perlu_resep"
+                            @if ($perlu_resep) checked @endif />
+                        <label class="form-check-label" for="perlu_resep">
+                            Perlu Resep
+                        </label>
+                    </div>
+                @endif
                 <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" wire:model="perlu_resep"
-                        @if ($perlu_resep) checked @endif />
-                    <label class="form-check-label" for="perlu_resep">
-                        Perlu Resep
+                    <input class="form-check-input" type="checkbox" wire:model="khusus"
+                        @if ($khusus) checked @endif />
+                    <label class="form-check-label" for="khusus">
+                        Khusus
                     </label>
                 </div>
             </div>
