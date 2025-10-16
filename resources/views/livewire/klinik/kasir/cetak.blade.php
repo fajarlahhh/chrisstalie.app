@@ -49,13 +49,13 @@
                 x 1
             </td>
             <td class="p-0 ps-2 text-end text-nowrap w-100px">
-                {{ number_format($resep->sum('harga')) }}<br>
+                {{ number_format($resep->sum(fn ($q) => $q->harga * $q->qty)) }}
             </td>
             <td class="p-0 text-end">
                 0
             </td>
             <td class="p-0 text-end">
-                {{ number_format($resep->sum(function ($q) {return $q->harga * $q->qty;})) }}
+                {{ number_format($resep->sum(fn ($q) => $q->harga * $q->qty)) }}
             </td>
         </tr>
     @endforeach
