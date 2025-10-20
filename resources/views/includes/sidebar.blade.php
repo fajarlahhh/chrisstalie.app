@@ -66,7 +66,7 @@
                             $GLOBALS['subparent_level'] = '';
 
                             $url = str_replace(
-                                [' ', '&', '\''],
+                                [' ', '&', '\'', '.'],
                                 '',
                                 strtolower($parent . '/' . str_replace('/', '', $row['title'])),
                             );
@@ -127,7 +127,7 @@
                 }
 
                 foreach (collect($menu)->sortBy('title')->all() as $key => $row) {
-                    $url = str_replace([' ', '/', '&', '\''], '', strtolower($row['title']));
+                    $url = str_replace([' ', '/', '&', '\'', '.'], '', strtolower($row['title']));
                     if (auth()->user()->can($url)) {
                         $GLOBALS['parent_active'] = '';
 
