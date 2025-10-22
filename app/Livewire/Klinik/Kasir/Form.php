@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Klinik\Kasir;
 
+use App\Models\Stok;
 use App\Models\Nakes;
 use Livewire\Component;
 use App\Models\Tindakan;
@@ -111,13 +112,12 @@ class Form extends Component
                     $barang = collect($this->dataBarang)->firstWhere('id', $barangResep['id']);
                     if (!$barang) return;
 
-                    $stokTersedia = \App\Models\Stok::where('barang_id', $barang['id'])
+                    $stokTersedia = Stok::where('barang_id', $barang['barang_id'])
                         ->available()
                         ->count();
 
-                    $rasio = $barang['rasio_dari_terkecil'] ?? 1;
-                    if (($value / $rasio) > $stokTersedia) {
-                        $stokAvailable = $stokTersedia * $rasio;
+                    if (($value * $barang['rasio_dari_terkecil']) > $stokTersedia) {
+                        $stokAvailable = $stokTersedia / $barang['rasio_dari_terkecil'];
                         $fail("Stok {$barang['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$barang['satuan']}.");
                     }
                 }
