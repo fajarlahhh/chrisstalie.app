@@ -16,7 +16,7 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
-                <div class="mb-3">
+                <div class="mb-3" wire:ignore>
                     <label class="form-label">Tanggal</label>
                     <select class="form-control" x-init="$($el).select2({
                         width: '100%',

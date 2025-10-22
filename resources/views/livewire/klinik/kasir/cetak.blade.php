@@ -9,7 +9,7 @@
         <td class="p-0">:
             {{ $data->pembayaran->pengguna->pegawai ? $data->pembayaran->pengguna->pegawai->nama : $data->pembayaran->pengguna->nama }}
         </td>
-        <td class="p-0 text-end">No. {{ $data->id }}</td>
+        <td class="p-0 text-end">No. {{ $data->pembayaran->id }}</td>
     </tr>
     <tr>
         <td class="text-nowrap p-0">Tanggal</td>
@@ -20,25 +20,23 @@
 <table class="table table-borderless fs-11px">
     <tr>
         <th class="p-0">Item<br><br></th>
-        <th class="p-0 text-end">Harga<br><br></th>
-        <th class="p-0 text-end">Diskon<br><br></th>
+        <th class="p-0 text-end">Qty<br><br></th>
         <th class="p-0 text-end">Total<br><br></th>
     </tr>
     @foreach ($data->tindakan as $tindakan)
         <tr>
             <td class="p-0">
                 {{ $tindakan->tarifTindakan->nama }}<br>
-                Rp. {{ number_format($tindakan->biaya) }}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rp. {{ number_format($tindakan->biaya) }} @if ($tindakan->diskon > 0)
+                    - {{ number_format($tindakan->diskon) }}
+                @endif
             </td>
             <td class="p-0 ps-2 text-end text-nowrap w-100px">
                 {{ $tindakan->qty }}<br>
 
             </td>
             <td class="p-0 text-end">
-                {{ number_format($tindakan->diskon) }}
-            </td>
-            <td class="p-0 text-end">
-                {{ number_format($tindakan->biaya * $tindakan->qty - $tindakan->diskon) }}
+                Rp. {{ number_format(($tindakan->biaya - $tindakan->diskon) * $tindakan->qty) }}
             </td>
         </tr>
     @endforeach
@@ -46,16 +44,13 @@
         <tr>
             <td class="p-0">
                 {{ $resep->first()->nama }}<br>
-                Rp.{{ number_format($resep->sum(fn ($q) => $q->harga * $q->qty)) }}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rp.{{ number_format($resep->sum(fn($q) => $q->harga * $q->qty)) }}
             </td>
             <td class="p-0 ps-2 text-end text-nowrap w-100px">
                 1
             </td>
             <td class="p-0 text-end">
-                0
-            </td>
-            <td class="p-0 text-end">
-                {{ number_format($resep->sum(fn ($q) => $q->harga * $q->qty)) }}
+                Rp. {{ number_format($resep->sum(fn($q) => $q->harga * $q->qty)) }}
             </td>
         </tr>
     @endforeach

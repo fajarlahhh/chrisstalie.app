@@ -11,6 +11,7 @@ use App\Class\BarangClass;
 use App\Models\Pembayaran;
 use App\Models\Registrasi;
 use App\Models\MetodeBayar;
+use App\Models\TindakanAlatBarang;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
@@ -151,8 +152,19 @@ class Form extends Component
 
             Registrasi::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
             Tindakan::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
+
             ResepObat::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
 
+            foreach (TindakanAlatBarang::whereNotNull('barang_satuan_id')->where('tindakan_id', $this->data->id)->get() as $alatBarang) {
+                $barang = collect($this->dataBarang)->firstWhere('id', $alatBarang->barang_satuan_id);
+                BarangClass::stokKeluar([
+                    'qty' => $alatBarang->qty,
+                    'harga' => $alatBarang->biaya,
+                    'barang_id' => $barang['barang_id'],
+                    'barang_satuan_id' => $alatBarang->barang_satuan_id,
+                    'rasio_dari_terkecil' => $barang['rasio_dari_terkecil'],
+                ], $pembayaran->id);
+            }
             foreach ($this->resep as $resep) {
                 $barang = collect($resep['barang'])->map(function ($q) {
                     $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);

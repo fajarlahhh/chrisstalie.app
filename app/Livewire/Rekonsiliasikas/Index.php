@@ -28,6 +28,7 @@ class Index extends Component
                 'total_tindakan' => $q->total_tindakan,
                 'total_tagihan' => $q->total_tagihan,
             ]),
+            'dataRaw' => $this->tanggal? Pembayaran::whereNull('rekonsiliasi_at')->with('metodeBayar')->where('pengguna_id', auth()->user()->id)->get() : []
         ]);
     }
 }
