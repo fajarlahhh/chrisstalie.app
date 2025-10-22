@@ -38,25 +38,25 @@ class Index extends Component
                 'barang' => 'required|array',
                 'barang.*.id' => 'required|distinct',
                 'barang.*.harga' => 'required|numeric',
-                // 'barang.*.qty' => [
-                //     'required',
-                //     'numeric',
-                //     'min:1',
-                //     function ($attribute, $value, $fail) {
-                //         $index = explode('.', $attribute)[1];
-                //         $barang = $this->barang[$index] ?? null;
-                //         if (!$barang) return;
-                //         // Cek stok tersedia
-                //         $stokTersedia = Stok::where('barang_id', $barang['id'])
-                //             ->available()
-                //             ->count();
-                //         $barang = collect($this->dataBarang)->firstWhere('id', $barang['id']);
-                //         if (($value / ($barang['rasio_dari_terkecil'] ?? 1)) > $stokTersedia) {
-                //             $stokAvailable = $stokTersedia / $barang['rasio_dari_terkecil'];
-                //             $fail("Stok {$barang['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$barang['satuan']}.");
-                //         }
-                //     }
-                // ],
+                'barang.*.qty' => [
+                    'required',
+                    'numeric',
+                    'min:1',
+                    function ($attribute, $value, $fail) {
+                        $index = explode('.', $attribute)[1];
+                        $barang = $this->barang[$index] ?? null;
+                        if (!$barang) return;
+
+                        $barang = collect($this->dataBarang)->firstWhere('id', $barang['id']);
+                        $stokTersedia = Stok::where('barang_id', $barang['barang_id'])
+                            ->available()
+                            ->count();
+                        if (($value * ($barang['rasio_dari_terkecil'] ?? 1)) > $stokTersedia) {
+                            $stokAvailable = $stokTersedia / $barang['rasio_dari_terkecil'];
+                            $fail("Stok {$barang['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$barang['satuan']}.");
+                        }
+                    }
+                ],
             ],
         );
 
