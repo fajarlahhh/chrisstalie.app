@@ -47,9 +47,9 @@
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
                             <td>{{ $row->created_at }}</td>
-                            <td>{{ $row->barang->nama }}</td>
+                            <td>{{ $row->barangSatuan->barang->nama }}</td>
                             <td>{{ $row->qty }}</td>
-                            <td>{{ $row->barang->barangSatuanTerkecil->nama }}</td>
+                            <td>{{ $row->barangSatuan->barang->barangSatuanTerkecil->nama }}</td>
                             <td>{{ $row->no_batch }}</td>
                             <td>{{ $row->tanggal_kedaluarsa }}</td>
                             <td>

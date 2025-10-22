@@ -41,4 +41,9 @@ class PermintaanPembelian extends Model
     {
         return $this->hasMany(Verifikasi::class, 'referensi_id', 'id')->where('jenis', 'Permintaan Pembelian')->where('status', 'Ditolak');
     }
+
+    public function pembelian()
+    {
+        return $this->hasOne(Pembelian::class);
+    }
 }

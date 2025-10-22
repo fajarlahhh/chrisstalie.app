@@ -15,13 +15,8 @@ use App\Models\KodeAkun;
 
 class Form extends Component
 {
-    public $data, $previous, $dataSupplier = [], $dataPermintaanPembelian = [], $barang = [], $dataKodeAkun = [];
+    public $data, $previous, $dataSupplier = [], $barang = [], $dataKodeAkun = [];
     public $tanggal, $uraian, $jatuh_tempo, $pembayaran = "Jatuh Tempo", $ppn, $diskon, $totalHargaBeli, $supplier_id;
-
-    public function updatedBarang()
-    {
-        $this->totalHargaBeli = collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']);
-    }
 
     public function mount(PermintaanPembelian $data)
     {
@@ -45,10 +40,6 @@ class Form extends Component
         $this->validate([
             'tanggal' => 'required',
             'uraian' => 'required',
-            'permintaan_pembelian_id' => [
-                'required',
-                Rule::exists('permintaan_pembelian', 'id')->whereNotIn('id', Pembelian::pluck('permintaan_pembelian_id')->filter()->all()),
-            ],
             'supplier_id' => 'required|integer|exists:supplier,id',
             'pembayaran' => 'required',
             'jatuh_tempo' => 'nullable|date',
@@ -66,9 +57,10 @@ class Form extends Component
             $data->tanggal = $this->tanggal;
             $data->jatuh_tempo = $this->pembayaran == "Jatuh Tempo" ? $this->jatuh_tempo : null;
             $data->pembayaran = $this->pembayaran == "Jatuh Tempo" ? $this->pembayaran : "Lunas";
+            $data->kode_akun_id = $this->pembayaran == "Jatuh Tempo" ? '21000' : $this->pembayaran;
             $data->uraian = $this->uraian;
             $data->supplier_id = $this->supplier_id;
-            $data->permintaan_pembelian_id = $this->permintaan_pembelian_id;
+            $data->permintaan_pembelian_id = $this->data->id;
             $data->ppn = $this->ppn;
             $data->diskon = $this->diskon;
             $data->pengguna_id = auth()->id();
@@ -77,9 +69,8 @@ class Form extends Component
             $data->pembelianDetail()->insert(collect($this->barang)->map(fn($q) => [
                 'qty' => $q['qty'],
                 'harga_beli' => $q['harga_beli'],
-                'barang_satuan_id' => $q['barang_satuan_id'],
+                'barang_satuan_id' => $q['id'],
                 'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
-                'barang_id' => $q['id'],
                 'pembelian_id' => $data->id,
             ])->toArray());
 

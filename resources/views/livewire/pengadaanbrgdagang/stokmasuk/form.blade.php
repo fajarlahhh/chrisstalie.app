@@ -12,27 +12,21 @@
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading ui-sortable-handle">
-
             <h4 class="panel-title">Form</h4>
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
-                <div class="mb-3">
+                <div class="mb-3" wire:ignore>
                     <label class="form-label">Pembelian</label>
-                    <select data-container="body" class="form-control" x-init="$($el).selectpicker({
-                        liveSearch: true,
-                        width: 'auto',
-                        size: 10,
-                        container: 'body',
-                        style: '',
-                        showSubtext: true,
-                        styleBase: 'form-control'
-                    })"
-                        wire:model.live="pembelian_id" data-width="100%" required>
+                    <select class="form-control" x-init="$($el).select2({ width: '100%', dropdownAutoWidth: true });
+                    $($el).on('change', function(e) {
+                        $wire.set('pembelian_id', e.target.value);
+                    });" wire:model="pembelian_id">
                         <option selected value="" hidden>-- Tidak Ada Permintaan Pembelian --</option>
                         @foreach ($dataPembelian as $row)
-                            <option value="{{ $row['id'] }}" data-subtext="{{ $row['tanggal'] }}">
-                                {{ $row['uraian'] }} (Supplier : {{ $row['supplier']['nama'] }})
+                            <option value="{{ $row['id'] }}">
+                                {{ $row['tanggal'] }} - No. Nota/Faktur :{{ $row['uraian'] }}, Supplier :
+                                {{ $row['supplier']['nama'] }}
                             </option>
                         @endforeach
                     </select>
@@ -51,38 +45,38 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($barang as $index => $row)
+                                @foreach ($barang as $index => $brg)
                                     <tr>
                                         <td>
-                                            <input type="text" class="form-control" value="{{ $row['nama'] }}"
+                                            <input type="text" class="form-control" value="{{ $brg['nama'] }}"
                                                 disabled autocomplete="off">
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" value="{{ $row['satuan'] }}"
+                                            <input type="text" class="form-control" value="{{ $brg['satuan'] }}"
                                                 disabled autocomplete="off">
                                         </td>
                                         <td>
                                             <input type="number" class="form-control" min="0" step="1"
-                                                value="{{ $row['qty'] }}" disabled autocomplete="off">
+                                                value="{{ $brg['qty'] }}" disabled autocomplete="off">
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control" min="0" max="{{ $row['qty'] }}" step="1"
-                                                wire:model="barang.{{ $index }}.qty_masuk"
-                                                autocomplete="off">
+                                            <input type="number" class="form-control" min="0"
+                                                max="{{ $brg['qty'] }}" step="1"
+                                                wire:model="barang.{{ $index }}.qty_masuk" autocomplete="off">
                                             @error('barang.' . $index . '.qty_masuk')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" min="0" step="1"
-                                                wire:model="barang.{{ $index }}.no_batch"
-                                                autocomplete="off">
+                                            <input type="text" class="form-control"
+                                                wire:model="barang.{{ $index }}.no_batch" autocomplete="off">
                                             @error('barang.' . $index . '.no_batch')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
                                         <td>
-                                            <input type="date" class="form-control" min="0" step="1"
+                                            <input type="date" class="form-control"
+                                                min="{{ now()->format('Y-m-d') }}"
                                                 wire:model="barang.{{ $index }}.tanggal_kedaluarsa"
                                                 autocomplete="off">
                                             @error('barang.' . $index . '.tanggal_kedaluarsa')
@@ -96,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            <div class="panel-footer" >
+            <div class="panel-footer">
                 @unlessrole('guest')
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>

@@ -109,8 +109,9 @@
                                 </td>
                                 <td class="with-btn-group text-end" nowrap>
                                     @role('administrator|supervisor|operator')
-                                        <a href="/pengadaanbrgdagang/pembelian/form/{{ $item->id }}" class="btn btn-info">
-                                            Input 
+                                        <a href="/pengadaanbrgdagang/pembelian/form/{{ $item->id }}"
+                                            class="btn btn-info">
+                                            Input
                                         </a>
                                     @endrole
                                 </td>
@@ -161,9 +162,13 @@
                                         @foreach ($row->pembelianDetail as $j => $subRow)
                                             <tr>
                                                 <td class="p-1">
-                                                    {{ $subRow->barang->nama }}</td>
-                                                <td class="text-end p-1  text-nowrap">
-                                                    {{ $subRow->barangSatuan?->nama . ' (' . $subRow->barangSatuan?->konversi_satuan . ')' }}
+                                                    {{ $subRow->barangSatuan->barang->nama }}</td>
+                                                <td class="p-1 text-nowrap">
+                                                    @if ($subRow->barangSatuan->konversi_satuan)
+                                                        {{ $subRow->barangSatuan->nama . ' (' . $subRow->barangSatuan->konversi_satuan . ')' }}
+                                                    @else
+                                                        {{ $subRow->barangSatuan->nama }}
+                                                    @endif
                                                 </td>
                                                 <td class="text-end p-1  text-nowrap">
                                                     {{ number_format($subRow->harga_beli) }}</td>
@@ -202,9 +207,8 @@
                                 <td class="with-btn-group text-end" nowrap>
                                     @role('administrator|supervisor')
                                         @if ($row->stokMasuk->count() == 0)
-                                            <x-action :row="$row" custom="" :detail="false"
-                                                :edit="false" :print="false" :permanentDelete="false" :restore="false"
-                                                :delete="true" />
+                                            <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                                :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                         @endif
                                     @endrole
                                 </td>

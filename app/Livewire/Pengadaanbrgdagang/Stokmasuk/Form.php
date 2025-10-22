@@ -11,28 +11,30 @@ use Illuminate\Support\Str;
 use App\Models\JurnalDetail;
 use App\Models\PembelianDetail;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 
 class Form extends Component
 {
     public $data, $dataPembelian = [], $barang = [];
     public $pembelian_id;
 
-    public function updatedPembelianId()
+
+    public function updatedPembelianId($value)
     {
         $this->barang = [];
-        $stokMasuk = StokMasuk::where('pembelian_id', $this->pembelian_id)->get()->map(fn($q) => [
-            'id' => $q->barang_id,
+        $stokMasuk = StokMasuk::where('pembelian_id', $value)->get()->map(fn($q) => [
+            'id' => $q->barangSatuan->barang_id,
             'qty_masuk' => $q->qty,
         ]);
-        $barang = PembelianDetail::where('pembelian_id', $this->pembelian_id)->with('barang')->get()->map(fn($q) => [
-            'id' => $q->barang_id,
-            'nama' => $q->barang->nama,
-            'kode_akun_id' => $q->barang->kode_akun_id,
+        $barang = PembelianDetail::where('pembelian_id', $value)->with('barang')->get()->map(fn($q) => [
+            'id' => $q->barangSatuan->barang_id,
+            'nama' => $q->barangSatuan->barang->nama,
+            'kode_akun_id' => $q->barangSatuan->barang->kode_akun_id,
             'barang_satuan_id' => $q->barang_satuan_id,
             'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
-            'satuan' => $q->barangSatuan?->nama . ' (' . $q->barangSatuan?->konversi_satuan . ')',
-            'qty' => $q->qty - ($stokMasuk->where('id', $q->barang_id)->first()['qty_masuk'] ?? 0),
-            'qty_masuk' => null,
+            'satuan' => $q->barangSatuan->nama . ($q->barangSatuan->konversi_satuan ? ' (' . $q->barangSatuan->konversi_satuan . ')' : ''),
+            'qty' => $q->qty - ($stokMasuk->where('id', ($q->barangSatuan->barang_id))->first()['qty_masuk'] ?? 0),
+            'qty_masuk' => 0,
             'harga_beli' => $q->harga_beli,
             'no_batch' => null,
             'tanggal_kedaluarsa' => null,
@@ -57,7 +59,6 @@ class Form extends Component
             'pembelian_id' => 'required',
             'barang' => 'required|array',
             'barang.*.qty_masuk' => [
-                'required',
                 'numeric',
                 'min:0',
                 function ($attribute, $value, $fail) {
@@ -70,8 +71,34 @@ class Form extends Component
                     }
                 }
             ],
-            'barang.*.no_batch' => 'required|string',
-            'barang.*.tanggal_kedaluarsa' => 'required|date',
+            'barang.*.no_batch' => [
+                function ($attribute, $value, $fail) {
+                    $matches = [];
+                    if (preg_match('/^barang\.(\d+)\.no_batch$/', $attribute, $matches)) {
+                        $index = (int)$matches[1];
+                        $qty_masuk = $this->barang[$index]['qty_masuk'] ?? 0;
+                        if ($qty_masuk > 0) {
+                            if (empty($value)) {
+                                $fail('No. Batch wajib diisi');
+                            }
+                        }
+                    }
+                }
+            ],
+            'barang.*.tanggal_kedaluarsa' => [
+                function ($attribute, $value, $fail) {
+                    $matches = [];
+                    if (preg_match('/^barang\.(\d+)\.tanggal_kedaluarsa$/', $attribute, $matches)) {
+                        $index = (int)$matches[1];
+                        $qty_masuk = $this->barang[$index]['qty_masuk'] ?? 0;
+                        if ($qty_masuk > 0) {
+                            if (empty($value)) {
+                                $fail('Tanggal kedaluarsa wajib diisi');
+                            }
+                        }
+                    }
+                }
+            ],
         ]);
 
         DB::transaction(function () {
@@ -111,7 +138,7 @@ class Form extends Component
                         'updated_at' => now(),
                     ];
                 }
-
+                $pembelian = Pembelian::find($this->pembelian_id);
                 $jurnal[] = [
                     'id' => $idJurnal,
                     'jenis' => 'Stok Masuk Barang Dagang',
@@ -127,7 +154,7 @@ class Form extends Component
                         'jurnal_id' => $idJurnal,
                         'debet' => 0,
                         'kredit' => $value['harga_beli'] * $value['qty_masuk'],
-                        'kode_akun_id' => '11420',
+                        'kode_akun_id' => $pembelian->kode_akun_id,
                     ],
                     [
                         'jurnal_id' => $idJurnal,
@@ -148,7 +175,7 @@ class Form extends Component
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('/pengadaanbrgdagang/stokmasuk/form');
+        $this->redirect('/pengadaanbrgdagang/stokmasuk');
     }
 
     public function render()

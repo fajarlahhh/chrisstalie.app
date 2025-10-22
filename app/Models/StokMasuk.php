@@ -19,9 +19,9 @@ class StokMasuk extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    public function barang(): BelongsTo
+    public function barangSatuan(): BelongsTo
     {
-        return $this->belongsTo(Barang::class);
+        return $this->belongsTo(BarangSatuan::class);
     }
 
     public function supplier(): BelongsTo
