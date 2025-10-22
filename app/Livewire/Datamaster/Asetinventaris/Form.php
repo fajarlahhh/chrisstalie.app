@@ -53,7 +53,7 @@ class Form extends Component
                     ->first();
         
                 $nomor = $terakhir ? (int)substr($terakhir->nomor, 6,4) : 0;
-                $this->data->nomor = $this->kode_akun_id . sprintf('%04d', $nomor + 1);
+                $this->data->nomor = $this->kode_akun_id . '.'. sprintf('%04d', $nomor + 1);
             }
             
             $this->data->nama = $this->nama;
