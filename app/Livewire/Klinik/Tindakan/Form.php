@@ -122,7 +122,6 @@ class Form extends Component
                     $tindakanAlatBarang[] = [
                         'id' => $q['id'],
                         'aset_id' => $r->aset_id,
-                        'barang_id' => $barangSatuan ? $barangSatuan['barang_id'] : null,
                         'qty' => $q['qty'] * $r->qty,
                         'biaya' => $q['qty'] * $r->biaya,
                         'barang_satuan_id' => $r->barang_satuan_id,

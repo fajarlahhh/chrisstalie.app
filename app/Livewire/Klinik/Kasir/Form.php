@@ -23,7 +23,7 @@ class Form extends Component
     public $data;
     public $tindakan = [], $dataTindakan = [], $dataNakes = [], $resep = [], $dataMetodeBayar = [];
     public $metode_bayar = 1, $cash = 0, $keterangan, $dataBarang = [];
-    public $keterangan_pembayaran, $total_tagihan = 0, $total_tindakan = 0, $total_resep = 0, $diskon = 0;
+    public $keterangan_pembayaran, $total_tagihan = 0, $total_tindakan = 0, $total_resep = 0, $diskon = 0, $alatBahan = [];
 
     public function mount(Registrasi $data)
     {
@@ -31,7 +31,8 @@ class Form extends Component
         if ($data->pembayaran_id) {
             abort(404);
         }
-        $this->dataBarang = BarangClass::getBarang('apotek');
+        $this->dataBarang = BarangClass::getBarang('Apotek');
+        $barangKlinik = BarangClass::getBarang('Klinik');
 
         $this->dataMetodeBayar = MetodeBayar::orderBy('nama')->get(['id', 'nama'])->toArray();
 
@@ -76,6 +77,19 @@ class Form extends Component
                     })->toArray(),
                 ];
             })->values()->toArray();
+
+        $this->alatBahan = TindakanAlatBarang::whereNotNull('barang_satuan_id')->where('id', $this->data->id)->get()->map(function ($q) use ($barangKlinik) {
+            $barang = collect($barangKlinik)->firstWhere('id', $q->barang_satuan_id);
+            return [
+                'barang_id' => $barang['barang_id'],
+                'nama' => $barang['nama'],
+                'satuan' => $barang['satuan'],
+                'qty' => $q->qty,
+                'biaya' => $q->biaya,
+                'barang_satuan_id' => $q->barang_satuan_id,
+                'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
+            ];
+        })->toArray();
     }
 
     public function submit()
@@ -93,6 +107,24 @@ class Form extends Component
             //     }
             // },
             'tindakan.*.perawat_id' => 'required',
+            'alatBahan.*.qty' => [
+                'required',
+                'numeric',
+                'min:1',
+                function ($attribute, $value, $fail) {
+                    $index = explode('.', $attribute)[1];
+                    $alatBahan = $this->alatBahan[$index] ?? null;
+                    if (!$alatBahan) return;
+
+                    $stokTersedia = Stok::where('barang_id', $alatBahan['barang_id'])
+                        ->available()
+                        ->count();
+                    if (($value * ($alatBahan['rasio_dari_terkecil'] ?? 1)) > $stokTersedia) {
+                        $stokAvailable = $stokTersedia / $alatBahan['rasio_dari_terkecil'];
+                        $fail("Stok bahan {$alatBahan['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$alatBahan['satuan']}.");
+                    }
+                }
+            ],
             'resep.*.barang.*.qty' => [
                 'required',
                 'numeric',
@@ -156,14 +188,13 @@ class Form extends Component
 
             ResepObat::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
 
-            foreach (TindakanAlatBarang::whereNotNull('barang_satuan_id')->where('tindakan_id', $this->data->id)->get() as $alatBarang) {
-                $barang = collect($this->dataBarang)->firstWhere('id', $alatBarang->barang_satuan_id);
+            foreach ($this->alatBahan as $alatBarang) {
                 BarangClass::stokKeluar([
-                    'qty' => $alatBarang->qty,
-                    'harga' => $alatBarang->biaya,
-                    'barang_id' => $barang['barang_id'],
-                    'barang_satuan_id' => $alatBarang->barang_satuan_id,
-                    'rasio_dari_terkecil' => $barang['rasio_dari_terkecil'],
+                    'qty' => $alatBarang['qty'],
+                    'harga' => $alatBarang['biaya'],
+                    'barang_id' => $alatBarang['barang_id'],
+                    'barang_satuan_id' => $alatBarang['barang_satuan_id'],
+                    'rasio_dari_terkecil' => $alatBarang['rasio_dari_terkecil'],
                 ], $pembayaran->id);
             }
             foreach ($this->resep as $resep) {
@@ -196,19 +227,15 @@ class Form extends Component
      */
     private function jurnalPendapatan($data, $metodeBayar)
     {
-        // Validasi $metodeBayar
         if (!$metodeBayar || empty($metodeBayar['id'])) return;
 
         $id = (string) Str::uuid();
         $jurnalDetail = [];
 
-        // Inisialisasi total barang dan diskon
         $totalBarang = 0;
         $totalDiskon = 0;
         $akunDetails = [];
 
-        // Jika ada field barang, proses; jika tidak lewati.
-        // asumsikan $this->barang adalah daftar barang penjualan (array), jika tidak ada, skip.
 
         if (!empty($this->dataBarang)) {
             foreach ($this->dataBarang as $barang) {

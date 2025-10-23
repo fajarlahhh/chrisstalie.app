@@ -149,7 +149,7 @@ class Index extends Component
     public function mount()
     {
         $this->dataMetodeBayar = MetodeBayar::get()->toArray();
-        $this->dataBarang = BarangClass::getBarang('apotek');
+        $this->dataBarang = BarangClass::getBarang('Apotek');
     }
 
     public function render()
