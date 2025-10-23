@@ -124,9 +124,9 @@ class Form extends Component
                 }
                 $jurnal[] = [
                     'id' => $idJurnal,
-                    'jenis' => 'Stok Masuk Barang Dagang',
+                    'jenis' => 'Stok Masuk Barang Khusus',
                     'tanggal' => now(),
-                    'uraian' => 'Stok Masuk Barang Dagang ' . $value['nama'],
+                    'uraian' => 'Stok Masuk Barang Khusus ' . $value['nama'],
                     'referensi_id' => $id,
                     'pengguna_id' => auth()->id(),
                     'created_at' => now(),
