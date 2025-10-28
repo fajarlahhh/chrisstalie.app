@@ -128,8 +128,6 @@
                     this.diagnosis.splice(index, 1);
                 },
                 syncToLivewire() {
-                    // sinkronkan data ke livewire
-                    console.log(this.diagnosis);
                     if (window.Livewire && window.Livewire.find) {
                         let componentId = this.$root.closest('[wire\\:id]')?.getAttribute('wire:id');
                         if (componentId) {

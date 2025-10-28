@@ -267,7 +267,11 @@ return [
                     "method" => ["Index"],
                 ],
                 [
-                    "title" => "Tidak Hadir",
+                    "title" => "Jadwal Shift",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Penggajian",
                     "method" => ["Index"],
                 ]
             ]
@@ -278,12 +282,12 @@ return [
             "urutkan" => true,
             "method" => ["Index"],
         ],
-        [
-            "icon" => "<i class='fas fa-money-bill'></i>",
-            "title" => "Rekonsiliasi Kas",
-            "urutkan" => true,
-            "method" => ["Index"],
-        ],
+        // [
+        //     "icon" => "<i class='fas fa-money-bill'></i>",
+        //     "title" => "Rekonsiliasi Kas",
+        //     "urutkan" => true,
+        //     "method" => ["Index"],
+        // ],
         // [
         //     "icon" => "<i class='fas fa-users'></i>",
         //     "title" => "Informasi Pasien",

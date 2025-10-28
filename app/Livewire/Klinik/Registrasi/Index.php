@@ -15,7 +15,6 @@ class Index extends Component
     use CustomValidationTrait;
     use WithPagination;
 
-    public $previous;
     public $dataNakes = [];
     public $pasien;
     public $tanggal;
@@ -34,7 +33,6 @@ class Index extends Component
 
     public function mount()
     {
-        $this->previous = url()->previous();
         $this->tanggal = $this->tanggal ?: date('Y-m-d');
         $this->dataNakes = Nakes::dokter()
             ->with('pegawai')
