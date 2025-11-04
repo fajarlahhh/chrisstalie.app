@@ -36,6 +36,14 @@
                             @enderror
                         </div>
                         <div class="mb-3">
+                            <label class="form-label">Panggilan</label>
+                            <input class="form-control" type="text" wire:model="panggilan"
+                                @if ($status == 'Non Aktif') disabled @endif />
+                            @error('panggilan')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">Alamat</label>
                             <input class="form-control" type="text" wire:model="alamat"
                                 @if ($status == 'Non Aktif') disabled @endif />
@@ -114,6 +122,13 @@
                                 </label>
                             </div>
                         @endif
+                        <div class="mb-3">
+                            <input class="form-check-input" type="checkbox" wire:model="upload"
+                                @if ($upload == 1) checked disabled @endif />
+                            <label class="form-check-label" for="upload">
+                                Upload Ke Mesin
+                            </label>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="note alert-secondary mb-0">
@@ -124,7 +139,8 @@
                                     <div class="mb-3">
                                         <label class="form-label">{{ $item['unsur_gaji_nama'] }}</label>
                                         <input class="form-control" type="number" step="1" min="0"
-                                            wire:model="unsurGaji.{{ $index }}.nilai" @if ($status == 'Non Aktif') disabled @endif />
+                                            wire:model="unsurGaji.{{ $index }}.nilai"
+                                            @if ($status == 'Non Aktif') disabled @endif />
                                     </div>
                                 @endforeach
                             </div>
@@ -139,7 +155,11 @@
                         Simpan
                     </button>
                 @endrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove >Batal</a>
+                <button type="button" class="btn btn-danger" onclick="window.history.back()"
+                    wire:loading.attr="disabled">
+                    <span wire:loading class="spinner-border spinner-border-sm"></span>
+                    Batal
+                </button>
                 <x-alert />
             </div>
         </form>

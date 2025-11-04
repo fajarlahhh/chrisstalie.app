@@ -150,7 +150,11 @@
                         Simpan
                     </button>
                 @endrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore>Batal</a>
+                <button type="button" class="btn btn-danger" onclick="window.history.back()"
+                    wire:loading.attr="disabled">
+                    <span wire:loading class="spinner-border spinner-border-sm"></span>
+                    Batal
+                </button>
             </div>
         </form>
     </div>

@@ -3,10 +3,11 @@
 namespace App\Livewire\Klinik\Kasir;
 
 use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\Attributes\Url;
-use App\Models\Registrasi;
 use App\Models\Pembayaran;
+use App\Models\Registrasi;
+use Livewire\Attributes\Url;
+use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
@@ -22,7 +23,14 @@ class Index extends Component
 
     public function delete($id)
     {
-        Registrasi::findOrFail($id)->pembayaran->delete();
+        DB::transaction(function () use ($id) {
+            $idPembayaran = Registrasi::findOrFail($id)->pembayaran->id;
+            $data = Pembayaran::findOrFail($idPembayaran);
+            $data->jurnalPembayaranPasienKlinik()->delete();
+            $data->delete();
+            Registrasi::findOrFail($id)->update(['pembayaran_id' => null]);
+            session()->flash('success', 'Berhasil menghapus data');
+        });
     }
 
     public function print($id)

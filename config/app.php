@@ -128,7 +128,7 @@ return [
     'organization_phone' => env('APP_ORGANIZATION_PHONE', 'Laravel'),
     'organization_email' => env('APP_ORGANIZATION_EMAIL', 'Laravel'),
     'organization_description' => env('APP_ORGANIZATION_DESCRIPTION', 'Laravel'),
-    
+
     'satusehat' => [
         'url' => env('SATUSEHAT_URL', 'Laravel'),
         'auth_url' => env('SATUSEHAT_URL', 'Laravel') . env('SATUSEHAT_AUTH_URL', 'Laravel'),
@@ -137,5 +137,8 @@ return [
         'client_key' => env('SATUSEHAT_CLIENT_KEY', 'Laravel'),
         'secret_key' => env('SATUSEHAT_SECRET_KEY', 'Laravel'),
         'organization_id' => env('SATUSEHAT_ORGANIZATION_ID', 'Laravel'),
-    ]
+    ],
+
+    'fingerprint_ip' => env('FINGERPRINT_IP', 'Laravel'),
+    'fingerprint_key' => env('FINGERPRINT_KEY', 'Laravel'),
 ];

@@ -64,6 +64,10 @@ return [
             "urutkan" => true,
             "sub_menu" => [
                 [
+                    "title" => "Jadwal Shift",
+                    "method" => ["Index", "Form"],
+                ],
+                [
                     "title" => "Harga Jual",
                     "urutkan" => true,
                     "method" => ["Index", "Form"],
@@ -150,27 +154,23 @@ return [
             "sub_menu" => [
                 [
                     "title" => "Permintaan",
-                    "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Verifikasi",
-                    "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Pembelian",
-                    "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Stok Masuk",
-                    "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Lainnya",
-                    "urutkan" => false,
+                    "urutkan" => true,
                     "sub_menu" => [
                         [
                             "title" => "Alat Dan Bahan",
@@ -191,59 +191,35 @@ return [
             "sub_menu" => [
                 [
                     "title" => "Registrasi",
-                    "urutkan" => false,
                     "method" => ["Index", "Data"],
                 ],
                 [
                     "title" => "Pemeriksaan Awal",
-                    "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Diagnosis",
-                    "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Tindakan",
-                    "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Site Marking",
-                    "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Resep Obat",
-                    "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Kasir",
-                    "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Upload",
-                    "urutkan" => false,
-                    "sub_menu" => [
-                        [
-                            "title" => "Pemeriksaan Penunjang",
-                            "urutkan" => false,
-                            "method" => ["Index", "Form"],
-                        ],
-                        [
-                            "title" => "Informed Consent",
-                            "urutkan" => false,
-                            "method" => ["Index", "Data"],
-                        ],
-                        [
-                            "title" => "Laporan Operasi",
-                            "urutkan" => false,
-                            "method" => ["Index", "Form"],
-                        ]
-                    ]
+                    "method" => ["Index"],
                 ],
             ]
         ],
@@ -256,7 +232,7 @@ return [
         [
             "title" => "Kepegawaian",
             "icon" => "<i class='fas fa-users'></i>",
-            "urutkan" => false,
+            "urutkan" => true,
             "sub_menu" => [
                 [
                     "title" => "Absensi",
@@ -264,14 +240,65 @@ return [
                 ],
                 [
                     "title" => "Izin",
-                    "method" => ["Index"],
-                ],
-                [
-                    "title" => "Jadwal Shift",
-                    "method" => ["Index"],
+                    "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Penggajian",
+                    "method" => ["Index", "Form"],
+                ]
+            ]
+        ],
+        [
+            "title" => "Laporan",
+            "icon" => "<i class='fas fa-file-alt'></i>",
+            "urutkan" => true,
+            "sub_menu" => [
+                [
+                    "title" => "Penggunaan Aset",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Neraca",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Arus Kas",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Laba Rugi",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Laporan Harian Kas",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Stok Barang",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Penerimaan Tindakan",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Persediaan Barang",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Penjualan",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Pengeluaran",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Pengadaan",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Barang Keluar",
                     "method" => ["Index"],
                 ]
             ]
@@ -282,12 +309,12 @@ return [
             "urutkan" => true,
             "method" => ["Index"],
         ],
-        // [
-        //     "icon" => "<i class='fas fa-money-bill'></i>",
-        //     "title" => "Rekonsiliasi Kas",
-        //     "urutkan" => true,
-        //     "method" => ["Index"],
-        // ],
+        [
+            "icon" => "<i class='fas fa-money-bill'></i>",
+            "title" => "Rekonsiliasi Kas",
+            "urutkan" => true,
+            "method" => ["Index"],
+        ],
         // [
         //     "icon" => "<i class='fas fa-users'></i>",
         //     "title" => "Informasi Pasien",

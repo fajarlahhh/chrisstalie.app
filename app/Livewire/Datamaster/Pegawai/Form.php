@@ -12,7 +12,33 @@ class Form extends Component
 {
     use CustomValidationTrait;
     public $data, $previous, $unsurGaji = [];
-    public $nama, $alamat, $no_hp, $tanggal_masuk, $tanggal_lahir, $jenis_kelamin, $nik, $npwp, $no_bpjs, $gaji, $tunjangan, $tunjangan_transport, $tunjangan_bpjs, $office, $satuan_tugas, $status;
+    public $nama, $alamat, $no_hp, $tanggal_masuk, $tanggal_lahir, $jenis_kelamin, $nik, $npwp, $no_bpjs, $gaji, $tunjangan, $tunjangan_transport, $tunjangan_bpjs, $office, $satuan_tugas, $status, $upload = false, $panggilan;
+
+    public function upload($pegawai)
+    {
+        try {
+            $buffer = [];
+            $response = [];
+            $i = 0;
+            $Connect = fsockopen(config('app.fingerprint_ip'), "80", $errno, $errstr, 30);
+            if ($Connect) {
+                $soap_request = "<SetUserInfo><ArgComKey Xsi:type=\"xsd:integer\">" . config('app.fingerprint_key') . "</ArgComKey><Arg><PIN>" . $pegawai->id . "</PIN><Name>" . $pegawai->panggilan . "</Name><Password>" . $pegawai->id . "</Password><Privilege>19</Privilege></Arg></SetUserInfo>";
+                $newLine = "\r\n";
+                fputs($Connect, "POST /iWsService HTTP/1.0" . $newLine);
+                fputs($Connect, "Content-Type: text/xml" . $newLine);
+                fputs($Connect, "Content-Length: " . strlen($soap_request) . $newLine . $newLine);
+                fputs($Connect, $soap_request . $newLine);
+                $buffer[$i] = "";
+                while ($response[$i] = fgets($Connect, 1024)) {
+                    $buffer[$i] = $buffer[$i] . $response[$i];
+                }
+                Pegawai::where('id', $pegawai->id)->update(['upload' => 1]);
+                return true;
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
 
     public function submit()
     {
@@ -38,6 +64,7 @@ class Form extends Component
             $this->data->npwp = $this->npwp;
             $this->data->no_bpjs = $this->no_bpjs;
             $this->data->satuan_tugas = $this->satuan_tugas;
+            $this->data->panggilan = $this->panggilan;
             if ($this->data->exists) {
                 $this->data->status = $this->status == 'Aktif' ? 'Aktif' : 'Non Aktif';
             } else {
@@ -54,7 +81,17 @@ class Form extends Component
                 'unsur_gaji_sifat' => $q['unsur_gaji_sifat'],
                 'nilai' => $q['nilai'],
             ])->toArray());
-            session()->flash('success', 'Berhasil menyimpan data');
+
+            if ($this->upload == 1) {
+                $upload = $this->upload($this->data);
+                if ($upload) {
+                    session()->flash('success', 'Berhasil mengupload data ke mesin');
+                } else {
+                    session()->flash('danger', 'Gagal mengupload data ke mesin');
+                }
+            } else {
+                session()->flash('success', 'Berhasil menyimpan data');
+            }
         });
         $this->redirect($this->previous);
     }
@@ -81,7 +118,7 @@ class Form extends Component
             ->values();
         $dataUnsurGajiPegawai = [];
         foreach ($mergedUnsurGaji as $key => $value) {
-            $dataUnsurGajiPegawai[] =[
+            $dataUnsurGajiPegawai[] = [
                 'unsur_gaji_nama' => $value['unsur_gaji_nama'],
                 'unsur_gaji_sifat' => $value['unsur_gaji_sifat'],
                 'unsur_gaji_kode_akun_id' => $value['unsur_gaji_kode_akun_id'],

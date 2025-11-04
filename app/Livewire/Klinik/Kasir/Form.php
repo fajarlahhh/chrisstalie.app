@@ -8,11 +8,12 @@ use Livewire\Component;
 use App\Models\Tindakan;
 use App\Models\ResepObat;
 use App\Class\BarangClass;
+use App\Class\JurnalClass;
 use App\Models\Pembayaran;
 use App\Models\Registrasi;
 use App\Models\MetodeBayar;
-use App\Models\TindakanAlatBarang;
 use Illuminate\Support\Str;
+use App\Models\TindakanAlatBarang;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 
@@ -23,7 +24,7 @@ class Form extends Component
     public $data;
     public $tindakan = [], $dataTindakan = [], $dataNakes = [], $resep = [], $dataMetodeBayar = [];
     public $metode_bayar = 1, $cash = 0, $keterangan, $dataBarang = [];
-    public $keterangan_pembayaran, $total_tagihan = 0, $total_tindakan = 0, $total_resep = 0, $diskon = 0, $alatBahan = [];
+    public $keterangan_pembayaran, $total_tagihan = 0, $total_tindakan = 0, $total_resep = 0, $diskon = 0, $bahan = [], $alat = [];
 
     public function mount(Registrasi $data)
     {
@@ -43,6 +44,7 @@ class Form extends Component
                 'nama' => $q->tarifTindakan->nama,
                 'diskon' => 0,
                 'qty' => $q->qty,
+                'kode_akun_id' => $q->tarifTindakan->kode_akun_id,
                 'harga' => $q->harga,
                 'catatan' => $q->catatan,
                 'dokter_id' => $q->dokter_id,
@@ -79,7 +81,7 @@ class Form extends Component
                 ];
             })->values()->toArray();
 
-        $this->alatBahan = TindakanAlatBarang::whereNotNull('barang_satuan_id')->where('id', $this->data->id)->get()->map(function ($q) use ($barangKlinik) {
+        $this->bahan = TindakanAlatBarang::whereNotNull('barang_satuan_id')->where('id', $this->data->id)->get()->map(function ($q) use ($barangKlinik) {
             $barang = collect($barangKlinik)->firstWhere('id', $q->barang_satuan_id);
             return [
                 'barang_id' => $barang['barang_id'],
@@ -89,6 +91,15 @@ class Form extends Component
                 'biaya' => $q->biaya,
                 'barang_satuan_id' => $q->barang_satuan_id,
                 'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
+            ];
+        })->toArray();
+
+        $this->alat = TindakanAlatBarang::whereNotNull('aset_id')->where('biaya', '>', 0)->with('alat')->where('id', $this->data->id)->get()->map(function ($q) {
+            return [
+                'id' => $q->aset_id,
+                'nama' => $q->alat->nama,
+                'qty' => $q->qty,
+                'biaya' => $q->biaya,
             ];
         })->toArray();
     }
@@ -108,21 +119,21 @@ class Form extends Component
             //     }
             // },
             'tindakan.*.perawat_id' => 'required',
-            'alatBahan.*.qty' => [
+            'bahan.*.qty' => [
                 'required',
                 'numeric',
                 'min:1',
                 function ($attribute, $value, $fail) {
                     $index = explode('.', $attribute)[1];
-                    $alatBahan = $this->alatBahan[$index] ?? null;
-                    if (!$alatBahan) return;
+                    $bahan = $this->bahan[$index] ?? null;
+                    if (!$bahan) return;
 
-                    $stokTersedia = Stok::where('barang_id', $alatBahan['barang_id'])
+                    $stokTersedia = Stok::where('barang_id', $bahan['barang_id'])
                         ->available()
                         ->count();
-                    if (($value * ($alatBahan['rasio_dari_terkecil'] ?? 1)) > $stokTersedia) {
-                        $stokAvailable = $stokTersedia / $alatBahan['rasio_dari_terkecil'];
-                        $fail("Stok bahan {$alatBahan['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$alatBahan['satuan']}.");
+                    if (($value * ($bahan['rasio_dari_terkecil'] ?? 1)) > $stokTersedia) {
+                        $stokAvailable = $stokTersedia / $bahan['rasio_dari_terkecil'];
+                        $fail("Stok bahan {$bahan['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$bahan['satuan']}.");
                     }
                 }
             ],
@@ -181,7 +192,7 @@ class Form extends Component
             $pembayaran->save();
 
             foreach ($this->tindakan as $tindakan) {
-                Tindakan::where('tarif_tindakan_id', $tindakan['id'])->update(['diskon' => $tindakan['diskon']]);
+                Tindakan::where('tarif_tindakan_id', $tindakan['id'])->where('id', $this->data->id)->update(['diskon' => $tindakan['diskon']]);
             }
 
             Registrasi::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
@@ -189,7 +200,7 @@ class Form extends Component
 
             ResepObat::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
 
-            BarangClass::stokKeluar(collect($this->alatBahan)->map(function ($q) {
+            BarangClass::stokKeluar(collect($this->bahan)->map(function ($q) {
                 return [
                     'qty' => $q['qty'],
                     'harga' => $q['biaya'],
@@ -212,6 +223,7 @@ class Form extends Component
                 })->toArray();
                 BarangClass::stokKeluar($barang, $pembayaran->id);
             }
+
             $data = Registrasi::findOrFail($this->data->id);
             $cetak = view('livewire.klinik.kasir.cetak', [
                 'cetak' => true,
@@ -224,76 +236,49 @@ class Form extends Component
         return redirect()->to('/klinik/kasir'); // pengalihan lebih eksplisit
     }
 
-    /**
-     * Jurnal pendapatan barang dan diskon
-     */
-    private function jurnalPendapatan($data, $metodeBayar)
+    private function jurnalPendapatan($pembayaran, $metodeBayar)
     {
-        if (!$metodeBayar || empty($metodeBayar['id'])) return;
-
-        $id = (string) Str::uuid();
+        $id = Str::uuid();
         $jurnalDetail = [];
 
-        $totalBarang = 0;
-        $totalDiskon = 0;
-        $akunDetails = [];
-
-
-        if (!empty($this->dataBarang)) {
-            foreach ($this->dataBarang as $barang) {
-                if (!empty($barang['kode_akun_penjualan_id'])) {
-                    $key = $barang['kode_akun_penjualan_id'];
-                    if (!isset($akunDetails[$key])) {
-                        $akunDetails[$key] = [
-                            'kode_akun_id' => $barang['kode_akun_penjualan_id'],
-                            'total' => 0,
-                        ];
-                    }
-                    $akunDetails[$key]['total'] += ($barang['harga'] ?? 0) * ($barang['qty'] ?? 0);
-                    $totalBarang += ($barang['harga'] ?? 0) * ($barang['qty'] ?? 0);
-                }
-                if (!empty($barang['diskon'])) {
-                    $totalDiskon += $barang['diskon'];
-                }
-            }
+        foreach ($this->tindakan as $tindakan) {
+            Tindakan::where('tarif_tindakan_id', $tindakan['id'])->update(['diskon' => $tindakan['diskon']]);
         }
 
-        foreach ($akunDetails as $item) {
+        foreach (
+            collect($this->barang)->groupBy('kode_akun_penjualan_id')->map(fn($q) => [
+                'kode_akun_id' => $q->first()['kode_akun_penjualan_id'],
+                'total' => $q->sum(fn($q) => $q['harga'] * $q['qty']),
+            ]) as $barang
+        ) {
             $jurnalDetail[] = [
                 'jurnal_id' => $id,
                 'debet' => 0,
-                'kredit' => $item['total'],
-                'kode_akun_id' => $item['kode_akun_id'],
+                'kredit' => $barang['total'],
+                'kode_akun_id' => $barang['kode_akun_id']
             ];
         }
 
-        if ($totalDiskon > 0) {
+        if ($this->diskon > 0) {
             $jurnalDetail[] = [
                 'jurnal_id' => $id,
-                'debet' => $totalDiskon,
+                'debet' => collect($this->tindakan)->sum('diskon'),
                 'kredit' => 0,
                 'kode_akun_id' => '44100'
             ];
         }
-
-        if (!empty($metodeBayar['id'])) {
-            $jurnalDetail[] = [
-                'jurnal_id' => $id,
-                'debet' => $totalBarang - $totalDiskon,
-                'kredit' => 0,
-                'kode_akun_id' => $metodeBayar['id']
-            ];
-        }
-
-        // Catat jurnal dengan class, asumsikan JurnalClass tersedia
-        if (class_exists('\App\Class\JurnalClass')) {
-            \App\Class\JurnalClass::insert($id, 'Penjualan', [
-                'tanggal' => now(),
-                'uraian' => 'Penjualan Barang Bebas ' . ($data->id ?? ''),
-                'referensi_id' => $data->id ?? null,
-                'pengguna_id' => auth()->id(),
-            ], $jurnalDetail);
-        }
+        $jurnalDetail[] = [
+            'jurnal_id' => $id,
+            'debet' => $this->total_tagihan,
+            'kredit' => 0,
+            'kode_akun_id' => $metodeBayar->kode_akun_id
+        ];
+        JurnalClass::insert($id, 'Pembayaran Pasien Klinik ', [
+            'tanggal' => now(),
+            'uraian' => 'Pembayaran Pasien Klinik No. Registrasi ' . Registrasi::where('pembayaran_id', $pembayaran->id)->first()->no_registrasi,
+            'referensi_id' => $pembayaran->id,
+            'pengguna_id' => auth()->id(),
+        ], $jurnalDetail);
     }
 
     public function render()

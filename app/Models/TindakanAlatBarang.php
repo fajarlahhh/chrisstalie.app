@@ -22,12 +22,12 @@ class TindakanAlatBarang extends Model
 
     public function barang(): BelongsTo
     {
-        return $this->belongsTo(Barang::class)->whereNotNull('barang_id');
+        return $this->belongsTo(Barang::class);
     }
 
     public function alat(): BelongsTo
     {
-        return $this->belongsTo(Aset::class)->whereNotNull('aset_id');
+        return $this->belongsTo(Aset::class, 'aset_id');
     }
 
     public function barangSatuan(): BelongsTo
