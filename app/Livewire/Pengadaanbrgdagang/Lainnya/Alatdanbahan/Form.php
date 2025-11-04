@@ -157,7 +157,7 @@ class Form extends Component
             }
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('pengadaanbrgdagang/lainnya/alatdanbahan');
+        $this->redirect('/pengadaanbrgdagang/lainnya/alatdanbahan');
     }
 
     public function render()

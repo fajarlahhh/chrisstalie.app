@@ -29,7 +29,7 @@
                 <div class="mb-3">
                     <label class="form-label">Pegawai</label>
                     <select data-container="body" class="form-control" wire:model.lazy="pegawai_id" data-width="100%">
-                        <option selected value="">-- Bukan Pegawai --</option>
+                        <option selected value="">-- Pilih Pegawai --</option>
                         @foreach ($dataPegawai as $item)
                             <option value="{{ $item['id'] }}">
                                 {{ $item['nama'] }}</option>
@@ -88,7 +88,7 @@
                         Simpan
                     </button>
                 @endrole
-                <button type="button" onclick="window.location.href='kepegawaian/penggajian'" class="btn btn-danger"
+                <button type="button" onclick="window.location.href='/kepegawaian/penggajian'" class="btn btn-danger"
                     wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal

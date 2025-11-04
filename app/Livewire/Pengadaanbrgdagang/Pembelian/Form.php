@@ -104,7 +104,7 @@ class Form extends Component
             // ])->toArray());
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('pengadaanbrgdagang/pembelian');
+        $this->redirect('/pengadaanbrgdagang/pembelian');
     }
 
     public function render()

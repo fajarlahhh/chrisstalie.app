@@ -103,7 +103,7 @@ class Index extends Component
             session()->flash('cetak', $cetak);
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('penjualan');
+        $this->redirect('/penjualan');
     }
 
     private function jurnalPendapatan($pembayaran, $metodeBayar)

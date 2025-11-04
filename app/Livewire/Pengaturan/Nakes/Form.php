@@ -54,7 +54,7 @@ class Form extends Component
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('pengaturan/nakes');
+        $this->redirect('/pengaturan/nakes');
     }
 
     public function mount(Nakes $data)

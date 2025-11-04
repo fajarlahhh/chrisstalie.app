@@ -77,7 +77,7 @@ class Form extends Component
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('datamaster/tariftindakan');
+        $this->redirect('/datamaster/tariftindakan');
     }
 
     public function mount(TarifTindakan $data)

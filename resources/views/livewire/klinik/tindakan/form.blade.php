@@ -127,13 +127,13 @@
                 @endrole
                 @if (isset($data->tindakan) && $data->tindakan->count() > 0)
                     <button type="button" class="btn btn-info m-r-3" wire:loading.attr="disabled"
-                        onclick="window.location.href='/klinik/resepobat/form/{{ $data->id }}'">
+                        onclick="window.location.href='//klinik/resepobat/form/{{ $data->id }}'">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Lanjut Resep Obat
                     </button>
                 @endif
                 <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
-                    onclick="window.location.href='/klinik/tindakan'">
+                    onclick="window.location.href='//klinik/tindakan'">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Data
                 </button>

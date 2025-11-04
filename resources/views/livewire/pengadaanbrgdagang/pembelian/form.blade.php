@@ -194,7 +194,7 @@
                         Simpan
                     </button>
                 @endunlessrole
-                <button type="button" onclick="window.location.href='pengadaanbrgdagang/pembelian'"
+                <button type="button" onclick="window.location.href='/pengadaanbrgdagang/pembelian'"
                     class="btn btn-danger" wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal

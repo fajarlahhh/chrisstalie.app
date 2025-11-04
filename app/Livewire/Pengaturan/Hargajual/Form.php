@@ -55,7 +55,7 @@ class Form extends Component
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('pengaturan/hargajual');
+        $this->redirect('/pengaturan/hargajual');
     }
 
     public function updatedBarangId()

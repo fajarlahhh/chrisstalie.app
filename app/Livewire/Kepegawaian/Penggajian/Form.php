@@ -21,6 +21,7 @@ class Form extends Component
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '11100')->get()->toArray();
         $this->unsurGaji = $this->pegawai->pegawaiUnsurGaji->map(fn($q) => [
             'kode_akun_id' => $q->unsur_gaji_kode_akun_id,
+            'unsur_gaji_sifat' => $q->unsur_gaji_sifat,
             'unsur_gaji_nama' => $q->unsur_gaji_nama,
             'nilai' => $q->nilai,
         ])->toArray();

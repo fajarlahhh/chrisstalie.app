@@ -44,7 +44,7 @@ class Form extends Component
             $this->data->syncRoles($this->role);
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('hakakses');
+        $this->redirect('/hakakses');
     }
 
     public function mount(Pengguna $data)

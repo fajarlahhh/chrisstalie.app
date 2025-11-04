@@ -93,7 +93,7 @@ class Form extends Component
                 session()->flash('success', 'Berhasil menyimpan data');
             }
         });
-        $this->redirect('datamaster/pegawai');
+        $this->redirect('/datamaster/pegawai');
     }
 
     public function mount(Pegawai $data)

@@ -28,7 +28,7 @@ class Form extends Component
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('datamaster/metodebayar');
+        $this->redirect('/datamaster/metodebayar');
     }
 
     public function mount(MetodeBayar $data)

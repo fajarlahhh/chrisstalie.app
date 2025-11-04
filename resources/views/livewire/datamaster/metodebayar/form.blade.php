@@ -54,7 +54,7 @@
                         Simpan
                     </button>
                 @endrole
-                <button type="button" onclick="window.location.href='datamaster/metodebayar'" class="btn btn-danger"
+                <button type="button" onclick="window.location.href='/datamaster/metodebayar'" class="btn btn-danger"
                     wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal

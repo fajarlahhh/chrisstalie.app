@@ -51,7 +51,7 @@ class Form extends Component
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('pengadaanbrgdagang/verifikasi');
+        $this->redirect('/pengadaanbrgdagang/verifikasi');
     }
 
     public function mount(PermintaanPembelian $data)

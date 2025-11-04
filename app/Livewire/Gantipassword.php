@@ -27,7 +27,7 @@ class Gantipassword extends Component
             'password' => Hash::make($this->newPassword),
         ]);
         session()->flash('success', 'Berhasil menyimpan data');
-        return $this->redirect('gantipassword');
+        return $this->redirect('/gantipassword');
     }
 
 

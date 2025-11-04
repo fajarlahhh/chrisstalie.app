@@ -54,7 +54,7 @@ class Form extends Component
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('datamaster/kodeakun');
+        $this->redirect('/datamaster/kodeakun');
     }
 
     public function mount(KodeAkun $data)

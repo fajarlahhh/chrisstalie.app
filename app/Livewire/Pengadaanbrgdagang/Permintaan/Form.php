@@ -61,7 +61,7 @@ class Form extends Component
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('pengadaanbrgdagang/permintaan');
+        $this->redirect('/pengadaanbrgdagang/permintaan');
     }
 
     public function mount(PermintaanPembelian $data)

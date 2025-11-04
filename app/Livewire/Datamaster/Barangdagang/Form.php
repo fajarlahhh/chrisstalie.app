@@ -101,7 +101,7 @@ class Form extends Component
             }
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('datamaster/barangdagang');
+        $this->redirect('/datamaster/barangdagang');
     }
 
     public function mount(Barang $data)
