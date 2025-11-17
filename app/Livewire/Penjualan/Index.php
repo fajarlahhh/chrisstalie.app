@@ -98,9 +98,9 @@ class Index extends Component
                 ];
             })->toArray();
             
-            BarangClass::stokKeluar($barang, $pembayaran->id, 'Penjualan Barang Bebas');
+            $hpp = BarangClass::stokKeluar($barang, $pembayaran->id, 'Penjualan Barang Bebas');
 
-            $this->jurnalPendapatan($pembayaran, $metodeBayar);
+            $this->jurnalPendapatan($pembayaran, $metodeBayar, $hpp);
 
             $cetak = view('livewire.penjualan.cetak', [
                 'cetak' => true,
@@ -112,7 +112,7 @@ class Index extends Component
         $this->redirect('/penjualan');
     }
 
-    private function jurnalPendapatan($pembayaran, $metodeBayar)
+    private function jurnalPendapatan($pembayaran, $metodeBayar, $hpp)
     {
         $id = Str::uuid();
         $jurnalDetail = [];
@@ -144,6 +144,14 @@ class Index extends Component
             'kredit' => 0,
             'kode_akun_id' => $metodeBayar->kode_akun_id
         ];
+        $jurnalDetail = array_merge($jurnalDetail, collect($hpp)->map(function ($q) use ($id) {
+            return [
+                'jurnal_id' => $id,
+                'kode_akun_id' => $q['kode_akun_id'],
+                'debet' =>  $q['debet'],
+                'kredit' => $q['kredit'],
+            ];
+        })->all());
         JurnalClass::insert($id, 'Penjualan Barang Bebas', [
             'tanggal' => now(),
             'uraian' => 'Penjualan Barang Bebas ' . $pembayaran->id,

@@ -47,27 +47,30 @@
                                     &nbsp;&nbsp;&nbsp;- Dokter : <span
                                         x-text="row.dokter_id ? dataNakes.find(n => n.id == row.dokter_id)?.nama : 'Tidak Ada Dokter'"></span>
                                     <br>
-                                    <div wire:ignore>
-                                        <select class="form-control" x-model="row.perawat_id" x-init="$($el).select2({
-                                            width: '100%',
-                                            dropdownAutoWidth: true
-                                        });
-                                        $($el).on('change', function(e) {
-                                            row.perawat_id = e.target.value;
-                                        });
-                                        $watch('row.perawat_id', (value) => {
-                                            if (value !== $($el).val()) {
-                                                $($el).val(value).trigger('change');
-                                            }
-                                        });">
-                                            <option value="">-- Tidak Ada Perawat --</option>
-                                            <template x-for="nakes in dataNakes" :key="nakes.id">
-                                                <option :value="nakes.id" :selected="row.perawat_id == nakes.id"
-                                                    x-text="nakes.nama">
-                                                </option>
-                                            </template>
-                                        </select>
-                                    </div>
+                                    <template x-if="row.biaya_jasa_perawat > 0">
+                                        <div wire:ignore>
+                                            <select class="form-control" x-model="row.perawat_id"
+                                                x-init="$($el).select2({
+                                                    width: '100%',
+                                                    dropdownAutoWidth: true
+                                                });
+                                                $($el).on('change', function(e) {
+                                                    row.perawat_id = e.target.value;
+                                                });
+                                                $watch('row.perawat_id', (value) => {
+                                                    if (value !== $($el).val()) {
+                                                        $($el).val(value).trigger('change');
+                                                    }
+                                                });">
+                                                <option value="">-- Tidak Ada Perawat --</option>
+                                                <template x-for="nakes in dataNakes" :key="nakes.id">
+                                                    <option :value="nakes.id"
+                                                        :selected="row.perawat_id == nakes.id" x-text="nakes.nama">
+                                                    </option>
+                                                </template>
+                                            </select>
+                                        </div>
+                                    </template>
                                     @error('tindakan.' . $index . '.perawat_id')
                                         <span class="text-danger">{{ $message }}</span>
                                         <br>

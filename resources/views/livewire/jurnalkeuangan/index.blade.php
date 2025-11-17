@@ -33,7 +33,6 @@
                         <th>Jenis</th>
                         <th>Tanggal</th>
                         <th>Uraian</th>
-                        <th>Total</th>
                         <th>Detail</th>
                         <th class="w-10px"></th>
                     </tr>
@@ -46,9 +45,6 @@
                             <td>{{ $row->jenis }}</td>
                             <td>{{ $row->tanggal }}</td>
                             <td>{{ $row->uraian }}</td>
-                            <td class="text-end p-1 text-nowrap">
-                                {{ number_format($row->jurnalDetail->sum(fn($q) => $q->debet)) }}
-                            </td>
                             <td class="w-400px">
                                 <table class="table table-bordered fs-10px">
                                     <tr class="bg-gray-100">

@@ -102,31 +102,21 @@ class BarangClass
                 'stok_keluar_id' => $stokKeluarId,
             ]);
 
-            $id = Str::uuid();
             $hargaBeli = Stok::where('barang_id', $brg['barang_id'])
                 ->where('stok_keluar_id', $stokKeluarId)
                 ->sum('harga_beli');
 
             $detail[] = [
-                'jurnal_id' => $id,
                 'kode_akun_id' => $brg['kode_akun_id'],
                 'debet' => 0,
                 'kredit' => $hargaBeli,
             ];
             $detail[] = [
-                'jurnal_id' => $id,
                 'kode_akun_id' => $brg['kode_akun_modal_id'],
                 'debet' => $hargaBeli,
                 'kredit' => 0,
             ];
-
-            JurnalClass::insert($id, $jenis, [
-                'tanggal' => now(),
-                'uraian' => 'Modal ' . strtolower($jenis) . ' ' . $pembayaranId,
-                'referensi_id' => $pembayaranId,
-                'pengguna_id' => auth()->id(),
-            ], $detail);
-
         }
+        return $detail;
     }
 }

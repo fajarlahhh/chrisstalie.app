@@ -108,8 +108,12 @@
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Simpan
                     </button>
-                @endrole
-                <a href="/penjualan/data" class="btn btn-warning">Data</a>
+                @endrole    
+                <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
+                    onclick="window.location.href='/klinik/resepobat'">
+                    <span wire:loading class="spinner-border spinner-border-sm"></span>
+                    Data
+                </button>
                 <x-alert />
             </div>
         </div>

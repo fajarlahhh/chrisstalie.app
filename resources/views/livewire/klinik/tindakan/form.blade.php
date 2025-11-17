@@ -111,7 +111,8 @@
                     </tr>
                     <tr>
                         <td class="text-center">
-                            <button type="button" class="btn btn-primary btn-sm" @click="tambahTindakan()">
+                            <button type="button" wire:loading.attr="disabled" class="btn btn-primary btn-sm" @click="tambahTindakan()">
+                                <span wire:loading class="spinner-border spinner-border-sm"></span>
                                 Tambah Tindakan Lainnya
                             </button>
                         </td>
@@ -175,6 +176,7 @@
                 updateTindakan(index) {
                     let row = this.tindakan[index];
                     let selected = this.dataTindakan.find(t => t.id == row.id);
+                    row.perawat_id = null;
                     if (selected) {
                         row.harga = selected.tarif;
                         row.biaya_jasa_dokter = selected.biaya_jasa_dokter;

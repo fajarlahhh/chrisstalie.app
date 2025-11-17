@@ -109,7 +109,7 @@ class Form extends Component
                 'biaya_jasa_perawat' => $q['biaya_jasa_perawat'],
                 'biaya_alat_barang' => $q['biaya_alat_barang'],
                 'dokter_id' => $q['dokter_id'],
-                'perawat_id' => $q['perawat_id'] != '' ? $q['perawat_id'] : null,
+                'perawat_id' => $q['perawat_id'] ? $q['perawat_id'] : null,
                 'pengguna_id' => auth()->id(),
                 'qty' => $q['qty'],
                 'created_at' => now(),
