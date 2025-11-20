@@ -25,6 +25,11 @@ class Index extends Component
         Nakes::findOrFail($id)->forceDelete();
     }
 
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function restore($id)
     {
         Nakes::withTrashed()->findOrFail($id)->restore();

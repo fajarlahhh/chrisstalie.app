@@ -21,6 +21,11 @@ class Index extends Component
         $this->dataBarang = Barang::all()->toArray();
     }
 
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function delete($id)
     {
         try {

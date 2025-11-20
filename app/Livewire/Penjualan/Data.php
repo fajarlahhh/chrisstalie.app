@@ -28,6 +28,11 @@ class Data extends Component
         session()->flash('cetak', $cetak);
     }
 
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function delete($id)
     {
         DB::transaction(function () use ($id) {

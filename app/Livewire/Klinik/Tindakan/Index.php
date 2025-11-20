@@ -48,6 +48,11 @@ class Index extends Component
         return $query->orderBy('urutan', 'asc');
     }
 
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
         return view('livewire.klinik.tindakan.index', [

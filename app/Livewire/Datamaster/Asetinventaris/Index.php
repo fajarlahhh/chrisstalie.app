@@ -15,6 +15,11 @@ class Index extends Component
     #[Url]
     public $cari, $kode_akun_id, $dataKodeAkun = [];
 
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function mount()
     {
         $this->dataKodeAkun = KodeAkun::detail()->where('id', 'like', '151%')->get()->toArray();

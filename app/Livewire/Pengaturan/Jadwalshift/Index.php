@@ -21,6 +21,11 @@ class Index extends Component
         $this->dataPegawai = Pegawai::all()->toArray();
     }
 
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function delete($id)
     {
         if (Absensi::where('id', $id)->whereNull('masuk')->exists()) {

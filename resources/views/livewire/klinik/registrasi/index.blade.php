@@ -205,7 +205,7 @@
                                     </tr>
                                     @foreach ($pasien->rekamMedis as $row)
                                         <tr>
-                                            <td>{{ $row->created_at->format('d F Y') }}</td>
+                                            <td>{{ $row->created_at->format('d M Y') }}</td>
                                             <td>{{ $row->urutan }}</td>
                                             <td>{{ $row->nakes->nama }}</td>
                                             <td>{{ $row->keluhan_awal }}</td>

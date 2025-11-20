@@ -16,6 +16,11 @@ class Index extends Component
     #[Url]
     public $cari, $tanggal, $status = 1;
 
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function mount()
     {
         $this->tanggal = $this->tanggal ?: date('Y-m-d');

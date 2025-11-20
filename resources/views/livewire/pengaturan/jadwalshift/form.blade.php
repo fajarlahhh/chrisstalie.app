@@ -72,7 +72,7 @@
                                                 wire:model.live="detail.{{ $i }}.masuk"
                                                 x-model="$wire.detail[{{ $i }}].masuk" />
                                             <p class="card-text">
-                                                {{ \Carbon\Carbon::parse($row['tanggal'])->format('d F Y') }}
+                                                {{ \Carbon\Carbon::parse($row['tanggal'])->format('d M Y') }}
                                             </p>
                                             <template x-if="isChecked">
                                                 <div>

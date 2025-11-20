@@ -29,7 +29,7 @@
                         @foreach ($data->pasien->rekamMedis->where('id', '!=', $data->id) as $row)
                             @if ($row->diagnosis)
                                 <tr>
-                                    <td nowrap>{{ $row->diagnosis->created_at->format('d F Y') }}</td>
+                                    <td nowrap>{{ $row->diagnosis->created_at->format('d M Y') }}</td>
 
                                     <td nowrap>
                                         @foreach ($row->diagnosis->icd10_uraian as $item)

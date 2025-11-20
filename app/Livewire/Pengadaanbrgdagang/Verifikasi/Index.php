@@ -15,6 +15,11 @@ class Index extends Component
     #[Url]
     public $cari, $status = 'Pending';
 
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
         return view('livewire.pengadaanbrgdagang.verifikasi.index', [

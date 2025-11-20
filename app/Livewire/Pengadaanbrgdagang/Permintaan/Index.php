@@ -14,6 +14,11 @@ class Index extends Component
     #[Url]
     public $cari, $status = 'Pending';
 
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function delete($id)
     {
         try {

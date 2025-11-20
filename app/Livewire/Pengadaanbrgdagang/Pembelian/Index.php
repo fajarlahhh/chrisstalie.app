@@ -15,6 +15,10 @@ class Index extends Component
     #[Url]
     public $cari, $bulan, $status = 1;
 
+    public function updated()
+    {
+        $this->resetPage();
+    }
 
     public function mount()
     {

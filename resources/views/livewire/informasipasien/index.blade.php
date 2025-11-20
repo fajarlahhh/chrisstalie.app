@@ -31,7 +31,7 @@
                     <tr>
                         <td>Tgl. Lahir</td>
                         <td class="w-10px">:</td>
-                        <td>{{ $dataPasien->tanggal_lahir->format('d F Y') }} ({{ $dataPasien->umur }} Tahun)</td>
+                        <td>{{ $dataPasien->tanggal_lahir->format('d M Y') }} ({{ $dataPasien->umur }} Tahun)</td>
                     </tr>
                     <tr>
                         <td>Jenis Kelamin</td>
@@ -56,7 +56,7 @@
                     <tr>
                         <td>Tgl. Daftar</td>
                         <td class="w-10px">:</td>
-                        <td>{{ $dataPasien->tanggal_daftar->format('d F Y') }}</td>
+                        <td>{{ $dataPasien->tanggal_daftar->format('d M Y') }}</td>
                     </tr>
                     <tr>
                         <td>Catatan</td>

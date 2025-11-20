@@ -43,7 +43,7 @@
                     @foreach ($data->pasien->rekamMedis->where('id', '!=', $data->id) as $row)
                         @if ($row->pemeriksaanAwal)
                             <tr>
-                                <td nowrap>{{ $row->pemeriksaanAwal->created_at->format('d F Y') }}</td>
+                                <td nowrap>{{ $row->pemeriksaanAwal->created_at->format('d M Y') }}</td>
 
                                 <td nowrap>
                                     <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Keluhan Utama :
@@ -452,7 +452,7 @@
                     @foreach ($data->pasien->rekamMedis as $row)
                         @if ($row->tug)
                             <tr>
-                                <td nowrap>{{ $row->tug->created_at->format('d F Y') }}</td>
+                                <td nowrap>{{ $row->tug->created_at->format('d M Y') }}</td>
 
                                 <td nowrap>
                                     <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Waktu Tes :

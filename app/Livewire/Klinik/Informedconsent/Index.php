@@ -17,6 +17,11 @@ class Index extends Component
     public $registrasi_id, $marker, $catatan = [], $ttd_pasien, $ttd_saksi;
     public $dataRegistrasi = [], $data, $status;
 
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function mount()
     {
         if ($this->id) {

@@ -14,6 +14,11 @@ class Index extends Component
     #[Url]
     public $cari, $exist = 1;
 
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function delete($id)
     {
         Supplier::findOrFail($id)

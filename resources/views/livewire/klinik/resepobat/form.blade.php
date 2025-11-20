@@ -8,30 +8,25 @@
 
     <h1 class="page-header">Resep Obat</h1>
 
-    @include('livewire.klinik.informasipasien', ['data' => $data])
-
-    <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
-        <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
-            <!-- begin panel-heading -->
-            <div class="panel-heading ui-sortable-handle">
-                <h4 class="panel-title">Form</h4>
-            </div>
-            <div class="panel-body">
-                <div class="alert alert-info table-responsive h-400px">
-                    <h5>History Resep Obat</h5>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Tanggal</th>
-                                <th>Resep Obat</th>
-                            </tr>
-                        </thead>
-                        @foreach ($data->pasien->rekamMedis->where('id', '!=', $data->id) as $row)
-                            @if ($row->resepObat->count() > 0)
-                                <tr>
-                                    <td nowrap>{{ $row->resepObat->first()?->created_at?->format('d F Y') }}</td>
-                                    <td nowrap>
-                                        @foreach (collect($row->resepObat)->groupBy('resep')->map(function ($group) {
+    <div class="row">
+        <div class="col-md-4">
+            @include('livewire.klinik.informasipasien', ['data' => $data])
+            <div class="alert alert-info table-responsive h-400px fs-12px">
+                <h5>History Resep Obat</h5>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Resep Obat</th>
+                            <th class="w-10px"></th>
+                        </tr>
+                    </thead>
+                    @foreach ($data->pasien->rekamMedis->where('id', '!=', $data->id) as $row)
+@if ($row->resepObat->count() > 0)
+<tr>
+                                <td nowrap>{{ $row->resepObat->first()?->created_at?->format('d M Y') }}</td>
+                                <td nowrap>
+                                    @foreach (collect($row->resepObat)->groupBy('resep')->map(function ($group) {
             $first = $group->first();
             return [
                 'catatan' => $first->catatan,
@@ -48,116 +43,139 @@
                     })->toArray(),
             ];
         })->values()->toArray() as $item)
-                                            Resep {{ $loop->iteration }} : {{ $item['nama'] }} <br>
-                                            @foreach ($item['barang'] as $barang)
-                                                <small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- {{ $barang['nama'] }} ({{ $barang['qty'] }} {{ $barang['satuan'] }})</small><br>
-                                            @endforeach
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>Catatan : {{ $item['catatan'] }}</small><br>
-                                        @endforeach
-                                </tr>
-                            @endif
+                        Resep {{ $loop->iteration }} : {{ $item['nama'] }} <br>
+                        @foreach ($item['barang'] as $barang)
+                            <small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- {{ $barang['nama'] }} ({{ $barang['qty'] }}
+                                {{ $barang['satuan'] }})</small><br>
                         @endforeach
-                    </table>
-                </div>
-                <template x-for="(resepItem, resepIndex) in resep" :key="resepIndex">
-                    <div class="p-3 bg-light border rounded mb-3">
-                        <div class="row">
-                            <div class="col-md-11">
-                                <div class="mb-3">
-                                    <label class="form-label" x-text="`Resep ${resepIndex + 1}`"></label>
-                                    <input type="text" class="form-control" x-model="resepItem.nama"
-                                        placeholder="Nama Resep">
-                                </div>
-                            </div>
-                            <div class="col-md-1 text-end">
-                                <button type="button" class="btn btn-danger btn-xs" @click="hapusResep(resepIndex)">
-                                    &nbsp;x&nbsp;
-                                </button>
-                            </div>
-                        </div>
-                        <table class="table table-bordered bg-gray-100 mb-3">
-                            <thead>
-                                <tr>
-                                    <th>Barang</th>
-                                    <th class="w-100px">Qty</th>
-                                    <th class="w-5px"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <template x-for="(barangItem, barangIndex) in resepItem.barang" :key="barangIndex">
-                                    <tr>
-                                        <td wire:ignore>
-                                            <select class="form-control" x-model="barangItem.id"
-                                                x-init="$($el).select2({
-                                                    width: '100%',
-                                                    dropdownAutoWidth: true
-                                                });
-                                                $($el).on('change', function(e) {
-                                                    barangItem.id = e.target.value;
-                                                    updateBarang(resepIndex, barangIndex);
-                                                });
-                                                $watch('barangItem.id', (value) => {
-                                                    if (value !== $($el).val()) {
-                                                        $($el).val(value).trigger('change');
-                                                    }
-                                                });">
-                                                <option value="" selected>-- Tidak Ada Barang --</option>
-                                                <template x-for="item in dataBarang" :key="item.id">
-                                                    <option :value="item.id" :selected="barangItem.id == item.id"
-                                                        x-text="`${item.nama} (Rp. ${new Intl.NumberFormat('id-ID').format(item.harga)} / ${item.satuan})`">
-                                                    </option>
-                                                </template>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" min="0" step="1"
-                                                x-model.number="barangItem.qty" autocomplete="off">
-                                        </td>
-                                        <td class="w-10px align-middle">
-                                            <button type="button" class="btn btn-warning btn-sm"
-                                                @click="hapusBarang(resepIndex, barangIndex)">
-                                                <i class="fa fa-times"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </template>
-                                <tr>
-                                    <td colspan="3">
-                                        <div class="text-center">
-                                            <button class="btn btn-secondary" type="button"
-                                                @click="tambahBarang(resepIndex)">
-                                                Tambah Barang
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <textarea class="form-control" x-model="resepItem.catatan" placeholder="Catatan"></textarea>
-                    </div>
-                </template>
-                <div class="text-center">
-                    <button type="button" class="btn btn-info" @click="tambahResep()">
-                        Tambah Resep
-                    </button>
-                </div>
-            </div>
-            <div class="panel-footer">
-                @role('administrator|supervisor|operator')
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
-                        <span wire:loading class="spinner-border spinner-border-sm"></span>
-                        Simpan
-                    </button>
-                @endrole
-                <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
-                    onclick="window.location.href='/klinik/resepobat'">
-                    <span wire:loading class="spinner-border spinner-border-sm"></span>
-                    Data
-                </button>
-                <x-alert />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>Catatan : {{ $item['catatan'] }}</small><br>
+                    @endforeach
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" wire:loading.attr="disabled"
+                            @click="copyResep({{ $row->id }})">
+                            Copy
+                        </button>
+                    </td>
+                    </tr>
+                    @endif
+                    @endforeach
+                </table>
             </div>
         </div>
-    </form>
+        <div class="col-md-8">
+            <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
+                <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+                    <!-- begin panel-heading -->
+                    <div class="panel-heading ui-sortable-handle">
+                        <h4 class="panel-title">Form</h4>
+                    </div>
+                    <div class="panel-body">
+                        <template x-for="(resepItem, resepIndex) in resep" :key="resepIndex">
+                            <div class="p-3 bg-light border rounded mb-3">
+                                <div class="row">
+                                    <div class="col-md-11">
+                                        <div class="mb-3">
+                                            <label class="form-label" x-text="`Resep ${resepIndex + 1}`"></label>
+                                            <input type="text" class="form-control" x-model="resepItem.nama"
+                                                placeholder="Nama Resep">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 text-end">
+                                        <button type="button" wire:loading.attr="disabled" class="btn btn-danger btn-xs"
+                                            @click="hapusResep(resepIndex)">
+                                            &nbsp;x&nbsp;
+                                        </button>
+                                    </div>
+                                </div>
+                                <table class="table table-bordered bg-gray-100 mb-3">
+                                    <thead>
+                                        <tr>
+                                            <th>Barang</th>
+                                            <th class="w-100px">Qty</th>
+                                            <th class="w-5px"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template x-for="(barangItem, barangIndex) in resepItem.barang"
+                                            :key="barangIndex">
+                                            <tr>
+                                                <td wire:ignore>
+                                                    <select class="form-control" x-model="barangItem.id"
+                                                        x-init="$($el).select2({
+                                                            width: '100%',
+                                                            dropdownAutoWidth: true
+                                                        });
+                                                        $($el).on('change', function(e) {
+                                                            barangItem.id = e.target.value;
+                                                            updateBarang(resepIndex, barangIndex);
+                                                        });
+                                                        $watch('barangItem.id', (value) => {
+                                                            if (value !== $($el).val()) {
+                                                                $($el).val(value).trigger('change');
+                                                            }
+                                                        });">
+                                                        <option value="" selected>-- Tidak Ada Barang --</option>
+                                                        <template x-for="item in dataBarang" :key="item.id">
+                                                            <option :value="item.id"
+                                                                :selected="barangItem.id == item.id"
+                                                                x-text="`${item.nama} (Rp. ${new Intl.NumberFormat('id-ID').format(item.harga)} / ${item.satuan})`">
+                                                            </option>
+                                                        </template>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control" min="0"
+                                                        step="1" x-model.number="barangItem.qty"
+                                                        autocomplete="off">
+                                                </td>
+                                                <td class="w-10px align-middle">
+                                                    <button type="button" wire:loading.attr="disabled" class="btn btn-warning btn-sm"
+                                                        @click="hapusBarang(resepIndex, barangIndex)">
+                                                        <i class="fa fa-times"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                        <tr>
+                                            <td colspan="3">
+                                                <div class="text-center">
+                                                    <button class="btn btn-secondary" wire:loading.attr="disabled" type="button"
+                                                        @click="tambahBarang(resepIndex)">
+                                                        Tambah Barang
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <textarea class="form-control" x-model="resepItem.catatan" placeholder="Catatan"></textarea>
+                            </div>
+                        </template>
+                        <div class="text-center">
+                            <button type="button" wire:loading.attr="disabled" class="btn btn-info" @click="tambahResep()">
+                                Tambah Resep
+                            </button>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        @role('administrator|supervisor|operator')
+                            <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                                <span wire:loading class="spinner-border spinner-border-sm"></span>
+                                Simpan
+                            </button>
+                        @endrole
+                        <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
+                            onclick="window.location.href='/klinik/resepobat'">
+                            <span wire:loading class="spinner-border spinner-border-sm"></span>
+                            Data
+                        </button>
+                        <x-alert />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
     <x-modal.cetak judul='Nota' />
 </div>
 
@@ -167,7 +185,7 @@
             return {
                 resep: @js($resep),
                 dataBarang: @js($dataBarang),
-
+                copying: false,
                 tambahResep() {
                     this.resep.push({
                         barang: [],
@@ -205,7 +223,11 @@
                         barangItem.barang_satuan_id = null;
                     }
                 },
-
+                copyResep(id) {
+                    @this.copyResep(id).then(resep => {
+                        this.resep = resep;
+                    });
+                },
                 syncToLivewire() {
                     // Sync data to Livewire
                     if (window.Livewire && window.Livewire.find) {

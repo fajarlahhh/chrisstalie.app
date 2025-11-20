@@ -20,6 +20,11 @@ class Index extends Component
         $this->tanggal = $this->tanggal ?: date('Y-m-d');
     }
 
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function delete($id)
     {
         PemeriksaanAwal::where('id', $id)->delete();

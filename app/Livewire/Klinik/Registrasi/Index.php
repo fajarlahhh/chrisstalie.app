@@ -79,6 +79,11 @@ class Index extends Component
         ]);
     }
 
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function submit()
     {
         $rules = [

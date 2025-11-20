@@ -23,6 +23,31 @@ class Form extends Component
     public $data;
     public $resep = [];
 
+
+    public function copyResep($id)
+    {
+        $data = Registrasi::find($id)->resepobat;
+        return collect($data)
+            ->groupBy('resep')
+            ->map(function ($group) {
+                $first = $group->first();
+                return [
+                    'catatan' => $first->catatan,
+                    'nama' => $first->nama,
+                    'barang' => $group->map(function ($r) {
+                        return [
+                            'id' => $r->barang_satuan_id,
+                            'harga' => $r->harga,
+                            'qty' => $r->qty,
+                            'subtotal' => $r->harga * $r->qty,
+                        ];
+                    })->toArray(),
+                ];
+            })
+            ->values()
+            ->toArray();
+    }
+
     public function submit()
     {
         $this->validateWithCustomMessages([

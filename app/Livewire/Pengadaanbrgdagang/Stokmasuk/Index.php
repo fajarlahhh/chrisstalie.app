@@ -21,6 +21,11 @@ class Index extends Component
         $this->bulan = $this->bulan ?: date('Y-m');
     }
 
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function delete($id)
     {
         $data = StokMasuk::find($id);
