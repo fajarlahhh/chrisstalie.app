@@ -9,7 +9,7 @@
 
 
     <h1 class="page-header">Tindakan <small>Input</small></h1>
-    
+
     @include('livewire.klinik.informasipasien', ['data' => $data])
 
     <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
@@ -18,6 +18,33 @@
                 <h4 class="panel-title">Form</h4>
             </div>
             <div class="panel-body">
+                <div class="alert alert-info table-responsive h-400px">
+                    <h5>History Tindakan</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Tindakan</th>
+                            </tr>
+                        </thead>
+                        @foreach ($data->pasien->rekamMedis->where('id', '!=', $data->id) as $row)
+                            @if ($row->tindakan)
+                                <tr>
+                                    <td nowrap>{{ $row->tindakan->first()?->created_at?->format('d F Y') }}</td>
+                                    <td nowrap>
+                                        @foreach ($row->tindakan as $item)
+                                            {{ $loop->iteration }}. {{ $item->tarifTindakan->nama }}
+                                            ({{ $item->qty }} x)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dokter : {{ $item->dokter->nama }}<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perawat :
+                                            {{ $item->perawat?->nama }}<br>
+                                        @endforeach
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </table>
+                </div>
                 <table class="table table-borderless p-0">
                     <tr>
                         <td class="p-0">
@@ -25,8 +52,7 @@
                                 <div class="border p-3 position-relative" :class="index > 0 ? 'mt-3' : ''">
                                     <template x-if="index > 0">
                                         <button type="button" class="btn btn-danger btn-xs position-absolute"
-                                            style="top: 5px; right: 5px; z-index: 10;"
-                                            @click="hapusTindakan(index)">
+                                            style="top: 5px; right: 5px; z-index: 10;" @click="hapusTindakan(index)">
                                             &nbsp;x&nbsp;
                                         </button>
                                     </template>
@@ -68,8 +94,10 @@
                                             <label class="form-label">Dokter</label>
                                             <select class="form-control" x-model="row.dokter_id">
                                                 <option value="">-- Pilih Dokter --</option>
-                                                <template x-for="nakes in dataNakes.filter(n => n.dokter == 1)" :key="nakes.id">
-                                                    <option :value="nakes.id" :selected="row.dokter_id == nakes.id" x-text="nakes.nama"></option>
+                                                <template x-for="nakes in dataNakes.filter(n => n.dokter == 1)"
+                                                    :key="nakes.id">
+                                                    <option :value="nakes.id" :selected="row.dokter_id == nakes.id"
+                                                        x-text="nakes.nama"></option>
                                                 </template>
                                             </select>
                                         </div>
@@ -80,7 +108,9 @@
                                             <select class="form-control" x-model="row.perawat_id">
                                                 <option value="">-- Pilih Perawat --</option>
                                                 <template x-for="nakes in dataNakes" :key="nakes.id">
-                                                    <option :value="nakes.id" :selected="row.perawat_id == nakes.id" x-text="nakes.nama"></option>
+                                                    <option :value="nakes.id"
+                                                        :selected="row.perawat_id == nakes.id" x-text="nakes.nama">
+                                                    </option>
                                                 </template>
                                             </select>
                                         </div>
@@ -93,16 +123,14 @@
                                         <input class="form-check-input" type="checkbox"
                                             :id="`membutuhkan_inform_consent${index}`"
                                             x-model="row.membutuhkan_inform_consent">
-                                        <label class="form-check-label"
-                                            :for="`membutuhkan_inform_consent${index}`">
+                                        <label class="form-check-label" :for="`membutuhkan_inform_consent${index}`">
                                             Butuh Informed Consent</label>
                                     </div>
                                     <div class="form-check form-switch mb-3">
                                         <input class="form-check-input" type="checkbox"
                                             :id="`membutuhkan_sitemarking${index}`"
                                             x-model="row.membutuhkan_sitemarking">
-                                        <label class="form-check-label"
-                                            :for="`membutuhkan_sitemarking${index}`">
+                                        <label class="form-check-label" :for="`membutuhkan_sitemarking${index}`">
                                             Butuh Sitemarking</label>
                                     </div>
                                 </div>
@@ -111,7 +139,8 @@
                     </tr>
                     <tr>
                         <td class="text-center">
-                            <button type="button" wire:loading.attr="disabled" class="btn btn-primary btn-sm" @click="tambahTindakan()">
+                            <button type="button" wire:loading.attr="disabled" class="btn btn-primary btn-sm"
+                                @click="tambahTindakan()">
                                 <span wire:loading class="spinner-border spinner-border-sm"></span>
                                 Tambah Tindakan Lainnya
                             </button>
@@ -151,7 +180,7 @@
                 tindakan: @js($tindakan),
                 dataTindakan: @js($dataTindakan),
                 dataNakes: @js($dataNakes),
-                
+
                 tambahTindakan() {
                     this.tindakan.push({
                         id: null,
@@ -168,11 +197,11 @@
                         biaya: 0,
                     });
                 },
-                
+
                 hapusTindakan(index) {
                     this.tindakan.splice(index, 1);
                 },
-                
+
                 updateTindakan(index) {
                     let row = this.tindakan[index];
                     let selected = this.dataTindakan.find(t => t.id == row.id);
@@ -191,7 +220,7 @@
                         row.biaya = 0;
                     }
                 },
-                
+
                 syncToLivewire() {
                     // Sinkronkan data ke Livewire
                     if (window.Livewire && window.Livewire.find) {
@@ -204,7 +233,7 @@
                         }
                     }
                 },
-                
+
                 init() {
                     // Inisialisasi
                 }

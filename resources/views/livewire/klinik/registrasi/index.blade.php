@@ -193,6 +193,27 @@
                         <!-- END tab-content -->
                     </div>
                     <div class="col-md-6">
+                        @if ($pasien)
+                            <div class="alert alert-info">
+                                <h5>History Registrasi</h5>
+                                <table class="table">
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>No. Registrasi</th>
+                                        <th>Dokter</th>
+                                        <th>Keluhan Awal</th>
+                                    </tr>
+                                    @foreach ($pasien->rekamMedis as $row)
+                                        <tr>
+                                            <td>{{ $row->created_at->format('d F Y') }}</td>
+                                            <td>{{ $row->urutan }}</td>
+                                            <td>{{ $row->nakes->nama }}</td>
+                                            <td>{{ $row->keluhan_awal }}</td>
+                                        </tr>
+                                    @endforeach
+                                </table>    
+                            </div>
+                        @endif
                         <div class="mb-3">
                             <label class="form-label">Tanggal</label>
                             <input class="form-control" type="date" wire:model="tanggal"

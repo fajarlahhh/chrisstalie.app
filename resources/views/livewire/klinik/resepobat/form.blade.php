@@ -7,7 +7,7 @@
     @endsection
 
     <h1 class="page-header">Resep Obat</h1>
-    
+
     @include('livewire.klinik.informasipasien', ['data' => $data])
 
     <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
@@ -17,20 +17,60 @@
                 <h4 class="panel-title">Form</h4>
             </div>
             <div class="panel-body">
+                <div class="alert alert-info table-responsive h-400px">
+                    <h5>History Resep Obat</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Resep Obat</th>
+                            </tr>
+                        </thead>
+                        @foreach ($data->pasien->rekamMedis->where('id', '!=', $data->id) as $row)
+                            @if ($row->resepObat->count() > 0)
+                                <tr>
+                                    <td nowrap>{{ $row->resepObat->first()?->created_at?->format('d F Y') }}</td>
+                                    <td nowrap>
+                                        @foreach (collect($row->resepObat)->groupBy('resep')->map(function ($group) {
+            $first = $group->first();
+            return [
+                'catatan' => $first->catatan,
+                'nama' => $first->nama,
+                'barang' => $group->map(function ($r) {
+                        return [
+                            'id' => $r->barang_satuan_id,
+                            'satuan' => $r->barangSatuan->nama,
+                            'nama' => $r->barangSatuan->barang->nama,
+                            'harga' => $r->harga,
+                            'qty' => $r->qty,
+                            'subtotal' => $r->harga * $r->qty,
+                        ];
+                    })->toArray(),
+            ];
+        })->values()->toArray() as $item)
+                                            Resep {{ $loop->iteration }} : {{ $item['nama'] }} <br>
+                                            @foreach ($item['barang'] as $barang)
+                                                <small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- {{ $barang['nama'] }} ({{ $barang['qty'] }} {{ $barang['satuan'] }})</small><br>
+                                            @endforeach
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>Catatan : {{ $item['catatan'] }}</small><br>
+                                        @endforeach
+                                </tr>
+                            @endif
+                        @endforeach
+                    </table>
+                </div>
                 <template x-for="(resepItem, resepIndex) in resep" :key="resepIndex">
                     <div class="p-3 bg-light border rounded mb-3">
                         <div class="row">
                             <div class="col-md-11">
                                 <div class="mb-3">
-                                    <label class="form-label"
-                                        x-text="`Resep ${resepIndex + 1}`"></label>
+                                    <label class="form-label" x-text="`Resep ${resepIndex + 1}`"></label>
                                     <input type="text" class="form-control" x-model="resepItem.nama"
                                         placeholder="Nama Resep">
                                 </div>
                             </div>
                             <div class="col-md-1 text-end">
-                                <button type="button" class="btn btn-danger btn-xs"
-                                    @click="hapusResep(resepIndex)">
+                                <button type="button" class="btn btn-danger btn-xs" @click="hapusResep(resepIndex)">
                                     &nbsp;x&nbsp;
                                 </button>
                             </div>
@@ -63,7 +103,7 @@
                                                 });">
                                                 <option value="" selected>-- Tidak Ada Barang --</option>
                                                 <template x-for="item in dataBarang" :key="item.id">
-                                                    <option :value="item.id" :selected="barangItem.id == item.id" 
+                                                    <option :value="item.id" :selected="barangItem.id == item.id"
                                                         x-text="`${item.nama} (Rp. ${new Intl.NumberFormat('id-ID').format(item.harga)} / ${item.satuan})`">
                                                     </option>
                                                 </template>
@@ -108,7 +148,7 @@
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Simpan
                     </button>
-                @endrole    
+                @endrole
                 <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
                     onclick="window.location.href='/klinik/resepobat'">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>

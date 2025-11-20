@@ -26,6 +26,83 @@
     </ul>
     <div class="tab-content panel rounded-0 p-3 m-0">
         <div class="tab-pane fade active show" id="default-tab-0" role="tabpanel" wire:ignore.self>
+            <div class="alert alert-info table-responsive h-400px">
+                <h5>History Pemeriksaan Awal</h5>
+                <table class="table">
+                    <tr>
+                        <th rowspan="2">Tanggal</th>
+                        <th rowspan="2">Anamnesis</th>
+                        <th colspan="3">Pemeriksaan Fisik</th>
+                        <th rowspan="2">Diagnostik & Perencanaan</th>
+                    </tr>
+                    <tr>
+                        <th>Tanda-Tanda Vital</th>
+                        <th>Keadaan Umum & Kesadaran</th>
+                        <th>Pemeriksaan Head to Toe</th>
+                    </tr>
+                    @foreach ($data->pasien->rekamMedis->where('id', '!=', $data->id) as $row)
+                        @if ($row->pemeriksaanAwal)
+                            <tr>
+                                <td nowrap>{{ $row->pemeriksaanAwal->created_at->format('d F Y') }}</td>
+
+                                <td nowrap>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Keluhan Utama :
+                                    </strong>{{ $row->pemeriksaanAwal?->keluhan_utama }}<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Riwayat Penyakit Sekarang :
+                                    </strong>{{ $row->pemeriksaanAwal?->riwayat_sekarang }}<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Riwayat Penyakit Dahulu & Riwayat Penyakit
+                                        Keluarga : </strong>{{ $row->pemeriksaanAwal?->riwayat_dahulu }}<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Riwayat Alergi :
+                                    </strong>{{ $row->pemeriksaanAwal?->riwayat_alergi }}
+                                </td>
+                                <td nowrap>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tekanan Darah :
+                                    </strong>{{ $row->pemeriksaanAwal?->tekanan_darah }} mmHg<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nadi :
+                                    </strong>{{ $row->pemeriksaanAwal?->nadi }} x/menit<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pernapasan :
+                                    </strong>{{ $row->pemeriksaanAwal?->pernapasan }} x/menit<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Suhu :
+                                    </strong>{{ $row->pemeriksaanAwal?->suhu }} °C<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SpO2 :
+                                    </strong>{{ $row->pemeriksaanAwal?->saturasi_o2 }} %<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Berat Badan :
+                                    </strong>{{ $row->pemeriksaanAwal?->berat_badan }} kg<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tinggi Badan :
+                                    </strong>{{ $row->pemeriksaanAwal?->tinggi_badan }} cm
+                                </td>
+                                <td nowrap>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tingkat
+                                        Kesadaran : </strong>{{ $row->pemeriksaanAwal?->kesadaran }}<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kesan Sakit :
+                                    </strong>{{ $row->pemeriksaanAwal?->kesan_sakit }}<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status Gizi :
+                                    </strong>{{ $row->pemeriksaanAwal?->status_gizi }}
+                                </td>
+                                <td nowrap>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Kepala, Mata,
+                                        THT, Leher :
+                                    </strong>{{ $row->pemeriksaanAwal?->kepala_normal == 1 ? 'Normal' : $row->pemeriksaanAwal?->kepala_temuan }}<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jantung :
+                                    </strong>{{ $row->pemeriksaanAwal?->jantung_normal == 1 ? 'Normal' : $row->pemeriksaanAwal?->jantung_temuan }}<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Paru :
+                                    </strong>{{ $row->pemeriksaanAwal?->paru_normal == 1 ? 'Normal' : $row->pemeriksaanAwal?->paru_temuan }}<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Abdomen :
+                                    </strong>{{ $row->pemeriksaanAwal?->abdomen_normal == 1 ? 'Normal' : $row->pemeriksaanAwal?->abdomen_temuan }}<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ekstremitas :
+                                    </strong>{{ $row->pemeriksaanAwal?->ekstremitas_normal == 1 ? 'Normal' : $row->pemeriksaanAwal?->ekstremitas_temuan }}
+                                </td>
+                                <td nowrap>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Diagnosis Kerja :
+                                    </strong>{{ $row->pemeriksaanAwal?->diagnosis_kerja }}<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rencana Awal :
+                                    </strong>{{ $row->pemeriksaanAwal?->rencana_awal }}
+                                </td>
+                            </tr>
+                        @endif
+                    @endforeach
+                </table>
+            </div>
             <form wire:submit.prevent="submitPemeriksaanAwal">
                 <div class="panel panel-inverse bg-gray-100">
                     <div class="panel-heading">
@@ -191,7 +268,8 @@
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="checkbox" id="kepala_normal"
                                             x-model="checked" wire:model="kepala_normal">
-                                        <label class="form-check-label" for="kepala_normal">Dalam Batas Normal</label>
+                                        <label class="form-check-label" for="kepala_normal">Dalam Batas
+                                            Normal</label>
                                     </div>
                                     <textarea class="form-control" id="kepala_temuan" name="kepala_temuan" placeholder="Jelaskan temuan abnormal..."
                                         wire:model="kepala_temuan" :disabled="checked"></textarea>
@@ -244,7 +322,8 @@
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="checkbox" id="paru_normal"
                                             x-model="checked" wire:model="paru_normal">
-                                        <label class="form-check-label" for="paru_normal">Dalam Batas Normal</label>
+                                        <label class="form-check-label" for="paru_normal">Dalam Batas
+                                            Normal</label>
                                     </div>
                                     <textarea class="form-control" id="paru_temuan" name="paru_temuan" placeholder="Jelaskan temuan abnormal..."
                                         wire:model="paru_temuan" :disabled="checked"></textarea>
@@ -362,6 +441,38 @@
             </form>
         </div>
         <div class="tab-pane fade" id="default-tab-1" role="tabpanel" wire:ignore.self>
+            <div class="alert alert-info table-responsive h-400px">
+                <h5>History Tes Up and Go</h5>
+                <table class="table">
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Hasil Tes</th>
+                        <th>Penilaian & Rekomendasi</th>
+                    </tr>
+                    @foreach ($data->pasien->rekamMedis as $row)
+                        @if ($row->tug)
+                            <tr>
+                                <td nowrap>{{ $row->tug->created_at->format('d F Y') }}</td>
+
+                                <td nowrap>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Waktu Tes :
+                                    </strong>{{ $row->tug?->waktu_tes_detik }} detik<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Observasi Kualitatif Gerakan : </strong><br>
+                                    @foreach (is_string($row->tug->observasi_kualitatif) ? json_decode($row->tug->observasi_kualitatif, true) ?? [] : (is_array($row->tug->observasi_kualitatif) ? $row->tug->observasi_kualitatif : []) as $item)
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $item }}<br>
+                                    @endforeach
+                                </td>
+                                <td nowrap>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Penilaian Risiko Jatuh :
+                                    </strong>{{ $row->tug?->risiko_jatuh }}<br>
+                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Catatan Tambahan / Rekomendasi :
+                                    </strong>{{ $row->tug?->catatan }}
+                                </td>
+                            </tr>
+                        @endif
+                    @endforeach
+                </table>
+            </div>
             <form wire:submit.prevent="submitTug">
                 <div class="note alert-secondary mb-2">
                     <div class="note-content">

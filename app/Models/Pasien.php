@@ -27,7 +27,7 @@ class Pasien extends Model
 
     public function rekamMedis(): HasMany
     {
-        return $this->hasMany(Registrasi::class);
+        return $this->hasMany(Registrasi::class)->orderBy('created_at', 'desc');
     }
 
     public function getUmurAttribute()

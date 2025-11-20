@@ -10,6 +10,10 @@ class Tindakan extends Model
     //
     protected $table = 'tindakan';
 
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
+
     public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class);

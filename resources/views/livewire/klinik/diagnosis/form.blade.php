@@ -8,7 +8,7 @@
     @endsection
 
     <h1 class="page-header">Diagnosis <small>Input</small></h1>
-    
+
     @include('livewire.klinik.informasipasien', ['data' => $data])
 
     <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
@@ -17,6 +17,40 @@
                 <h4 class="panel-title">Assessment (Penilaian)</h4>
             </div>
             <div class="panel-body">
+                <div class="alert alert-info table-responsive h-400px">
+                    <h5>History Diagnosis</h5>
+                    <table class="table">
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Diagnosis</th>
+                            <th>Diagnosis Banding (Differential Diagnosis)</th>
+                            <th>Dokumentasi</th>
+                        </tr>
+                        @foreach ($data->pasien->rekamMedis->where('id', '!=', $data->id) as $row)
+                            @if ($row->diagnosis)
+                                <tr>
+                                    <td nowrap>{{ $row->diagnosis->created_at->format('d F Y') }}</td>
+
+                                    <td nowrap>
+                                        @foreach ($row->diagnosis->icd10_uraian as $item)
+                                            {{ $item->id }} - {{ $item->uraian }}<br>
+                                        @endforeach
+                                    <td nowrap>{{ $row->diagnosis->diagnosis_banding }}</td>
+                                    <td nowrap>
+                                        @foreach ($row->diagnosis->file as $item)
+                                            <img src="{{ Storage::url($item->link) }}" class="img-fluid w-250px"><br>
+                                            <small>
+                                                Judul :{{ $item->judul }}
+                                                <br>
+                                                {{ $item->keterangan }}
+                                            </small><br>
+                                        @endforeach
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </table>
+                </div>
                 <table class="table table-borderless p-0">
                     <thead>
                         <tr>
