@@ -40,6 +40,7 @@
                         <th rowspan="2" class="text-end">Tarif</th>
                         <th colspan="3">Biaya</th>
                         <th rowspan="2" class="text-end">Keuntungan Klinik</th>
+                        <th rowspan="2" class="text-end">Status</th>
                         <th rowspan="2"></th>
                     </tr>
                     <tr>
@@ -67,6 +68,7 @@
                                         $item->biaya_alat_barang,
                                 ) }}
                             </th>
+                            <td class="text-end">{!! $item->masalah == 0 ? '' : '<span class="badge bg-warning">Perlu Update</span>' !!}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     <x-action :row="$item" custom="" :detail="false" :edit="true"
