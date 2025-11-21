@@ -168,6 +168,23 @@
             },
             hapusBarang(index) {
                 this.barang.splice(index, 1);
+                this.$nextTick(() => {
+                    this.refreshSelect2();
+                });
+            },
+            refreshSelect2() {
+                let root = this.$root ?? document;
+                $(root).find('select.form-control').each(function(i, el) {
+                    if ($(el).hasClass('select2-hidden-accessible')) {
+                        $(el).select2('destroy');
+                    }
+                    $(el).select2({
+                        width: '100%'
+                    });
+                    el.dispatchEvent(new CustomEvent('updateSelect2Value', {
+                        bubbles: true
+                    }));
+                });
             },
             updateBarang(index) {
                 let id = this.barang[index].id;

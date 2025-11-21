@@ -207,8 +207,25 @@
                     });
                 },
 
+                refreshSelect2() {
+                    let root = this.$root ?? document;
+                    $(root).find('select.form-control').each(function(i, el) {
+                        if ($(el).hasClass('select2-hidden-accessible')) {
+                            $(el).select2('destroy');
+                        }
+                        $(el).select2({
+                            width: '100%'
+                        });
+                        el.dispatchEvent(new CustomEvent('updateSelect2Value', {
+                            bubbles: true
+                        }));
+                    });
+                },
                 hapusBarang(resepIndex, barangIndex) {
                     this.resep[resepIndex].barang.splice(barangIndex, 1);
+                    this.$nextTick(() => {
+                        this.refreshSelect2();
+                    });
                 },
 
                 updateBarang(resepIndex, barangIndex) {

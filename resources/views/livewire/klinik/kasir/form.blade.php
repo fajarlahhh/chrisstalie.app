@@ -91,7 +91,6 @@
                                 </th>
                                 <th></th>
                             </tr>
-                            @php
                         </template>
                         <tr class="bg-light">
                             <th colspan="5">
