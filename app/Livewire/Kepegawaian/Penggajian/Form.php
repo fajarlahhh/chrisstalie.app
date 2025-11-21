@@ -60,7 +60,6 @@ class Form extends Component
                 'tanggal' => $this->tanggal,
                 'uraian' => 'Gaji ' . $this->pegawai['nama'] . ' bulan ' . substr($this->tanggal, 0, 7),
                 'referensi_id' => 'gaji' . $this->pegawai_id . substr($this->tanggal, 0, 7),
-                'pengguna_id' => auth()->id(),
             ], $detail);
 
             session()->flash('success', 'Berhasil menyimpan data');

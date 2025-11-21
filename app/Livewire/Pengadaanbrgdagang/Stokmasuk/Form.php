@@ -144,7 +144,6 @@ class Form extends Component
                         'uraian' => 'Stok Masuk Barang Dagang ' . collect($this->dataPembelian)->where('id', $this->pembelian_id)->first()['uraian'],
                         'referensi_id' => $this->pembelian_id,
                         'kode_akun_id' => '11340',
-                        'pengguna_id' => auth()->id(),
                     ], collect([[
                         'kode_akun_id' => $value['kode_akun_id'],
                         'qty' => $value['qty_masuk'],

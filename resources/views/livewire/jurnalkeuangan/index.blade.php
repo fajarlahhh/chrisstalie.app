@@ -16,12 +16,10 @@
                         data-bs-toggle="dropdown"><b class="caret"></b></button>
                     <div class="dropdown-menu dropdown-menu-start">
                         <a class="dropdown-item"
-                            href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=Pembelian'">Pembelian</a>
+                            href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=pelunasanpengadaanbrgdagang'">Pelunasan
+                            Pengadaan Brg. Dagang</a>
                         <a class="dropdown-item"
-                            href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=Pembayaran Pengadaan'">Pembayaran
-                            Pengadaan</a>
-                        <a class="dropdown-item"
-                            href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=Umum'">Umum</a>
+                            href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=pengeluaran'">Pengeluaran</a>
                     </div>
                 </div>
             @endrole

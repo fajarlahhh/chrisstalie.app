@@ -76,10 +76,13 @@
                                             </p>
                                             <template x-if="isChecked">
                                                 <div>
-                                                    <select class="form-control" wire:model="detail.{{ $i }}.shift_id">
+                                                    <select class="form-control"
+                                                        wire:model="detail.{{ $i }}.shift_id">
                                                         <option value="">-- Pilih Shift --</option>
                                                         @foreach ($dataShift as $row)
-                                                            <option value="{{ $row['id'] }}">{{ $row['nama'] }} ({{ $row['jam_masuk'] }} s/d {{ $row['jam_pulang'] }})</option>
+                                                            <option value="{{ $row['id'] }}">{{ $row['nama'] }}
+                                                                ({{ $row['jam_masuk'] }} s/d {{ $row['jam_pulang'] }})
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -100,9 +103,10 @@
                         Simpan
                     </button>
                 @endunlessrole
-                <a href="/kepegawaian/jadwalshift" class="btn btn-warning">Data</a>
+                <a href="/kepegawaian/jadwalshift" class="btn btn-warning" wire:loading.attr="disabled">
+                    <span wire:loading class="spinner-border spinner-border-sm"></span>Data</a>
                 <x-alert />
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>

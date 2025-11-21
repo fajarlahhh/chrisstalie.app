@@ -22,8 +22,8 @@ class JurnalClass
         $jurnal->jenis = $jenis;
         $jurnal->tanggal = $data['tanggal'];
         $jurnal->uraian = $data['uraian'];
-        $jurnal->referensi_id = $data['referensi_id'];
-        $jurnal->pengguna_id = $data['pengguna_id'];
+        $jurnal->referensi_id = isset($data['referensi_id']) ? $data['referensi_id'] : null;
+        $jurnal->pengguna_id = auth()->id();
         $jurnal->save();
 
         $jurnal->jurnalDetail()->delete();
@@ -84,7 +84,6 @@ class JurnalClass
             'tanggal' => $data['tanggal'],
             'uraian' => $data['uraian'],
             'referensi_id' => $data['id'],
-            'pengguna_id' => $data['pengguna_id'],
         ], $jurnalDetail);
     }
 }
