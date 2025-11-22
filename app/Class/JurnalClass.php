@@ -91,6 +91,6 @@ class JurnalClass
             'kode_akun_id' => $kode_akun_id
         ];
 
-        self::insert($jenis, $tanggal, $uraian, 1, null, $pembelian_id, $stok_masuk_id, null, $jurnalDetail);
+        self::insert($jenis, $tanggal, $uraian, 1, null, $pembelian_id, $stok_masuk_id, null, null, $jurnalDetail);
     }
 }
