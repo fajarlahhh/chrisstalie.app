@@ -8,9 +8,6 @@ class PermintaanPembelian extends Model
 {
     //
     protected $table = 'permintaan_pembelian';
-    protected $primaryKey = 'id';
-    public $incrementing = false;
-    protected $keyType = 'string';
 
     public function permintaanPembelianDetail()
     {

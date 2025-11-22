@@ -35,12 +35,8 @@ class Data extends Component
 
     public function delete($id)
     {
-        DB::transaction(function () use ($id) {
-            $data = Pembayaran::findOrFail($id);
-            $data->jurnalPenjualanBarangBebas()->delete();
-            $data->delete();
-            session()->flash('success', 'Berhasil menghapus data');
-        });
+        Pembayaran::findOrFail($id)->forceDelete();
+        session()->flash('success', 'Berhasil menghapus data');
     }
 
     public function render()

@@ -16,7 +16,7 @@ class Jurnal extends Model
 
     public function jurnalDetail(): HasMany
     {
-        return $this->hasMany(JurnalDetail::class);
+        return $this->hasMany(JurnalDetail::class)->orderBy('kode_akun_id', 'asc');
     }
 
     public function pengguna(): BelongsTo

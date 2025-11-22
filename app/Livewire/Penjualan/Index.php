@@ -3,17 +3,11 @@
 namespace App\Livewire\Penjualan;
 
 use App\Models\Stok;
-use App\Models\Barang;
 use Livewire\Component;
-use App\Models\Penjualan;
 use App\Class\JurnalClass;
 use App\Models\Pembayaran;
-use App\Models\StokKeluar;
 use App\Models\MetodeBayar;
-use Illuminate\Support\Str;
-use App\Models\PenjualanDetail;
 use App\Class\BarangClass;
-use App\Models\PembayaranDetail;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 
@@ -97,7 +91,7 @@ class Index extends Component
                     'rasio_dari_terkecil' => $brg['rasio_dari_terkecil'],
                 ];
             })->toArray();
-            
+
             $hpp = BarangClass::stokKeluar($barang, $pembayaran->id, 'Penjualan Barang Bebas');
 
             $this->jurnalPendapatan($pembayaran, $metodeBayar, $hpp);
@@ -114,7 +108,6 @@ class Index extends Component
 
     private function jurnalPendapatan($pembayaran, $metodeBayar, $hpp)
     {
-        $id = Str::uuid();
         $jurnalDetail = [];
 
         foreach (
@@ -124,7 +117,6 @@ class Index extends Component
             ]) as $barang
         ) {
             $jurnalDetail[] = [
-                'jurnal_id' => $id,
                 'debet' => 0,
                 'kredit' => $barang['total'],
                 'kode_akun_id' => $barang['kode_akun_id']
@@ -132,39 +124,35 @@ class Index extends Component
         }
         if ($this->diskon > 0) {
             $jurnalDetail[] = [
-                'jurnal_id' => $id,
                 'debet' => $this->diskon,
                 'kredit' => 0,
                 'kode_akun_id' => '44000'
             ];
         }
         $jurnalDetail[] = [
-            'jurnal_id' => $id,
             'debet' => $this->total_tagihan,
             'kredit' => 0,
             'kode_akun_id' => $metodeBayar->kode_akun_id
         ];
-        $jurnalDetail = array_merge($jurnalDetail, collect($hpp)->map(function ($q) use ($id) {
+        $jurnalDetail = array_merge($jurnalDetail, collect($hpp)->map(function ($q) {
             return [
-                'jurnal_id' => $id,
                 'kode_akun_id' => $q['kode_akun_id'],
                 'debet' =>  $q['debet'],
                 'kredit' => $q['kredit'],
             ];
         })->toArray());
-        JurnalClass::insert($id, 'Penjualan Barang Bebas', [
-            'tanggal' => now(),
-            'uraian' => 'Penjualan Barang Bebas ' . $pembayaran->id,
-            'referensi_id' => $pembayaran->id,
-            'pengguna_id' => auth()->id(),
-        ], collect($jurnalDetail)->groupBy('kode_akun_id')->map(function ($q) {
-            return [
-                'jurnal_id' => $q->first()['jurnal_id'],
-                'debet' => $q->sum('debet'),
-                'kredit' => $q->sum('kredit'),
-                'kode_akun_id' => $q->first()['kode_akun_id'],
-            ];
-        })->toArray());
+
+        JurnalClass::insert(
+            jenis: 'Penjualan Barang Bebas',
+            tanggal: now(),
+            uraian: 'Penjualan Barang Bebas ' . $pembayaran->id,
+            system: 1,
+            aset_id: null,
+            pembelian_id: null,
+            stok_masuk_id: null,
+            pembayaran_id: $pembayaran->id,
+            detail: $jurnalDetail
+        );
     }
 
     public function mount()
@@ -177,5 +165,4 @@ class Index extends Component
     {
         return view('livewire.penjualan.index');
     }
-
 }

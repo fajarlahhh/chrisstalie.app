@@ -11,9 +11,6 @@ class StokKeluar extends Model
     use HasFactory;
 
     protected $table = 'stok_keluar';
-    protected $primaryKey = 'id';
-    public $incrementing = false;
-    protected $keyType = 'string';
 
     public function barang(): BelongsTo
     {

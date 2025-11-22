@@ -15,14 +15,14 @@ class JurnalClass
         //
     }
 
-    public static function insert($jenis, $tanggal, $uraian, $system = 0, $aset_id = null, $pembelian_id = null, $stok_masuk_id = null, $detail)
+    public static function insert($jenis, $tanggal, $uraian, $system = 0, $aset_id = null, $pembelian_id = null, $stok_masuk_id = null, $pembayaran_id = null, $detail)
     {
         $terakhir = Jurnal::where('tanggal', 'like', substr($tanggal, 0, 7) . '%')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->first();
         $nomor = $terakhir ? (int)substr($terakhir->id, 15, 5) : 0;
         $id = 'JURNAL/' . str_replace('-', '/', substr($tanggal, 0, 7)) . '/' . sprintf('%05d', $nomor + 1);
-        
+
         $jurnal = new Jurnal();
         $jurnal->id = $id;
         $jurnal->jenis = $jenis;
@@ -32,6 +32,7 @@ class JurnalClass
         $jurnal->aset_id = $aset_id;
         $jurnal->pembelian_id = $pembelian_id;
         $jurnal->stok_masuk_id = $stok_masuk_id;
+        $jurnal->pembayaran_id = $pembayaran_id;
         $jurnal->pengguna_id = auth()->id();
         $jurnal->save();
 
@@ -89,6 +90,6 @@ class JurnalClass
             'kode_akun_id' => $kode_akun_id
         ];
 
-        self::insert($jenis, $tanggal, $uraian, 1, null, $pembelian_id, $stok_masuk_id, $jurnalDetail);
+        self::insert($jenis, $tanggal, $uraian, 1, null, $pembelian_id, $stok_masuk_id, null, $jurnalDetail);
     }
 }

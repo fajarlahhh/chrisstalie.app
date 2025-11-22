@@ -83,27 +83,24 @@ class BarangClass
     {
         $detail = [];
         foreach ($barang as $brg) {
-            $stokKeluarId = Str::uuid();
-            StokKeluar::insert([
-                'id' => $stokKeluarId,
-                'tanggal' => now(),
-                'qty' => $brg['qty'],
-                'pembayaran_id' => $pembayaranId,
-                'barang_id' => $brg['barang_id'],
-                'harga' => $brg['harga'],
-                'pengguna_id' => auth()->id(),
-                'barang_satuan_id' => $brg['barang_satuan_id'],
-                'rasio_dari_terkecil' => $brg['rasio_dari_terkecil'],
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            $stokKeluar = new StokKeluar();
+            $stokKeluar->tanggal = now();
+            $stokKeluar->qty = $brg['qty'];
+            $stokKeluar->pembayaran_id = $pembayaranId;
+            $stokKeluar->barang_id = $brg['barang_id'];
+            $stokKeluar->harga = $brg['harga'];
+            $stokKeluar->pengguna_id = auth()->id();
+            $stokKeluar->barang_satuan_id = $brg['barang_satuan_id'];
+            $stokKeluar->rasio_dari_terkecil = $brg['rasio_dari_terkecil'];
+            $stokKeluar->save();
+
             Stok::where('barang_id', $brg['barang_id'])->available()->orderBy('tanggal_kedaluarsa', 'asc')->limit($brg['qty'] * $brg['rasio_dari_terkecil'])->update([
                 'tanggal_keluar' => now(),
-                'stok_keluar_id' => $stokKeluarId,
+                'stok_keluar_id' => $stokKeluar->id,
             ]);
 
             $hargaBeli = Stok::where('barang_id', $brg['barang_id'])
-                ->where('stok_keluar_id', $stokKeluarId)
+                ->where('stok_keluar_id', $stokKeluar->id)
                 ->sum('harga_beli');
 
             $detail[] = [
@@ -117,6 +114,10 @@ class BarangClass
                 'kredit' => 0,
             ];
         }
-        return $detail;
+        return collect($detail)->groupBy('kode_akun_id')->map(fn($q) => [
+            'kode_akun_id' => $q->first()['kode_akun_id'],
+            'debet' => $q->sum('debet'),
+            'kredit' => $q->sum('kredit'),
+        ])->toArray();
     }
 }
