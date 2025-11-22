@@ -37,7 +37,8 @@ class Index extends Component
             'data' => $this->status == 1 ? PermintaanPembelian::with([
                 'pengguna',
                 'permintaanPembelianDetail.barangSatuan.barang',
-            ])->with(['verifikasi' => fn($q) => $q->whereNotNull('status')])
+                'verifikasi' => fn($q) => $q->whereNotNull('status')
+            ])
                 ->when($this->status == 'Pending', fn($q) => $q->whereHas('verifikasi', function ($q) {
                     $q->whereNull('status');
                 }))

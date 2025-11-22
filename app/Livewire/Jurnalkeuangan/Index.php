@@ -12,7 +12,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $bulan;
+    public $cari, $bulan, $jenis;
 
     public function mount()
     {
@@ -21,21 +21,29 @@ class Index extends Component
 
     public function delete($id)
     {
-        $data = Jurnal::findOrFail($id);
-        if ($data->referensi_id == null) {
-            $data->jurnalDetail->delete();
-            $data->delete();
-        }
+        $data = Jurnal::findOrFail($id)->delete();
+        session()->flash('success', 'Berhasil menghapus data');
+    }
+
+    public function getData()
+    {
+        return Jurnal::with(['jurnalDetail.kodeAkun', 'pengguna'])
+            ->when($this->jenis, fn($q) => $q->where('jenis', $this->jenis))
+            ->where('tanggal', 'like', $this->bulan . '%')
+            ->where(fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+    }
+
+    public function getJenis(){
+        return Jurnal::where('tanggal', 'like', $this->bulan . '%')->select('jenis')->groupBy('jenis')->orderBy('jenis', 'asc')->get()->toArray();
     }
 
     public function render()
     {
         return view('livewire.jurnalkeuangan.index', [
-            'data' => Jurnal::with(['jurnalDetail.kodeAkun','pengguna'])
-                ->where('tanggal', 'like', $this->bulan . '%')
-                ->where(fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))
-                ->orderBy('created_at', 'desc')
-                ->paginate(10)
+            'data' => $this->getData(),
+            'dataJenis' => $this->getJenis()
         ]);
     }
 }

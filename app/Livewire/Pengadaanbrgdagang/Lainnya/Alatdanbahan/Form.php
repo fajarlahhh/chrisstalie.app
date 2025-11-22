@@ -68,6 +68,7 @@ class Form extends Component
                     'pembelian_id' => $pembelian->id,
                 ];
             })->toArray());
+
             foreach (
                 collect($this->barang)->map(function ($q) use ($pembelian) {
                     $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
@@ -98,23 +99,49 @@ class Form extends Component
                     ]);
                 }
             }
-            JurnalClass::pembelianPersediaan(
+
+            $detail = collect($this->barang)->map(function ($q) use ($pembelian) {
+                $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
+                return [
+                    'kode_akun_id' => $brg['kode_akun_id'],
+                    'debet' => $q['harga_beli'] * $q['qty'],
+                    'kredit' => 0,
+                ];
+            })->groupBy('kode_akun_id')->map(function ($q) {
+                return [
+                    'kode_akun_id' => $q->first()['kode_akun_id'],
+                    'debet' => $q->sum(fn($q) => $q['debet']),
+                    'kredit' => $q->sum(fn($q) => $q['kredit']),
+                ];
+            })->values()->toArray();
+            $detail[] = [
+                'kode_akun_id' => $pembelian->kode_akun_id,
+                'debet' => 0,
+                'kredit' => collect($detail)->sum('debet'),
+            ];
+            $detail[] = [
+                'kode_akun_id' => '11400',
+                'debet' => 0,
+                'kredit' => $this->ppn,
+            ];
+            $detail[] = [
+                'kode_akun_id' => '45000',
+                'debet' => 0,
+                'kredit' => $this->diskon,
+            ];
+            
+            JurnalClass::insert(
                 jenis: 'Stok Masuk Alat dan Bahan',
+                sub_jenis: 'Stok Masuk',
                 tanggal: now(),
                 uraian: 'Stok Masuk Alat dan Bahan ' . $pembelian->uraian,
-                ppn: $pembelian->ppn,
-                diskon: $pembelian->diskon,
-                kode_akun_id: $pembelian->kode_akun_id,
+                system: 1,
                 pembelian_id: $pembelian->id,
+                aset_id: null,
                 stok_masuk_id: null,
-                barang: collect($this->barang)->map(function ($q) use ($pembelian) {
-                    $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
-                    return [
-                        'kode_akun_id' => $brg['kode_akun_id'],
-                        'qty' => $q['qty'],
-                        'harga_beli' => $q['harga_beli'],
-                    ];
-                })->toArray()
+                pembayaran_id: null,
+                penggajian_id: null,
+                detail: $detail
             );
 
             session()->flash('success', 'Berhasil menyimpan data');

@@ -79,21 +79,40 @@ class Form extends Component
                 'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
                 'pembelian_id' => $data->id,
             ])->toArray());
-
-            JurnalClass::pembelianPersediaan(
+            
+            JurnalClass::insert(
                 jenis: 'Pembelian Barang Dagang',
+                sub_jenis: 'Pembelian',
                 tanggal: $this->tanggal,
                 uraian: $this->uraian,
-                ppn: $this->ppn,
-                diskon: $this->diskon,
-                kode_akun_id: $data->kode_akun_id,
+                system: 1,
                 pembelian_id: $data->id,
+                aset_id: null,
                 stok_masuk_id: null,
-                barang: collect($this->barang)->map(fn($q) => [
-                    'kode_akun_id' => '11340',
-                    'qty' => $q['qty'],
-                    'harga_beli' => $q['harga_beli'],
-                ])->toArray()
+                pembayaran_id: null,
+                penggajian_id: null,
+                detail: [
+                    [
+                        'debet' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']),
+                        'kredit' => 0,
+                        'kode_akun_id' => '11340'
+                    ],
+                    [
+                        'debet' => 0,
+                        'kredit' => $this->diskon,
+                        'kode_akun_id' => '45000'
+                    ],
+                    [
+                        'debet' => $this->ppn,
+                        'kredit' => 0,
+                        'kode_akun_id' => '11400'
+                    ],
+                    [
+                        'debet' => 0,
+                        'kredit' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']) - $this->diskon + $this->ppn,
+                        'kode_akun_id' => $data->kode_akun_id
+                    ]
+                ]
             );
 
             session()->flash('success', 'Berhasil menyimpan data');

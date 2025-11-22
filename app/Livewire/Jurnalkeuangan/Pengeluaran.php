@@ -41,22 +41,30 @@ class Pengeluaran extends Component
             'nilai' => 'required|numeric|min:0',
         ]);
         DB::transaction(function () {
-            JurnalClass::insert('Pengeluaran', [
-                'tanggal' => $this->tanggal,
-                'uraian' => $this->uraian . '(' . collect($this->dataJenisPengeluaran)->firstWhere('id', $this->jenis_pengeluaran_id)['nama'] . ')',
-                'nilai' => $this->nilai,
-            ], [
-                [
-                    'debet' => $this->nilai,
-                    'kredit' => 0,
-                    'kode_akun_id' => $this->jenis_pengeluaran_id,
-                ],
-                [
-                    'debet' => 0,
-                    'kredit' => $this->nilai,
-                    'kode_akun_id' => $this->sumber_dana_id,
-                ],
-            ]);
+            JurnalClass::insert(
+                jenis: collect($this->dataJenisPengeluaran)->firstWhere('id', $this->jenis_pengeluaran_id)['nama'],
+                sub_jenis: 'Pengeluaran',
+                tanggal: $this->tanggal,
+                uraian: $this->uraian,
+                system: 0,
+                aset_id: null,
+                pembelian_id: null,
+                stok_masuk_id: null,
+                pembayaran_id: null,
+                penggajian_id: null,
+                detail: [
+                    [
+                        'debet' => $this->nilai,
+                        'kredit' => 0,
+                        'kode_akun_id' => $this->jenis_pengeluaran_id,
+                    ],
+                    [
+                        'debet' => 0,
+                        'kredit' => $this->nilai,
+                        'kode_akun_id' => $this->sumber_dana_id,
+                    ],
+                ]
+            );
             session()->flash('success', 'Berhasil menyimpan data');
         });
         return redirect()->to('jurnalkeuangan');

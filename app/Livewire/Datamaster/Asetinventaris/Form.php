@@ -71,6 +71,7 @@ class Form extends Component
             
             JurnalClass::insert(
                 jenis: 'Pembelian Aset Inventaris',
+                sub_jenis: 'Pembelian',
                 tanggal: $this->tanggal_perolehan,
                 uraian: 'Pembelian Aset Inventaris ' . $this->nama,
                 system: 1,
@@ -96,6 +97,7 @@ class Form extends Component
             if ($this->metode_penyusutan == 'Garis Lurus') {
                 JurnalClass::insert(
                     jenis: 'Penyusutan Aset Inventaris',
+                    sub_jenis: 'Penyusutan',
                     tanggal: $this->tanggal_perolehan,
                     uraian: 'Penyusutan Aset Inventaris ' . $this->nama,
                     system: 1,

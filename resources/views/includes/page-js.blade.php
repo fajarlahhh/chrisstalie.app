@@ -12,6 +12,7 @@
 
 <script>
     function deleteOrCancel(id) {
+        console.log(id);
         $('.action').toggle();
         $('.delete' + id).toggle();
     }

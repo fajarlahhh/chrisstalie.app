@@ -144,6 +144,7 @@ class Index extends Component
 
         JurnalClass::insert(
             jenis: 'Penjualan Barang Bebas',
+            sub_jenis: 'Pendapatan',
             tanggal: now(),
             uraian: 'Penjualan Barang Bebas ' . $pembayaran->id,
             system: 1,

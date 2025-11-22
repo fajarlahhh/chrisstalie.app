@@ -25,6 +25,13 @@
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
+                    <select class="form-control w-auto" wire:model.lazy="jenis">
+                        <option value="">Semua Jenis</option>
+                        @foreach ($dataJenis as $item)
+                            <option value="{{ $item['jenis'] }}">{{ $item['jenis'] }}</option>
+                        @endforeach
+                    </select>
+                    &nbsp;
                     <input type="month" class="form-control w-auto" wire:model.lazy="bulan" max="{{ date('Y-m') }}">
                     &nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
@@ -38,7 +45,7 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
-                        <th>ID</th>
+                        <th>No. Registrasi</th>
                         <th>Jenis</th>
                         <th>Tanggal</th>
                         <th>Uraian</th>

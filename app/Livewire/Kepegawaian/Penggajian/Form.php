@@ -72,6 +72,7 @@ class Form extends Component
             ];
             JurnalClass::insert(
                 jenis: 'Gaji',
+                sub_jenis: 'Pengeluaran',
                 tanggal: $this->tanggal,
                 uraian: 'Gaji Bulan ' . $this->periode,
                 system: 1,

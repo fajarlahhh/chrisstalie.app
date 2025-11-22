@@ -2,14 +2,14 @@
     <div class="btn-group btn-group-sm">
         @if ($delete)
             <a href="javascript:;" wire:click="delete('{{ $row['id'] }}')" wire:loading.remove style="display: none"
-                class="delete{{ $row['id'] }} delete btn btn-warning">Hapus</a>
+                class="delete{{ str_replace('/', '', $row['id']) }} delete btn btn-warning">Hapus</a>
         @endif
         @if ($permanentDelete)
             <a href="javascript:;" wire:click="permanentDelete('{{ $row['id'] }}')" wire:loading.remove
-                style="display: none" class="delete{{ $row['id'] }} delete btn btn-danger">Hapus Permanen</a>
+                style="display: none" class="delete{{ str_replace('/', '', $row['id']) }} delete btn btn-danger">Hapus Permanen</a>
         @endif
         <a href="javascript:;" onclick="deleteOrCancel('{{ $row['id'] }}')" wire:loading.remove style="display: none"
-            class="delete{{ $row['id'] }} delete btn btn-secondary">Batal</a>
+            class="delete{{ str_replace('/', '', $row['id']) }} delete btn btn-secondary">Batal</a>
         @if ($edit)
             <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form/{{ $row['id'] }}'"
                 class="btn btn-white action">
@@ -45,7 +45,7 @@
                     wire:loading.remove class="dropdown-item">Detail</a>
             @endif
             @if ($delete)
-                <a href="javascript:;" onclick="deleteOrCancel('{{ $row['id'] }}')" wire:loading.remove class="dropdown-item">Hapus</a>
+                <a href="javascript:;" onclick="deleteOrCancel('{{ str_replace('/', '', $row['id']) }}')" wire:loading.remove class="dropdown-item">Hapus</a>
             @endif
             @if ($custom)
                 {!! $custom !!}

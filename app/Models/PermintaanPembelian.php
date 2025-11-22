@@ -21,22 +21,22 @@ class PermintaanPembelian extends Model
 
     public function verifikasi()
     {
-        return $this->hasMany(Verifikasi::class, 'referensi_id', 'id')->where('jenis', 'Permintaan Pembelian')->orderBy('created_at', 'desc');
+        return $this->hasMany(Verifikasi::class)->orderBy('created_at', 'desc');
     }
 
     public function verifikasiPending()
     {
-        return $this->hasMany(Verifikasi::class, 'referensi_id', 'id')->where('jenis', 'Permintaan Pembelian')->whereNull('status');
+        return $this->hasMany(Verifikasi::class)->whereNull('status');
     }
 
     public function verifikasiDisetujui()
     {
-        return $this->hasMany(Verifikasi::class, 'referensi_id', 'id')->where('jenis', 'Permintaan Pembelian')->where('status', 'Disetujui');
+        return $this->hasMany(Verifikasi::class)->where('status', 'Disetujui');
     }
 
     public function verifikasiDitolak()
     {
-        return $this->hasMany(Verifikasi::class, 'referensi_id', 'id')->where('jenis', 'Permintaan Pembelian')->where('status', 'Ditolak');
+        return $this->hasMany(Verifikasi::class)->where('status', 'Ditolak');
     }
 
     public function pembelian()
