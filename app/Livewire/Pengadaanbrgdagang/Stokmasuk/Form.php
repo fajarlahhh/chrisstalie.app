@@ -137,18 +137,21 @@ class Form extends Component
                             'updated_at' => now(),
                         ];
                     }
-                    JurnalClass::pembelianPersediaan([
-                        'jenis' => 'Stok Masuk Barang Dagang',
-                        'tanggal' => now(),
-                        'uraian' => 'Stok Masuk Barang Dagang ' . collect($this->dataPembelian)->where('id', $this->pembelian_id)->first()['uraian'],
-                        'referensi_id' => $this->pembelian_id,
-                        'stok_masuk_id' => $stokMasuk->id,
-                        'system' => 1,
-                    ], [[
-                        'kode_akun_id' => $value['kode_akun_id'],
-                        'qty' => $value['qty_masuk'],
-                        'harga_beli' => $value['harga_beli'],
-                    ]]);
+                    JurnalClass::pembelianPersediaan(
+                        jenis: 'Stok Masuk Barang Dagang',
+                        tanggal: now(),
+                        uraian: 'Stok Masuk Barang Dagang ' . collect($this->dataPembelian)->where('id', $this->pembelian_id)->first()['uraian'],
+                        ppn: null,
+                        diskon: null,
+                        kode_akun_id: '11340',
+                        pembelian_id: $this->pembelian_id,
+                        stok_masuk_id: $stokMasuk->id,
+                        barang: [[
+                            'kode_akun_id' => $value['kode_akun_id'],
+                            'qty' => $value['qty_masuk'],
+                            'harga_beli' => $value['harga_beli'],
+                        ]]
+                    );
                 }
             }
             foreach (array_chunk($stok, 1000) as $chunk) {

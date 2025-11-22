@@ -37,12 +37,8 @@ class Index extends Component
 
     public function delete($id)
     {
-        $data = Aset::findOrFail($id);
-        if ($data->asetPenyusutanGarisLurusTerjurnal->count() == 0 && $data->asetPenyusutanUnitProduksiTerjurnal->count() == 0) {
-            $data->jurnal()->delete();
-            $data->forceDelete();
-            session()->flash('success', 'Berhasil menghapus data');
-        }
+        Aset::findOrFail($id)->forceDelete();
+        session()->flash('success', 'Berhasil menghapus data');
     }
 
     public function render()

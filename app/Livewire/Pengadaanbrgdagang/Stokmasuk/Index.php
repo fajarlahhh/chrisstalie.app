@@ -28,12 +28,8 @@ class Index extends Component
 
     public function delete($id)
     {
-        $data = StokMasuk::find($id);
-        if ($data->keluar->count() == 0) {
-            $data->jurnalBarangDagang->delete();
-            $data->delete();
-            session()->flash('success', 'Berhasil menghapus data');
-        }
+        StokMasuk::findOrFail($id)->forceDelete();
+        session()->flash('success', 'Berhasil menghapus data');
     }
 
     public function render()

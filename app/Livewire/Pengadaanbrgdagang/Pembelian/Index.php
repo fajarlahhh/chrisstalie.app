@@ -27,12 +27,8 @@ class Index extends Component
 
     public function delete($id)
     {
-        $data = Pembelian::findOrFail($id);
-        if ($data->stokMasuk->count() == 0) {
-            $data->jurnal->delete();
-            $data->delete();
-            session()->flash('success', 'Berhasil menghapus data');
-        }
+        Pembelian::findOrFail($id)->forceDelete();
+        session()->flash('success', 'Berhasil menghapus data');
     }
 
     public function render()

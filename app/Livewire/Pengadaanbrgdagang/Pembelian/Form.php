@@ -87,7 +87,8 @@ class Form extends Component
                 ppn: $this->ppn,
                 diskon: $this->diskon,
                 kode_akun_id: $data->kode_akun_id,
-                referensi_id: $data->id,
+                pembelian_id: $data->id,
+                stok_masuk_id: null,
                 barang: collect($this->barang)->map(fn($q) => [
                     'kode_akun_id' => '11340',
                     'qty' => $q['qty'],
