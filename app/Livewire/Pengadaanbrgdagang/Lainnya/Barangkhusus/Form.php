@@ -3,14 +3,16 @@
 namespace App\Livewire\Pengadaanbrgdagang\Lainnya\Barangkhusus;
 
 use Livewire\Component;
-use App\Class\StokClass;
 use App\Models\KodeAkun;
 use App\Models\Supplier;
 use App\Models\Pembelian;
 use App\Class\BarangClass;
 use App\Class\JurnalClass;
+use App\Models\StokMasuk;
+use App\Models\Stok;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
+use Illuminate\Support\Str;
 
 class Form extends Component
 {
@@ -28,6 +30,7 @@ class Form extends Component
     }
     public function submit()
     {
+        
         $this->validateWithCustomMessages([
             'tanggal' => 'required',
             'uraian' => 'required',
@@ -54,7 +57,7 @@ class Form extends Component
             $pembelian->permintaan_pembelian_id = null;
             $pembelian->ppn = $this->ppn;
             $pembelian->diskon = $this->diskon;
-            $pembelian->jenis = 'Alat dan Bahan';
+            $pembelian->jenis = 'Barang Khusus';
             $pembelian->pengguna_id = auth()->id();
             $pembelian->save();
             $pembelian->pembelianDetail()->delete();
@@ -68,6 +71,8 @@ class Form extends Component
                     'pembelian_id' => $pembelian->id,
                 ];
             })->toArray());
+            
+            $stok = [];
             foreach (
                 collect($this->barang)->map(function ($q) use ($pembelian) {
                     $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
@@ -85,36 +90,81 @@ class Form extends Component
                     ];
                 })->toArray() as $key => $value
             ) {
-                if ($value['qty'] > 0) {
-                    StokClass::insert([
-                        'qty' => $value['qty'],
-                        'no_batch' => $value['no_batch'],
-                        'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
-                        'barang_id' => $value['barang_id'],
-                        'pembelian_id' => $pembelian->id,
-                        'barang_satuan_id' => $value['barang_satuan_id'],
-                        'rasio_dari_terkecil' => $value['rasio_dari_terkecil'],
-                        'harga_beli' => $value['harga_beli'],
-                    ]);
+                if ($value['qty'] > 0) {                    
+                    $stokMasuk = new StokMasuk();
+                    $stokMasuk->qty = $value['qty'];
+                    $stokMasuk->no_batch = $value['no_batch'];
+                    $stokMasuk->tanggal_kedaluarsa = $value['tanggal_kedaluarsa'];
+                    $stokMasuk->barang_id = $value['barang_id'];
+                    $stokMasuk->pembelian_id = $value['pembelian_id'];
+                    $stokMasuk->barang_satuan_id = $value['barang_satuan_id'];
+                    $stokMasuk->rasio_dari_terkecil = $value['rasio_dari_terkecil'];
+                    $stokMasuk->pengguna_id = auth()->id();
+                    $stokMasuk->save();
+                    
+                    for ($i = 0; $i < $value['rasio_dari_terkecil'] * $value['qty']; $i++) {
+                        $stok[] = [
+                            'id' => Str::uuid(),
+                            'pembelian_id' => $value['pembelian_id'],
+                            'barang_id' => $value['barang_id'],
+                            'no_batch' => $value['no_batch'],
+                            'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
+                            'stok_masuk_id' => $stokMasuk->id,
+                            'tanggal_masuk' => now(),
+                            'harga_beli' => $value['harga_beli'],
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ];
+                    }                    
                 }
             }
-            JurnalClass::pembelianPersediaan(
+
+            foreach (array_chunk($stok, 2000) as $chunk) {
+                Stok::insert($chunk);
+            }
+
+            $detail = collect($this->barang)->map(function ($q) use ($pembelian) {
+                $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
+                return [
+                    'kode_akun_id' => $brg['kode_akun_id'],
+                    'debet' => $q['harga_beli'] * $q['qty'],
+                    'kredit' => 0,
+                ];
+            })->groupBy('kode_akun_id')->map(function ($q) {
+                return [
+                    'kode_akun_id' => $q->first()['kode_akun_id'],
+                    'debet' => $q->sum(fn($q) => $q['debet']),
+                    'kredit' => $q->sum(fn($q) => $q['kredit']),
+                ];
+            })->values()->toArray();
+            $detail[] = [
+                'kode_akun_id' => $pembelian->kode_akun_id,
+                'debet' => 0,
+                'kredit' => collect($detail)->sum('debet'),
+            ];
+            $detail[] = [
+                'kode_akun_id' => '11400',
+                'debet' => $this->ppn,
+                'kredit' => 0,
+            ];
+            $detail[] = [
+                'kode_akun_id' => '45000',
+                'debet' => 0,
+                'kredit' => $this->diskon,
+            ];
+            
+            JurnalClass::insert(
                 jenis: 'Stok Masuk Barang Khusus',
+                sub_jenis: 'Stok Masuk',
                 tanggal: now(),
                 uraian: 'Stok Masuk Barang Khusus ' . $pembelian->uraian,
-                ppn: $pembelian->ppn,
-                diskon: $pembelian->diskon,
-                kode_akun_id: $pembelian->kode_akun_id,
+                system: 1,
                 pembelian_id: $pembelian->id,
+                aset_id: null,
                 stok_masuk_id: null,
-                barang: collect($this->barang)->map(function ($q) use ($pembelian) {
-                    $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
-                    return [
-                        'kode_akun_id' => $brg['kode_akun_id'],
-                        'qty' => $q['qty'],
-                        'harga_beli' => $q['harga_beli'],
-                    ];
-                })->toArray()
+                pembayaran_id: null,
+                penggajian_id: null,
+                detail: $detail
             );
 
             session()->flash('success', 'Berhasil menyimpan data');
