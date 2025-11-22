@@ -2,16 +2,13 @@
 
 namespace App\Livewire\Pengadaanbrgdagang\Lainnya\Alatdanbahan;
 
-use App\Models\Stok;
 use Livewire\Component;
 use App\Class\StokClass;
 use App\Models\KodeAkun;
 use App\Models\Supplier;
 use App\Models\Pembelian;
-use App\Models\StokMasuk;
 use App\Class\BarangClass;
 use App\Class\JurnalClass;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 
@@ -101,23 +98,24 @@ class Form extends Component
                     ]);
                 }
             }
-            JurnalClass::pembelianPersediaan([
-                'jenis' => 'Stok Masuk Alat dan Bahan',
-                'tanggal' => now(),
-                'uraian' => 'Stok Masuk Alat dan Bahan ' . $pembelian->uraian,
-                'kode_akun_id' => $pembelian->kode_akun_id,
-                'pembelian_id' => $pembelian->id,
-                'ppn' => $pembelian->ppn,
-                'diskon' => $pembelian->diskon,
-                'system' => 1,
-            ], collect($this->barang)->map(function ($q) use ($pembelian) {
-                $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
-                return [
-                    'kode_akun_id' => $brg['kode_akun_id'],
-                    'qty' => $q['qty'],
-                    'harga_beli' => $q['harga_beli'],
-                ];
-            })->toArray());
+            JurnalClass::pembelianPersediaan(
+                jenis: 'Stok Masuk Alat dan Bahan',
+                tanggal: now(),
+                uraian: 'Stok Masuk Alat dan Bahan ' . $pembelian->uraian,
+                ppn: $pembelian->ppn,
+                diskon: $pembelian->diskon,
+                kode_akun_id: $pembelian->kode_akun_id,
+                pembelian_id: $pembelian->id,
+                stok_masuk_id: null,
+                barang: collect($this->barang)->map(function ($q) use ($pembelian) {
+                    $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
+                    return [
+                        'kode_akun_id' => $brg['kode_akun_id'],
+                        'qty' => $q['qty'],
+                        'harga_beli' => $q['harga_beli'],
+                    ];
+                })->toArray()
+            );
 
             session()->flash('success', 'Berhasil menyimpan data');
         });

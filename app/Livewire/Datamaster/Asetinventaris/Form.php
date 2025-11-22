@@ -70,13 +70,15 @@ class Form extends Component
             $this->data->save();
             
             JurnalClass::insert(
-                jenis: 'Pembelian Aset',
+                jenis: 'Pembelian Aset Inventaris',
                 tanggal: $this->tanggal_perolehan,
-                uraian: 'Pembelian Aset ' . $this->nama,
+                uraian: 'Pembelian Aset Inventaris ' . $this->nama,
                 system: 1,
                 aset_id: $this->data->id,
                 pembelian_id: null,
                 stok_masuk_id: null,
+                pembayaran_id: null,
+                penggajian_id: null,
                 detail: [
                     [
                         'debet' => 0,
@@ -93,9 +95,9 @@ class Form extends Component
             
             if ($this->metode_penyusutan == 'Garis Lurus') {
                 JurnalClass::insert(
-                    jenis: 'Penyusutan Aset',
+                    jenis: 'Penyusutan Aset Inventaris',
                     tanggal: $this->tanggal_perolehan,
-                    uraian: 'Penyusutan Aset ' . $this->nama,
+                    uraian: 'Penyusutan Aset Inventaris ' . $this->nama,
                     system: 1,
                     aset_id: $this->data->id,
                     pembelian_id: null,

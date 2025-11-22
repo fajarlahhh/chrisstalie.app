@@ -7,6 +7,7 @@ use App\Models\Pegawai;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Class\JurnalClass;
+use App\Models\Penggajian;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
@@ -14,53 +15,73 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $dataPegawai = [], $pegawai_id, $pegawai, $unsurGaji = [], $dataKodeAkun = [], $metode_bayar;
-    public $tanggal;
-
-    public function updatedPegawaiId($value)
-    {
-        $this->pegawai = Pegawai::find($value);
-        $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '11100')->get()->toArray();
-        $this->unsurGaji = $this->pegawai->pegawaiUnsurGaji->map(fn($q) => [
-            'kode_akun_id' => $q->unsur_gaji_kode_akun_id,
-            'unsur_gaji_sifat' => $q->unsur_gaji_sifat,
-            'unsur_gaji_nama' => $q->unsur_gaji_nama,
-            'nilai' => $q->nilai,
-        ])->toArray();
-    }
+    public $dataPegawai = [], $unsurGaji = [], $dataKodeAkun = [], $metode_bayar;
+    public $tanggal, $periode, $detail = [];
 
     public function mount()
     {
-        $this->dataPegawai = Pegawai::orderBy('nama')->aktif()->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::detail()->whereIn('parent_id', ['11100', '20000'])->get()->toArray();
+        $this->tanggal = date('Y-m-01');
+        $this->periode = date('Y-m');
+        if (!Penggajian::where('periode', $this->periode . '-01')->exists()) {
+            $this->detail = Pegawai::with('pegawaiUnsurGaji.unsurGajiKodeAkun')->orderBy('nama')->aktif()->get()->toArray();
+        }
+    }
+
+    public function updatedPeriode($value)
+    {
+        $this->detail = [];
+        if (!Penggajian::where('periode', $value . '-01')->exists()) {
+            $this->detail = Pegawai::with('pegawaiUnsurGaji.unsurGajiKodeAkun')->orderBy('nama')->aktif()->get()->toArray();
+        }
     }
 
     public function submit()
     {
         $this->validateWithCustomMessages([
-            'pegawai_id' => 'required',
+            'periode' => 'required',
             'tanggal' => 'required',
         ]);
 
         DB::transaction(function () {
-            Jurnal::where('referensi_id', 'gaji' . $this->pegawai_id . substr($this->tanggal, 0, 7))->delete();
+            $detail = collect($this->detail)->map(fn($q) => [
+                'pegawai_id' => $q['id'],
+                'nama' => $q['nama'],
+                'unsur_gaji' => collect($q['pegawai_unsur_gaji'])->map(fn($q) => [
+                    'nilai' => $q['nilai'],
+                    'nama' => $q['unsur_gaji_nama'],
+                    'sifat' => $q['unsur_gaji_sifat'],
+                    'kode_akun_id' => $q['unsur_gaji_kode_akun_id'],
+                ])->toArray(),
+            ]);
+            $penggajian = new Penggajian();
+            $penggajian->tanggal = $this->tanggal;
+            $penggajian->periode = $this->periode . '-01';
+            $penggajian->detail = $detail->toArray();
+            $penggajian->save();
 
-            $detail = collect($this->unsurGaji)->map(fn($q) => [
-                'debet' => $q['nilai'],
+            $jurnalDetail = $detail->pluck('unsur_gaji')->flatten(1)->groupBy('kode_akun_id')->map(fn($q) => [
+                'debet' => $q->sum('nilai'),
                 'kredit' => 0,
-                'kode_akun_id' => $q['kode_akun_id'],
+                'kode_akun_id' => $q->first()['kode_akun_id'],
             ])->toArray();
-            $detail[] = [
+            $jurnalDetail[] = [
                 'debet' => 0,
-                'kredit' => collect($this->unsurGaji)->sum('nilai'),
+                'kredit' => $detail->pluck('unsur_gaji')->flatten(1)->sum('nilai'),
                 'kode_akun_id' => $this->metode_bayar,
             ];
-            JurnalClass::insert([
-                'jenis' => 'Gaji',
-                'system' => 1,
-                'tanggal' => $this->tanggal,
-                'uraian' => 'Gaji ' . $this->pegawai['nama'] . ' bulan ' . substr($this->tanggal, 0, 7),
-                'referensi_id' => 'gaji' . $this->pegawai_id . substr($this->tanggal, 0, 7),
-            ], $detail);
+            JurnalClass::insert(
+                jenis: 'Gaji',
+                tanggal: $this->tanggal,
+                uraian: 'Gaji Bulan ' . $this->periode,
+                system: 1,
+                penggajian_id: $penggajian->id,
+                aset_id: null,
+                pembelian_id: null,
+                stok_masuk_id: null,
+                pembayaran_id: null,
+                detail: collect($jurnalDetail)->values()->toArray()
+            );
 
             session()->flash('success', 'Berhasil menyimpan data');
         });

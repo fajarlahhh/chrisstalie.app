@@ -20,8 +20,8 @@
                 <div class="col-md-10">
                     <div class="panel-heading-btn float-end">
                         <div class="input-group w-100">
-                            <input class="form-control w-auto" type="month" autocomplete="off"
-                                wire:model.lazy="bulan" />
+                            <input class="form-control w-auto" type="number" autocomplete="off"
+                                wire:model.lazy="tahun" />
                         </div>
                     </div>
                 </div>
@@ -33,43 +33,73 @@
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>Uraian</th>
+                            <th>Periode</th>
                             <th>Tanggal</th>
-                            <th>Rincian</th>
+                            <th>Detail</th>
+                            <th>Total</th>
                             @unlessrole(config('app.name') . '-guest')
                                 <th class="w-5px"></th>
                             @endunlessrole
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data as $i => $row)
-                            <tr>
-                                <td class=" w-5px">
-                                    {{ ++$i }}
-                                </td>
-                                <td>{{ $row->uraian }}</td>
-                                <td>{{ $row->tanggal }}</td>
-                                <td>
-                                    @foreach ($row->jurnalDetail->where('debet', '>', 0) as $j => $subRow)
-                                        <div class="d-flex justify-content-between">
-                                            <span>{{ $subRow->kodeAkun?->nama }}</span>
-                                            <span>{{ number_format($subRow->debet) }}</span>
-                                        </div>
-                                    @endforeach
-                                </td>
-                                @unlessrole(config('app.name') . '-guest')
-                                    <td class="text-end text-nowrap">
-                                        <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                        @if ($data->count() > 0)
+                            @php
+                                $unsurGaji = collect($data->pluck('detail')->flatten(1))
+                                    ->sortByDesc(fn($p) => count($p['unsur_gaji']))
+                                    ->first()['unsur_gaji'];
+                            @endphp
+                            @foreach ($data as $i => $row)
+                                <tr>
+                                    <td class=" w-5px">
+                                        {{ ++$i }}
                                     </td>
-                                @endunlessrole
+                                    <td>{{ $row->periode }}</td>
+                                    <td>{{ $row->tanggal }}</td>
+                                    <td>
+                                        <table class="table table-bordered fs-10px">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nama</th>
+                                                    @foreach ($unsurGaji as $subRow)
+                                                        <th>{{ $subRow['nama'] }}</th>
+                                                    @endforeach
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($row->detail as $subRow)
+                                                    <tr>
+                                                        <td>{{ $subRow['nama'] }}</td>
+                                                        @foreach ($unsurGaji as $subSubRow)
+                                                            <td class="text-end">
+                                                                {{ number_format(collect($subRow['unsur_gaji'])->firstWhere('kode_akun_id', $subSubRow['kode_akun_id'])['nilai'] ?? 0) }}
+                                                            </td>
+                                                        @endforeach
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td class="text-end">
+                                        {{ number_format(collect($row->detail)->sum(fn($q) => collect($q['unsur_gaji'])->sum('nilai'))) }}
+                                    </td>
+                                    @unlessrole(config('app.name') . '-guest')
+                                        <td class="text-end text-nowrap">
+                                            <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                                :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                        </td>
+                                    @endunlessrole
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="5" class="text-center">Tidak ada data</td>
                             </tr>
-                        @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
     <x-alert />
 </div>

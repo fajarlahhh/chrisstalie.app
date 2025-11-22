@@ -15,7 +15,7 @@ class JurnalClass
         //
     }
 
-    public static function insert($jenis, $tanggal, $uraian, $system = 0, $aset_id = null, $pembelian_id = null, $stok_masuk_id = null, $pembayaran_id = null, $detail)
+    public static function insert($jenis, $tanggal, $uraian, $system = 0, $aset_id = null, $pembelian_id = null, $stok_masuk_id = null, $pembayaran_id = null, $penggajian_id = null, $detail)
     {
         $terakhir = Jurnal::where('tanggal', 'like', substr($tanggal, 0, 7) . '%')
             ->orderBy('id', 'desc')
@@ -33,6 +33,7 @@ class JurnalClass
         $jurnal->pembelian_id = $pembelian_id;
         $jurnal->stok_masuk_id = $stok_masuk_id;
         $jurnal->pembayaran_id = $pembayaran_id;
+        $jurnal->penggajian_id = $penggajian_id;
         $jurnal->pengguna_id = auth()->id();
         $jurnal->save();
 

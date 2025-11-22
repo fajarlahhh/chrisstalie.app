@@ -18,8 +18,8 @@ class PegawaiUnsurGaji extends Model
         return $this->belongsTo(Pegawai::class);
     }
 
-    public function unsurGaji(): BelongsTo
+    public function unsurGajiKodeAkun(): BelongsTo
     {
-        return $this->belongsTo(UnsurGaji::class);
+        return $this->belongsTo(KodeAkun::class, 'unsur_gaji_kode_akun_id');
     }
 }

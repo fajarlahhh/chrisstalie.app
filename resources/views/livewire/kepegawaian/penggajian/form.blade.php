@@ -26,35 +26,51 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Pegawai</label>
-                    <select data-container="body" class="form-control" wire:model.lazy="pegawai_id" data-width="100%">
-                        <option selected value="">-- Pilih Pegawai --</option>
-                        @foreach ($dataPegawai as $item)
-                            <option value="{{ $item['id'] }}">
-                                {{ $item['nama'] }}</option>
-                        @endforeach
-                    </select>
-                    @error('pegawai_id')
+                    <label class="form-label">Periode</label>
+                    <input class="form-control" type="month" wire:model.live="periode" />
+                    @error('periode')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                @if ($pegawai_id)
+                @if ($detail != [])
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th class="w-5px">No.</th>
-                                <th>Unsur Gaji</th>
-                                <th>Nilai</th>
+                                <th class="w-5px" rowspan="2">No.</th>
+                                <th rowspan="2">Nama</th>
+                                <th colspan="{{ collect($detail)->max(fn($p) => count($p['pegawai_unsur_gaji'])) }}">
+                                    Unsur Gaji
+                                </th>
+                                <th rowspan="2">Total</th>
+                            </tr>
+                            <tr>
+                                @php
+                                    $maxPegawai = collect($detail)
+                                        ->sortByDesc(fn($p) => count($p['pegawai_unsur_gaji']))
+                                        ->first();
+                                @endphp
+                                @foreach ($maxPegawai['pegawai_unsur_gaji'] ?? [] as $item)
+                                    <th>{{ $item['unsur_gaji_nama'] }}</th>
+                                @endforeach
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($unsurGaji as $index => $item)
+                            @foreach ($detail as $index => $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td> {{ $item['unsur_gaji_nama'] }}
+                                    <td> {{ $item['nama'] }}
                                     </td>
-                                    <td> <input class="form-control text-end" type="text"
-                                            value="{{ number_format($item['nilai']) }}" disabled />
+                                    @foreach ($maxPegawai['pegawai_unsur_gaji'] ?? [] as $subItem)
+                                        <td>
+                                            <input class="form-control text-end" type="text"
+                                                value="{{ number_format(collect($item['pegawai_unsur_gaji'])->firstWhere('unsur_gaji_kode_akun_id', $subItem['unsur_gaji_kode_akun_id'])['nilai'] ?? 0) }}"
+                                                disabled />
+                                        </td>
+                                    @endforeach
+                                    <td>
+                                        <input class="form-control text-end" type="text"
+                                            value="{{ number_format(collect($item['pegawai_unsur_gaji'])->sum('nilai')) }}"
+                                            disabled />
                                     </td>
                                 </tr>
                             @endforeach
@@ -62,8 +78,17 @@
                         <tfoot>
                             <tr>
                                 <th colspan="2">Total</th>
-                                <th> <input class="form-control text-end" type="text"
-                                        value="{{ number_format(collect($unsurGaji)->sum('nilai')) }}" disabled />
+                                @foreach ($maxPegawai['pegawai_unsur_gaji'] ?? [] as $subItem)
+                                    <th>
+                                        <input class="form-control text-end" type="text"
+                                            value="{{ number_format(collect($detail)->sum(fn($p) => collect($p['pegawai_unsur_gaji'])->firstWhere('unsur_gaji_kode_akun_id', $subItem['unsur_gaji_kode_akun_id'])['nilai'] ?? 0)) }}"
+                                            disabled />
+                                    </th>
+                                @endforeach
+                                <th>
+                                    <input class="form-control text-end" type="text"
+                                        value="{{ number_format(collect($detail)->sum(fn($p) => collect($p['pegawai_unsur_gaji'])->sum('nilai'))) }}"
+                                        disabled />
                                 </th>
                             </tr>
                         </tfoot>
@@ -77,6 +102,10 @@
                                 <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                             @endforeach
                         </select>
+                    </div>
+                @else
+                    <div class="alert alert-warning text-center">
+                        <h5>Penggajian pada periode {{ $periode }} sudah pernah dibuat</h5>
                     </div>
                 @endif
             </div>
