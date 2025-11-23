@@ -6,6 +6,7 @@ use App\Models\Aset;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Class\JurnalClass;
+use App\Models\AsetPenyusutan;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 
@@ -96,7 +97,7 @@ class Form extends Component
             );
             
             if ($this->metode_penyusutan == 'Garis Lurus') {
-                JurnalClass::insert(
+                $jurnal = JurnalClass::insert(
                     jenis: 'Penyusutan Aset Inventaris',
                     sub_jenis: 'Penyusutan',
                     tanggal: $this->tanggal_perolehan,
@@ -121,6 +122,12 @@ class Form extends Component
                         ]
                     ]
                 );
+
+                $penyusutan = new AsetPenyusutan();
+                $penyusutan->aset_id = $this->data->id;
+                $penyusutan->nilai = $this->data->nilai_penyusutan;
+                $penyusutan->jurnal_id = $jurnal->id;
+                $penyusutan->save();
             }
 
             $data = Aset::findOrFail($this->data->id);

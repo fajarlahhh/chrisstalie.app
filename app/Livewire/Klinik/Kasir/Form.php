@@ -14,6 +14,7 @@ use App\Models\Pembayaran;
 use App\Models\Registrasi;
 use App\Models\MetodeBayar;
 use Illuminate\Support\Str;
+use App\Models\AsetPenyusutan;
 use App\Models\PembayaranDetail;
 use App\Models\TindakanAlatBarang;
 use Illuminate\Support\Facades\DB;
@@ -365,8 +366,8 @@ class Form extends Component
                 'kode_akun_id' => $q['kode_akun_id'],
             ];
         })->all();
-        
-        JurnalClass::insert(
+
+        $jurnal = JurnalClass::insert(
             jenis: 'Pembayaran Pasien Klinik',
             sub_jenis: 'Pembayaran',
             tanggal: now(),
@@ -386,6 +387,23 @@ class Form extends Component
                 ];
             })->values()->toArray()
         );
+
+        $asetPenyusutan = [];
+        foreach (
+            collect($this->alat)->where('metode_penyusutan', 'Satuan Hasil Produksi')->all() as $alat
+        ) {
+            for ($i = 0; $i < $alat['qty']; $i++) {
+                $asetPenyusutan[] = [
+                    'aset_id' => $alat['id'],
+                    'nilai' => $alat['biaya'],
+                    'jurnal_id' => $jurnal->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+        }
+
+        AsetPenyusutan::insert($asetPenyusutan);
     }
 
     public function render()
