@@ -71,8 +71,10 @@ class Form extends Component
                     'pembelian_id' => $pembelian->id,
                 ];
             })->toArray());
-            
+
             $stok = [];
+            $stokMasuk = [];
+
             foreach (
                 collect($this->barang)->map(function ($q) use ($pembelian) {
                     $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
@@ -90,7 +92,7 @@ class Form extends Component
                     ];
                 })->toArray() as $key => $value
             ) {
-                if ($value['qty'] > 0) {                    
+                if ($value['qty'] > 0) {
                     $stokMasuk = new StokMasuk();
                     $stokMasuk->qty = $value['qty'];
                     $stokMasuk->no_batch = $value['no_batch'];
@@ -101,26 +103,31 @@ class Form extends Component
                     $stokMasuk->rasio_dari_terkecil = $value['rasio_dari_terkecil'];
                     $stokMasuk->pengguna_id = auth()->id();
                     $stokMasuk->save();
-                    
+
                     for ($i = 0; $i < $value['rasio_dari_terkecil'] * $value['qty']; $i++) {
                         $stok[] = [
-                            'id' => Str::uuid(),
+                            'id' => $stokMasuk->id . '-' . $value['barang_id'] . '-' . $i,
                             'pembelian_id' => $value['pembelian_id'],
                             'barang_id' => $value['barang_id'],
                             'no_batch' => $value['no_batch'],
                             'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
                             'stok_masuk_id' => $stokMasuk->id,
-                            'tanggal_masuk' => now(),
+                            'tanggal_masuk' => now()->toDateTimeString(), // Convert ke string biar hemat memori
                             'harga_beli' => $value['harga_beli'],
-                            'created_at' => now(),
-                            'updated_at' => now(),
+                            'created_at' => now()->toDateTimeString(),
+                            'updated_at' => now()->toDateTimeString(),
                         ];
-                    }                    
+
+                        if (count($stok) >= 2000) {
+                            Stok::insert($stok);
+                            $stok = [];
+                        }
+                    }
                 }
             }
 
-            foreach (array_chunk($stok, 2000) as $chunk) {
-                Stok::insert($chunk);
+            if (!empty($stok)) {
+                Stok::insert($stok);
             }
 
             $detail = collect($this->barang)->map(function ($q) use ($pembelian) {
@@ -152,7 +159,7 @@ class Form extends Component
                 'debet' => 0,
                 'kredit' => $this->diskon,
             ];
-            
+
             JurnalClass::insert(
                 jenis: 'Stok Masuk Barang Khusus',
                 sub_jenis: 'Stok Masuk',
