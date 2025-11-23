@@ -156,10 +156,6 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
-                    "title" => "Pembelian",
-                    "method" => ["Index", "Form"],
-                ],
-                [
                     "title" => "Stok Masuk",
                     "method" => ["Index", "Form"],
                 ],

@@ -31,7 +31,7 @@
                 {{ number_format($detail->harga) }}<br>
                 x {{ $detail->qty }}
             </td>
-            <td class="p-0 text-end text-nowrap w-100px">Rp.
+            <td class="p-0 text-end text-nowrap w-100px" nowrap>
                 {{ number_format($detail->qty * $detail->harga) }}
             </td>
         </tr>
@@ -41,15 +41,15 @@
 <table class="table table-borderless fs-11px">
     <tr>
         <td class="p-0">Total Harga Barang</td>
-        <td class="p-0 text-end">Rp. {{ number_format($data->total_harga_barang) }}</td>
+        <td class="p-0 text-end">{{ number_format($data->total_harga_barang) }}</td>
     </tr>
     <tr>
         <td class="p-0">Diskon</td>
-        <td class="p-0 text-end">Rp. {{ number_format($data->diskon) }}</td>
+        <td class="p-0 text-end">{{ number_format($data->diskon) }}</td>
     </tr>
     <tr>
         <th class="p-0">Total</th>
-        <th class="p-0 text-end">Rp.
+        <th class="p-0 text-end">
             {{ number_format($data->total_harga_barang - $data->diskon) }}
         </th>
     </tr>

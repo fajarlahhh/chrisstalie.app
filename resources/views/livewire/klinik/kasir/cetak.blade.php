@@ -29,7 +29,7 @@
         <tr>
             <td class="p-0">
                 {{ $tindakan->tarifTindakan->nama }}<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rp. {{ number_format($tindakan->biaya) }} @if ($tindakan->diskon > 0)
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($tindakan->biaya) }} @if ($tindakan->diskon > 0)
                     - {{ number_format($tindakan->diskon) }}
                 @endif
             </td>
@@ -37,8 +37,8 @@
                 {{ $tindakan->qty }}<br>
 
             </td>
-            <td class="p-0 text-end">
-                Rp. {{ number_format(($tindakan->biaya - $tindakan->diskon) * $tindakan->qty) }}
+            <td class="p-0 text-end" nowrap>
+                {{ number_format(($tindakan->biaya - $tindakan->diskon) * $tindakan->qty) }}
             </td>
         </tr>
     @endforeach
@@ -46,13 +46,13 @@
         <tr>
             <td class="p-0">
                 {{ $resep->first()->nama }}<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rp.{{ number_format($resep->sum(fn($q) => $q->harga * $q->qty)) }}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($resep->sum(fn($q) => $q->harga * $q->qty)) }}
             </td>
             <td class="p-0 ps-2 text-end text-nowrap w-100px">
                 1
             </td>
-            <td class="p-0 text-end">
-                Rp. {{ number_format($resep->sum(fn($q) => $q->harga * $q->qty)) }}
+            <td class="p-0 text-end" nowrap>
+                {{ number_format($resep->sum(fn($q) => $q->harga * $q->qty)) }}
             </td>
         </tr>
     @endforeach
@@ -61,20 +61,21 @@
 <table class="table table-borderless fs-11px">
     <tr>
         <td class="p-0">Total Tindakan</td>
-        <td class="p-0 text-end">Rp. {{ number_format($data->pembayaran->total_tindakan + $data->pembayaran->diskon) }}
+        <td class="p-0 text-end" nowrap>
+            {{ number_format($data->pembayaran->total_tindakan + $data->pembayaran->diskon) }}
         </td>
     </tr>
     <tr>
         <td class="p-0">Total Resep</td>
-        <td class="p-0 text-end">Rp. {{ number_format($data->pembayaran->total_resep) }}</td>
+        <td class="p-0 text-end">{{ number_format($data->pembayaran->total_resep) }}</td>
     </tr>
     <tr>
         <td class="p-0">Diskon</td>
-        <td class="p-0 text-end">Rp. {{ number_format($data->pembayaran->diskon) }}</td>
+        <td class="p-0 text-end">{{ number_format($data->pembayaran->diskon) }}</td>
     </tr>
     <tr>
         <th class="p-0">Total</th>
-        <th class="p-0 text-end">Rp.
+        <th class="p-0 text-end" nowrap>
             {{ number_format($data->pembayaran->total_tagihan) }}
         </th>
     </tr>
