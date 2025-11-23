@@ -137,19 +137,27 @@ class Form extends Component
                             'updated_at' => now(),
                         ];
                     }
-                    JurnalClass::pembelianPersediaan(
+
+                    JurnalClass::insert(
                         jenis: 'Stok Masuk Barang Dagang',
+                        sub_jenis: 'Stok Masuk',
                         tanggal: now(),
-                        uraian: 'Stok Masuk Barang Dagang ' . collect($this->dataPembelian)->where('id', $this->pembelian_id)->first()['uraian'],
-                        ppn: null,
-                        diskon: null,
-                        kode_akun_id: '11340',
+                        uraian: 'Stok Masuk Barang Dagang ' . $value['nama'],
+                        system: 1,
                         pembelian_id: $this->pembelian_id,
                         stok_masuk_id: $stokMasuk->id,
-                        barang: [[
+                        pembayaran_id: null,
+                        penggajian_id: null,
+                        aset_id: null,
+                        detail: [[
                             'kode_akun_id' => $value['kode_akun_id'],
-                            'qty' => $value['qty_masuk'],
-                            'harga_beli' => $value['harga_beli'],
+                            'debet' => $value['harga_beli'] * $value['qty_masuk'],
+                            'kredit' => 0,
+                        ], 
+                        [
+                            'kode_akun_id' => '11340',
+                            'debet' => 0,
+                            'kredit' => $value['harga_beli'] * $value['qty_masuk'],
                         ]]
                     );
                 }

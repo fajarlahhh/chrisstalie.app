@@ -15,7 +15,7 @@ class JurnalClass
         //
     }
 
-    public static function insert($jenis, $sub_jenis = null, $tanggal, $uraian, $system = 0, $aset_id = null, $pembelian_id = null, $stok_masuk_id = null, $pembayaran_id = null, $penggajian_id = null, $detail)
+    public static function insert($jenis, $sub_jenis = null, $tanggal, $uraian, $system = 0, $aset_id = null, $pembelian_id = null, $stok_masuk_id = null, $pembayaran_id = null, $penggajian_id = null, $pelunasan_pembelian_id = null, $detail)
     {
         $terakhir = Jurnal::where('tanggal', 'like', substr($tanggal, 0, 7) . '%')
             ->orderBy('id', 'desc')
@@ -35,6 +35,7 @@ class JurnalClass
         $jurnal->stok_masuk_id = $stok_masuk_id;
         $jurnal->pembayaran_id = $pembayaran_id;
         $jurnal->penggajian_id = $penggajian_id;
+        $jurnal->pelunasan_pembelian_id = $pelunasan_pembelian_id;
         $jurnal->pengguna_id = auth()->id();
         $jurnal->save();
 
@@ -45,53 +46,5 @@ class JurnalClass
             'kredit' => $q['kredit'],
             'kode_akun_id' => $q['kode_akun_id'],
         ])->toArray());
-    }
-
-    public static function pembelianPersediaan($jenis, $tanggal, $uraian, $ppn, $diskon, $kode_akun_id, $pembelian_id = null, $stok_masuk_id = null, $barang)
-    {
-        $jurnalDetail = [];
-
-        //Barang
-        foreach (
-            collect($barang)->groupBy('kode_akun_id')->map(fn($q) => [
-                'kode_akun_id' => $q->first()['kode_akun_id'],
-                'total' => $q->sum(fn($q) => $q['harga_beli'] * $q['qty']),
-            ]) as $brg
-        ) {
-            $jurnalDetail[] = [
-                'debet' => $brg['total'],
-                'kredit' => 0,
-                'kode_akun_id' => $brg['kode_akun_id']
-            ];
-        }
-
-        //PPN Masukan
-        if (isset($ppn)) {
-            $jurnalDetail[] = [
-                'debet' => $ppn,
-                'kredit' => 0,
-                'kode_akun_id' => '11400'
-            ];
-        }
-
-        //Diskon
-        if (isset($diskon)) {
-            if ($diskon > 0) {
-                $jurnalDetail[] = [
-                    'debet' => 0,
-                    'kredit' => $diskon,
-                    'kode_akun_id' => '45000'
-                ];
-            }
-        }
-
-        //Jenis Bayar
-        $jurnalDetail[] = [
-            'debet' => 0,
-            'kredit' => collect($barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']) - (isset($diskon) ? $diskon : 0) + (isset($ppn) ? $ppn : 0),
-            'kode_akun_id' => $kode_akun_id
-        ];
-
-        self::insert($jenis, null, $tanggal, $uraian, 1, null, $pembelian_id, $stok_masuk_id, null, null, $jurnalDetail);
     }
 }

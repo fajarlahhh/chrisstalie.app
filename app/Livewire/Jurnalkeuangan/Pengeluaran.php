@@ -52,6 +52,7 @@ class Pengeluaran extends Component
                 stok_masuk_id: null,
                 pembayaran_id: null,
                 penggajian_id: null,
+                pelunasan_pembelian_id: null,
                 detail: [
                     [
                         'debet' => $this->nilai,

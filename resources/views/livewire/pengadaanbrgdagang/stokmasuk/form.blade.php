@@ -25,7 +25,7 @@
                         <option selected value="" hidden>-- Cari Data Pembelian --</option>
                         @foreach ($dataPembelian as $row)
                             <option value="{{ $row['id'] }}">
-                                {{ $row['tanggal'] }} - {{ $row['uraian'] }}, Supplier : 2{{ $row['supplier']['nama'] }}
+                                {{ $row['tanggal'] }} - {{ $row['uraian'] }}, Supplier : {{ $row['supplier']['nama'] }}
                             </option>
                         @endforeach
                     </select>

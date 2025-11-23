@@ -11,14 +11,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Pembelian extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'pembelian';
 
     public function permintaanPembelian(): BelongsTo
     {
         return $this->belongsTo(PermintaanPembelian::class);
     }
-    
+
+    public function pelunasanPembelian(): HasOne
+    {
+        return $this->hasOne(PelunasanPembelian::class);
+    }
+
     public function pembelianDetail(): HasMany
     {
         return $this->hasMany(PembelianDetail::class);
@@ -28,12 +33,12 @@ class Pembelian extends Model
     {
         return $this->belongsTo(Supplier::class);
     }
-    
+
     public function stokMasuk(): HasMany
     {
         return $this->hasMany(StokMasuk::class);
     }
-    
+
     public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class);
@@ -52,5 +57,12 @@ class Pembelian extends Model
     public function stokKeluar(): HasMany
     {
         return $this->hasMany(Stok::class)->whereNotNull('stok_keluar_id');
+    }
+
+    public function getTotalHargaAttribute(): float
+    {
+        return $this->pembelianDetail->sum(function ($item) {
+            return $item->harga_beli * $item->qty;
+        }) - $this->diskon + $this->ppn;
     }
 }

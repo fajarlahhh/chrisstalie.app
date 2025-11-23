@@ -153,6 +153,7 @@ class Index extends Component
             stok_masuk_id: null,
             pembayaran_id: $pembayaran->id,
             penggajian_id: null,
+            pelunasan_pembelian_id: null,
             detail: $jurnalDetail
         );
     }

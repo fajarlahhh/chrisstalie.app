@@ -91,6 +91,7 @@ class Form extends Component
                 stok_masuk_id: null,
                 pembayaran_id: null,
                 penggajian_id: null,
+                pelunasan_pembelian_id: null,
                 detail: [
                     [
                         'debet' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']),
