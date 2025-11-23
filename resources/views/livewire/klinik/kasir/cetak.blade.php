@@ -5,17 +5,20 @@
 <br>
 <table class="table table-borderless fs-11px">
     <tr>
-        <td class="text-nowrap w-50px p-0">Kasir</td>
+        <td class="text-nowrap w-50px p-0">No.</td>
+        <td class="p-0">: {{ $data->pembayaran->id }}</td>
+    </tr>
+    <tr>
+        <td class="text-nowrap p-0">Kasir</td>
         <td class="p-0">:
             {{ $data->pembayaran->pengguna->pegawai
                 ? $data->pembayaran->pengguna->pegawai?->nama
                 : $data->pembayaran->pengguna->nama }}
         </td>
-        <td class="p-0 text-end">No. {{ $data->pembayaran->id }}</td>
     </tr>
     <tr>
         <td class="text-nowrap p-0">Tanggal</td>
-        <td class="p-0" colspan="2">: {{ $data->pembayaran->created_at }}</td>
+        <td class="p-0">: {{ $data->pembayaran->created_at }}</td>
     </tr>
 </table>
 <hr>
