@@ -7,7 +7,7 @@
 
     <h1 class="page-header">Informasi Pasien</h1>
 
-    @if ($pasien)
+    @if ($dataPasien)
         <div class="note alert-primary mb-2">
             <div class="note-content">
                 <h5>Data Pasien</h5>
@@ -330,7 +330,7 @@
                             });
                             
                             $($el).on('change', function(element) {
-                                $wire.set('pasien', $($el).val());
+                                $wire.set('pasienId', $($el).val());
                             });
                             
                             function format(data) {

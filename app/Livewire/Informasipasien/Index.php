@@ -9,7 +9,7 @@ use Livewire\Attributes\Url;
 class Index extends Component
 {
     #[Url]
-    public $pasien;
+    public $pasien, $pasienId;
 
     public $dataPasien;
     public $rekamMedis;
