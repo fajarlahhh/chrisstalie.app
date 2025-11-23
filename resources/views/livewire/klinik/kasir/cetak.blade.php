@@ -25,7 +25,7 @@
 <table class="table table-borderless fs-10px">
     <tr>
         <th class="p-0">Item<br><br></th>
-        <th class="p-0 text-end">Qty<br><br></th>
+        <th class="p-0 text-center">Qty<br><br></th>
         <th class="p-0 text-end">Total<br><br></th>
     </tr>
     @foreach ($data->tindakan as $tindakan)
@@ -36,7 +36,7 @@
                     - {{ number_format($tindakan->diskon) }}
                 @endif
             </td>
-            <td class="p-0 ps-2 text-end text-nowrap w-100px">
+            <td class="p-0 ps-2 text-center text-nowrap w-100px">
                 {{ $tindakan->qty }}<br>
 
             </td>

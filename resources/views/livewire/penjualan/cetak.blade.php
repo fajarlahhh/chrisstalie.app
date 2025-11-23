@@ -21,18 +21,17 @@
 <table class="table table-borderless fs-10px">
     <tr>
         <th class="p-0">Item<br><br></th>
-        <th class="p-0 text-end">Qty<br><br></th>
+        <th class="p-0 text-center">Qty<br><br></th>
         <th class="p-0 text-end">Harga<br><br></th>
     </tr>
     @foreach ($data->stokKeluar as $detail)
         <tr>
             <td class="p-0">
                 {{ $detail->barangSatuan->barang->nama }}<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<small>{{ $detail->barangSatuan->nama }}</small>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{ $detail->barangSatuan->nama }} - {{ number_format($detail->harga) }}</small>
             </td>
-            <td class="p-0 ps-2 text-end text-nowrap w-100px">
-                {{ number_format($detail->harga) }}<br>
-                x {{ $detail->qty }}
+            <td class="p-0 ps-2 text-center text-nowrap w-100px">
+                {{ $detail->qty }}
             </td>
             <td class="p-0 text-end text-nowrap w-100px" nowrap>
                 {{ number_format($detail->qty * $detail->harga) }}
