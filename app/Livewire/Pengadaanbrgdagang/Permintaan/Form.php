@@ -49,7 +49,6 @@ class Form extends Component
 
             if ($this->verifikator_id) {
                 $verifikasi = new Verifikasi();
-                $verifikasi->id = Str::uuid();
                 $verifikasi->permintaan_pembelian_id = $this->data->id;
                 $verifikasi->jenis = 'Permintaan Pembelian';
                 $verifikasi->pengguna_id = $this->verifikator_id;
@@ -65,8 +64,8 @@ class Form extends Component
     {
         
         $this->dataBarang = BarangClass::getBarangBySatuanUtama('Apotek');
-        $this->dataPengguna = Pengguna::where(fn($q) => $q->whereHas('permissions', function ($q) {
-            $q->where('name', 'pengadaanbrgdagangverifikasi');
+        $this->dataPengguna = Pengguna::with('pegawai')->where(fn($q) => $q->whereHas('permissions', function ($q) {
+            $q->where('name', 'pengadaanbrg.dagangverifikasi');
         })->orWhere(fn($q) => $q->whereHas('roles', fn($q) => $q->where('name', 'administrator'))))->orderBy('nama')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());

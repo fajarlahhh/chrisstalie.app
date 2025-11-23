@@ -120,7 +120,7 @@
                             <option value="">-- Pilih Verifikator --</option>
                             @foreach ($dataPengguna as $subRow)
                                 <option value="{{ $subRow['id'] }}">
-                                    {{ $subRow['nama'] }}
+                                    {{ $subRow['pegawai'] ? $subRow['pegawai']['nama'] : $subRow['nama'] }}
                                 </option>
                             @endforeach
                         </select>
