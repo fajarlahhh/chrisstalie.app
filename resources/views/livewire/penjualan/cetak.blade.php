@@ -30,10 +30,10 @@
                 {{ $detail->barangSatuan->barang->nama }}<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{ $detail->barangSatuan->nama }} - {{ number_format($detail->harga) }}</small>
             </td>
-            <td class="p-0 ps-2 text-center text-nowrap w-100px">
+            <td class="p-0 ps-2 text-center w-10px" nowrap>
                 {{ $detail->qty }}
             </td>
-            <td class="p-0 text-end text-nowrap w-100px" nowrap>
+            <td class="p-0 text-end w-100px" nowrap>
                 {{ number_format($detail->qty * $detail->harga) }}
             </td>
         </tr>
