@@ -46,5 +46,7 @@ class JurnalClass
             'kredit' => $q['kredit'],
             'kode_akun_id' => $q['kode_akun_id'],
         ])->toArray());
+
+        return $jurnal;
     }
 }

@@ -149,6 +149,7 @@ class Form extends Component
                         pembayaran_id: null,
                         penggajian_id: null,
                         aset_id: null,
+                        pelunasan_pembelian_id: null,
                         detail: [[
                             'kode_akun_id' => $value['kode_akun_id'],
                             'debet' => $value['harga_beli'] * $value['qty_masuk'],
