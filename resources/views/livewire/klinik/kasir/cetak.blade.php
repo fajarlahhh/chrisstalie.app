@@ -51,7 +51,7 @@
                 {{ $resep->first()->nama }}<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($resep->sum(fn($q) => $q->harga * $q->qty)) }}
             </td>
-            <td class="p-0 ps-2 text-end text-nowrap w-100px">
+            <td class="p-0 ps-2 text-center text-nowrap w-100px">
                 1
             </td>
             <td class="p-0 text-end" nowrap>
