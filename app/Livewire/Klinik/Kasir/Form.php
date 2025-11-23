@@ -149,36 +149,36 @@ class Form extends Component
                     }
                 }
             ],
-            // 'resep.*.barang.*.qty' => [
-            //     'required',
-            //     'numeric',
-            //     'min:1',
-            //     function ($attribute, $value, $fail) {
-            //         $parts = explode('.', $attribute); // ['resep', '0', 'barang', '1', 'qty']
-            //         $resepIndex = $parts[1] ?? null;
-            //         $barangIndex = $parts[3] ?? null;
+            'resep.*.barang.*.qty' => [
+                'required',
+                'numeric',
+                'min:1',
+                function ($attribute, $value, $fail) {
+                    $parts = explode('.', $attribute); // ['resep', '0', 'barang', '1', 'qty']
+                    $resepIndex = $parts[1] ?? null;
+                    $barangIndex = $parts[3] ?? null;
 
-            //         if (
-            //             !is_numeric($resepIndex) ||
-            //             !isset($this->resep[$resepIndex]['barang'][$barangIndex])
-            //         ) {
-            //             return;
-            //         }
-            //         $barangResep = $this->resep[$resepIndex]['barang'][$barangIndex];
+                    if (
+                        !is_numeric($resepIndex) ||
+                        !isset($this->resep[$resepIndex]['barang'][$barangIndex])
+                    ) {
+                        return;
+                    }
+                    $barangResep = $this->resep[$resepIndex]['barang'][$barangIndex];
 
-            //         $barang = collect($this->dataBarang)->firstWhere('id', $barangResep['id']);
-            //         if (!$barang) return;
+                    $barang = collect($this->dataBarang)->firstWhere('id', $barangResep['id']);
+                    if (!$barang) return;
 
-            //         $stokTersedia = Stok::where('barang_id', $barang['barang_id'])
-            //             ->available()
-            //             ->count();
+                    $stokTersedia = Stok::where('barang_id', $barang['barang_id'])
+                        ->available()
+                        ->count();
 
-            //         if (($value * $barang['rasio_dari_terkecil']) > $stokTersedia) {
-            //             $stokAvailable = $stokTersedia / $barang['rasio_dari_terkecil'];
-            //             $fail("Stok {$barang['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$barang['satuan']}.");
-            //         }
-            //     }
-            // ],
+                    if (($value * $barang['rasio_dari_terkecil']) > $stokTersedia) {
+                        $stokAvailable = $stokTersedia / $barang['rasio_dari_terkecil'];
+                        $fail("Stok {$barang['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$barang['satuan']}.");
+                    }
+                }
+            ],
         ]);
         DB::transaction(function () {
             // Ambil data pembayaran terakhir di bulan berjalan
