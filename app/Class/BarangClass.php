@@ -18,7 +18,7 @@ class BarangClass
         //
     }
 
-    public static function getBarang($persediaan = null, $khusus = null)
+    public static function getBarang($persediaan = null, $khusus = null, $resep = null)
     {
         return Barang::select(
             'barang.id as barang_id',
@@ -35,6 +35,7 @@ class BarangClass
             ->with('barangSatuan.satuanKonversi')
             ->when($khusus, fn($q) => $q->where('khusus', $khusus))
             ->when($persediaan, fn($q) => $q->where('persediaan', $persediaan))
+            ->when($resep, fn($q) => $q->where('resep', $resep))
             ->orderBy('barang.nama')->get()->map(fn($q) => [
                 'id' => $q['barang_satuan_id'],
                 'nama' => $q['barang_nama'],
