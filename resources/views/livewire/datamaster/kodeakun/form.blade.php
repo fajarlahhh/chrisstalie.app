@@ -18,20 +18,6 @@
         <form wire:submit.prevent="submit">
             <div class="panel-body">
                 <div class="mb-3">
-                    <label class="form-label">Kode</label>
-                    <input class="form-control" type="text" wire:model="kode" />
-                    @error('kode')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Nama</label>
-                    <input class="form-control" type="text" wire:model="nama" />
-                    @error('nama')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
                     <label class="form-label">Kategori</label>
                     <select class="form-control" x-init="$($el).selectpicker({
                         liveSearch: true,
@@ -70,6 +56,20 @@
                         @endforeach
                     </select>
                     @error('parent_id')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Kode</label>
+                    <input class="form-control" type="text" wire:model="kode" />
+                    @error('kode')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Nama</label>
+                    <input class="form-control" type="text" wire:model="nama" />
+                    @error('nama')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
