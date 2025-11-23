@@ -15,7 +15,7 @@ class StokMasuk extends Model
     use HasFactory;
 
     protected $table = 'stok_masuk';
-
+    
     public function barangSatuan(): BelongsTo
     {
         return $this->belongsTo(BarangSatuan::class);
