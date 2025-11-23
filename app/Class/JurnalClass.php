@@ -20,11 +20,12 @@ class JurnalClass
         $terakhir = Jurnal::where('tanggal', 'like', substr($tanggal, 0, 7) . '%')
             ->orderBy('id', 'desc')
             ->first();
-        $nomor = $terakhir ? (int)substr($terakhir->id, 15, 5) : 0;
-        $id = 'JURNAL/' . str_replace('-', '/', substr($tanggal, 0, 7)) . '/' . sprintf('%05d', $nomor + 1);
+        $nomorTerakhir = $terakhir ? (int)substr($terakhir->id, 15, 5) : 0;
+        $nomor = 'JURNAL/' . str_replace('-', '/', substr($tanggal, 0, 7)) . '/' . sprintf('%05d', $nomorTerakhir + 1);
 
         $jurnal = new Jurnal();
-        $jurnal->id = $id;
+        $jurnal->id = str_replace('/', '', $nomor);
+        $jurnal->nomor = $nomor;
         $jurnal->jenis = $jenis;
         $jurnal->sub_jenis = $sub_jenis;
         $jurnal->tanggal = $tanggal;

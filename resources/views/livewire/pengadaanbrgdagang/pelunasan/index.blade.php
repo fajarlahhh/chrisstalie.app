@@ -1,12 +1,12 @@
 <div>
-    @section('title', 'Pembelian')
+    @section('title', 'Pelunasan')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Pengadaan Barang Dagang</li>
-        <li class="breadcrumb-item active">Pembelian</li>
+        <li class="breadcrumb-item active">Pelunasan</li>
     @endsection
 
-    <h1 class="page-header">Pembelian</h1>
+    <h1 class="page-header">Pelunasan</h1>
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">

@@ -6,12 +6,13 @@
         @endif
         @if ($permanentDelete)
             <a href="javascript:;" wire:click="permanentDelete('{{ $row['id'] }}')" wire:loading.remove
-                style="display: none" class="delete{{ str_replace('/', '', $row['id']) }} delete btn btn-danger">Hapus Permanen</a>
+                style="display: none" class="delete{{ str_replace('/', '', $row['id']) }} delete btn btn-danger">Hapus
+                Permanen</a>
         @endif
         <a href="javascript:;" onclick="deleteOrCancel('{{ $row['id'] }}')" wire:loading.remove style="display: none"
             class="delete{{ str_replace('/', '', $row['id']) }} delete btn btn-secondary">Batal</a>
         @if ($edit)
-            <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form/{{ $row['id'] }}'"
+            <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form/' + encodeURIComponent(`{{ $row['id'] }}`)"
                 class="btn btn-white action">
                 <i class="fas fa-pencil-alt"></i>
             </a>
@@ -38,14 +39,16 @@
                     wire:loading.remove class="dropdown-item">Cetak</a>
             @endif
             @if ($restore)
-                <a href="javascript:;" wire:click="restore('{{ $row['id'] }}')" wire:loading.remove class="dropdown-item">Restore</a>
+                <a href="javascript:;" wire:click="restore('{{ $row['id'] }}')" wire:loading.remove
+                    class="dropdown-item">Restore</a>
             @endif
             @if ($detail)
                 <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/detail/{{ $row['id'] }}'"
                     wire:loading.remove class="dropdown-item">Detail</a>
             @endif
             @if ($delete)
-                <a href="javascript:;" onclick="deleteOrCancel('{{ str_replace('/', '', $row['id']) }}')" wire:loading.remove class="dropdown-item">Hapus</a>
+                <a href="javascript:;" onclick="deleteOrCancel('{{ str_replace('/', '', $row['id']) }}')"
+                    wire:loading.remove class="dropdown-item">Hapus</a>
             @endif
             @if ($custom)
                 {!! $custom !!}
@@ -54,8 +57,8 @@
                 <li>
                     <hr class="dropdown-divider">
                 </li>
-                <a href="javascript:;"
-                    class="dropdown-item fs-8px">{{ $row->pengguna?->nama }}<br>Created : {{ $row->created_at }}<br>Updated : {{ $row->updated_at }}</a>
+                <a href="javascript:;" class="dropdown-item fs-8px">{{ $row->pengguna?->nama }}<br>Created :
+                    {{ $row->created_at }}<br>Updated : {{ $row->updated_at }}</a>
             @endif
         </div>
     </div>

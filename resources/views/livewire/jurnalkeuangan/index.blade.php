@@ -57,7 +57,7 @@
                     @foreach ($data as $index => $row)
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
-                            <td>{{ $row->id }}</td>
+                            <td>{{ $row->nomor }}</td>
                             <td>{{ $row->jenis }}</td>
                             <td>{{ $row->tanggal }}</td>
                             <td>{{ $row->uraian }}</td>
