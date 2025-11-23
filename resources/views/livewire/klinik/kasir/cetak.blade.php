@@ -80,11 +80,6 @@
         border-collapse: collapse;
     }
 
-    td,
-    th {
-        vertical-align: top;
-    }
-
     /* Garis putus-putus */
     hr {
         border: none;
