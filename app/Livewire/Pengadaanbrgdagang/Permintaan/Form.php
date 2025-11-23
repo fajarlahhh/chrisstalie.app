@@ -30,9 +30,6 @@ class Form extends Component
 
         DB::transaction(function () {
             
-            if (!$this->data->exists) {
-                $this->data->id = Str::uuid();
-            }
 
             $this->data->deskripsi = $this->deskripsi;
             $this->data->pengguna_id = auth()->id();
