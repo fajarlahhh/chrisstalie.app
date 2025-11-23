@@ -119,6 +119,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $index = 0;
+                                    @endphp
                                     <template x-for="(row, index) in barang" :key="index">
                                         <tr>
                                             <td>
@@ -131,7 +134,10 @@
                                             </td>
                                             <td>
                                                 <input type="number" class="form-control" min="0" step="1"
-                                                    :value="row.qty" disabled autocomplete="off">
+                                                    x-model="row.qty" step="1" :max="row.qty_disetujui"  autocomplete="off">
+                                                @error('barang.' . $index . '.qty')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </td>
                                             <td>
                                                 <input type="number" class="form-control" min="0" step="1"
@@ -147,6 +153,9 @@
                                                     disabled autocomplete="off">
                                             </td>
                                         </tr>
+                                        @php
+                                            $index++;
+                                        @endphp
                                     </template>
                                 </tbody>
                                 <tfoot>
@@ -166,7 +175,7 @@
                 <br>
                 <div class="mb-3">
                     <label class="form-label">Diskon <small>(Rp.)</small></label>
-                    <input class="form-control" type="number" wire:model="diskon" x-model="diskon" required
+                    <input class="form-control" type="number" wire:model="diskon" x-model="diskon"
                         @input="hitungTotal()" autocomplete="off" />
                     @error('diskon')
                         <span class="text-danger">{{ $message }}</span>
@@ -174,7 +183,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">PPN <small>(Rp.)</small></label>
-                    <input class="form-control" type="number" wire:model="ppn" x-model="ppn" required
+                    <input class="form-control" type="number" wire:model="ppn" x-model="ppn"
                         @input="hitungTotal()" autocomplete="off" />
                     @error('ppn')
                         <span class="text-danger">{{ $message }}</span>

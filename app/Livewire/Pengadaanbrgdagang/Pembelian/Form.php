@@ -35,15 +35,15 @@ class Form extends Component
             'satuan' => $q->barangSatuan->nama,
             'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
             'qty' => $q->qty_disetujui,
+            'qty_disetujui' => $q->qty_disetujui,
             'harga_beli' => 0,
         ])->toArray();
     }
 
     public function submit()
     {
-
         $this->validateWithCustomMessages([
-            'tanggal' => 'required',
+            'tanggal' => 'required|date',
             'uraian' => 'required',
             'supplier_id' => 'required|integer|exists:supplier,id',
             'pembayaran' => 'required',
@@ -53,9 +53,27 @@ class Form extends Component
             'uraian' => 'required',
             'barang' => 'required|array',
             'barang.*.id' => 'required|integer',
-            'barang.*.qty' => 'required|numeric',
+            'barang.*.qty' => [
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) {
+                    $matches = [];
+                    if (preg_match('/^barang\.(\d+)\.qty$/', $attribute, $matches)) {
+                        $index = (int)$matches[1];
+                        if (isset($this->barang[$index]['qty_disetujui']) && $value > $this->barang[$index]['qty_disetujui']) {
+                            $fail('Max ' . $this->barang[$index]['qty_disetujui'] . ' ' . ($this->barang[$index]['satuan'] ?? ''));
+                        }
+                    }
+                }
+            ],
             'barang.*.harga_beli' => 'required|integer',
         ]);
+
+        if ($this->pembayaran == "Jatuh Tempo") {
+            $this->validateWithCustomMessages([
+                'jatuh_tempo' => 'required|date',
+            ]);
+        }
 
         DB::transaction(function () {
             $data = new Pembelian();
