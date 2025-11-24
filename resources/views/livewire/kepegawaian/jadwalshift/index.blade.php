@@ -68,6 +68,9 @@
                 </table>
             </div>
         </div>
+        <div class="panel-footer">
+            {{ $data->links() }}
+        </div>
     </div>
 
     <x-alert />
