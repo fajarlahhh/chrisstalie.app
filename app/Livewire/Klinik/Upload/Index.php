@@ -29,7 +29,7 @@ class Index extends Component
         foreach (File::where('registrasi_id', $id)->get() as $row) {
             Storage::disk('local')->delete('public/' . $row->link);
         }
-        // File::where('registrasi_id', $id)->delete();
+        File::where('registrasi_id', $id)->delete();
     }
 
     public function getQuery()

@@ -27,14 +27,14 @@ class Form extends Component
     public $khusus = 0;
 
 
-    public function updatedPersediaan()
-    {
-        if ($this->persediaan == 'Apotek') {
-            $this->dataKodeAkunPenjualan = KodeAkun::detail()->where('parent_id', '41000')->get()->toArray();
-        } else {
-            $this->dataKodeAkunPenjualan = KodeAkun::detail()->where('parent_id', '50000')->get()->toArray();
-        }
-    }
+    // public function updatedPersediaan()
+    // {
+    //     if ($this->persediaan == 'Apotek') {
+    //         $this->dataKodeAkunPenjualan = KodeAkun::detail()->where('parent_id', '41000')->get()->toArray();
+    //     } else {
+    //         $this->dataKodeAkunPenjualan = KodeAkun::detail()->where('parent_id', '50000')->get()->toArray();
+    //     }
+    // }
     public function tambahSatuan()
     {
         $this->barangSatuan[] = [
