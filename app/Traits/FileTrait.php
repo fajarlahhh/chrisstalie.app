@@ -50,7 +50,7 @@ trait FileTrait
     public function hapusFile()
     {
         foreach ($this->fileDihapus as $row) {
-            Storage::disk(config('constants.storage'))->delete($row);
+            Storage::disk('local')->delete('public/' . $row);
         }
         File::whereIn('id', collect($this->fileDihapus)->keys()->all())->delete();
     }

@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Klinik\Upload;
 
+use App\Models\File;
 use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\Attributes\Url;
-use App\Models\Registrasi;
 use App\Models\Tindakan;
+use App\Models\Registrasi;
+use Livewire\Attributes\Url;
+use Livewire\WithPagination;
+use Illuminate\Support\Facades\Storage;
 
 class Index extends Component
 {
@@ -24,7 +26,10 @@ class Index extends Component
 
     public function delete($id)
     {
-        Tindakan::find($id)?->delete();
+        foreach (File::where('registrasi_id', $id)->get() as $row) {
+            Storage::disk('local')->delete('public/' . $row->link);
+        }
+        // File::where('registrasi_id', $id)->delete();
     }
 
     public function getQuery()
@@ -32,7 +37,7 @@ class Index extends Component
         $query = Registrasi::query()
             ->with(['pasien', 'nakes', 'pengguna'])
             ->whereHas('file', function ($q) {
-                $q->where('jenis', 'Informed Consent');
+                $q->where('jenis', 'Upload');
             })
             ->whereHas('pasien', function ($q) {
                 if (!empty($this->cari)) {

@@ -26,16 +26,17 @@ class Form extends Component
         if ($this->registrasi_id) {
             $this->data = Registrasi::with(['pasien'])->find($this->registrasi_id);
         }
-        if ($this->data->file) {
-            $this->fileInformedConsent = $this->data->file->where('jenis', 'Informed Consent')->map(function ($q) {
+        if ($data->file && method_exists($data->file, 'map')) {
+            $this->fileDiupload = $data->file->where('jenis', 'Upload')->map(function ($q) {
                 return [
-                    'id' => $q['id'],
-                    'file' => $q['link'],
-                    'judul' => $q['judul'],
-                    'keterangan' => $q['keterangan'],
-                    'extensi' => $q['extensi'],
+                    'id' => $q['id'] ?? null,
+                    'file' => $q['link'] ?? null,
+                    'link' => $q['link'] ?? null,
+                    'judul' => $q['judul'] ?? null,
+                    'extensi' => $q['extensi'] ?? null,
+                    'keterangan' => $q['keterangan'] ?? null
                 ];
-            })->first();
+            })->all();
         }
     }
 
@@ -46,23 +47,11 @@ class Form extends Component
 
     public function submit()
     {
-        $this->validateWithCustomMessages([
-            'fileInformedConsent' => 'required|file|mimes:jpeg,png,jpg,gif,svg',
-        ]);
-
-        $this->fileDiupload[] = [
-            'id' => null,
-            'file' => $this->fileInformedConsent,
-            'judul' => 'Informed Consent',
-            'link' => null,
-            'keterangan' => null,
-            'extensi' => null,
-        ];
-        
         $this->hapusFile();
-        $this->uploadFile($this->data->id, 'Informed Consent');
+        $this->uploadFile($this->data->id, 'Upload');
+
         session()->flash('success', 'Berhasil menyimpan data');
-        $this->redirect('/klinik/upload/form?registrasi_id=' . $this->data->id);
+        $this->redirect('/klinik/upload');
     }
 
     public function render()
