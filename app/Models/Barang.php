@@ -86,6 +86,11 @@ class Barang extends Model
         return $this->hasOne(BarangSatuan::class)->where('rasio_dari_terkecil', 1);
     }
 
+    public function barangSatuanUtama(): HasOne
+    {
+        return $this->hasOne(BarangSatuan::class)->where('utama', 1);
+    }
+
     public function kodeAkun(): BelongsTo
     {
         return $this->belongsTo(KodeAkun::class);

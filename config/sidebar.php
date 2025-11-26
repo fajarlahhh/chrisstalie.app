@@ -91,57 +91,43 @@ return [
             "method" => ["Index"],
             "icon" => "<i class='fa fa-legal'></i>",
         ],
-        // [
-        //     "title" => "Laporan",
-        //     "icon" => "<i class='fa fa-file-text'></i>",
-        //     "sub_menu" => [
-        //         [
-        //             "title" => "Laba Rugi",
-        //             "method" => ["Index"],
-        //         ],
-        //         [
-        //             "title" => "Konsinyasi",
-        //             "method" => ["Index"],
-        //         ],
-        //         [
-        //             "title" => "Jasa Pelayanan",
-        //             "method" => ["Index"],
-        //         ],
-        //         [
-        //             "title" => "Pengadaan",
-        //             "method" => ["Index"],
-        //         ],
-        //         [
-        //             "title" => "Pengeluaran",
-        //             "method" => ["Index"],
-        //         ],
-        //         [
-        //             "title" => "LHK",
-        //             "method" => ["Index"],
-        //         ],
-        //         [
-        //             "title" => "Pengeluaran Gaji",
-        //             "method" => ["Index"],
-        //         ],
-        //         [
-        //             "title" => "Penerimaan",
-        //             "sub_menu" => [
-        //                 [
-        //                     "title" => "Klinik",
-        //                     "method" => ["Index"],
-        //                 ],
-        //                 [
-        //                     "title" => "Klinik",
-        //                     "method" => ["Index"],
-        //                 ]
-        //             ]
-        //         ],
-        //         [
-        //             "title" => "Stok Barang",
-        //             "method" => ["Index"],
-        //         ]
-        //     ]
-        // ],
+        [
+            "title" => "Laporan",
+            "icon" => "<i class='fa fa-file-text'></i>",
+            "urutkan" => true,
+            "sub_menu" => [
+                [
+                    "title" => "Laporan Keuangan",
+                    "urutkan" => true,
+                    "sub_menu" => [
+                        [
+                            "title" => "Laba Rugi",
+                            "method" => ["Index"],
+                        ],
+                        [
+                            "title" => "Neraca",
+                            "method" => ["Index"],
+                        ],
+                        [
+                            "title" => "Arus Kas",
+                            "method" => ["Index"],
+                        ],
+                    ]
+                ],
+                [
+                    "title" => "LHK",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Stok Barang",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Persediaan",
+                    "method" => ["Index"],
+                ]
+            ]
+        ],
         [
             "title" => "Pengadaan Brg. Dagang",
             "icon" => "<i class='fas fa-cubes'></i>",

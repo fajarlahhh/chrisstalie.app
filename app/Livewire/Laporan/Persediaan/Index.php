@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Livewire\Laporan\Persediaan;
+
+use App\Models\Barang;
+use Livewire\Component;
+use App\Models\KodeAkun;
+use Livewire\Attributes\Url;
+use Livewire\WithPagination;
+use App\Models\Stok;
+
+class Index extends Component
+{
+    #[Url]
+    public $cari, $persediaan, $kode_akun_id, $dataKodeAkun = [];
+
+    public function mount()
+    {
+        $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '11300')->get()->toArray();
+    }
+
+    public function render()
+    {
+        return view('livewire.laporan.persediaan.index', [
+            'data' => Barang::with(['barangSatuanUtama', 'kodeAkun'])
+                ->when($this->persediaan, fn($q) => $q->where('persediaan', $this->persediaan))
+                ->when($this->kode_akun_id, function ($q) {
+                    $q->where('kode_akun_id', $this->kode_akun_id);
+                })
+                ->where(fn($q) => $q
+                    ->where('nama', 'like', '%' . $this->cari . '%'))
+                ->orderBy('nama')
+                ->get(),
+            'dataStok' => Stok::whereNull('stok_keluar_id')->get(),
+        ]);
+    }
+}
