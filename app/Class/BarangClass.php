@@ -110,6 +110,11 @@ class BarangClass
                 'kredit' => $hargaBeli,
             ];
             $detail[] = [
+                'kode_akun_id' => $brg['kode_akun_penjualan_id'],
+                'debet' => 0,
+                'kredit' => $brg['harga'] * $brg['qty'],
+            ];
+            $detail[] = [
                 'kode_akun_id' => $brg['kode_akun_modal_id'],
                 'debet' => $hargaBeli,
                 'kredit' => 0,

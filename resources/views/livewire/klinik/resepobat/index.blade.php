@@ -70,9 +70,9 @@
                                         @php
                                             $custom =
                                                 "<hr class='dropdown-divider'></li><a href='javascript:;'class='dropdown-item fs-8px'>" .
-                                                $row->pemeriksaanAwal->pengguna->nama .
+                                                $row->resepObat->first()->pengguna->nama .
                                                 '<br>' .
-                                                $row->pemeriksaanAwal->updated_at .
+                                                $row->resepObat->first()->created_at .
                                                 '</a>';
                                         @endphp
                                         @if ($row->pembayaran)
@@ -81,8 +81,8 @@
                                                 :restore="false" :delete="false" />
                                         @else
                                             <x-action :row="$row" :custom="$custom" :detail="false"
-                                                :edit="true" :information="false" :print="false" :permanentDelete="false" :restore="false"
-                                                :delete="true" />
+                                                :edit="true" :information="false" :print="false" :permanentDelete="false"
+                                                :restore="false" :delete="true" />
                                         @endif
                                     @endif
                                 @endrole

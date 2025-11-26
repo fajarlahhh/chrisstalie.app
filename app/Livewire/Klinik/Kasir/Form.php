@@ -50,7 +50,8 @@ class Form extends Component
 
         $this->tindakan = $data->tindakan->map(function ($q) {
             return [
-                'id' => $q->tarif_tindakan_id,
+                'id' => $q->id,
+                'tarif_tindakan_id' => $q->tarif_tindakan_id,
                 'nama' => $q->tarifTindakan->nama,
                 'diskon' => 0,
                 'qty' => $q->qty,
@@ -59,8 +60,9 @@ class Form extends Component
                 'catatan' => $q->catatan,
                 'dokter_id' => $q->dokter_id,
                 'perawat_id' => $q->perawat_id,
-                'biaya_jasa_dokter' => $q->biaya_jasa_dokter > 0 ? 1 : ($q->dokter_id ? 1 : 0),
-                'biaya_jasa_perawat' => $q->biaya_jasa_perawat > 0 ? 1 : ($q->perawat_id ? 1 : 0),
+                'biaya_alat_barang' => $q->biaya_alat_barang,
+                'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
+                'biaya_jasa_perawat' => $q->biaya_jasa_dokter,
                 'biaya' => $q->biaya,
             ];
         })->toArray();
@@ -88,7 +90,7 @@ class Form extends Component
                 ];
             })->values()->toArray();
 
-        $this->bahan = TindakanAlatBarang::whereNotNull('barang_satuan_id')->where('id', $this->data->id)->get()->map(function ($q) use ($barangKlinik) {
+        $this->bahan = TindakanAlatBarang::whereNotNull('barang_satuan_id')->whereIn('tindakan_id', collect($this->tindakan)->pluck('id'))->get()->map(function ($q) use ($barangKlinik) {
             $barang = collect($barangKlinik)->firstWhere('id', $q->barang_satuan_id);
             return [
                 'barang_id' => $barang['barang_id'],
@@ -183,6 +185,9 @@ class Form extends Component
         ]);
         DB::transaction(function () {
             // Ambil data pembayaran terakhir di bulan berjalan
+            if (Pembayaran::where('registrasi_id', $this->data->id)->count() > 0) {
+                abort(400, 'Pembayaran sudah ada');
+            }
 
             $dataTerakhir = Pembayaran::where('created_at', 'like', date('Y-m') . '%')->orderByDesc('id')->first();
 
@@ -204,30 +209,12 @@ class Form extends Component
             $pembayaran->registrasi_id = $this->data->id;
             $pembayaran->pengguna_id = auth()->id();
             $pembayaran->save();
-
+            
             // Optimisasi: Update diskon tindakan sekaligus dengan filter id & tarif_tindakan_id
-            if (!empty($this->tindakan)) {
-                $tindakanBulk = [];
-                foreach ($this->tindakan as $tindakan) {
-                    $tindakanBulk[] = [
-                        'tarif_tindakan_id' => $tindakan['id'],
-                        'diskon' => $tindakan['diskon'],
-                    ];
-                }
-                foreach ($tindakanBulk as $t) {
-                    // Kolom id -> id registrasi kunjungan
-                    Tindakan::where('tarif_tindakan_id', $t['tarif_tindakan_id'])
-                        ->where('id', $this->data->id)
-                        ->update(['diskon' => $t['diskon']]);
-                }
+            foreach ($this->tindakan as $t) {
+                // Kolom id -> id registrasi kunjungan
+                Tindakan::where('id', $t['id'])->update(['diskon' => $t['diskon']]);
             }
-
-            Registrasi::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
-            ResepObat::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
-            Tindakan::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
-
-            // Ambil data tindakan sekali query
-            $tindakan = Tindakan::with('tarifTindakan')->where('id', $this->data->id)->get();
 
             //Jurnal Kas
             $detail[] = [
@@ -237,14 +224,14 @@ class Form extends Component
             ];
 
             //Jurnal Kewajiban Biaya Dokter & Perawat
-            $detail = array_merge($detail, $tindakan->whereNotNull('dokter_id')->map(function ($q) {
+            $detail = array_merge($detail, collect($this->tindakan)->whereNotNull('dokter_id')->map(function ($q) {
                 return [
                     'kode_akun_id' => '23000',
                     'debet' => 0,
                     'kredit' => $q['biaya_jasa_dokter'] * $q['qty'],
                 ];
             })->all());
-            $detail = array_merge($detail, $tindakan->whereNotNull('perawat_id')->map(function ($q) {
+            $detail = array_merge($detail, collect($this->tindakan)->whereNotNull('perawat_id')->map(function ($q) {
                 return [
                     'kode_akun_id' => '24000',
                     'debet' => 0,
@@ -253,13 +240,27 @@ class Form extends Component
             })->all());
 
             //Jurnal Pendapatan Tindakan
-            $detail = array_merge($detail, $tindakan->map(function ($q) {
+            $detail = array_merge($detail, collect($this->tindakan)->map(function ($q) {
                 return [
-                    'kode_akun_id' => $q['tarifTindakan']->kode_akun_id,
+                    'kode_akun_id' => $q['kode_akun_id'],
                     'debet' => 0,
                     'kredit' => ($q['biaya'] - $q['biaya_alat_barang'] - ($q['dokter_id'] ? $q['biaya_jasa_dokter'] : 0) - ($q['perawat_id'] ? $q['biaya_jasa_perawat'] : 0)) * $q['qty'],
                 ];
             })->all());
+            
+            // Stok keluar & detail bahan/alat diinsert batch
+            $hppBahan = BarangClass::stokKeluar(collect($this->bahan)->map(function ($q) {
+                return [
+                    'qty' => $q['qty'],
+                    'harga' => $q['biaya'],
+                    'barang_id' => $q['barang_id'],
+                    'barang_satuan_id' => $q['barang_satuan_id'],
+                    'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
+                    'kode_akun_id' => $q['kode_akun_id'],
+                    'kode_akun_penjualan_id' => $q['kode_akun_penjualan_id'],
+                    'kode_akun_modal_id' => $q['kode_akun_modal_id'],
+                ];
+            })->toArray(), $pembayaran->id, 'Pembayaran Pasien Klinik');
 
             //Jurnal Penyusutan Alat
             $detail = array_merge($detail, collect($this->alat)->where('metode_penyusutan', 'Satuan Hasil Produksi')->map(function ($q) {
@@ -284,7 +285,7 @@ class Form extends Component
                 'kredit' => 0,
             ];
 
-            //Pembayaran Barang Bebas
+            //Pembayaran Barang Dagang
             foreach ($this->resep as $resep) {
                 $barangRaw = $resep['barang'] ?? [];
                 $barangMap = collect($barangRaw)->map(function ($q) {
@@ -309,30 +310,9 @@ class Form extends Component
                             'kredit' => $q['kredit'],
                         ];
                     })->all());
-                    //Pendapatan Penjualan Barang
-                    $detail = array_merge($detail, collect($barangMap)->map(function ($q) {
-                        return [
-                            'kode_akun_id' => $q['kode_akun_penjualan_id'],
-                            'debet' => 0,
-                            'kredit' => $q['harga'] * $q['qty'],
-                        ];
-                    })->all());
                 }
             }
 
-            // Stok keluar & detail bahan/alat diinsert batch
-            $hppBahan = BarangClass::stokKeluar(collect($this->bahan)->map(function ($q) {
-                return [
-                    'qty' => $q['qty'],
-                    'harga' => $q['biaya'],
-                    'barang_id' => $q['barang_id'],
-                    'barang_satuan_id' => $q['barang_satuan_id'],
-                    'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
-                    'kode_akun_id' => $q['kode_akun_id'],
-                    'kode_akun_penjualan_id' => $q['kode_akun_penjualan_id'],
-                    'kode_akun_modal_id' => $q['kode_akun_modal_id'],
-                ];
-            })->toArray(), $pembayaran->id, 'Pembayaran Pasien Klinik');
             $detail = array_merge($detail, collect($hppBahan)->map(function ($q) {
                 return [
                     'kode_akun_id' => $q['kode_akun_id'],
@@ -342,7 +322,7 @@ class Form extends Component
             })->all());
             $this->jurnalPendapatan($pembayaran, $metodeBayar, $detail);
             // Ambil data untuk cetak hanya sekali, pakai find (sudah pasti ada), dan simpan flash
-            $data = Registrasi::findOrFail($this->data->id);
+            $data = Pembayaran::findOrFail($pembayaran->id);
             $cetak = view('livewire.klinik.kasir.cetak', [
                 'cetak' => true,
                 'data' => $data,
@@ -351,7 +331,7 @@ class Form extends Component
             session()->flash('success', 'Berhasil menyimpan data');
         });
 
-        return redirect()->to('/klinik/kasir');
+        // return redirect()->to('/klinik/kasir');
     }
 
     private function jurnalPendapatan($pembayaran, $metodeBayar, $detail)
@@ -371,7 +351,7 @@ class Form extends Component
             jenis: 'Pembayaran Pasien Klinik',
             sub_jenis: 'Pembayaran',
             tanggal: now(),
-            uraian: 'Pembayaran Pasien Klinik No. Registrasi ' . Registrasi::where('pembayaran_id', $pembayaran->id)->first()->no_registrasi,
+            uraian: 'Pembayaran Pasien Klinik No. Registrasi ' . $this->data->id,
             system: 1,
             pembayaran_id: $pembayaran->id,
             penggajian_id: null,

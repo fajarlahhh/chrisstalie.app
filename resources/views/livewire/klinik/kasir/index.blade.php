@@ -42,6 +42,7 @@
                         <th>No. Telp.</th>
                         <th>Catatan</th>
                         @if ($status == 2)
+                            <th>Jumlah</th>
                             <th>Pembayaran</th>
                         @endif
                         <th class="w-10px"></th>
@@ -53,23 +54,39 @@
                             <td>
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
-                            <td>{{ $row->id }}</td>
-                            <td>{{ $row->pasien->id }}</td>
-                            <td>{{ $row->pasien->nama }}</td>
-                            <td>{{ $row->pasien->nik }}</td>
-                            <td>{{ $row->pasien->tanggal_lahir->format('d-m-Y') }}</td>
-                            <td>{{ $row->pasien->jenis_kelamin }}</td>
-                            <td>{{ $row->pasien->alamat }}</td>
-                            <td>{{ $row->pasien->no_hp }}</td>
-                            <td>{{ $row->catatan }}</td>
+                            <td>{{ $this->status == 1 ? $row->id : $row->registrasi->id }}</td>
+                            <td>{{ $this->status == 1 ? $row->pasien->id : $row->registrasi->pasien->id }}</td>
+                            <td>{{ $this->status == 1 ? $row->pasien->nama : $row->registrasi->pasien->nama }}</td>
+                            <td>{{ $this->status == 1 ? $row->pasien->nik : $row->registrasi->pasien->nik }}</td>
+                            <td>{{ $this->status == 1 ? $row->pasien->tanggal_lahir->format('d-m-Y') : $row->registrasi->pasien->tanggal_lahir->format('d-m-Y') }}
+                            </td>
+                            <td>{{ $this->status == 1 ? $row->pasien->jenis_kelamin : $row->registrasi->pasien->jenis_kelamin }}
+                            </td>
+                            <td>{{ $this->status == 1 ? $row->pasien->alamat : $row->registrasi->pasien->alamat }}</td>
+                            <td>{{ $this->status == 1 ? $row->pasien->no_hp : $row->registrasi->pasien->no_hp }}</td>
+                            <td>{{ $this->status == 1 ? $row->catatan : $row->registrasi->catatan }}</td>
                             @if ($status == 2)
-                                <td>No. Nota : <b>{{ $row->pembayaran->id }}</b>
-                                    <br>Metode Bayar :
-                                    <b>{{ $row->pembayaran->metode_bayar }}</b>
-                                    <br>Kasir :
-                                    <b>{{ $row->pembayaran->pengguna->nama }}</b>
-                                    <br>Waktu :
-                                    <b>{{ $row->pembayaran->created_at }}</b>
+                                <td>
+                                    <small>
+                                        <ul>
+                                            <li>Total Tindakan : <b>{{ number_format($row->total_tindakan) }}</b></li>
+                                            <li>Total Resep : <b>{{ number_format($row->total_resep) }}</b></li>
+                                            <li>Total Diskon : <b>{{ number_format($row->diskon) }}</b></li>
+                                            <li>Total :
+                                                <b>{{ number_format($row->total_tindakan + $row->total_resep - $row->total_diskon) }}</b>
+                                            </li>
+                                        </ul>
+                                    </small>
+                                </td>
+                                <td>
+                                    <small>
+                                        <ul>
+                                            <li>No. Nota : <b>{{ $row->id }}</b></li>
+                                            <li>Metode Bayar : <b>{{ $row->metode_bayar }}</b></li>
+                                            <li>Kasir : <b>{{ $row->pengguna->nama }}</b></li>
+                                            <li>Waktu : <b>{{ $row->created_at }}</b></li>
+                                        </ul>
+                                    </small>
                                 </td>
                             @endif
                             <td class="with-btn-group text-end" nowrap>
@@ -83,9 +100,9 @@
                                         @php
                                             $custom =
                                                 "<hr class='dropdown-divider'></li><a href='javascript:;'class='dropdown-item fs-8px'>" .
-                                                $row->pembayaran->pengguna->nama .
+                                                $row->pengguna->nama .
                                                 '<br>' .
-                                                $row->pembayaran->updated_at .
+                                                $row->updated_at .
                                                 '</a>';
                                         @endphp
                                         @role('administrator')

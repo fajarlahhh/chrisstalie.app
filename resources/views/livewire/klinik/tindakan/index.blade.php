@@ -70,9 +70,9 @@
                                         @php
                                             $custom =
                                                 "<hr class='dropdown-divider'></li><a href='javascript:;'class='dropdown-item fs-8px'>" .
-                                                $row->pemeriksaanAwal->pengguna->nama .
+                                                $row->tindakan->first()->pengguna->nama .
                                                 '<br>' .
-                                                $row->pemeriksaanAwal->updated_at .
+                                                $row->tindakan->first()->created_at.
                                                 '</a>';
                                         @endphp
                                         @if ($row->pembayaran)

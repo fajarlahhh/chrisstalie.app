@@ -96,19 +96,19 @@
     <table class="table table-borderless fs-10px">
         <tr>
             <td class="text-nowrap w-50px p-0">No.</td>
-            <td class="p-0">: {{ $data->pembayaran->id }}</td>
+            <td class="p-0">: {{ $data->id }}</td>
         </tr>
         <tr>
             <td class="text-nowrap p-0">Kasir</td>
             <td class="p-0">:
-                {{ $data->pembayaran->pengguna->pegawai
-                    ? $data->pembayaran->pengguna->pegawai?->nama
-                    : $data->pembayaran->pengguna->nama }}
+                {{ $data->pengguna->pegawai
+                    ? $data->pengguna->pegawai?->nama
+                    : $data->pengguna->nama }}
             </td>
         </tr>
         <tr>
             <td class="text-nowrap p-0">Tanggal</td>
-            <td class="p-0">: {{ $data->pembayaran->created_at }}</td>
+            <td class="p-0">: {{ $data->created_at }}</td>
         </tr>
     </table>
     <hr>
@@ -118,7 +118,7 @@
             <th class="p-0 text-center w-10px" nowrap>Qty<br><br></th>
             <th class="p-0 text-end">Total<br><br></th>
         </tr>
-        @foreach ($data->tindakan as $tindakan)
+        @foreach ($data->registrasi->tindakan as $tindakan)
             <tr>
                 <td class="p-0">
                     {{ $tindakan->tarifTindakan->nama }}<br>
@@ -135,7 +135,7 @@
                 </td>
             </tr>
         @endforeach
-        @foreach ($data->resepObat->groupBy('resep') as $resep)
+        @foreach ($data->registrasi->resepObat->groupBy('resep') as $resep)
             <tr>
                 <td class="p-0">
                     {{ $resep->first()->nama }}<br>
@@ -155,26 +155,26 @@
         <tr>
             <td class="p-0">Total Tindakan</td>
             <td class="p-0 text-end" nowrap>
-                {{ number_format($data->pembayaran->total_tindakan + $data->pembayaran->diskon) }}
+                {{ number_format($data->total_tindakan + $data->diskon) }}
             </td>
         </tr>
         <tr>
             <td class="p-0">Total Resep</td>
-            <td class="p-0 text-end">{{ number_format($data->pembayaran->total_resep) }}</td>
+            <td class="p-0 text-end">{{ number_format($data->total_resep) }}</td>
         </tr>
         <tr>
             <td class="p-0">Diskon</td>
-            <td class="p-0 text-end">{{ number_format($data->pembayaran->diskon) }}</td>
+            <td class="p-0 text-end">{{ number_format($data->diskon) }}</td>
         </tr>
         <tr>
             <th class="p-0">Total</th>
             <th class="p-0 text-end" nowrap>
-                {{ number_format($data->pembayaran->total_tagihan) }}
+                {{ number_format($data->total_tagihan) }}
             </th>
         </tr>
         <tr>
             <td class="p-0">Metode Bayar</td>
-            <td class="p-0 text-end">{{ $data->pembayaran->metode_bayar }}</td>
+            <td class="p-0 text-end">{{ $data->metode_bayar }}</td>
         </tr>
     </table>
     <br>

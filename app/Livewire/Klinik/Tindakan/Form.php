@@ -23,6 +23,14 @@ class Form extends Component
     public function mount(Registrasi $data)
     {
         $this->data = $data;
+        $this->dataTindakan = TarifTindakan::orderBy('nama')->get()->map(fn($q) => [
+            'id' => $q->id,
+            'nama' => $q->nama,
+            'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
+            'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
+            'biaya_alat_barang' => $q->biaya_alat_barang,
+            'tarif' => $q->tarif
+        ])->toArray();
         if ($data->tindakan->count() > 0) {
             $this->tindakan = $data->tindakan->map(fn($q) => [
                 'id' => $q->tarif_tindakan_id,
@@ -33,9 +41,8 @@ class Form extends Component
                 'membutuhkan_sitemarking' => $q->membutuhkan_sitemarking == 1 ? true : false,
                 'dokter_id' => $q->dokter_id,
                 'perawat_id' => $q->perawat_id,
-                'biaya_jasa_dokter' => $q->biaya_jasa_dokter > 0 ? 1 : ($q->dokter_id ? 1 : 0),
-                'biaya_jasa_perawat' => $q->biaya_jasa_perawat > 0 ? 1 : ($q->perawat_id ? 1 : 0),
-                'biaya_alat_barang' => $q->tarifTindakan->biaya_alat_barang,
+                'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
+                'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
                 'biaya' => $q->biaya,
             ])->toArray();
         } else {
@@ -58,14 +65,6 @@ class Form extends Component
             'id' => $q->id,
             'dokter' => $q->dokter,
             'nama' => $q->pegawai ? $q->pegawai->nama : $q->nama,
-        ])->toArray();
-        $this->dataTindakan = TarifTindakan::orderBy('nama')->get()->map(fn($q) => [
-            'id' => $q->id,
-            'nama' => $q->nama,
-            'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
-            'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
-            'biaya_alat_barang' => $q->biaya_alat_barang,
-            'tarif' => $q->tarif
         ])->toArray();
     }
 
@@ -93,19 +92,18 @@ class Form extends Component
             'tindakan.*.qty.required' => 'Jumlah tindakan wajib diisi.',
             'tindakan.*.qty.min' => 'Jumlah tindakan minimal 1.',
         ]);
-
+        
         DB::transaction(function () {
-            Tindakan::where('id', $this->data->id)->delete();
-            TindakanAlatBarang::where('id', $this->data->id)->delete();
+            Tindakan::where('registrasi_id', $this->data->id)->delete();
 
             $tindakanAlatBarang = [];
-            $dataTarifTindakanAlatBarang = TarifTindakanAlatBarang::whereIn('tarif_tindakan_id', collect($this->tindakan)->pluck('tarif_tindakan_id'))->get();
+            $dataTarifTindakanAlatBarang = TarifTindakanAlatBarang::whereIn('tarif_tindakan_id', collect($this->tindakan)->pluck('id'))->get();
             $dataBarangSatuan = BarangSatuan::whereIn('id', collect($dataTarifTindakanAlatBarang)->pluck('barang_satuan_id'))->get();
 
             foreach (collect($this->tindakan) as $q) {
                 $tindakan = new Tindakan();
                 $tindakan->registrasi_id = $this->data->id;
-                $tindakan->tarif_tindakan_id = $q['tarif_tindakan_id'];
+                $tindakan->tarif_tindakan_id = $q['id'];
                 $tindakan->pasien_id = $this->data->pasien_id;
                 $tindakan->biaya = $q['biaya'];
                 $tindakan->catatan = $q['catatan'];
@@ -120,18 +118,19 @@ class Form extends Component
                 $tindakan->pengguna_id = auth()->id();
                 $tindakan->save();
 
-                $tarifTindakanAlatBarang = $dataTarifTindakanAlatBarang->where('tarif_tindakan_id', $q['tarif_tindakan_id']);
+                $tarifTindakanAlatBarang = $dataTarifTindakanAlatBarang->where('tarif_tindakan_id', $q['id']);
+
                 foreach ($tarifTindakanAlatBarang as $r) {
                     $barangSatuan = $r->aset_id ? null : $dataBarangSatuan->firstWhere('id', $r->barang_satuan_id);
 
                     $tindakanAlatBarang[] = [
-                        'tindakan_id' => $q['id'],
+                        'tindakan_id' => $tindakan->id,
                         'aset_id' => $r->aset_id,
                         'qty' => $q['qty'] * $r->qty,
                         'biaya' => $q['qty'] * $r->biaya,
                         'barang_satuan_id' => $r->barang_satuan_id,
                         'rasio_dari_terkecil' => $barangSatuan ? $barangSatuan['rasio_dari_terkecil'] : null,
-                        'tarif_tindakan_id' => $q['tarif_tindakan_id'],
+                        'tarif_tindakan_id' => $q['id'],
                     ];
                 }
             }

@@ -43,4 +43,9 @@ class Pembayaran extends Model
     {
         return $this->belongsTo(MetodeBayar::class, 'metode_bayar', 'nama');
     }
+
+    public function registrasi(): BelongsTo
+    {
+        return $this->belongsTo(Registrasi::class);
+    }
 }
