@@ -20,6 +20,11 @@ class StokMasuk extends Model
     {
         return $this->belongsTo(BarangSatuan::class);
     }
+    
+    public function barang(): BelongsTo
+    {
+        return $this->belongsTo(Barang::class);
+    }
 
     public function supplier(): BelongsTo
     {

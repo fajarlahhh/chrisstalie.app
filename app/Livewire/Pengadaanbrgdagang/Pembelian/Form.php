@@ -31,6 +31,7 @@ class Form extends Component
         $this->dataKodeAkun = KodeAkun::where('parent_id', '11100')->detail()->get()->toArray();
         $this->barang = $this->data->permintaanPembelianDetail->map(fn($q) => [
             'id' => $q->barang_satuan_id,
+            'barang_id' => $q->barang_id,
             'nama' => $q->barangSatuan->barang->nama,
             'satuan' => $q->barangSatuan->nama,
             'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
@@ -93,6 +94,7 @@ class Form extends Component
             $data->pembelianDetail()->insert(collect($this->barang)->map(fn($q) => [
                 'qty' => $q['qty'],
                 'harga_beli' => $q['harga_beli'],
+                'barang_id' => $q['barang_id'],
                 'barang_satuan_id' => $q['id'],
                 'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
                 'pembelian_id' => $data->id,

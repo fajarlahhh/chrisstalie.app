@@ -44,6 +44,7 @@ class Form extends Component
                     'permintaan_pembelian_id' => $this->data->id,
                     'barang_satuan_id' => $q['id'],
                     'rasio_dari_terkecil' => $brg['rasio_dari_terkecil'],
+                    'barang_id' => $brg['barang_id'],
                 ];
             })->toArray()); 
 
@@ -73,6 +74,7 @@ class Form extends Component
             # code...
             $this->barang = $this->data->permintaanPembelianDetail->map(fn($q) => [
                 'id' => $q->barang_satuan_id,
+                'barang_id' => $q->barang_id,
                 'qty' => $q->qty_permintaan,
             ])->toArray();
         }

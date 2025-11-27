@@ -26,6 +26,11 @@ class Stok extends Model
         return $this->belongsTo(StokMasuk::class);
     }
 
+    public function stokKeluar(): BelongsTo
+    {
+        return $this->belongsTo(StokKeluar::class);
+    }
+
     public function scopeAvailable(Builder $query): void
     {
         $query->whereNull('stok_keluar_id');

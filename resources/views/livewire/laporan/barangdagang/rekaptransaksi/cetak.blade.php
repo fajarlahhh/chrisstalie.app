@@ -33,13 +33,13 @@
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
-            <th>No.</th>
-            <th>Nama Barang</th>
-            <th>Satuan</th>
-            <th>Stok Awal</th>
-            <th>Stok Masuk</th>
-            <th>Stok Keluar</th>
-            <th>Stok Akhir</th>
+            <th class="bg-gray-300 text-white">No.</th>
+            <th class="bg-gray-300 text-white">Nama Barang</th>
+            <th class="bg-gray-300 text-white">Satuan</th>
+            <th class="bg-gray-300 text-white">Stok Awal</th>
+            <th class="bg-gray-300 text-white">Stok Masuk</th>
+            <th class="bg-gray-300 text-white">Stok Keluar</th>
+            <th class="bg-gray-300 text-white">Stok Akhir</th>
         </tr>
     </thead>
     <tbody>
