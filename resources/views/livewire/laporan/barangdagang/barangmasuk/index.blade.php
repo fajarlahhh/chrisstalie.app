@@ -18,12 +18,6 @@
                 Cetak</a>
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <select class="form-control w-auto" wire:model.lazy="kategori">
-                        <option value="">Semua Kategori</option>
-                        <option value="Alat dan Bahan">Alat dan Bahan</option>
-                        <option value="Barang Dagang">Barang Dagang</option>
-                        <option value="Barang Khusus">Barang Khusus</option>
-                    </select>&nbsp;
                     <input type="month" class="form-control w-auto" wire:model.lazy="bulan">
                 </div>
             </div>

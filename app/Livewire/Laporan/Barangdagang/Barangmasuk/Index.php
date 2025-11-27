@@ -9,7 +9,7 @@ use App\Models\StokMasuk;
 class Index extends Component
 {
     #[Url]
-    public $bulan, $kategori;
+    public $bulan;
 
     public function mount()
     {
@@ -22,7 +22,6 @@ class Index extends Component
         $cetak = view('livewire.laporan.barangdagang.barangmasuk.cetak', [
             'cetak' => true,
             'bulan' => $this->bulan,
-            'kategori' => $this->kategori,
             'data' => $this->getData(),
         ])->render();
         session()->flash('cetak', $cetak);
@@ -32,7 +31,6 @@ class Index extends Component
     {
         return StokMasuk::with(['barang', 'pembelian.pembelianDetail', 'barangSatuan', 'pembelian.supplier'])
             ->where('tanggal', 'like', $this->bulan . '%')
-            ->when($this->kategori, fn($q) => $q->whereHas('pembelian', fn($r) => $r->where('jenis', $this->kategori)))
             ->orderBy('tanggal', 'desc')
             ->get()->map(function ($q) {
                 return [
