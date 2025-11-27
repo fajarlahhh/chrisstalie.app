@@ -44,6 +44,9 @@
         </tr>
     </thead>
     <tbody>
+        @php
+            $total = 0;
+        @endphp
         @foreach ($data as $item)
             @php
                 $stok = $dataStok->where('barang_id', $item->id)->map(function ($q) use ($item) {
@@ -51,9 +54,10 @@
                         'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
                         'harga_beli' => $q->harga_beli,
                         'stok' => $q->stok / $item->barangSatuanUtama?->rasio_dari_terkecil,
-                        'total' => $q->harga_beli * $q->stok,
+                        'total' => $q->harga_beli / $item->barangSatuanUtama?->rasio_dari_terkecil * $q->stok,
                     ];
                 });
+                $total += $stok->sum(fn($q) => $q['total']);
             @endphp
             <tr @if ($stok->count() > 0) class="bg-green-100" @endif>
                 <td @if ($stok->count() > 0) rowspan="{{ $stok->count() + 1 }}" @endif>
@@ -87,6 +91,6 @@
     <tfoot>
         <tr>
             <th colspan="7" class="text-end">Total Nilai Persediaan</th>
-            <th class="text-end">{{ number_format($dataStok->sum(fn($q) => $q->harga_beli * $q->stok)) }}</th>
+            <th class="text-end">{{ number_format($total) }}</th>
     </tfoot>
 </table>
