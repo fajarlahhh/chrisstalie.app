@@ -10,6 +10,12 @@
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">
+            <a href="javascript:;" wire:click="print" x-init="$($el).on('click', function() {
+                setTimeout(() => {
+                    $('#modal-cetak').modal('show')
+                }, 1000)
+            })" class="btn btn-warning">
+                Cetak</a>
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
                     <select class="form-control w-auto" wire:model.lazy="persediaan">
@@ -29,70 +35,10 @@
                 </div>
             </div>
         </div>
-        <div class="panel-body table-responsive">
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th class="w-10px bg-gray-300 text-white">No.</th>
-                        <th class="bg-gray-300 text-white">Nama</th>
-                        <th class="bg-gray-300 text-white">Satuan</th>
-                        <th class="bg-gray-300 text-white">Kategori</th>
-                        <th class="bg-gray-300 text-white">Tanggal Kedaluarsa</th>
-                        <th class="bg-gray-300 text-white">Harga Beli</th>
-                        <th class="bg-gray-300 text-white">Stok</th>
-                        <th class="bg-gray-300 text-white">Total Persediaan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($data as $item)
-                        @php
-                            $stok = $dataStok
-                                ->where('barang_id', $item->id)
-                                ->map(function ($q) use ($item) {
-                                    return [
-                                        'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
-                                        'harga_beli' => $q->harga_beli,
-                                        'stok' => $q->stok / $item->barangSatuanUtama?->rasio_dari_terkecil,
-                                        'total' => $q->harga_beli * $q->stok,
-                                    ];
-                                });
-                        @endphp
-                        <tr @if ($stok->count() > 0) class="bg-green-100" @endif>
-                            <td @if ($stok->count() > 0) rowspan="{{ $stok->count() + 1 }}" @endif>
-                                {{ $loop->iteration }}</td>
-                            <td nowrap @if ($stok->count() > 0) rowspan="{{ $stok->count() + 1 }}" @endif>
-                                {{ $item->nama }}</td>
-                            <td nowrap @if ($stok->count() > 0) rowspan="{{ $stok->count() + 1 }}" @endif>
-                                {{ $item->barangSatuanUtama?->nama }}
-                                {{ $item->barangSatuanUtama?->konversi_satuan }}</td>
-                            <td nowrap @if ($stok->count() > 0) rowspan="{{ $stok->count() + 1 }}" @endif>
-                                {{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
-                            @if ($stok->count() == 0)
-                                <td nowrap></td>
-                                <td nowrap class="text-end">0</td>
-                                <td nowrap class="text-end">0</td>
-                                <td nowrap class="text-end">0</td>
-                            @endif
-                        </tr>
-                        @foreach ($stok as $subItem)
-                            <tr class="bg-green-100">
-                                <td nowrap class="text-end">{{ $subItem['tanggal_kedaluarsa'] }}</td>
-                                <td nowrap class="text-end">{{ number_format($subItem['harga_beli']) }}</td>
-                                <td nowrap class="text-end">{{ number_format($subItem['stok']) }}</td>
-                                <td nowrap class="text-end">
-                                    {{ number_format($subItem['total']) }}</td>
-                            </tr>
-                        @endforeach
-                        </tr>
-                    @endforeach
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th colspan="7" class="text-end">Total Nilai Persediaan</th>
-                        <td class="text-end">{{ number_format($dataStok->sum(fn($q) => $q->harga_beli * $q->stok)) }}</td>
-                </tfoot>
-            </table>
+        <div class="panel-body table-responsive">            
+            @include('livewire.laporan.persediaan.cetak')
         </div>
     </div>
     <x-alert />
+    <x-modal.cetak judul="Laporan Persediaan" />
 </div>
