@@ -56,6 +56,16 @@ class Barang extends Model
         return $this->hasMany(StokMasuk::class);
     }
 
+    public function stokAwal(): HasMany
+    {
+        return $this->hasMany(StokAwal::class);
+    }
+
+    public function stokKeluar(): HasMany
+    {
+        return $this->hasMany(StokKeluar::class);
+    }
+
     public function scopePersediaan(Builder $query): void
     {
         $query->whereNull('konsinyator_id');

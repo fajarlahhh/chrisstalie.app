@@ -18,7 +18,6 @@
         </div>
         <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
             <div class="panel-body">
-
                 <div class="mb-3">
                     <label class="form-label">Tanggal</label>
                     <input class="form-control" type="date" wire:model="tanggal" x-model="tanggal"
@@ -28,7 +27,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Uraian/No. Faktur</label>
+                    <label class="form-label">Uraian/No. Faktur/Nota Pembelian</label>
                     <input class="form-control" type="text" wire:model="uraian" x-model="uraian" required />
                     @error('uraian')
                         <span class="text-danger">{{ $message }}</span>

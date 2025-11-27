@@ -19,7 +19,7 @@ class Form extends Component
 {
     use CustomValidationTrait;
     public $data, $dataPembelian = [], $barang = [];
-    public $pembelian_id;
+    public $pembelian_id, $tanggal;
 
 
     public function updatedPembelianId($value)
@@ -60,6 +60,7 @@ class Form extends Component
     {
         $this->validateWithCustomMessages([
             'pembelian_id' => 'required',
+            'tanggal' => 'required|date',
             'barang' => 'required|array',
             'barang.*.qty_masuk' => [
                 'numeric',
@@ -110,6 +111,7 @@ class Form extends Component
             foreach ($this->barang as $key => $value) {
                 if ($value['qty_masuk'] > 0) {
                     $stokMasuk = new StokMasuk();
+                    $stokMasuk->tanggal = $this->tanggal;
                     $stokMasuk->qty = $value['qty_masuk'];
                     $stokMasuk->no_batch = $value['no_batch'];
                     $stokMasuk->tanggal_kedaluarsa = $value['tanggal_kedaluarsa'];

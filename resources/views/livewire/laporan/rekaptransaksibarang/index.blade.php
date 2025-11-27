@@ -1,17 +1,19 @@
 <div>
-    @section('title', 'Stok Barang')
+    @section('title', 'Rekap Transaksi Barang')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Laporan</li>
-        <li class="breadcrumb-item active">Stok Barang</li>
+        <li class="breadcrumb-item active">Rekap Transaksi Barang</li>
     @endsection
 
-    <h1 class="page-header">Stok Barang</h1>
+    <h1 class="page-header">Rekap Transaksi Barang</h1>
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
+                    <input type="date" class="form-control w-auto" wire:model.lazy="bulan">
+                    &nbsp;
                     <select class="form-control w-auto" wire:model.lazy="persediaan">
                         <option value="">Semua Persediaan</option>
                         <option value="Apotek">Apotek</option>
@@ -30,7 +32,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">            
-            @include('livewire.laporan.stokbarang.cetak')
+            @include('livewire.laporan.rekaptransaksibarang.cetak')
         </div>
     </div>
     <x-alert />

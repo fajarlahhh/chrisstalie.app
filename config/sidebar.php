@@ -119,7 +119,7 @@ return [
                     "method" => ["Index"],
                 ],
                 [
-                    "title" => "Stok Barang",
+                    "title" => "Rekap Transaksi Barang",
                     "method" => ["Index"],
                 ],
                 [

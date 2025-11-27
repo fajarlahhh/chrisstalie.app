@@ -30,6 +30,14 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="mb-3">
+                    <label class="form-label">Tanggal</label>
+                    <input class="form-control" type="date" wire:model="tanggal" x-model="tanggal"
+                        max="{{ now()->format('Y-m-d') }}" required />
+                    @error('tanggal')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
                 <div class="note alert-secondary mb-0">
                     <div class="note-content table-responsive">
                         <table class="table table-borderless">
