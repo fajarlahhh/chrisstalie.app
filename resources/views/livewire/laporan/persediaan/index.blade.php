@@ -48,13 +48,12 @@
                         @php
                             $stok = $dataStok
                                 ->where('barang_id', $item->id)
-                                ->groupBy('tanggal_kedaluarsa', 'harga_beli')
                                 ->map(function ($q) use ($item) {
                                     return [
-                                        'tanggal_kedaluarsa' => $q->first()['tanggal_kedaluarsa'],
-                                        'harga_beli' => $q->first()['harga_beli'],
-                                        'stok' => $q->count() / $item->barangSatuanUtama?->rasio_dari_terkecil,
-                                        'total' => $q->first()['harga_beli'] * $q->count(),
+                                        'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
+                                        'harga_beli' => $q->harga_beli,
+                                        'stok' => $q->stok / $item->barangSatuanUtama?->rasio_dari_terkecil,
+                                        'total' => $q->harga_beli * $q->stok,
                                     ];
                                 });
                         @endphp
@@ -90,7 +89,7 @@
                 <tfoot>
                     <tr>
                         <th colspan="7" class="text-end">Total Nilai Persediaan</th>
-                        <td class="text-end">{{ number_format($dataStok->sum('harga_beli')) }}</td>
+                        <td class="text-end">{{ number_format($dataStok->sum(fn($q) => $q->harga_beli * $q->stok)) }}</td>
                 </tfoot>
             </table>
         </div>

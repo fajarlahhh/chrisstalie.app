@@ -2,12 +2,13 @@
 
 namespace App\Livewire\Laporan\Persediaan;
 
+use App\Models\Stok;
 use App\Models\Barang;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
-use App\Models\Stok;
+use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
@@ -31,7 +32,7 @@ class Index extends Component
                     ->where('nama', 'like', '%' . $this->cari . '%'))
                 ->orderBy('nama')
                 ->get(),
-            'dataStok' => Stok::whereNull('stok_keluar_id')->get(),
+            'dataStok' => Stok::whereNull('stok_keluar_id')->select(DB::raw('barang_id, tanggal_kedaluarsa, harga_beli, count(*) as stok'))->groupBy('barang_id', 'tanggal_kedaluarsa', 'harga_beli')->get(),
         ]);
     }
 }
