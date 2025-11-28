@@ -40,7 +40,7 @@ class Index extends Component
 
     private function getData($paginate = true)
     {
-        return TarifTindakan::with([
+        $query = TarifTindakan::with([
             'pengguna',
             'kodeAkun',
             'tarifTindakanAlatBarang',
@@ -50,13 +50,9 @@ class Index extends Component
             })
             ->where(fn($q) => $q
                 ->where('nama', 'like', '%' . $this->cari . '%'))
-            ->orderBy('nama')
-            ->when($paginate, function ($q) {
-                $q->paginate(10);
-            })
-            ->when(!$paginate, function ($q) {
-                $q->get();
-            });
+            ->orderBy('nama');
+
+        return $paginate ? $query->paginate(10) : $query->get();
     }
 
     public function export()
