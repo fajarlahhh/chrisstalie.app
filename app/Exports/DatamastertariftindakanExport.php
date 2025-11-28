@@ -19,7 +19,7 @@ class DatamastertariftindakanExport implements FromView
     public function view(): View
     {
         //
-        return view('livewire.datamaster.tariftindakan.cetak', [
+        return view('livewire.datamaster.tariftindakan.tabel', [
             'cetak' => true,
             'data' => $this->data,
         ]);
