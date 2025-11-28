@@ -115,6 +115,24 @@ return [
                     ]
                 ],
                 [
+                    "title" => "Kepegawaian",
+                    "urutkan" => true,
+                    "sub_menu" => [
+                        [
+                            "title" => "Jadwal Shift",
+                            "method" => ["Index"],
+                        ],
+                        [
+                            "title" => "Absensi",
+                            "method" => ["Index"],
+                        ],
+                        [
+                            "title" => "Gaji",
+                            "method" => ["Index"],
+                        ]
+                    ]
+                ],
+                [
                     "title" => "Barang Dagang",
                     "urutkan" => true,
                     "sub_menu" => [
@@ -135,10 +153,6 @@ return [
                             "method" => ["Index"],
                         ],
                     ]
-                ],
-                [
-                    "title" => "Absensi Pegawai",
-                    "method" => ["Index"],
                 ],
                 [
                     "title" => "LHK",

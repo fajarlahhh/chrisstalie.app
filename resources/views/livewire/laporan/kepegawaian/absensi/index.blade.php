@@ -1,13 +1,14 @@
 <div>
-    @section('title', 'Laporan Absensi Pegawai')
+    @section('title', 'Absensi')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Laporan</li>
-        <li class="breadcrumb-item active">Laporan Absensi Pegawai</li>
+        <li class="breadcrumb-item">Kepegawaian</li>
+        <li class="breadcrumb-item active">Absensi</li>
     @endsection
 
     <!-- BEGIN page-header -->
-    <h1 class="page-header">Laporan Absensi Pegawai</h1>
+    <h1 class="page-header">Absensi</h1>
     <!-- END page-header -->
 
     <div class="panel panel-inverse" data-sortable-id="table-basic-2">
@@ -42,9 +43,9 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
-            @include('livewire.laporan.absensipegawai.cetak', ['cetak' => false])
+            @include('livewire.laporan.kepegawaian.absensi.cetak', ['cetak' => false])
         </div>
     </div>
     <x-alert />
-    <x-modal.cetak judul="Laporan Absensi Pegawai" />
+    <x-modal.cetak judul="Absensi" />
 </div>

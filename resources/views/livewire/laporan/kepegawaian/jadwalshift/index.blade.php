@@ -1,12 +1,13 @@
 <div>
-    @section('title', 'Barang Masuk')
+    @section('title', 'Jadwal Shift')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Laporan</li>
-        <li class="breadcrumb-item active">Barang Masuk</li>
+        <li class="breadcrumb-item">Kepegawaian</li>
+        <li class="breadcrumb-item active">Jadwal Shift</li>
     @endsection
 
-    <h1 class="page-header">Barang Masuk</h1>
+    <h1 class="page-header">Jadwal Shift</h1>
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">
@@ -19,18 +20,13 @@
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
                     <input type="month" class="form-control w-auto" wire:model.lazy="bulan">&nbsp;
-                    {{-- <select class="form-control w-auto" wire:model.lazy="jenis">
-                        <option value="pertanggalmasuk">Per Tanggal Masuk</option>
-                        <option value="pertransaksi">Per Transaksi</option>
-                        <option value="perbarang">Per Barang</option>
-                    </select> --}}
                 </div>
             </div>
         </div>
         <div class="panel-body table-responsive">
-            @include('livewire.laporan.barangdagang.barangmasuk.cetak', ['cetak' => false])
+            @include('livewire.laporan.kepegawaian.jadwalshift.cetak', ['cetak' => false])
         </div>
     </div>
     <x-alert />
-    <x-modal.cetak judul="Laporan Barang Masuk" />
+    <x-modal.cetak judul="Jadwal Shift" />
 </div>

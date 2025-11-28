@@ -91,7 +91,8 @@
                                                         {{ $detail->barangSatuan->nama }}
                                                     @endif
                                                 </td>
-                                                <td class="text-nowrap text-end w-80px p-1">{{ $detail->qty_permintaan }}
+                                                <td class="text-nowrap text-end w-80px p-1">
+                                                    {{ $detail->qty_permintaan }}
                                                 </td>
                                                 <td class="text-nowrap text-end w-80px p-1">{{ $detail->qty_disetujui }}
                                                 </td>
@@ -107,9 +108,15 @@
                                             :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                     @else
                                         @if ($item->verifikasiDisetujui->count() > 0 || $item->verifikasiDitolak->count() > 0)
-                                            <x-action :row="$item" custom="" :detail="false" :edit="false"
-                                                :print="false" :permanentDelete="false" :restore="false"
-                                                :delete="true" />
+                                            @if ($item->pembelian && $item->pembelian->stokMasuk->count() > 0)
+                                                <x-action :row="$item" custom="" :detail="false"
+                                                    :edit="false" :print="false" :permanentDelete="false"
+                                                    :restore="false" :delete="false" />
+                                            @else
+                                                <x-action :row="$item" custom="" :detail="false"
+                                                    :edit="false" :print="false" :permanentDelete="false"
+                                                    :restore="false" :delete="true" />
+                                            @endif
                                         @else
                                             <x-action :row="$item" custom="" :detail="false"
                                                 :edit="true" :print="false" :permanentDelete="false" :restore="false"

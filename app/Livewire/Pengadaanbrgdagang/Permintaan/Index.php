@@ -36,9 +36,11 @@ class Index extends Component
             'data' => PermintaanPembelian::with([
                 'pengguna',
                 'permintaanPembelianDetail.barangSatuan.barang',
+                'pembelian.stokMasuk',
                 'verifikasiPending',
                 'verifikasiDisetujui',
-                'verifikasiDitolak'
+                'verifikasiDitolak',
+                'verifikasi.pengguna'
             ])
                 ->where(fn($q) => $q
                     ->where('deskripsi', 'like', '%' . $this->cari . '%'))
