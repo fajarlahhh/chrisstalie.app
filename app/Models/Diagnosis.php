@@ -43,6 +43,6 @@ class Diagnosis extends Model
 
     public function file(): HasMany
     {
-        return $this->hasMany(File::class, 'referensi_id')->where('jenis', 'Diagnosis');
+        return $this->hasMany(File::class, 'registrasi_id');
     }
 }
