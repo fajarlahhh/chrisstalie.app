@@ -49,21 +49,21 @@
                     $stokAwal = $row->stokAwal
                         ->map(
                             fn($q) => [
-                                'qty' => $q->rasio_dari_terkecil != 0 ? $q->qty / $q->rasio_dari_terkecil : 0,
+                                'qty' => $q->qty,
                             ],
                         )
                         ->sum('qty');
                     $stokMasuk = $row->stokMasuk
                         ->map(
                             fn($q) => [
-                                'qty' => $q->rasio_dari_terkecil != 0 ? $q->qty / $q->rasio_dari_terkecil : 0,
+                                'qty' => $q->qty,
                             ],
                         )
                         ->sum('qty');
                     $stokKeluar = $row->stokKeluar
                         ->map(
                             fn($q) => [
-                                'qty' => $q->rasio_dari_terkecil != 0 ? $q->qty / $q->rasio_dari_terkecil : 0,
+                                'qty' => $q->qty,
                             ],
                         )
                         ->sum('qty');
