@@ -16,7 +16,7 @@
         <tr>
             <th class="w-100px">Pengguna</th>
             <th class="w-10px">:</th>
-            <td>{{ $pengguna_id ? $pengguna->nama : 'Semua Pengguna' }}</td>
+            <td>{{ $pengguna }}</td>
         </tr>
     </table>
 @endif
@@ -71,8 +71,7 @@
     <tr>
         <td></td>
         <td class="w-10px">b.</td>
-        <td>Pendapatan Apotek</td>
-        <td class="text-end"></td>
+        <td colspan="{{ count($dataMetodeBayar) + 1 }}">Pendapatan Apotek</td>
     </tr>
     @foreach (collect($dataKodeAkun)->where('parent_id', '41000') as $item)
         <tr>
@@ -95,6 +94,15 @@
     @endforeach
     <tr>
         <td></td>
+        <td class="w-10px">c.</td>
+        <td>Pendapatan Pendapatan Non Usaha</td>
+        <td class="text-end">0</td>
+        <td class="text-end">0</td>
+        <td class="text-end">0</td>
+        <td class="text-end">0</td>
+    </tr>
+    <tr>
+        <td></td>
         <td class="w-10px"></td>
         <td>Total Pendapatan</td>
         @foreach (collect($dataMetodeBayar) as $key => $metodeBayar)
@@ -104,8 +112,7 @@
     </tr>
     <tr>
         <th class="w-10px">2.</th>
-        <th colspan="2">Pengeluaran</th>
-        <td class="text-end"></td>
+        <th colspan="{{ count($dataMetodeBayar) + 3 }}">Pengeluaran</th>
     </tr>
     @foreach (collect($dataKodeAkun)->filter(function ($item) use ($data) {
         return in_array($item['id'], $data->pluck('kode_akun_id')->unique()->toArray()) && str_starts_with($item['id'], '6');
@@ -160,7 +167,7 @@
         @endforeach
         @foreach (array_slice($dataMetodeBayar, 2) as $key => $subItem)
             <th class="text-end">
-                {{ number_format(collect($totalPendapatan[$key])->values()->sum()) }}
+                {{ number_format(collect($totalPendapatan[$key + 2])->values()->sum()) }}
             </th>
         @endforeach
     </tr>

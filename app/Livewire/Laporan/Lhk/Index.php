@@ -27,6 +27,18 @@ class Index extends Component
         $this->dataMetodeBayar = MetodeBayar::all()->toArray();
     }
 
+    public function print(){
+        $cetak = view('livewire.laporan.lhk.cetak', [
+            'cetak' => true,
+            'tanggal' => $this->tanggal,
+            'dataMetodeBayar' => $this->dataMetodeBayar,
+            'dataKodeAkun' => $this->dataKodeAkun,
+            'pengguna' => $this->pengguna_id ? Pengguna::find($this->pengguna_id)?->pegawai?->nama ?? Pengguna::find($this->pengguna_id)?->nama : 'Semua Pengguna',
+            'data' => $this->getData(),
+        ])->render();
+        session()->flash('cetak', $cetak);
+    }
+
     public function getData()
     {
         return Jurnal::with(['pengguna'])
@@ -34,7 +46,7 @@ class Index extends Component
             ->rightJoin('jurnal_detail', 'jurnal.id', '=', 'jurnal_detail.jurnal_id')
             ->leftJoin('pembayaran', 'jurnal.pembayaran_id', '=', 'pembayaran.id')
             ->whereIn('jurnal.id', JurnalDetail::whereIn('kode_akun_id', (collect($this->dataKodeAkun)->where('parent_id', '11100')->pluck('id')))->pluck('jurnal_id'))
-            ->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id))
+            ->when($this->pengguna_id, fn($q) => $q->where('jurnal.pengguna_id', $this->pengguna_id))
             ->where('tanggal', $this->tanggal)->get();
     }
 
