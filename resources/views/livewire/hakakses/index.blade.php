@@ -32,6 +32,7 @@
                     <tr>
                         <th class="w-10px">No.</th>
                         <th>Nama</th>
+                        <th>Pegawai</th>
                         <th>UID</th>
                         <th>Level</th>
                         <th class="w-10px"></th>
@@ -44,6 +45,7 @@
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
                             <td>{{ $row->pegawai ? $row->pegawai->nama : $row->nama }}</td>
+                            <td>{{ $row->pegawai ? $row->pegawai->satuan_tugas : '' }}</td>
                             <td>{{ $row->uid }}</td>
                             <td>{{ $row->getRoleNames()->first() }}
                             </td>
