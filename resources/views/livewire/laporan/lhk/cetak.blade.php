@@ -25,11 +25,11 @@
     foreach (collect($dataMetodeBayar) as $key => $item) {
         $totalPendapatan[$key] = [];
     }
-    foreach (collect($dataKodeAkun)->where('parent_id', '11100') as $key => $item) {
-        $totalPengeluaran[$key] = [];
+    foreach (collect($dataKodeAkun)->where('parent_id', '11100') as $item) {
+        $totalPengeluaran[$item['id']] = [];
     }
 @endphp
-<table class="table table-bordered table-hover">
+<table class="table table-bordered">
     <tr>
         <th class="bg-gray-300 text-white" rowspan="2">No.</th>
         <th class="bg-gray-300 text-white" rowspan="2" colspan="2">Keterangan</th>
@@ -54,13 +54,13 @@
             <td></td>
             <td class="w-10px"></td>
             <td>-&nbsp;&nbsp;{{ $item['nama'] }}</td>
-            @foreach (collect($dataMetodeBayar) as $metodeBayar)
+            @foreach (collect($dataMetodeBayar) as $key => $metodeBayar)
                 @php
                     $pendapatan = $data
                         ->where('metode_bayar', $metodeBayar['nama'])
                         ->where('kode_akun_id', $item['id'])
                         ->sum('kredit');
-                    $totalPendapatan[$metodeBayar['nama']][$item['id']] = $pendapatan;
+                    $totalPendapatan[$key][$item['id']] = $pendapatan;
                 @endphp
                 <td class="text-end">
                     {{ number_format($pendapatan) }}
@@ -79,13 +79,13 @@
             <td></td>
             <td class="w-10px"></td>
             <td>-&nbsp;&nbsp;{{ $item['nama'] }}</td>
-            @foreach (collect($dataMetodeBayar) as $metodeBayar)
+            @foreach (collect($dataMetodeBayar) as $key => $metodeBayar)
                 @php
                     $pendapatan = $data
                         ->where('metode_bayar', $metodeBayar['nama'])
                         ->where('kode_akun_id', $item['id'])
                         ->sum('kredit');
-                    $totalPendapatan[$metodeBayar['nama']][$item['id']] = $pendapatan;
+                    $totalPendapatan[$key][$item['id']] = $pendapatan;
                 @endphp
                 <td class="text-end">
                     {{ number_format($pendapatan) }}
@@ -97,8 +97,8 @@
         <td></td>
         <td class="w-10px"></td>
         <td>Total Pendapatan</td>
-        @foreach (collect($dataMetodeBayar) as $metodeBayar)
-            <td class="text-end">{{ number_format(collect($totalPendapatan[$metodeBayar['nama']])->values()->sum()) }}
+        @foreach (collect($dataMetodeBayar) as $key => $metodeBayar)
+            <td class="text-end">{{ number_format(collect($totalPendapatan[$key])->values()->sum()) }}
             </td>
         @endforeach
     </tr>
@@ -124,7 +124,7 @@
                     @if ($data->whereIn('id', $data->where('kode_akun_id', $item['id'])->pluck('id')->unique()->toArray())->where('kode_akun_id', $subItem['id'])->count() > 0)
                         {{ number_format($debet) }}
                         @php
-                            $totalPengeluaran[$subItem['key']][$item['key']] = $debet;
+                            $totalPengeluaran[$subItem['id']][$item['id']] = $debet;
                         @endphp
                     @else
                         {{ number_format(0) }}
@@ -153,12 +153,15 @@
     <tr>
         <th class="w-10px">3.</th>
         <th colspan="2">Total</th>
-        @foreach (collect($dataKodeAkun)->where('parent_id', '11100') as $subItem)
-            <td class="text-end">
-                {{ number_format(collect($totalPengeluaran[$subItem['id']])->values()->sum()) }}
-            </td>
+        @foreach (collect($dataKodeAkun)->where('parent_id', '11100')->values() as $key => $subItem)
+            <th class="text-end">
+                {{ number_format(collect($totalPendapatan[$key])->values()->sum() -collect($totalPengeluaran[$subItem['id']])->values()->sum()) }}
+            </th>
         @endforeach
-        <th class="text-end">0</th>
-        <th class="text-end">0</th>
+        @foreach (array_slice($dataMetodeBayar, 2) as $key => $subItem)
+            <th class="text-end">
+                {{ number_format(collect($totalPendapatan[$key])->values()->sum()) }}
+            </th>
+        @endforeach
     </tr>
 </table>
