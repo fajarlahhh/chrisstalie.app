@@ -6,27 +6,36 @@
         <li class="breadcrumb-item active">Pengeluaran</li>
     @endsection
 
-    <h1 class="page-header"> Pengeluaran</h1>
+    <!-- BEGIN page-header -->
+    <h1 class="page-header">Pengeluaran</h1>
+    <!-- END page-header -->
 
-    <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
-        <!-- begin panel-heading -->
+    <div class="panel panel-inverse" data-sortable-id="table-basic-2">
+        <!-- BEGIN panel-heading -->
         <div class="panel-heading">
-            <a href="javascript:;" wire:click="print" x-init="$($el).on('click', function() {
-                setTimeout(() => {
-                    $('#modal-cetak').modal('show')
-                }, 1000)
-            })" class="btn btn-warning">
-                Cetak</a>
+            <a href="javascript:;" wire:click="export" class="btn btn-success">
+                Export</a>
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <select class="form-control" wire:model.lazy="office" data-width="100%">
-                        <option selected value="">-- Tidak Ada Unit Bisnis --</option>
-                        <option value="Klinik">Klinik</option>
-                        <option value="Apotek">Apotek</option>
-                    </select>&nbsp;
-                    <input class="form-control" type="date" wire:model.lazy="date1" />
-                    &nbsp;s/d&nbsp;
-                    <input class="form-control" type="date" wire:model.lazy="date2" />
+                    <input type="date" autocomplete="off" wire:model.debounce.500ms="tanggal1" id="tanggal"
+                        class="form-control w-auto">&nbsp;s/d&nbsp;
+                    <input type="date" autocomplete="off" wire:model.debounce.500ms="tanggal2" id="tanggal"
+                        class="form-control w-auto">&nbsp;
+                    <select class="form-control w-auto" wire:model.lazy="pengguna_id">
+                        @role('administrator|supervisor')
+                            <option value="">Semua Pengguna</option>
+                        @endrole
+                        @foreach ($dataPengguna as $item)
+                            <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
+                        @endforeach
+                    </select>
+                    &nbsp;
+                    <select class="form-control w-auto" wire:model.live="metode_bayar">
+                        <option value="">Semua Metode Bayar</option>
+                        @foreach ($dataKodeAkun as $item)
+                            <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
         </div>
@@ -35,5 +44,5 @@
         </div>
     </div>
     <x-alert />
-    <x-modal.cetak judul="" />
+    <x-modal.cetak judul="Pengeluaran" />
 </div>

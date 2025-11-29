@@ -41,7 +41,7 @@ class Index extends Component
         if (!auth()->user()->hasRole(['administrator', 'supervisor'])) {
             $query->where('pengguna_id', auth()->user()->id);
         }
-        return $paginate ? $query->paginate(10) : $query->get();
+        return $query->get();
     }
 
     public function render()

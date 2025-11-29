@@ -3,7 +3,7 @@
         <img src="/assets/img/login.png" class="w-200px" alt="" />
         <br>
         <br>
-        <h5>Laporan Harian Kas</h5>
+        <h5>Laporan Penerimaan</h5>
         <hr>
     </div>
     <br>
@@ -90,26 +90,11 @@
                     ) }}
             </th>
             @role('administrator|supervisor')
-                <th colspan="2"></th>
-            @endrole
-            @role('operator')
                 <th colspan="3"></th>
             @endrole
-        </tr>
-        <tr>
-            <th class="bg-gray-300 text-white">No.</th>
-            <th class="bg-gray-300 text-white">No. Nota</th>
-            <th class="bg-gray-300 text-white">Pasien</th>
-            <th class="bg-gray-300 text-white">Tindakan</th>
-            <th class="bg-gray-300 text-white">Penjualan Bebas</th>
-            <th class="bg-gray-300 text-white">Resep</th>
-            <th class="bg-gray-300 text-white">Diskon</th>
-            <th class="bg-gray-300 text-white">Total</th>
-            @role('administrator|supervisor')
-                <th class="bg-gray-300 text-white">Kasir</th>
+            @role('operator')
+                <th colspan="2"></th>
             @endrole
-            <th class="bg-gray-300 text-white">Metode Bayar</th>
-            <th class="bg-gray-300 text-white">Keterangan</th>
         </tr>
     </tfoot>
 </table>

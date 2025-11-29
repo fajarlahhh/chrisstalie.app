@@ -162,6 +162,10 @@ return [
                     "title" => "Penerimaan",
                     "method" => ["Index"],
                 ],
+                [
+                    "title" => "Pengeluaran",
+                    "method" => ["Index"],
+                ],
             ]
         ],
         [
