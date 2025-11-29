@@ -5,6 +5,7 @@ namespace App\Livewire\Jurnalkeuangan;
 use App\Models\Jurnal;
 use Livewire\Component;
 use App\Models\KodeAkun;
+use App\Class\JurnalClass;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 
@@ -73,12 +74,7 @@ class Jurnalumum extends Component
 
         DB::transaction(function () {
             if (!$this->data->exists) {
-
-                $terakhir = Jurnal::where('tanggal', 'like', substr($this->tanggal, 0, 7) . '%')
-                    ->orderBy('id', 'desc')
-                    ->first();
-                $nomorTerakhir = $terakhir ? (int)substr($terakhir->id, 15, 5) : 0;
-                $nomor = 'JURNAL/' . str_replace('-', '/', substr($this->tanggal, 0, 7)) . '/' . sprintf('%05d', $nomorTerakhir + 1);
+                $nomor = JurnalClass::getNomor($this->tanggal);
                 $this->data->id = str_replace('/', '', $nomor);
                 $this->data->nomor = $nomor;
             }
@@ -88,6 +84,7 @@ class Jurnalumum extends Component
             $this->data->uraian = ucfirst($this->uraian);
             $this->data->tanggal = $this->tanggal;
             $this->data->system = 0;
+            $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
             $this->data->jurnalDetail()->delete();

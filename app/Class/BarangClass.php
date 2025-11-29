@@ -80,7 +80,7 @@ class BarangClass
             ])->toArray();
     }
 
-    public static function stokKeluar($barang, $pembayaranId, $jenis)
+    public static function stokKeluar($barang, $pembayaranId)
     {
         $detail = [];
         foreach ($barang as $brg) {

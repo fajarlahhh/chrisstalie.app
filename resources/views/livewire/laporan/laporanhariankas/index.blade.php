@@ -1,12 +1,12 @@
 <div>
-    @section('title', 'LHK')
+    @section('title', 'Laporan Harian Kas')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Laporan</li>
-        <li class="breadcrumb-item active">LHK</li>
+        <li class="breadcrumb-item active">Laporan Harian Kas</li>
     @endsection
 
-    <h1 class="page-header"> LHK</h1>
+    <h1 class="page-header"> Laporan Harian Kas</h1>
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
-            @include('livewire.laporan.lhk.cetak', ['cetak' => false])
+            @include('livewire.laporan.laporanhariankas.cetak', ['cetak' => false])
         </div>
     </div>
     <x-alert />

@@ -17,9 +17,11 @@
                     <div class="dropdown-menu dropdown-menu-start">
                         <a class="dropdown-item"
                             href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=pengeluaran'">Pengeluaran</a>
-                        <a class="dropdown-item"
-                            href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=jurnalumum'">Jurnal
-                            Umum</a>
+                        @role('administrator|supervisor')
+                            <a class="dropdown-item"
+                                href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=jurnalumum'">Jurnal
+                                Umum</a>
+                        @endrole
                     </div>
                 </div>
             @endrole

@@ -260,7 +260,7 @@ class Form extends Component
                     'kode_akun_penjualan_id' => $q['kode_akun_penjualan_id'],
                     'kode_akun_modal_id' => $q['kode_akun_modal_id'],
                 ];
-            })->toArray(), $pembayaran->id, 'Pembayaran Pasien Klinik');
+            })->toArray(), $pembayaran->id);
 
             //Jurnal Penyusutan Alat
             $detail = array_merge($detail, collect($this->alat)->where('metode_penyusutan', 'Satuan Hasil Produksi')->map(function ($q) {
@@ -302,7 +302,7 @@ class Form extends Component
                     ];
                 })->all();
                 if (count($barangMap)) {
-                    $hppBarang = BarangClass::stokKeluar($barangMap, $pembayaran->id, 'Pembayaran Pasien Klinik');
+                    $hppBarang = BarangClass::stokKeluar($barangMap, $pembayaran->id);
                     $detail = array_merge($detail, collect($hppBarang)->map(function ($q) {
                         return [
                             'kode_akun_id' => $q['kode_akun_id'],
@@ -348,10 +348,10 @@ class Form extends Component
         })->all();
 
         $jurnal = JurnalClass::insert(
-            jenis: 'Pembayaran Pasien Klinik',
-            sub_jenis: 'Pembayaran',
+            jenis: 'Pendapatan Pasien Klinik',
+            sub_jenis: 'Pendapatan',
             tanggal: now(),
-            uraian: 'Pembayaran Pasien Klinik No. Registrasi ' . $this->data->id,
+            uraian: 'Pendapatan Pasien Klinik No. Registrasi ' . $this->data->id,
             system: 1,
             pembayaran_id: $pembayaran->id,
             penggajian_id: null,

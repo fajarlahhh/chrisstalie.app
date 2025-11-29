@@ -155,7 +155,7 @@ return [
                     ]
                 ],
                 [
-                    "title" => "LHK",
+                    "title" => "Laporan Harian Kas",
                     "method" => ["Index"],
                 ],
             ]

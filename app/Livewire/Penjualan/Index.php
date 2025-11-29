@@ -92,7 +92,7 @@ class Index extends Component
                 ];
             })->toArray();
 
-            $hpp = BarangClass::stokKeluar($barang, $pembayaran->id, 'Penjualan Barang Bebas');
+            $hpp = BarangClass::stokKeluar($barang, $pembayaran->id);
 
             $this->jurnalPendapatan($pembayaran, $metodeBayar, $hpp);
 
@@ -143,10 +143,10 @@ class Index extends Component
         })->toArray());
 
         JurnalClass::insert(
-            jenis: 'Penjualan Barang Bebas',
+            jenis: 'Pendapatan Penjualan Barang Bebas',
             sub_jenis: 'Pendapatan',
             tanggal: now(),
-            uraian: 'Penjualan Barang Bebas ' . $pembayaran->id,
+            uraian: 'Pendapatan Penjualan Barang Bebas ' . $pembayaran->id,
             system: 1,
             aset_id: null,
             pembelian_id: null,

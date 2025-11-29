@@ -15,13 +15,19 @@ class JurnalClass
         //
     }
 
-    public static function insert($jenis, $sub_jenis = null, $tanggal, $uraian, $system = 0, $aset_id = null, $pembelian_id = null, $stok_masuk_id = null, $pembayaran_id = null, $penggajian_id = null, $pelunasan_pembelian_id = null, $detail)
-    {
+    public static function getNomor($tanggal)
+    {        
         $terakhir = Jurnal::where('tanggal', 'like', substr($tanggal, 0, 7) . '%')
             ->orderBy('id', 'desc')
             ->first();
         $nomorTerakhir = $terakhir ? (int)substr($terakhir->id, 12, 5) : 0;
         $nomor = 'JURNAL/' . str_replace('-', '/', substr($tanggal, 0, 7)) . '/' . sprintf('%05d', $nomorTerakhir + 1);
+        return $nomor;
+    }
+
+    public static function insert($jenis, $sub_jenis = null, $tanggal, $uraian, $system = 0, $aset_id = null, $pembelian_id = null, $stok_masuk_id = null, $pembayaran_id = null, $penggajian_id = null, $pelunasan_pembelian_id = null, $detail)
+    {
+        $nomor = self::getNomor($tanggal);
         
         $jurnal = new Jurnal();
         $jurnal->id = str_replace('/', '', $nomor);
