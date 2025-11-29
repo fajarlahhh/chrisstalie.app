@@ -19,12 +19,14 @@
                 Cetak</a>
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <select class="form-control" wire:model.lazy="office" data-width="100%">
-                        <option selected value="">-- Tidak Ada Unit Bisnis --</option>
-                        <option value="Klinik">Klinik</option>
-                        <option value="Apotek">Apotek</option>
+                    <input class="form-control" type="date" wire:model.lazy="tanggal" />
+                    &nbsp;
+                    <select class="form-control" wire:model.lazy="pengguna_id">
+                        <option value="">Semua Pengguna</option>
+                        @foreach ($dataPengguna as $item)
+                            <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                        @endforeach
                     </select>&nbsp;
-                    <input class="form-control" type="date" wire:model.lazy="date" />
                 </div>
             </div>
         </div>
