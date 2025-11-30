@@ -265,7 +265,7 @@
                                     @foreach ($row->tindakan as $item)
                                         {{ $loop->iteration }}. {{ $item->tarifTindakan->nama }} <br>
                                         <small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Dokter :
-                                            {{ $item->dokter->nama }}</small><br>
+                                            {{ $item->dokter?->nama }}</small><br>
                                         <small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Perawat :
                                             {{ $item->perawat?->nama }}</small><br>
                                         <small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- {{ $item->qty }} x
