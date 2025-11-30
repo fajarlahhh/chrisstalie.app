@@ -39,10 +39,10 @@
                         <td nowrap>{{ $row[0]['tanggal'] }}</td>
                         <td nowrap>{{ $row[0]['barang'] }}</td>
                         <td nowrap>{{ $row[0]['satuan'] }}</td>
-                        <td nowrap class="text-end">{{ number_format($row[0]['harga_jual']) }}</td>
+                        <td nowrap class="text-end">{{ number_format($row[0]['harga_jual'], 2) }}</td>
                         <td nowrap class="text-end">{{ number_format(collect($row)->sum('qty')) }}</td>
                         <td nowrap class="text-end">
-                            {{ number_format(collect($row)->sum(fn($q) => $q['qty'] * $q['harga_jual'])) }}</td>
+                            {{ number_format(collect($row)->sum(fn($q) => $q['qty'] * $q['harga_jual']), 2) }}</td>
                         @php
                             $total += collect($row)->sum(fn($q) => $q['qty'] * $q['harga_jual']);
                         @endphp
@@ -50,7 +50,7 @@
                 @endforeach
                 <tr>
                     <th colspan="6" class="text-end">Total</th>
-                    <th class="text-end">{{ number_format($total) }}
+                    <th class="text-end">{{ number_format($total, 2) }}
                     </th>
                 </tr>
             </tbody>
@@ -80,10 +80,10 @@
                         <td nowrap>{{ $key }}</td>
                         <td nowrap>{{ $row[0]['barang'] }}</td>
                         <td nowrap>{{ $row[0]['satuan'] }}</td>
-                        <td nowrap class="text-end">{{ number_format($row[0]['harga_jual']) }}</td>
+                        <td nowrap class="text-end">{{ number_format($row[0]['harga_jual'], 2) }}</td>
                         <td nowrap class="text-end">{{ number_format(collect($row)->sum('qty')) }}</td>
                         <td nowrap class="text-end">
-                            {{ number_format(collect($row)->sum(fn($q) => $q['qty'] * $q['harga_jual'])) }}</td>
+                            {{ number_format(collect($row)->sum(fn($q) => $q['qty'] * $q['harga_jual']), 2) }}</td>
                         @php
                             $total += collect($row)->sum(fn($q) => $q['qty'] * $q['harga_jual']);
                         @endphp
@@ -91,7 +91,7 @@
                 @endforeach
                 <tr>
                     <th colspan="6" class="text-end">Total</th>
-                    <th class="text-end">{{ number_format($total) }}
+                    <th class="text-end">{{ number_format($total, 2) }}
                     </th>
                 </tr>
             </tbody>
@@ -119,10 +119,10 @@
                         <td>{{ $loop->iteration }}</td>
                         <td nowrap>{{ $key }}</td>
                         <td nowrap>{{ $row[0]['satuan'] }}</td>
-                        <td nowrap class="text-end">{{ number_format($row[0]['harga_jual']) }}</td>
+                        <td nowrap class="text-end">{{ number_format($row[0]['harga_jual'], 2) }}</td>
                         <td nowrap class="text-end">{{ number_format(collect($row)->sum('qty')) }}</td>
                         <td nowrap class="text-end">
-                            {{ number_format(collect($row)->sum(fn($q) => $q['qty'] * $q['harga_jual'])) }}</td>
+                            {{ number_format(collect($row)->sum(fn($q) => $q['qty'] * $q['harga_jual']), 2) }}</td>
                         @php
                             $total += collect($row)->sum(fn($q) => $q['qty'] * $q['harga_jual']);
                         @endphp

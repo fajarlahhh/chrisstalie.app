@@ -35,7 +35,7 @@ class Index extends Component
     {
         switch ($this->jenis) {
             case 'pertanggalkeluar':
-                return Stok::with(['barang.barangSatuanUtama', 'stokKeluar'])
+                return Stok::with(['barang.barangSatuanTerkecil', 'stokKeluar'])
                     ->whereNotNull('stok_keluar_id')
                     ->where('tanggal_keluar', 'like', $this->bulan . '%')
                     ->get()
@@ -44,14 +44,14 @@ class Index extends Component
                             'tanggal' => $q->tanggal_keluar,
                             'tanggal_keluar' => $q->tanggal_keluar . '-' . $q->barang_id,
                             'barang' => $q->barang->nama,
-                            'satuan' => $q->barang->barangSatuanUtama->nama,
+                            'satuan' => $q->barang->barangSatuanTerkecil->nama,
                             'harga_jual' => $q->stokKeluar?->harga ?? 0,
-                            'qty' => ($q->stokKeluar?->rasio_dari_terkecil ?? 0) != 0 ? 1 / $q->stokKeluar->rasio_dari_terkecil : 0,
+                            'qty' => 1,
                         ];
                     })->groupBy('tanggal_keluar')->sortBy('tanggal_keluar')->toArray();
                 break;
             case 'pertanggalkedaluarsa':
-                return Stok::with(['barang.barangSatuanUtama', 'stokKeluar'])
+                return Stok::with(['barang.barangSatuanTerkecil', 'stokKeluar'])
                     ->whereNotNull('stok_keluar_id')
                     ->where('tanggal_keluar', 'like', $this->bulan . '%')
                     ->get()
@@ -59,14 +59,14 @@ class Index extends Component
                         return [
                             'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
                             'barang' => $q->barang->nama,
-                            'satuan' => $q->barang->barangSatuanUtama->nama,
+                            'satuan' => $q->barang->barangSatuanTerkecil->nama,
                             'harga_jual' => $q->stokKeluar?->harga ?? 0,
-                            'qty' => ($q->stokKeluar?->rasio_dari_terkecil ?? 0) != 0 ? 1 / $q->stokKeluar->rasio_dari_terkecil : 0,
+                            'qty' => 1,
                         ];
                     })->groupBy('tanggal_kedaluarsa')->sortBy('tanggal_kedaluarsa')->toArray();
                 break;
             case 'perbarang':
-                return Stok::with(['barang.barangSatuanUtama', 'stokKeluar'])
+                return Stok::with(['barang', 'stokKeluar'])
                     ->whereNotNull('stok_keluar_id')
                     ->where('tanggal_keluar', 'like', $this->bulan . '%')
                     ->get()
@@ -74,9 +74,9 @@ class Index extends Component
                         return [
                             'barang' => $q->barang->nama,
                             'barang_id' => $q->barang->nama . $q->barang_id,
-                            'satuan' => $q->barang->barangSatuanUtama->nama,
+                            'satuan' => $q->barang->barangSatuanTerkecil->nama,
                             'harga_jual' => $q->stokKeluar?->harga ?? 0,
-                            'qty' => ($q->stokKeluar?->rasio_dari_terkecil ?? 0) != 0 ? 1 / $q->stokKeluar->rasio_dari_terkecil : 0,
+                            'qty' => 1,
                         ];
                     })->groupBy('barang_id')->sortBy('barang_id')->toArray();
                 break;

@@ -80,7 +80,7 @@
                 <tr class="bg-green-100">
                     <td nowrap class="text-end">{{ $subItem['tanggal_kedaluarsa'] }}</td>
                     <td nowrap class="text-end">{{ number_format($subItem['harga_beli']) }}</td>
-                    <td nowrap class="text-end">{{ number_format($subItem['stok'], 2) }}</td>
+                    <td nowrap class="text-end">{{ number_format($subItem['stok'], 3) }}</td>
                     <td nowrap class="text-end">
                         {{ number_format($subItem['total']) }}</td>
                 </tr>
@@ -91,6 +91,6 @@
     <tfoot>
         <tr>
             <th colspan="7" class="text-end">Total Nilai Persediaan</th>
-            <th class="text-end">{{ number_format($total) }}</th>
+            <th class="text-end">{{ number_format($total, 2) }}</th>
     </tfoot>
 </table>
