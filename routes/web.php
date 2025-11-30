@@ -5,6 +5,7 @@ use App\Models\Barang;
 use App\Models\Pasien;
 use App\Models\Registrasi;
 use Illuminate\Http\Request;
+use App\Models\TarifTindakan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -79,6 +80,12 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::get('barang', function (Request $req) {
             return Barang::where('nama', 'like', "%$req->cari%")->get()->map(fn($q) => [
+                'id' => $q->id,
+                'text' => $q->nama,
+            ])->toArray();
+        });
+        Route::get('tariftindakan', function (Request $req) {
+            return TarifTindakan::where('nama', 'like', "%$req->cari%")->get()->map(fn($q) => [
                 'id' => $q->id,
                 'text' => $q->nama,
             ])->toArray();

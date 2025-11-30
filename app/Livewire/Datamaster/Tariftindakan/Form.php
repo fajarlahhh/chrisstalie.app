@@ -29,7 +29,7 @@ class Form extends Component
     public $alatBarang = [];
     public $alat = [];
     public $barang = [];
-
+    public $catatan;
     public function submit()
     {
         $this->validateWithCustomMessages([
@@ -47,6 +47,7 @@ class Form extends Component
             $this->data->biaya_jasa_dokter = $this->biaya_jasa_dokter;
             $this->data->biaya_jasa_perawat = $this->biaya_jasa_perawat;
             $this->data->tarif = $this->tarif;
+            $this->data->catatan = $this->catatan;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 

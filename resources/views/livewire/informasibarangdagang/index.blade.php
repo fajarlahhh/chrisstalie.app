@@ -7,9 +7,6 @@
 
     <h1 class="page-header">Informasi Barang Dagang</h1>
 
-    @if ($dataBarang)
-    @endif
-
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">

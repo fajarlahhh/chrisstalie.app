@@ -92,6 +92,12 @@ return [
             "icon" => "<i class='fa fa-legal'></i>",
         ],
         [
+            "title" => "Informasi Tarif Tindakan",
+            "urutkan" => true,
+            "method" => ["Index"],
+            "icon" => "<i class='fa fa-info-circle'></i>",
+        ],
+        [
             "title" => "Laporan",
             "icon" => "<i class='fa fa-file-text'></i>",
             "urutkan" => true,

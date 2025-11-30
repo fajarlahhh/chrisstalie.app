@@ -8,6 +8,7 @@
             <th rowspan="2" class="text-end">Tarif</th>
             <th colspan="3">Biaya</th>
             <th rowspan="2" class="text-end">Keuntungan Klinik</th>
+            <th rowspan="2">Catatan</th>
             @if ($cetak == false)
                 <th rowspan="2"></th>
             @endif
@@ -38,6 +39,7 @@
                         ? number_format($item->tarif - $item->biaya_jasa_dokter - $item->biaya_jasa_perawat - $item->biaya_alat_barang)
                         : $item->tarif - $item->biaya_jasa_dokter - $item->biaya_jasa_perawat - $item->biaya_alat_barang }}
                 </th>
+                <td>{{ $item->catatan }}</td>
                 @if ($cetak == false)
                     <td class="with-btn-group text-end" nowrap>
                         @role('administrator|supervisor')
