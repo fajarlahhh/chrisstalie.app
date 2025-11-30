@@ -20,7 +20,7 @@
                         dropdownAutoWidth: true,
                         templateResult: format,
                         placeholder: 'Ketik Nama/No. KTP/No. RM',
-                        minimumInputLength: 3,
+                        minimumInputLength: 1,
                         dataType: 'json',
                         ajax: {
                             url: '/cari/pasien',

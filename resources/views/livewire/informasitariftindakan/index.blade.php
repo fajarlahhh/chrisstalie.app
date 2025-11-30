@@ -15,7 +15,7 @@
                     width: '100%',
                     dropdownAutoWidth: true,
                     placeholder: 'Ketik Nama Tarif Tindakan',
-                    minimumInputLength: 3,
+                    minimumInputLength: 1,
                     dataType: 'json',
                     ajax: {
                         url: '/cari/tariftindakan',
