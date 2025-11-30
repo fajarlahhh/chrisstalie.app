@@ -58,7 +58,7 @@
                                     @php
                                         $custom = "<a href='javascript:;' wire:click=\"hakKewajiban({$row['id']})\" x-on:click=\"setTimeout(() => { $('#modal-hak-kewajiban').modal('show'); }, 100);\" class='dropdown-item'>Hak dan Kewajiban</a>";
                                     @endphp
-                                    @if (!$row->payment)
+                                    @if (!$row->pembayaran)
                                         <x-action :row="$row" :custom="$custom" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                     @endif
