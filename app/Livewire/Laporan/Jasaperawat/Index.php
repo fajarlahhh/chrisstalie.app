@@ -26,7 +26,7 @@ class Index extends Component
 
     public function getData()
     {
-        return Tindakan::with('registrasi.pasien', 'pembayaran', 'perawat')->whereNotNull('perawat_id')
+        return Tindakan::with('registrasi.pasien', 'pembayaran', 'perawat')
             ->whereHas('pembayaran', fn($r) => $r
                 ->whereBetween(DB::raw('DATE(created_at)'), [$this->tanggal1, $this->tanggal2]))
             ->get()->map(fn($row) => [
