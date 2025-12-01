@@ -18,11 +18,12 @@ class Form extends Component
     use CustomValidationTrait;
 
     public $tindakan = [], $dataTindakan = [], $dataNakes = [];
-    public $data;
+    public $data, $nakes_id;
 
     public function mount(Registrasi $data)
     {
         $this->data = $data;
+        $this->nakes_id = $data->nakes_id;
         $this->dataTindakan = TarifTindakan::orderBy('nama')->get()->map(fn($q) => [
             'id' => $q->id,
             'nama' => $q->nama,
@@ -54,7 +55,7 @@ class Form extends Component
                 'catatan' => null,
                 'membutuhkan_inform_consent' => false,
                 'membutuhkan_sitemarking' => false,
-                'dokter_id' => auth()->user()->dokter?->id,
+                'dokter_id' => $this->data->nakes_id,
                 'perawat_id' => null,
                 'biaya_jasa_dokter' => 0,
                 'biaya_jasa_perawat' => 0,
@@ -80,9 +81,9 @@ class Form extends Component
                 if (
                     isset($this->tindakan[$index]['biaya_jasa_dokter']) &&
                     $this->tindakan[$index]['biaya_jasa_dokter'] > 0 &&
-                    (empty($value) || $value < 1)
+                    (empty($value) || $value == "" || $value == null)
                 ) {
-                    $fail('Dokter wajib dipilih untuk tindakan ini.');
+                    $fail('Dokter wajib dipilih untuk tindakan ' . $this->tindakan[$index]['nama']);
                 }
             },
         ], [
@@ -93,7 +94,7 @@ class Form extends Component
             'tindakan.*.qty.required' => 'Jumlah tindakan wajib diisi.',
             'tindakan.*.qty.min' => 'Jumlah tindakan minimal 1.',
         ]);
-        
+
         DB::transaction(function () {
             Tindakan::where('registrasi_id', $this->data->id)->delete();
 
@@ -113,12 +114,12 @@ class Form extends Component
                 $tindakan->biaya_jasa_dokter = $q['biaya_jasa_dokter'];
                 $tindakan->biaya_jasa_perawat = $q['biaya_jasa_perawat'];
                 $tindakan->biaya_alat_barang = $q['biaya_alat_barang'];
-                $tindakan->dokter_id = $q['dokter_id'];
+                $tindakan->dokter_id = $q['dokter_id'] && $q['dokter_id'] != "" ? $q['dokter_id'] : null;
                 $tindakan->perawat_id = $q['perawat_id'] ? $q['perawat_id'] : null;
                 $tindakan->qty = $q['qty'];
                 $tindakan->pengguna_id = auth()->id();
                 $tindakan->save();
-
+                
                 $tarifTindakanAlatBarang = $dataTarifTindakanAlatBarang->where('tarif_tindakan_id', $q['id']);
 
                 foreach ($tarifTindakanAlatBarang as $r) {

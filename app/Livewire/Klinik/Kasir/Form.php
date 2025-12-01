@@ -62,7 +62,7 @@ class Form extends Component
                 'perawat_id' => $q->perawat_id,
                 'biaya_alat_barang' => $q->biaya_alat_barang,
                 'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
-                'biaya_jasa_perawat' => $q->biaya_jasa_dokter,
+                'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
                 'biaya' => $q->biaya,
             ];
         })->toArray();
@@ -133,7 +133,16 @@ class Form extends Component
             //         $fail('Dokter wajib dipilih untuk tindakan ' . $this->tindakan[$index]['nama'] . '.');
             //     }
             // },
-            'tindakan.*.perawat_id' => 'nullable|numeric',
+            'tindakan.*.perawat_id' => function ($attribute, $value, $fail) {
+                $index = explode('.', $attribute)[1];
+                if (
+                    isset($this->tindakan[$index]['biaya_jasa_perawat']) &&
+                    $this->tindakan[$index]['biaya_jasa_perawat'] > 0 &&
+                    (empty($value) || $value == "" || $value == null)
+                ) {
+                    $fail('Perawat wajib dipilih untuk tindakan ' . $this->tindakan[$index]['nama']);
+                }
+            },
             'bahan.*.qty' => [
                 'required',
                 'numeric',
@@ -183,6 +192,7 @@ class Form extends Component
                 }
             ],
         ]);
+        
         DB::transaction(function () {
             // Ambil data pembayaran terakhir di bulan berjalan
             if (Pembayaran::where('registrasi_id', $this->data->id)->count() > 0) {
@@ -209,11 +219,14 @@ class Form extends Component
             $pembayaran->registrasi_id = $this->data->id;
             $pembayaran->pengguna_id = auth()->id();
             $pembayaran->save();
-            
+
             // Optimisasi: Update diskon tindakan sekaligus dengan filter id & tarif_tindakan_id
             foreach ($this->tindakan as $t) {
                 // Kolom id -> id registrasi kunjungan
-                Tindakan::where('id', $t['id'])->update(['diskon' => $t['diskon']]);
+                Tindakan::where('id', $t['id'])->update([
+                    'diskon' => $t['diskon'],
+                    'perawat_id' => $t['perawat_id'] && $t['perawat_id'] != '-' ? $t['perawat_id'] : null
+                ]);
             }
 
             //Jurnal Kas
@@ -231,7 +244,9 @@ class Form extends Component
                     'kredit' => $q['biaya_jasa_dokter'] * $q['qty'],
                 ];
             })->all());
-            $detail = array_merge($detail, collect($this->tindakan)->whereNotNull('perawat_id')->map(function ($q) {
+
+            $detail = array_merge($detail, collect($this->tindakan)
+            ->where('perawat_id', '!=', '-')->whereNotNull('perawat_id')->map(function ($q) {
                 return [
                     'kode_akun_id' => '24000',
                     'debet' => 0,
@@ -244,10 +259,10 @@ class Form extends Component
                 return [
                     'kode_akun_id' => $q['kode_akun_id'],
                     'debet' => 0,
-                    'kredit' => ($q['biaya'] - $q['biaya_alat_barang'] - ($q['dokter_id'] ? $q['biaya_jasa_dokter'] : 0) - ($q['perawat_id'] ? $q['biaya_jasa_perawat'] : 0)) * $q['qty'],
+                    'kredit' => ($q['biaya'] - $q['biaya_alat_barang'] - ($q['dokter_id']? $q['biaya_jasa_dokter'] : 0) - ($q['perawat_id'] && $q['perawat_id'] != '-' ? $q['biaya_jasa_perawat'] : 0)) * $q['qty'],
                 ];
             })->all());
-            
+
             // Stok keluar & detail bahan/alat diinsert batch
             $hppBahan = BarangClass::stokKeluar(collect($this->bahan)->map(function ($q) {
                 return [

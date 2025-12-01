@@ -49,7 +49,7 @@
                                     <br>
                                     <template x-if="row.biaya_jasa_perawat > 0">
                                         <div wire:ignore>
-                                            <select class="form-control" x-model="row.perawat_id"
+                                            <select class="form-control" required x-model="row.perawat_id"
                                                 x-init="$($el).select2({
                                                     width: '100%',
                                                     dropdownAutoWidth: true
@@ -62,18 +62,18 @@
                                                         $($el).val(value).trigger('change');
                                                     }
                                                 });">
-                                                <option value="">-- Tidak Ada Perawat --</option>
+                                                <option value="">-- Pilih Perawat --</option>
                                                 <template x-for="nakes in dataNakes" :key="nakes.id">
                                                     <option :value="nakes.id"
                                                         :selected="row.perawat_id == nakes.id" x-text="nakes.nama">
                                                     </option>
                                                 </template>
+                                                <option value="-">-- Tidak Ada Perawat --</option>
                                             </select>
                                         </div>
                                     </template>
                                     @error('tindakan.' . $index . '.perawat_id')
                                         <span class="text-danger">{{ $message }}</span>
-                                        <br>
                                     @enderror
                                     &nbsp;&nbsp;&nbsp;<small>Catatan : <span x-text="row.catatan"></span></small>
                                     <br>

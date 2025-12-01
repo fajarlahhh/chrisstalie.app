@@ -51,6 +51,9 @@
                         <table class="table table-borderless p-0">
                             <tr>
                                 <td class="p-0">
+                                    @php
+                                        $i = 0;
+                                    @endphp
                                     <template x-for="(row, index) in tindakan" :key="index">
                                         <div class="border p-3 position-relative" :class="index > 0 ? 'mt-3' : ''">
                                             <template x-if="index > 0">
@@ -62,7 +65,8 @@
                                             <div class="mb-3">
                                                 <div class="row g-2 align-items-center">
                                                     <div class="col-md-10" wire:ignore>
-                                                        <label class="form-label" x-text="`Tindakan ${index + 1}`"></label>
+                                                        <div wire:ignore>
+                                                            <label class="form-label" x-text="`Tindakan ${index + 1}`"></label>
                                                         <select class="form-control" x-model="row.id" wire:ignore
                                                             x-init="$($el).select2({
                                                                 width: '100%',
@@ -84,6 +88,8 @@
                                                                 </option>
                                                             </template>
                                                         </select>
+                                                        </div>
+                                                        
                                                     </div>
                                                     <div class="col-md-2">
                                                         <label class="form-label">Qty</label>
@@ -95,13 +101,14 @@
                                             <template x-if="row.biaya_jasa_dokter > 0">
                                                 <div class="mb-3">
                                                     <label class="form-label">Dokter</label>
-                                                    <select class="form-control" x-model="row.dokter_id">
-                                                        <option value="">-- Pilih Dokter --</option>
+                                                    <select class="form-control" x-model="row.dokter_id" required>
+                                                        <option value="" hidden>-- Pilih Dokter --</option>
                                                         <template x-for="nakes in dataNakes.filter(n => n.dokter == 1)"
                                                             :key="nakes.id">
                                                             <option :value="nakes.id" :selected="row.dokter_id == nakes.id"
                                                                 x-text="nakes.nama"></option>
                                                         </template>
+                                                        <option value="">-- Tidak Ada Dokter --</option>
                                                     </select>
                                                 </div>
                                             </template>
@@ -137,6 +144,9 @@
                                                     Butuh Sitemarking</label>
                                             </div>
                                         </div>
+                                        @php
+                                            $i++;
+                                        @endphp
                                     </template>
                                 </td>
                             </tr>
@@ -185,8 +195,10 @@
                 tindakan: @js($tindakan),
                 dataTindakan: @js($dataTindakan),
                 dataNakes: @js($dataNakes),
+                nakes_id: @js($nakes_id),
 
                 tambahTindakan() {
+                    console.log(this.nakes_id);
                     this.tindakan.push({
                         id: null,
                         qty: 1,
@@ -194,7 +206,7 @@
                         catatan: null,
                         membutuhkan_inform_consent: false,
                         membutuhkan_sitemarking: false,
-                        dokter_id: null,
+                        dokter_id: this.nakes_id,
                         perawat_id: null,
                         biaya_jasa_dokter: 0,
                         biaya_jasa_perawat: 0,
@@ -254,6 +266,8 @@
                             bubbles: true
                         }));
                     });
+                },
+                init() {
                 },
             }
         }
