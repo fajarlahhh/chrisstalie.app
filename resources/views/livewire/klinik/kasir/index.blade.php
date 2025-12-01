@@ -71,11 +71,11 @@
                                 <td nowrap>
                                     <small>
                                         <ul>
-                                            <li>Total Tindakan : <b>{{ number_format($row->total_tindakan) }}</b></li>
+                                            <li>Total Tindakan : <b>{{ number_format($row->total_tindakan + $row->diskon) }}</b></li>
                                             <li>Total Resep : <b>{{ number_format($row->total_resep) }}</b></li>
                                             <li>Total Diskon : <b>{{ number_format($row->diskon) }}</b></li>
                                             <li>Total :
-                                                <b>{{ number_format($row->total_tindakan + $row->total_resep - $row->diskon) }}</b>
+                                                <b>{{ number_format($row->total_tindakan + $row->total_resep) }}</b>
                                             </li>
                                         </ul>
                                     </small>
