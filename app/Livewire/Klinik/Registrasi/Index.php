@@ -98,7 +98,7 @@ class Index extends Component
                 'required',
                 function ($attribute, $value, $fail) {
                     $exists = Registrasi::where('pasien_id', $value)
-                        ->where('tanggal', $this->tanggal)
+                        ->where('tanggal', $this->tanggal)->whereDoesntHave('pembayaran')
                         ->exists();
                     if ($exists) {
                         $fail('Pasien dengan RM ini sudah terdaftar pada tanggal tersebut.');
