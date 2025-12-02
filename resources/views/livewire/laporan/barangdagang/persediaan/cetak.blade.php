@@ -38,9 +38,13 @@
             <th class="bg-gray-300 text-white">Satuan</th>
             <th class="bg-gray-300 text-white">Kategori</th>
             <th class="bg-gray-300 text-white">Tanggal Kedaluarsa</th>
-            <th class="bg-gray-300 text-white">Harga Beli</th>
+            @role('administrator|supervisor')
+                <th class="bg-gray-300 text-white">Harga Beli</th>
+            @endrole
             <th class="bg-gray-300 text-white">Stok</th>
-            <th class="bg-gray-300 text-white">Total Persediaan</th>
+            @role('administrator|supervisor')
+                <th class="bg-gray-300 text-white">Total Persediaan</th>
+            @endrole
         </tr>
     </thead>
     <tbody>
@@ -71,18 +75,26 @@
                     {{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
                 @if ($stok->count() == 0)
                     <td nowrap></td>
+                    @role('administrator')
+                        <td nowrap class="text-end">0</td>
+                    @endrole
                     <td nowrap class="text-end">0</td>
-                    <td nowrap class="text-end">0</td>
-                    <td nowrap class="text-end">0</td>
+                    @role('administrator')
+                        <td nowrap class="text-end">0</td>
+                    @endrole
                 @endif
             </tr>
             @foreach ($stok->sortBy('tanggal_kedaluarsa') as $subItem)
                 <tr class="bg-green-100">
                     <td nowrap class="text-end">{{ $subItem['tanggal_kedaluarsa'] }}</td>
-                    <td nowrap class="text-end">{{ number_format($subItem['harga_beli']) }}</td>
+                    @role('administrator')
+                        <td nowrap class="text-end">{{ number_format($subItem['harga_beli']) }}</td>
+                    @endrole
                     <td nowrap class="text-end">{{ number_format($subItem['stok'], 3) }}</td>
-                    <td nowrap class="text-end">
-                        {{ number_format($subItem['total']) }}</td>
+                    @role('administrator')
+                        <td nowrap class="text-end">
+                            {{ number_format($subItem['total']) }}</td>
+                    @endrole
                 </tr>
             @endforeach
             </tr>
