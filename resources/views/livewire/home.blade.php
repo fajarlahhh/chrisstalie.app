@@ -21,6 +21,49 @@
     <!-- END page-header -->
 
     <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="widget widget-stats bg-teal">
+                        <div class="stats-icon stats-icon-lg"><i class="fa fa-users fa-fw"></i></div>
+                        <div class="stats-content">
+                            <div class="stats-title">KUNJUNGAN BULAN INI</div>
+                            <div class="stats-number">{{ $dataPembayaranBulanIni->count() }}</div>
+                            <div class="stats-progress progress">
+                                <div class="progress-bar" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="widget widget-stats bg-blue">
+                        <div class="stats-icon stats-icon-lg"><i class="fa fa-dollar fa-fw"></i></div>
+                        <div class="stats-content">
+                            <div class="stats-title">PENERIMAAN BULAN INI</div>
+                            <div class="stats-number text-end">
+                                {{ number_format($dataPembayaranBulanIni->sum('total_tagihan'), 2) }}
+                            </div>
+                            <div class="stats-progress progress">
+                                <div class="progress-bar" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6">
+                    <div class="widget widget-stats bg-red">
+                        <div class="stats-icon stats-icon-lg"><i class="fa fa-dollar fa-fw"></i></div>
+                        <div class="stats-content">
+                            <div class="stats-title">PENGELUARAN BULAN INI</div>
+                            <div class="stats-number text-end">{{ number_format($dataPengeluaranBulanIni->sum('debet'), 2) }}
+                            </div>
+                            <div class="stats-progress progress">
+                                <div class="progress-bar" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         @if (auth()->user()->pegawai_id)
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6 col-xs-12">
                 <div class="panel panel-inverse" data-sortable-id="index-6">
@@ -63,5 +106,40 @@
                 </div>
             </div>
         @endif
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6 col-xs-12">
+            <div class="panel panel-inverse" data-sortable-id="index-6">
+                <div class="panel-heading ui-sortable-handle">
+                    <h4 class="panel-title">Pengadaan Barang Jatuh Tempo</h4>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-panel align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Vendor</th>
+                                <th>Tanggal Jatuh Tempo</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($dataPengadaanBarangJatuhTempo as $row)
+                                <tr>
+                                    <td nowrap="">{{ $row->supplier?->nama }}</td>
+                                    <td>
+                                        @if ($row->jatuh_tempo < date('Y-m-d'))
+                                            <span class="badge bg-danger">{{ $row->jatuh_tempo }}</span>
+                                        @elseif ($row->jatuh_tempo = date('Y-m-d'))
+                                            <span class="badge bg-warning">{{ $row->jatuh_tempo }}</span>
+                                        @elseif ($row->jatuh_tempo > date('Y-m-d'))
+                                            <span class="badge bg-success">{{ $row->jatuh_tempo }}</span>
+                                        @endif
+                                    </td>
+                                    <td class="text-end">Rp. {{ number_format($row->total_harga) }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

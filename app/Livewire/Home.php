@@ -2,9 +2,13 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use App\Models\Absensi;
 use Carbon\Carbon;
+use App\Models\Jurnal;
+use App\Models\Absensi;
+use Livewire\Component;
+use App\Models\Pembelian;
+use App\Models\Pembayaran;
+use App\Models\JurnalDetail;
 use Livewire\Attributes\Url;
 
 class Home extends Component
@@ -52,12 +56,39 @@ class Home extends Component
         }
         return $detail;
     }
+    public function getDataPembayaranBulanIni()
+    {
+        return Pembayaran::where('created_at', 'like', date('Y-m') . '%')->get();
+    }
+
+    public function getDataPengadaanBarangJatuhTempo()
+    {
+        return Pembelian::with('supplier')
+            ->whereNotNull('jatuh_tempo')
+            ->where(fn($q) => $q->where('jatuh_tempo', '<=', date('Y-m-d', strtotime('+2 days')))
+                ->whereDoesntHave('pelunasanPembelian'))
+            ->get();
+    }
+
+    public function getDataPengeluaranBulanIni()
+    {
+        return JurnalDetail::whereHas('jurnal', function ($q) {
+            $q->where('created_at', 'like', date('Y-m') . '%')
+                ->whereIn('sub_jenis', ['Pembelian', 'Pembayaran'])
+                ->where(fn($q) => $q->where('debet', '>', 0));
+        })
+            ->get();
+    }
+
     public function render()
     {
         return view(
             'livewire.home',
             [
                 'dataJadwalShift' => auth()->user()->pegawai_id ? $this->getDataJadwalShift() : [],
+                'dataPembayaranBulanIni' => $this->getDataPembayaranBulanIni(),
+                'dataPengeluaranBulanIni' => $this->getDataPengeluaranBulanIni(),
+                'dataPengadaanBarangJatuhTempo' => $this->getDataPengadaanBarangJatuhTempo(),
             ]
         );
     }

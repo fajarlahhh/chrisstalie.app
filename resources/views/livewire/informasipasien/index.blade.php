@@ -294,22 +294,22 @@
                                 <td nowrap>
                                     @if ($row->resepObat->count() > 0)
                                         @foreach (collect($row->resepObat)->groupBy('resep')->map(function ($group) {
-            $first = $group->first();
-            return [
-                'catatan' => $first->catatan,
-                'nama' => $first->nama,
-                'barang' => $group->map(function ($r) {
-                        return [
-                            'id' => $r->barang_satuan_id,
-                            'satuan' => $r->barangSatuan->nama,
-                            'nama' => $r->barangSatuan->barang->nama,
-                            'harga' => $r->harga,
-                            'qty' => $r->qty,
-                            'subtotal' => $r->harga * $r->qty,
-                        ];
-                    })->toArray(),
-            ];
-        })->values()->toArray() as $item)
+                                            $first = $group->first();
+                                            return [
+                                                'catatan' => $first->catatan,
+                                                'nama' => $first->nama,
+                                                'barang' => $group->map(function ($r) {
+                                                        return [
+                                                            'id' => $r->barang_satuan_id,
+                                                            'satuan' => $r->barangSatuan->nama,
+                                                            'nama' => $r->barangSatuan->barang->nama,
+                                                            'harga' => $r->harga,
+                                                            'qty' => $r->qty,
+                                                            'subtotal' => $r->harga * $r->qty,
+                                                        ];
+                                                    })->toArray(),
+                                            ];
+                                        })->values()->toArray() as $item)
                                             Resep {{ $loop->iteration }} : {{ $item['nama'] }} <br>
                                             @foreach ($item['barang'] as $barang)
                                                 <small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- {{ $barang['nama'] }} /

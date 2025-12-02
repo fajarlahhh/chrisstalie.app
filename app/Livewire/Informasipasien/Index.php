@@ -23,24 +23,22 @@ class Index extends Component
     private function getRekamMedis($id)
     {        
         return Pasien::with(
-            'rekamMedis',
+            'rekamMedis.nakes',
             'rekamMedis.pengguna',
             'rekamMedis.pemeriksaanAwal.pengguna',
             'rekamMedis.diagnosis.pengguna',
             'rekamMedis.tindakan.pengguna',
-            'rekamMedis.tindakan.dokter',
-            'rekamMedis.tindakan.perawat',
             'rekamMedis.tindakan.tarifTindakan',
-            'rekamMedis.tindakan.dokter',
-            'rekamMedis.tindakan.perawat',
+            'rekamMedis.tindakan.dokter.pegawai',
+            'rekamMedis.tindakan.perawat.pegawai',
             'rekamMedis.tindakan.barangSatuan',
             'rekamMedis.tindakan.barangSatuan.barang',
-            'rekamMedis.siteMarking',
             'rekamMedis.siteMarking.pengguna',
             'rekamMedis.resepObat.pengguna',
             'rekamMedis.resepObat.barangSatuan',
             'rekamMedis.resepObat.barangSatuan.barang',
-            'rekamMedis.resepObat.barangSatuan.barang.kodeAkun'
+            'rekamMedis.resepObat.barangSatuan.barang.kodeAkun',
+            'rekamMedis.pembayaran.pengguna'
         )->find($id);
     }
 
