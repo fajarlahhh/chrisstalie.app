@@ -75,7 +75,7 @@ class Form extends Component
                 $nama = $resepRow['nama'] ?? '';
                 foreach ($resepRow['barang'] as $barang) {
                     $resepObatBatch[] = [
-                        'id' => $registrasiId,
+                        'registrasi_id' => $registrasiId,
                         'nama' => $nama,
                         'barang_id' => collect($this->dataBarang)->firstWhere('id', $barang['id'])['barang_id'],
                         'barang_satuan_id' => $barang['id'],
