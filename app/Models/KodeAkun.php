@@ -10,9 +10,19 @@ class KodeAkun extends Model
     //
     protected $table = 'kode_akun';
 
+    public function kodeAkunNeraca()
+    {
+        return $this->hasMany(KodeAkunNeraca::class);
+    }
+
     public function parent()
     {
         return $this->belongsTo(KodeAkun::class, 'parent_id');
+    }
+
+    public function jurnalDetail()
+    {
+        return $this->hasMany(JurnalDetail::class);
     }
 
     public function children()

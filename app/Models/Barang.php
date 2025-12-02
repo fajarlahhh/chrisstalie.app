@@ -36,11 +36,6 @@ class Barang extends Model
         return $this->hasMany(Stok::class);
     }
 
-    public function stokSold(): HasMany
-    {
-        return $this->hasMany(Stok::class)->sold();
-    }
-
     public function scopeAlkes(Builder $query): void
     {
         $query->where('type', 'Alat Kesehatan');

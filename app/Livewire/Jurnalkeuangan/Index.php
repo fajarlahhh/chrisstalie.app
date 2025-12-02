@@ -30,7 +30,12 @@ class Index extends Component
         return Jurnal::with(['jurnalDetail.kodeAkun', 'pengguna'])
             ->when($this->jenis, fn($q) => $q->where('jenis', $this->jenis))
             ->where('tanggal', 'like', $this->bulan . '%')
-            ->where(fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%')->orWhere('nomor', 'like', '%' . $this->cari . '%'))
+            ->where(
+                fn($q) => $q
+                    ->where('id', 'like', $this->cari . '%')
+                    ->orWhere('nomor', 'like', $this->cari . '%')
+                    ->orWhere('uraian', 'like', '%' . $this->cari . '%')
+            )
             ->orderBy('created_at', 'desc')
             ->when(!auth()->user()->hasRole('administrator'), fn($q) => $q->where('pengguna_id', auth()->id()))
             ->paginate(10);

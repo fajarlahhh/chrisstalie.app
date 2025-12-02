@@ -149,7 +149,7 @@ class Form extends Component
             $detail[] = [
                 'kode_akun_id' => $pembelian->kode_akun_id,
                 'debet' => 0,
-                'kredit' => collect($detail)->sum('debet'),
+                'kredit' => collect($detail)->sum('debet') - $this->diskon + $this->ppn,
             ];
             $detail[] = [
                 'kode_akun_id' => '11400',

@@ -79,11 +79,16 @@
                                                 {{ $subRow->kode_akun_id . ' - ' . $subRow->kodeAkun?->nama }}
                                             </td>
                                             <td class="text-end p-1  text-nowrap">
-                                                {{ number_format($subRow->debet) }}</td>
+                                                {{ number_format($subRow->debet, 2) }}</td>
                                             <td class="text-end p-1  text-nowrap">
-                                                {{ number_format($subRow->kredit) }}</td>
+                                                {{ number_format($subRow->kredit, 2) }}</td>
                                         </tr>
                                     @endforeach
+                                    <tr>
+                                        <th class="p-1">Total</th>
+                                        <th class="p-1 text-end">{{ number_format($row->jurnalDetail->sum('debet'), 2) }}</th>
+                                        <th class="p-1 text-end">{{ number_format($row->jurnalDetail->sum('kredit'), 2) }}</th>
+                                    </tr>
                                 </table>
                             </td>
                             <td class="with-btn-group text-end" nowrap>

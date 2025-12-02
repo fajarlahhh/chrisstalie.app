@@ -117,6 +117,10 @@ return [
                         [
                             "title" => "Arus Kas",
                             "method" => ["Index"],
+                        ],
+                        [
+                            "title" => "Neraca Lajur",
+                            "method" => ["Index"],
                         ]
                     ]
                 ],
