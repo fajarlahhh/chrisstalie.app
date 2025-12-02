@@ -133,6 +133,7 @@
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td nowrap>
+                                <strong>No. Registrasi : </strong>{{ $row->id }}<br>
                                 <strong>Nakes : </strong>{{ $row->nakes->nama }}<br>
                                 <strong>Keluhan Awal : </strong>{{ $row->keluhan_awal }}
                                 <hr>
