@@ -46,11 +46,11 @@ return [
                     "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
-                [
-                    "title" => "Unsur Gaji",
-                    "urutkan" => true,
-                    "method" => ["Index"],
-                ],
+                // [
+                //     "title" => "Unsur Gaji",
+                //     "urutkan" => true,
+                //     "method" => ["Index"],
+                // ],
                 [
                     "title" => "Metode Bayar",
                     "urutkan" => true,

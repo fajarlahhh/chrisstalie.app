@@ -34,8 +34,9 @@
                         <tr>
                             <th>No.</th>
                             <th>Periode</th>
-                            <th>Tanggal</th>
+                            <th>Tanggal Bayar</th>
                             <th>Detail</th>
+                            <th>Metode Bayar</th>
                             <th>Total</th>
                             @unlessrole(config('app.name') . '-guest')
                                 <th class="w-5px"></th>
@@ -46,42 +47,46 @@
                         @if ($data->count() > 0)
                             @php
                                 $unsurGaji = collect($data->pluck('detail')->flatten(1))
-                                    ->sortByDesc(fn($p) => count($p['unsur_gaji']))
-                                    ->first()['unsur_gaji'];
+                                    ->sortByDesc(fn($p) => count($p['pegawai_unsur_gaji']))
+                                    ->first()['pegawai_unsur_gaji'];
                             @endphp
                             @foreach ($data as $i => $row)
                                 <tr>
                                     <td class=" w-5px">
                                         {{ ++$i }}
                                     </td>
-                                    <td>{{ $row->periode }}</td>
+                                    <td nowrap>{{ substr($row->periode, 0, 7) }}</td>
                                     <td>{{ $row->tanggal }}</td>
                                     <td>
                                         <table class="table table-bordered fs-10px">
                                             <thead>
-                                                <tr>
-                                                    <th>Nama</th>
+                                                <tr class="bg-gray-100">
+                                                    <th rowspan="2" class="p-1">Pegawai</th>
+                                                    <th class="p-1" colspan="{{ collect($unsurGaji)->count() }}">Unsur Gaji</th>
+                                                </tr>
+                                                <tr class="bg-gray-100">
                                                     @foreach ($unsurGaji as $subRow)
-                                                        <th>{{ $subRow['nama'] }}</th>
+                                                        <th class="p-1">{{ $subRow['kode_akun_nama'] ?? null }}</th>
                                                     @endforeach
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($row->detail as $subRow)
+                                                @foreach ($row->detail as $item)
                                                     <tr>
-                                                        <td>{{ $subRow['nama'] }}</td>
-                                                        @foreach ($unsurGaji as $subSubRow)
-                                                            <td class="text-end">
-                                                                {{ number_format(collect($subRow['unsur_gaji'])->firstWhere('kode_akun_id', $subSubRow['kode_akun_id'])['nilai'] ?? 0) }}
-                                                            </td>
+                                                        <td class="p-1" nowrap>{{ $item['nama'] }}</td>
+                                                        @foreach ($item['pegawai_unsur_gaji'] as $subRow)
+                                                            <td class="text-end p-1">
+                                                                {{ number_format($subRow['nilai'] ?? 0) }}</td>
                                                         @endforeach
                                                     </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
                                     </td>
+                                    <td nowrap>{{ $row->kode_akun_pembayaran_id }} <br> {{ $row->kodeAkunPembayaran->nama ?? null }}
+                                    </td>
                                     <td class="text-end">
-                                        {{ number_format(collect($row->detail)->sum(fn($q) => collect($q['unsur_gaji'])->sum('nilai'))) }}
+                                        {{ number_format(collect($row->detail)->sum(fn($q) => collect($q['pegawai_unsur_gaji'])->sum('nilai'))) }}
                                     </td>
                                     @unlessrole(config('app.name') . '-guest')
                                         <td class="text-end text-nowrap">

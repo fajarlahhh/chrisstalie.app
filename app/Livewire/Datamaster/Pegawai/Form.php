@@ -7,11 +7,13 @@ use App\Models\Pegawai;
 use Illuminate\Support\Facades\DB;
 use App\Models\UnsurGaji;
 use App\Traits\CustomValidationTrait;
+use App\Models\KodeAkun;
 
 class Form extends Component
 {
     use CustomValidationTrait;
     public $data, $unsurGaji = [];
+    public $dataKodeAkun = [];
     public $nama, $alamat, $no_hp, $tanggal_masuk, $tanggal_lahir, $jenis_kelamin, $nik, $npwp, $no_bpjs, $gaji, $tunjangan, $tunjangan_transport, $tunjangan_bpjs, $office, $satuan_tugas, $status, $upload = false, $panggilan;
 
     public function upload($pegawai)
@@ -76,10 +78,9 @@ class Form extends Component
             $this->data->pegawaiUnsurGaji()->delete();
             $this->data->pegawaiUnsurGaji()->insert(collect($this->unsurGaji)->where('nilai', '>', 0)->map(fn($q) => [
                 'pegawai_id' => $this->data->id,
-                'unsur_gaji_kode_akun_id' => $q['unsur_gaji_kode_akun_id'],
-                'unsur_gaji_nama' => $q['unsur_gaji_nama'],
-                'unsur_gaji_sifat' => $q['unsur_gaji_sifat'],
+                'kode_akun_id' => $q['kode_akun_id'],
                 'nilai' => $q['nilai'],
+                'sifat' => $q['sifat'],
             ])->toArray());
 
             if ($this->upload == 1) {
@@ -99,33 +100,14 @@ class Form extends Component
     public function mount(Pegawai $data)
     {
         
+        $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '61000')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
-        $dataUnsurGaji =  UnsurGaji::all()->map(fn($q) => [
-            'unsur_gaji_nama' => $q['nama'],
-            'unsur_gaji_sifat' => $q['sifat'],
-            'unsur_gaji_kode_akun_id' => $q['kode_akun_id'],
+        $this->unsurGaji = $this->data->pegawaiUnsurGaji->map(fn($q) => [
+            'nilai' => $q['nilai'],
+            'sifat' => $q['sifat'],
+            'kode_akun_id' => $q['kode_akun_id'],
         ]);
-        $pegawaiUnsurGaji = $this->data->pegawaiUnsurGaji->map(fn($q) => [
-            'unsur_gaji_nama' => $q['unsur_gaji_nama'],
-            'unsur_gaji_sifat' => $q['unsur_gaji_sifat'],
-            'unsur_gaji_kode_akun_id' => $q['unsur_gaji_kode_akun_id'],
-        ]);
-
-        $mergedUnsurGaji = $dataUnsurGaji
-            ->merge($pegawaiUnsurGaji)
-            ->unique('unsur_gaji_kode_akun_id')
-            ->values();
-        $dataUnsurGajiPegawai = [];
-        foreach ($mergedUnsurGaji as $key => $value) {
-            $dataUnsurGajiPegawai[] = [
-                'unsur_gaji_nama' => $value['unsur_gaji_nama'],
-                'unsur_gaji_sifat' => $value['unsur_gaji_sifat'],
-                'unsur_gaji_kode_akun_id' => $value['unsur_gaji_kode_akun_id'],
-                'nilai' => $this->data->pegawaiUnsurGaji->where('unsur_gaji_kode_akun_id', $value['unsur_gaji_kode_akun_id'])->first()?->nilai ?? 0,
-            ];
-        }
-        $this->unsurGaji = $dataUnsurGajiPegawai;
     }
 
     public function render()

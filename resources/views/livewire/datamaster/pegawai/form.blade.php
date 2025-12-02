@@ -1,4 +1,4 @@
-<div>
+<div x-data="pegawaiForm()" x-init="init()" x-ref="alpineRoot">
     @section('title', (!$data->exists ? 'Tambah' : 'Edit') . ' Pegawai')
 
     @section('breadcrumb')
@@ -135,14 +135,84 @@
                             <div class="note-content">
                                 <h4>Gaji & Tunjangan</h4>
                                 <hr>
-                                @foreach ($unsurGaji as $index => $item)
-                                    <div class="mb-3">
-                                        <label class="form-label">{{ $item['unsur_gaji_nama'] }}</label>
-                                        <input class="form-control" type="number" step="1" min="0"
-                                            wire:model="unsurGaji.{{ $index }}.nilai"
-                                            @if ($status == 'Non Aktif') disabled @endif />
-                                    </div>
-                                @endforeach
+                                <div class="table-responsive" x-data="{
+                                    add() {
+                                            this.unsurGaji.push({
+                                                id: '',
+                                                sifat: '+',
+                                                kode_akun_id: null,
+                                            });
+                                        },
+                                        hapus(index) {
+                                            const filteredIndexes = this.unsurGaji
+                                                .map((item, i) => ({ item, i }))
+                                                .map(({ i }) => i);
+                                            // Remove the right index from filtered items
+                                            if (filteredIndexes[index] !== undefined) {
+                                                this.unsurGaji.splice(filteredIndexes[index], 1);
+                                            }
+                                        },
+                                }" x-ref="unsurGaji">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Kode Akun</th>
+                                                <th>Nilai</th>
+                                                <th class="w-50px">Sifat</th>
+                                                <th class="w-5px"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template x-for="(row, index) in unsurGaji" :key="index">
+                                                <tr>
+                                                    <td>
+                                                        <select class="form-control"
+                                                            :name="'unsurGaji[' + index + '][kode_akun_id]'"
+                                                            x-model="row.kode_akun_id">
+                                                            <option value="">-- Tidak Ada Kode Akun --</option>
+                                                            @foreach ($dataKodeAkun as $subRow)
+                                                                <option value="{{ $subRow['id'] }}">
+                                                                    {{ $subRow['id'] }} - {{ $subRow['nama'] }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control"
+                                                            :name="'unsurGaji[' + index + '][nilai]'" x-model="row.nilai"
+                                                            autocomplete="off">
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-control"
+                                                            :name="'unsurGaji[' + index + '][nilai]'"
+                                                            x-model="row.sifat">
+                                                            <option value="+">+</option>
+                                                            <option value="-">-</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger"
+                                                            @click="hapus(index)">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="5">
+                                                    <div class="text-center">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            @click="add">
+                                                            Tambah Unsur Gaji
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -165,3 +235,25 @@
         </form>
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        function pegawaiForm() {
+            return {
+                unsurGaji: @js($unsurGaji),
+                syncToLivewire() {
+                    if (window.Livewire && window.Livewire.find) {
+                        let componentId = this.$root.closest('[wire\\:id]')?.getAttribute('wire:id');
+                        if (componentId) {
+                            let $wire = window.Livewire.find(componentId);
+                            if ($wire && typeof $wire.set === 'function') {
+                                $wire.set('unsurGaji', JSON.parse(JSON.stringify(this.unsurGaji)), true);
+                            }
+                        }
+                    }
+                },
+                init() {}
+            }
+        }
+    </script>
+@endpush

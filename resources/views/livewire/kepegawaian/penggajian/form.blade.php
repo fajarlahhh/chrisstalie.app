@@ -38,33 +38,30 @@
                             <tr>
                                 <th class="w-5px" rowspan="2">No.</th>
                                 <th rowspan="2">Nama</th>
-                                <th colspan="{{ collect($detail)->max(fn($p) => count($p['pegawai_unsur_gaji'])) }}">
+                                <th colspan="{{ collect($dataUnsurGaji)->count() }}">
                                     Unsur Gaji
                                 </th>
                                 <th rowspan="2">Total</th>
                             </tr>
                             <tr>
-                                @php
-                                    $maxPegawai = collect($detail)
-                                        ->sortByDesc(fn($p) => count($p['pegawai_unsur_gaji']))
-                                        ->first();
-                                @endphp
-                                @foreach ($maxPegawai['pegawai_unsur_gaji'] ?? [] as $item)
-                                    <th>{{ $item['unsur_gaji_nama'] }}</th>
+                                @foreach ($dataUnsurGaji as $unsurGaji)
+                                    <th> {{ $unsurGaji['nama'] }}
+                                    </th>
                                 @endforeach
                             </tr>
                         </thead>
                         <tbody>
+                            <tr>
+                            </tr>
                             @foreach ($detail as $index => $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td> {{ $item['nama'] }}
                                     </td>
-                                    @foreach ($maxPegawai['pegawai_unsur_gaji'] ?? [] as $subItem)
+                                    @foreach ($item['pegawai_unsur_gaji'] as $subIndex => $subItem)
                                         <td>
                                             <input class="form-control text-end" type="text"
-                                                value="{{ number_format(collect($item['pegawai_unsur_gaji'])->firstWhere('unsur_gaji_kode_akun_id', $subItem['unsur_gaji_kode_akun_id'])['nilai'] ?? 0) }}"
-                                                disabled />
+                                                wire:model.lazy="detail.{{ $index }}.pegawai_unsur_gaji.{{ $subIndex }}.nilai" />
                                         </td>
                                     @endforeach
                                     <td>
@@ -77,11 +74,11 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th colspan="2">Total</th>
+                                <th colspan="{{ collect($dataUnsurGaji)->count() + 2 }}">Total</th>
                                 @foreach ($maxPegawai['pegawai_unsur_gaji'] ?? [] as $subItem)
                                     <th>
                                         <input class="form-control text-end" type="text"
-                                            value="{{ number_format(collect($detail)->sum(fn($p) => collect($p['pegawai_unsur_gaji'])->firstWhere('unsur_gaji_kode_akun_id', $subItem['unsur_gaji_kode_akun_id'])['nilai'] ?? 0)) }}"
+                                            value="{{ number_format(collect($detail)->sum(fn($p) => collect($p['pegawai_unsur_gaji'])->firstWhere('kode_akun_id', $subItem['kode_akun_id'])['nilai'] ?? 0)) }}"
                                             disabled />
                                     </th>
                                 @endforeach
@@ -99,7 +96,8 @@
                         <select class="form-control" wire:model="metode_bayar">
                             <option selected hidden>-- Pilih Metode Bayar --</option>
                             @foreach ($dataKodeAkun as $item)
-                                <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
+                                <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
