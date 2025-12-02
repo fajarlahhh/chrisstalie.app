@@ -106,7 +106,7 @@ class Form extends Component
             ];
         })->toArray();
 
-        $this->alat = TindakanAlatBarang::whereNotNull('aset_id')->where('biaya', '>', 0)->with('alat')->where('id', $this->data->id)->get()->map(function ($q) {
+        $this->alat = TindakanAlatBarang::whereNotNull('aset_id')->where('biaya', '>', 0)->with('alat')->whereIn('tindakan_id', collect($this->tindakan)->pluck('id'))->get()->map(function ($q) {
             return [
                 'id' => $q->aset_id,
                 'nama' => $q->alat->nama,

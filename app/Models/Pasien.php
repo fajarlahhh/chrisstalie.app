@@ -20,6 +20,11 @@ class Pasien extends Model
         'tanggal_daftar' => 'date',
     ];
 
+    public function registrasi(): HasMany
+    {
+        return $this->hasMany(Registrasi::class);
+    }
+
     public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class)->withTrashed();

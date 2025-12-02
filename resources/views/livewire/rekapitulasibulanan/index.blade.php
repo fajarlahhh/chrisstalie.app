@@ -15,7 +15,7 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Bulan</label>
-                    <input type="month" class="form-control" wire:models="bulan">
+                    <input type="month" class="form-control" wire:model="bulan">
                 </div>
                 <div class="alert alert-info">
                     <strong>Info:</strong> Rekapitulasi bulanan akan menghitung semua data yang ada pada bulan tersebut.

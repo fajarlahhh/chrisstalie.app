@@ -18,7 +18,7 @@ class Index extends Component
 
     public function mount()
     {
-        $this->bulan = date('Y-m');
+        $this->bulan = $this->bulan ?: date('Y-m', strtotime('-1 month'));
     }
 
     public function submit()

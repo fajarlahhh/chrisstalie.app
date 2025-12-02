@@ -68,6 +68,7 @@ Route::middleware(['auth'])->group(function () {
                     ->where('nik', 'like', "%$req->cari%")
                     ->orWhere('id', 'like', "%$req->cari%")->orWhere('alamat', 'like', "%$req->cari%")
                     ->orWhere('nama', 'like', "%$req->cari%")
+                    ->orWhereHas('registrasi', fn($q) => $q->where('id', 'like', "%$req->cari%"))
             )->orderBy('nama', 'asc')->get()
                 ->map(fn($q) => [
                     'id' => $q->id,
