@@ -366,7 +366,7 @@ class Form extends Component
             jenis: 'Pendapatan Pasien Klinik',
             sub_jenis: 'Pendapatan',
             tanggal: now(),
-            uraian: 'Pendapatan Pasien Klinik No. Registrasi ' . $pembayaran->id,
+            uraian: 'Pendapatan Pasien Klinik No. Nota ' . $pembayaran->id,
             system: 1,
             pembayaran_id: $pembayaran->id,
             penggajian_id: null,
