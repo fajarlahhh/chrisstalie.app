@@ -35,33 +35,36 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="widget widget-stats bg-blue">
-                        <div class="stats-icon stats-icon-lg"><i class="fa fa-dollar fa-fw"></i></div>
-                        <div class="stats-content">
-                            <div class="stats-title">PENERIMAAN BULAN INI</div>
-                            <div class="stats-number text-end">
-                                {{ number_format($dataPembayaranBulanIni->sum('total_tagihan'), 2) }}
-                            </div>
-                            <div class="stats-progress progress">
-                                <div class="progress-bar" style="width: 100%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="widget widget-stats bg-red">
-                        <div class="stats-icon stats-icon-lg"><i class="fa fa-dollar fa-fw"></i></div>
-                        <div class="stats-content">
-                            <div class="stats-title">PENGELUARAN BULAN INI</div>
-                            <div class="stats-number text-end">{{ number_format($dataPengeluaranBulanIni->sum('debet'), 2) }}
-                            </div>
-                            <div class="stats-progress progress">
-                                <div class="progress-bar" style="width: 100%;"></div>
+                @role('administrator')
+                    <div class="col-xl-3 col-md-6">
+                        <div class="widget widget-stats bg-blue">
+                            <div class="stats-icon stats-icon-lg"><i class="fa fa-dollar fa-fw"></i></div>
+                            <div class="stats-content">
+                                <div class="stats-title">PENERIMAAN BULAN INI</div>
+                                <div class="stats-number text-end">
+                                    {{ number_format($dataPembayaranBulanIni->sum('total_tagihan'), 2) }}
+                                </div>
+                                <div class="stats-progress progress">
+                                    <div class="progress-bar" style="width: 100%;"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="widget widget-stats bg-red">
+                            <div class="stats-icon stats-icon-lg"><i class="fa fa-dollar fa-fw"></i></div>
+                            <div class="stats-content">
+                                <div class="stats-title">PENGELUARAN BULAN INI</div>
+                                <div class="stats-number text-end">
+                                    {{ number_format($dataPengeluaranBulanIni->sum('debet'), 2) }}
+                                </div>
+                                <div class="stats-progress progress">
+                                    <div class="progress-bar" style="width: 100%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endrole
             </div>
         </div>
         @if (auth()->user()->pegawai_id)
