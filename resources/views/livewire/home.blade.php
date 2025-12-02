@@ -41,8 +41,9 @@
                             <div class="stats-icon stats-icon-lg"><i class="fa fa-dollar fa-fw"></i></div>
                             <div class="stats-content">
                                 <div class="stats-title">PENERIMAAN BULAN INI</div>
-                                <div class="stats-number text-end">
-                                    {{ number_format($dataPembayaranBulanIni->sum('total_tagihan'), 2) }}
+                                <div class="stats-number text-end fs-12px">
+                                    <small>JASA</small> : {{ number_format($dataPembayaranBulanIni->sum('total_tindakan'), 2) }}
+                                    <br><small>OBAT & PRODUK</small> : {{ number_format($dataPembayaranBulanIni->sum(fn($q) => $q->total_resep + $q->total_harga_barang), 2) }}
                                 </div>
                                 <div class="stats-progress progress">
                                     <div class="progress-bar" style="width: 100%;"></div>
