@@ -8,6 +8,7 @@ use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 use App\Models\Registrasi;
 use App\Models\ResepObat;
+use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
@@ -28,8 +29,13 @@ class Index extends Component
 
     public function delete($id)
     {
-        PeracikanResepObat::where('registrasi_id', $id)->delete();
-        session()->flash('success', 'Berhasil menghapus data');
+        DB::transaction(function () use ($id) {
+            ResepObat::where('registrasi_id', $id)->forceDelete();
+            ResepObat::where('registrasi_id', $id)->withTrashed()->restore();
+            
+            PeracikanResepObat::where('registrasi_id', $id)->delete();
+            session()->flash('success', 'Berhasil menghapus data');
+        });
     }
 
     public function render()
