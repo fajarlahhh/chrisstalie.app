@@ -19,8 +19,8 @@ class Index extends Component
 
     public function mount()
     {
-        $this->tanggal1 = $this->tanggal1 ?: date('Y-m-01');
-        $this->tanggal2 = $this->tanggal2 ?: date('Y-m-t');
+        $this->tanggal1 = $this->tanggal1 ?: date('Y-m-d');
+        $this->tanggal2 = $this->tanggal2 ?: date('Y-m-d');
         $this->dataMetodeBayar = MetodeBayar::get()->toArray();
     }
 
