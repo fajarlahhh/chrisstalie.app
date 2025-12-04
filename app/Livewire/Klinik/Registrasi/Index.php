@@ -140,7 +140,6 @@ class Index extends Component
             $pasien->tanggal_lahir = $this->tanggal_lahir;
             $pasien->no_hp = $this->no_hp;
             $pasien->tanggal_daftar = $this->tanggal;
-            $pasien->ketemu_dokter = $this->ketemu_dokter == 1 ? 1 : 0;
             $pasien->save();
 
             $registrasi = new Registrasi();
@@ -152,6 +151,7 @@ class Index extends Component
             $registrasi->keluhan_awal = $this->keluhan_awal;
             $registrasi->nakes_id = $this->nakes_id;
             $registrasi->pasien_id = $this->pasien_id ?: $pasien->id;
+            $pasien->ketemu_dokter = $this->ketemu_dokter == 1 ? 1 : 0;
             $registrasi->pengguna_id = auth()->id();
             $registrasi->save();
 
