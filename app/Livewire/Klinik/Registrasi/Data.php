@@ -11,7 +11,7 @@ class Data extends Component
 {
     use WithPagination;
     #[Url]
-    public $cari, $tanggal, $dataHakKewajiban ;
+    public $cari, $tanggal, $dataHakKewajiban, $status = 1;
 
     public function mount()
     {
@@ -40,8 +40,11 @@ class Data extends Component
                 'pasien',
                 'nakes',
                 'pengguna'
-            ])->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
-                ->where('tanggal', $this->tanggal)
+            ])
+                ->when($this->status == 2, fn($q) => $q->whereHas('pembayaran')->where('tanggal', $this->tanggal))
+                ->when($this->status == 1, fn($q) => $q->whereDoesntHave('pembayaran'))
+                ->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
+
                 ->orderBy('id', 'asc')
                 ->paginate(10)
         ]);

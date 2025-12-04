@@ -14,7 +14,13 @@
         <div class="panel-heading">
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input class="form-control" type="date" wire:model.lazy="tanggal" />&nbsp;
+                    <select class="form-control" wire:model.lazy="status">
+                        <option value="1">Belum Bayar</option>
+                        <option value="2">Sudah Bayar</option>
+                    </select>&nbsp;
+                    @if ($status == 2)
+                        <input class="form-control" type="date" wire:model.lazy="tanggal" />&nbsp;
+                    @endif
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
                         wire:model.lazy="cari">
