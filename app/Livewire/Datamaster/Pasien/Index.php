@@ -21,6 +21,17 @@ class Index extends Component
         $this->resetPage();
     }
 
+    public function delete($id)
+    {
+        try {
+            Pasien::findOrFail($id)
+                ->forceDelete();
+            session()->flash('success', 'Berhasil menghapus data');
+        } catch (\Throwable $th) {
+            session()->flash('danger', 'Gagal menghapus data');
+        };
+    }
+
     public function export()
     {
         return Excel::download(new DatamasterExport($this->getData(false), 'pasien'), 'pasien.xlsx');

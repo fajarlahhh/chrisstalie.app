@@ -25,6 +25,11 @@ class Pasien extends Model
         return $this->hasMany(Registrasi::class);
     }
 
+    public function pembayaran(): HasMany
+    {
+        return $this->hasMany(Pembayaran::class);
+    }
+
     public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class)->withTrashed();

@@ -34,8 +34,13 @@
                 @if ($cetak == false)
                     <td class="with-btn-group text-end" nowrap>
                         @role('administrator|supervisor|operator')
-                            <x-action :row="$row" custom="" :detail="false" :edit="true" :print="false"
-                                :permanentDelete="false" :restore="false" :delete="false" />
+                            @if ($row->pembayaran->count() > 0)
+                                <x-action :row="$row" custom="" :detail="false" :edit="true"
+                                    :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                            @else
+                                <x-action :row="$row" custom="" :detail="false" :edit="true"
+                                    :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                            @endif
                         @endrole
                     </td>
                 @endif
