@@ -14,8 +14,8 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label" for="tanggal">Tanggal</label>
-                    <input type="date" class="form-control" x-model="tanggal" id="tanggal"
-                        max="{{ date('Y-m-d') }}">
+                    <input type="date" class="form-control" x-model="tanggal"
+                        @if ($data->exists) disabled @endif id="tanggal" max="{{ date('Y-m-d') }}">
                     <template x-if="errors.tanggal">
                         <span class="text-danger" x-text="errors.tanggal"></span>
                     </template>

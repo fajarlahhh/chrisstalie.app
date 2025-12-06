@@ -14,7 +14,7 @@
             <div class="mb-3">
                 <label class="form-label" for="tanggal">Tanggal</label>
                 <input type="date" class="form-control" wire:model="tanggal" id="tanggal"
-                    max="{{ date('Y-m-d') }}">
+                    max="{{ date('Y-m-d') }}" @if ($data->exists) disabled @endif>
                 @error('tanggal')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
