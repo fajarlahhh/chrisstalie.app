@@ -15,10 +15,15 @@ class Form extends Component
     public function mount(Jurnal $data)
     {
         if ($data->exists) {
-            $this->jenis = strtolower(str_replace(' ', '', $data->jenis));
+            if ($data->jenis == 'Jurnal Umum') {
+                $this->jenis = 'jurnalumum';
+            } else {
+                $this->jenis = strtolower(str_replace(' ', '', $data->sub_jenis));
+            }
         }
         $this->data = $data;
     }
+    
     public function render()
     {
         return view('livewire.jurnalkeuangan.form');
