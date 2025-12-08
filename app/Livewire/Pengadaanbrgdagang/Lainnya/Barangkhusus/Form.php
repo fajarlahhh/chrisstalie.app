@@ -36,13 +36,13 @@ class Form extends Component
             'uraian' => 'required',
             'pembayaran' => 'required',
             'jatuh_tempo' => 'nullable|date',
-            'ppn' => 'required|integer',
-            'diskon' => 'nullable|integer',
+            'ppn' => 'required|numeric',
+            'diskon' => 'nullable|numeric',
             'uraian' => 'required',
             'barang' => 'required|array',
-            'barang.*.id' => 'required|integer',
+            'barang.*.id' => 'required|numeric',
             'barang.*.qty' => 'required|numeric',
-            'barang.*.harga_beli' => 'required|integer',
+            'barang.*.harga_beli' => 'required|numeric',
             'barang.*.tanggal_kedaluarsa' => 'required|date',
         ]);
 

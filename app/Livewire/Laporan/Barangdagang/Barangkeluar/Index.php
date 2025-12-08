@@ -11,12 +11,14 @@ use Livewire\Attributes\Url;
 class Index extends Component
 {
     #[Url]
-    public $bulan, $kategori, $jenis;
+    public $tanggal1, $tanggal2, $jenis, $persediaan;
 
     public function mount()
     {
-        $this->bulan = $this->bulan ?: date('Y-m');
-        $this->jenis = $this->jenis ?: 'pertanggalkeluar';
+        $this->tanggal1 = $this->tanggal1 ?: date('Y-m-d');
+        $this->tanggal2 = $this->tanggal2 ?: date('Y-m-d');
+        $this->jenis = $this->jenis ?: 'perbarang';
+        $this->persediaan = $this->persediaan ?: '';
     }
 
     public function print()
@@ -24,8 +26,8 @@ class Index extends Component
         $this->getData();
         $cetak = view('livewire.laporan.barangdagang.barangkeluar.cetak', [
             'cetak' => true,
-            'bulan' => $this->bulan,
-            'kategori' => $this->kategori,
+            'tanggal1' => $this->tanggal1,
+            'tanggal2' => $this->tanggal2,
             'data' => $this->getData(),
         ])->render();
         session()->flash('cetak', $cetak);
@@ -34,51 +36,54 @@ class Index extends Component
     public function getData()
     {
         switch ($this->jenis) {
-            case 'pertanggalkeluar':
-                return Stok::with(['barang.barangSatuanTerkecil', 'stokKeluar'])
-                    ->whereNotNull('stok_keluar_id')
-                    ->where('tanggal_keluar', 'like', $this->bulan . '%')
+            case 'perhargajual':
+                return StokKeluar::with(['barang', 'barangSatuan'])
+                    ->when($this->persediaan, fn($q) => $q->whereHas('barang', fn($q) => $q->where('persediaan', $this->persediaan)))
+                    ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                     ->get()
                     ->map(function ($q) {
                         return [
-                            'tanggal' => $q->tanggal_keluar,
-                            'tanggal_keluar' => $q->tanggal_keluar . '-' . $q->barang_id,
-                            'barang' => $q->barang->nama,
-                            'satuan' => $q->barang->barangSatuanTerkecil->nama,
-                            'harga_jual' => $q->stokKeluar?->harga ?? 0,
-                            'qty' => 1,
+                            'tanggal' => $q->tanggal,
+                            'nama' => $q->barang->nama,
+                            'barang_id' => $q->barang->nama . $q->barang->id . $q->barang_satuan_id,
+                            'satuan' => $q->barangSatuan->nama,
+                            'harga_jual' => $q->harga,
+                            'qty' => $q->qty / $q->barangSatuan->rasio_dari_terkecil,
                         ];
-                    })->groupBy('tanggal_keluar')->sortBy('tanggal_keluar')->toArray();
+                    })->sortBy('barang_id')->groupBy('barang_id')->toArray();
                 break;
             case 'pertanggalkedaluarsa':
-                return Stok::with(['barang.barangSatuanTerkecil', 'stokKeluar'])
+                return Stok::with(['barang.barangSatuanTerkecil'])
                     ->whereNotNull('stok_keluar_id')
-                    ->where('tanggal_keluar', 'like', $this->bulan . '%')
+                    ->whereBetween('tanggal_keluar', [$this->tanggal1, $this->tanggal2])
                     ->get()
                     ->map(function ($q) {
                         return [
                             'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
-                            'barang' => $q->barang->nama,
+                            'barang_id' => $q->barang->nama . $q->barang->id . $q->tanggal_kedaluarsa,
+                            'nama' => $q->barang->nama,
                             'satuan' => $q->barang->barangSatuanTerkecil->nama,
-                            'harga_jual' => $q->stokKeluar?->harga ?? 0,
                             'qty' => 1,
                         ];
-                    })->groupBy('tanggal_kedaluarsa')->sortBy('tanggal_kedaluarsa')->toArray();
+                    })->sortBy('barang_id')->groupBy('barang_id')->toArray();
                 break;
             case 'perbarang':
-                return Stok::with(['barang', 'stokKeluar'])
+                return Stok::with(['barang.barangSatuanUtama'])
+                    ->when($this->persediaan, fn($q) => $q->whereHas('barang', fn($q) => $q->where('persediaan', $this->persediaan)))
                     ->whereNotNull('stok_keluar_id')
-                    ->where('tanggal_keluar', 'like', $this->bulan . '%')
+                    ->whereBetween('tanggal_keluar', [$this->tanggal1, $this->tanggal2])
                     ->get()
                     ->map(function ($q) {
                         return [
-                            'barang' => $q->barang->nama,
+                            'nama' => $q->barang->nama,
                             'barang_id' => $q->barang->nama . $q->barang_id,
-                            'satuan' => $q->barang->barangSatuanTerkecil->nama,
-                            'harga_jual' => $q->stokKeluar?->harga ?? 0,
-                            'qty' => 1,
+                            'satuan' => $q->barang->barangSatuanUtama->nama,
+                            'qty' => 1 / $q->barang->barangSatuanUtama->rasio_dari_terkecil,
                         ];
-                    })->groupBy('barang_id')->sortBy('barang_id')->toArray();
+                    })
+                    ->sortBy('barang_id')
+                    ->groupBy('barang_id')
+                    ->toArray();
                 break;
         }
     }

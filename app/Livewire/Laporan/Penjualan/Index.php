@@ -5,6 +5,7 @@ namespace App\Livewire\Laporan\Penjualan;
 use App\Models\Barang;
 use Livewire\Component;
 use App\Models\Penjualan;
+use App\Models\StokKeluar;
 use Livewire\Attributes\Url;
 
 class Index extends Component
@@ -32,7 +33,7 @@ class Index extends Component
 
     public function getData()
     {
-        return Penjualan::with(['barang', 'barangSatuan'])
+        return StokKeluar::with(['barang', 'barangSatuan'])
         ->whereIn('barang_id', Barang::where('persediaan', 'Apotek')->pluck('id'))
             ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
             ->orderBy('tanggal')

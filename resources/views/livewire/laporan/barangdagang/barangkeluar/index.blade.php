@@ -18,16 +18,22 @@
                 Cetak</a>
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input type="month" class="form-control w-auto" wire:model.lazy="bulan">&nbsp;
+                    <select class="form-control w-auto" wire:model.lazy="persediaan">
+                        <option value="">Semua Persediaan</option>
+                        <option value="Apotek">Apotek</option>
+                        <option value="Klinik">Klinik</option>
+                    </select>&nbsp;
+                    <input type="date" class="form-control w-auto" wire:model.lazy="tanggal1">&nbsp;s/d&nbsp;
+                    <input type="date" class="form-control w-auto" wire:model.lazy="tanggal2">&nbsp;
                     <select class="form-control w-auto" wire:model.lazy="jenis">
-                        <option value="pertanggalkeluar">Per Tanggal Keluar</option>
-                        <option value="pertanggalkedaluarsa">Per Tanggal Kedaluarsa</option>
                         <option value="perbarang">Per Barang</option>
+                        <option value="perhargajual">Per Harga Jual</option>
+                        <option value="pertanggalkedaluarsa">Per Tanggal Kedaluarsa</option>
                     </select>
                 </div>
             </div>
         </div>
-        <div class="panel-body table-responsive">            
+        <div class="panel-body table-responsive">
             @include('livewire.laporan.barangdagang.barangkeluar.cetak', ['cetak' => false])
         </div>
     </div>
