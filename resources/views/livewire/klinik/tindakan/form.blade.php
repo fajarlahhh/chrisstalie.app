@@ -30,7 +30,7 @@
                                    <small> @foreach ($row->tindakan as $item)
                                     {{ $loop->iteration }}. {{ $item->tarifTindakan->nama }}
                                     ({{ $item->qty }}x)<br>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dokter : {{ $item->dokter->nama }}<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dokter : {{ $item->dokter?->nama }}<br>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Perawat :
                                     {{ $item->perawat?->nama }}<br>
                                 @endforeach</small>
