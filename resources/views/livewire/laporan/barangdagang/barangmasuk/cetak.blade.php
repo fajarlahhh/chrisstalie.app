@@ -61,7 +61,7 @@
                 @endforeach
                 <tr>
                     <th colspan="10" class="text-end">Total</th>
-                    <th class="text-end">{{ number_format(collect($data)->sum('total')) }}</th>
+                    <th class="text-end">{{ number_format(collect($data)->sum(fn($q) => collect($q)->sum(fn($q) => $q['qty'] * $q['harga_beli']))) }}</th>
                 </tr>
             </tbody>
         </table>
