@@ -38,11 +38,11 @@
             <th class="bg-gray-300 text-white">Satuan</th>
             <th class="bg-gray-300 text-white">Kategori</th>
             <th class="bg-gray-300 text-white">Tanggal Kedaluarsa</th>
-            @role('administrator|supervisor')
+            @role('administrator')
                 <th class="bg-gray-300 text-white">Harga Beli</th>
             @endrole
             <th class="bg-gray-300 text-white">Stok</th>
-            @role('administrator|supervisor')
+            @role('administrator')
                 <th class="bg-gray-300 text-white">Total Persediaan</th>
             @endrole
         </tr>
