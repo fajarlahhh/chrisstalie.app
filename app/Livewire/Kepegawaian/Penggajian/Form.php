@@ -112,6 +112,7 @@ class Form extends Component
                 stok_masuk_id: null,
                 pembayaran_id: null,
                 pelunasan_pembelian_id: null,
+                stok_keluar_id: null,
                 detail: collect($jurnalDetail)->values()->toArray()
             );
 

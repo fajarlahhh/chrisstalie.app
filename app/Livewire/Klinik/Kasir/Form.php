@@ -376,6 +376,7 @@ class Form extends Component
             aset_id: null,
             pembelian_id: null,
             stok_masuk_id: null,
+            stok_keluar_id: null,
             detail: collect($jurnalDetail)->groupBy('kode_akun_id')->map(function ($q) {
                 return [
                     'debet' => $q->sum('debet'),

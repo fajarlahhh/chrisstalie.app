@@ -79,7 +79,7 @@
         width: 100%;
         border-collapse: collapse;
     }
-    
+
     /* Garis putus-putus */
     hr {
         border: none;
@@ -95,72 +95,55 @@
     <br>
     <table class="table table-borderless fs-10px">
         <tr>
+            <td class="text-nowrap w-50px p-0" colspan="2">Resep Obat</td>
+        </tr>
+        <tr>
             <td class="text-nowrap w-50px p-0">No.</td>
             <td class="p-0">: {{ $data->id }}</td>
         </tr>
         <tr>
             <td class="text-nowrap w-50px p-0">Pasien</td>
-            <td class="p-0">: {{ $data->pasien?->nama }}</td>
-        </tr>
-        <tr>
-            <td class="text-nowrap w-50px p-0">Kasir</td>
-            <td class="p-0">: {{ $data->pengguna->panggilan }}
-            </td>
-        </tr>
-        <tr>
-            <td class="text-nowrap p-0">Tanggal</td>
-            <td class="p-0">: {{ $data->created_at }}</td>
+            <td class="p-0">: {{ $data->pasien->nama }}</td>
         </tr>
     </table>
     <hr>
-    <table class="table table-borderless fs-10px">
-        <tr>
-            <th class="p-0">Item<br><br></th>
-            <th class="p-0 text-center w-10px">Qty<br><br></th>
-            <th class="p-0 text-end">Harga<br><br></th>
-        </tr>
-        @foreach ($data->stokKeluar as $detail)
+    @foreach ($data->resepObat->groupBy('resep') as $resep)
+        <table class="table table-borderless fs-10px">
             <tr>
-                <td class="p-0">
-                    {{ $detail->barangSatuan->barang->nama }}<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{ $detail->barangSatuan->nama }} -
-                        {{ number_format($detail->harga) }}</small>
-                </td>
-                <td class="p-0 ps-2 text-center w-10px" nowrap>
-                    {{ $detail->qty }}
-                </td>
-                <td class="p-0 text-end w-50px" nowrap>
-                    {{ number_format($detail->qty * $detail->harga) }}
+                <td class="p-0" colspan="3">
+                    {{ $resep->first()->nama }}<br>
                 </td>
             </tr>
-        @endforeach
-    </table>
-    <hr>
+            @foreach ($resep as $item)
+                <tr>
+                    <td class="p-0">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $item->barang->nama }}
+                    </td>
+                    <td class="p-0">
+                        {{ $item->qty }} {{ $item->barangSatuan->nama }}
+                    </td>
+                    <td class="p-0 text-end">
+                        {{ number_format($item->harga * $item->qty) }}
+                    </td>
+                </tr>
+            @endforeach
+            <tr>
+                <td class="p-0" colspan="2">
+                    Total
+                </td>
+                <td class="p-0 text-end" nowrap>
+                    {{ number_format($resep->sum(fn($q) => $q->harga * $q->qty)) }}
+                </td>
+            </tr>
+        </table>
+        <hr>
+    @endforeach
     <table class="table table-borderless fs-10px">
         <tr>
-            <td class="p-0">Total Harga Barang</td>
-            <td class="p-0 text-end">{{ number_format($data->total_harga_barang) }}</td>
-        </tr>
-        <tr>
-            <td class="p-0">Diskon</td>
-            <td class="p-0 text-end">{{ number_format($data->diskon) }}</td>
-        </tr>
-        <tr>
             <th class="p-0">Total</th>
-            <th class="p-0 text-end">
-                {{ number_format($data->total_harga_barang - $data->diskon) }}
+            <th class="p-0 text-end" nowrap>
+                {{ number_format($data->resepObat->sum(fn($q) => $q->harga * $q->qty)) }}
             </th>
         </tr>
-        <tr>
-            <td class="p-0">Metode Bayar</td>
-            <td class="p-0 text-end">{{ $data->metode_bayar }}</td>
-        </tr>
-    </table><br>
-
-    <div class="text-center">
-        <h3 style="font-size: 12pt; margin: 0;">TERIMA KASIH</h3>
-    </div>
-
-    <br>
-    <br>
+    </table>
 </div>

@@ -99,6 +99,10 @@
             <td class="p-0">: {{ $data->id }}</td>
         </tr>
         <tr>
+            <td class="text-nowrap w-50px p-0">Pasien</td>
+            <td class="p-0">: {{ $data->registrasi->pasien->nama }}</td>
+        </tr>
+        <tr>
             <td class="text-nowrap p-0">Kasir</td>
             <td class="p-0">:
                 {{ $data->pengguna->panggilan }}

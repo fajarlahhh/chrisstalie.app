@@ -22,6 +22,16 @@ class Index extends Component
         $this->resetPage();
     }
 
+    public function print($id)
+    {
+        $data = Registrasi::with('resepObat.barang', 'resepObat.barangSatuan')->findOrFail($id);
+        $cetak = view('livewire.klinik.peracikanresepobat.cetak', [
+            'cetak' => true,
+            'data' => $data,
+        ])->render();
+        session()->flash('cetak', $cetak);
+    }
+
     public function mount()
     {
         $this->tanggal = $this->tanggal ?: date('Y-m-d');

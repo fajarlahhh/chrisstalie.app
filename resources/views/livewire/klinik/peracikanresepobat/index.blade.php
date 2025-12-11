@@ -77,11 +77,11 @@
                                         @endphp
                                         @if ($row->pembayaran)
                                             <x-action :row="$row" :custom="$custom" :detail="false"
-                                                :edit="false" :information="false" :print="false" :permanentDelete="false"
+                                                :edit="false" :information="false" :print="true" :permanentDelete="false"
                                                 :restore="false" :delete="false" />
                                         @else
                                             <x-action :row="$row" :custom="$custom" :detail="false"
-                                                :edit="false" :information="false" :print="false" :permanentDelete="false"
+                                                :edit="false" :information="false" :print="true" :permanentDelete="false"
                                                 :restore="false" :delete="true" />
                                         @endif
                                     @endif
@@ -97,4 +97,5 @@
         </div>
     </div>
     <x-alert />
+    <x-modal.cetak judul='Resep Obat' />
 </div>

@@ -432,7 +432,7 @@
                         Lanjut Diagnosis
                     </button>
                 @endif
-                <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
+                <button type="button" class="btn btn-secondary m-r-3" wire:loading.attr="disabled"
                     onclick="window.location.href='/klinik/pemeriksaanawal'">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Data
@@ -616,7 +616,7 @@
                         Lanjut Diagnosis
                     </button>
                 @endif
-                <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
+                <button type="button" class="btn btn-secondary m-r-3" wire:loading.attr="disabled"
                     onclick="window.location.href='/klinik/pemeriksaanawal'">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Data

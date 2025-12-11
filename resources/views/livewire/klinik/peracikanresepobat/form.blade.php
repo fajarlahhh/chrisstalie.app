@@ -41,7 +41,9 @@
                                     <thead>
                                         <tr>
                                             <th>Barang</th>
+                                            <th class="w-150px">Harga Satuan</th>
                                             <th class="w-100px">Qty</th>
+                                            <th class="w-150px">Sub Total</th>
                                             <th class="w-5px"></th>
                                         </tr>
                                     </thead>
@@ -75,9 +77,20 @@
                                                     </select>
                                                 </td>
                                                 <td>
+                                                    <input type="text" class="form-control text-end"
+                                                        :value="formatNumber(barangItem.harga)" autocomplete="off"
+                                                        disabled>
+                                                </td>
+                                                <td>
                                                     <input type="number" class="form-control" min="0"
                                                         step="1" x-model.number="barangItem.qty"
+                                                        @input="hitungSubtotal(resepIndex, barangIndex)"
                                                         autocomplete="off">
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control text-end"
+                                                        :value="formatNumber(barangItem.subtotal)" autocomplete="off"
+                                                        disabled>
                                                 </td>
                                                 <td class="w-10px align-middle">
                                                     <template x-if="barangItem.hapus">
@@ -91,7 +104,14 @@
                                             </tr>
                                         </template>
                                         <tr>
-                                            <td colspan="3">
+                                            <th class="text-end align-middle" colspan="3">Total</th>
+                                            <th>
+                                                <input type="text" class="form-control text-end"
+                                                    :value="formatNumber(resepTotal(resepIndex))" disabled>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">
                                                 <div class="text-center">
                                                     <button class="btn btn-secondary" wire:loading.attr="disabled"
                                                         type="button" @click="tambahBarang(resepIndex)">
@@ -106,6 +126,11 @@
                             </div>
                         </template>
                         <div class="mb-3">
+                            <label class="form-label">Total Keseluruhan</label>
+                            <input class="form-control text-end" type="text" disabled
+                                :value="formatNumber(totalKeseluruhan)" />
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">Catatan</label>
                             <textarea class="form-control" x-model="catatan" rows="3" placeholder="Catatan"></textarea>
                         </div>
@@ -117,7 +142,7 @@
                                 Simpan
                             </button>
                         @endrole
-                        <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
+                        <button type="button" class="btn btn-secondary m-r-3" wire:loading.attr="disabled"
                             onclick="window.location.href='/klinik/peracikanresepobat'">
                             <span wire:loading class="spinner-border spinner-border-sm"></span>
                             Data
@@ -146,9 +171,39 @@
                         nama: '',
                     });
                 },
+                formatNumber(val) {
+                    if (val === null || val === undefined || isNaN(val)) return '0';
+                    return (val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                },
 
+                hitungSubtotal(index, barangIndex) {
+                    let barang = this.resep[index].barang[barangIndex];
+                    barang.subtotal = (parseFloat(barang.qty) || 0) * (parseFloat(barang.harga) || 0);
+                },
+                hitungTotal() {
+                    this.total = this.resep.reduce((total, row) => {
+                        return total + (parseFloat(row.subtotal) || 0);
+                    }, 0);
+                },
+                resepTotal(index) {
+                    return this.resep[index].barang.reduce((total, barang) => total + (parseFloat(barang.subtotal) || 0),
+                        0);
+                },
                 hapusResep(resepIndex) {
                     this.resep.splice(resepIndex, 1);
+                },
+                hitungTotal() {
+                    this.total_harga_barang = this.barang.reduce((total, row) => {
+                        let harga = parseInt(row.harga || 0);
+                        let qty = parseInt(row.qty || 0);
+                        return total + (harga * qty);
+                    }, 0);
+                    this.total_tagihan = this.total_harga_barang - (parseInt(this.diskon) || 0);
+                },
+                get totalKeseluruhan() {
+                    let resepTotal = this.resep.reduce((total, resep) => total + this.resepTotal(this.resep
+                        .indexOf(resep)), 0);
+                    return resepTotal;
                 },
 
                 tambahBarang(resepIndex) {
@@ -193,6 +248,7 @@
                         barangItem.harga = 0;
                         barangItem.barang_satuan_id = null;
                     }
+                    this.hitungSubtotal(resepIndex, barangIndex);
                 },
                 copyResep(id) {
                     @this.copyResep(id).then(resep => {

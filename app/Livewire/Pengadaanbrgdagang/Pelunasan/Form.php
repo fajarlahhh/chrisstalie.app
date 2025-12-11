@@ -54,6 +54,7 @@ class Form extends Component
                 penggajian_id: null,
                 pelunasan_pembelian_id: $data->id,
                 aset_id: null,
+                stok_keluar_id: null,
                 detail: [
                     [
                         'debet' => 0,

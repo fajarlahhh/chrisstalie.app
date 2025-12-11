@@ -78,6 +78,12 @@ class Form extends Component
             $peracikan->pengguna_id = $userId;
             $peracikan->save();
 
+            $data = Registrasi::with('resepObat.barang', 'resepObat.barangSatuan')->findOrFail($registrasiId);
+            $cetak = view('livewire.klinik.peracikanresepobat.cetak', [
+                'cetak' => true,
+                'data' => $data,
+            ])->render();
+            session()->flash('cetak', $cetak);
             session()->flash('success', 'Berhasil menyimpan data');
         });
 

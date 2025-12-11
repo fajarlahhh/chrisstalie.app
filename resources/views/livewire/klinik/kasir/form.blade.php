@@ -215,7 +215,7 @@
                         Simpan
                     </button>
                 @endrole
-                <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
+                <button type="button" class="btn btn-secondary m-r-3" wire:loading.attr="disabled"
                     onclick="window.location.href='/klinik/kasir'">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Data

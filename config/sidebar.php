@@ -77,6 +77,11 @@ return [
                     "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
+                [
+                    "title" => "Koreksi Stok",
+                    "urutkan" => true,
+                    "method" => ["Index", "Form"],
+                ],
             ]
         ],
         [

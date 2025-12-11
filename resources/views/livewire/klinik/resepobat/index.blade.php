@@ -75,7 +75,7 @@
                                                 $row->resepObat->first()->created_at .
                                                 '</a>';
                                         @endphp
-                                        @if ($row->pembayaran)
+                                        @if ($row->peracikanResepObat)
                                             <x-action :row="$row" :custom="$custom" :detail="false"
                                                 :edit="false" :information="false" :print="false" :permanentDelete="false"
                                                 :restore="false" :delete="false" />
