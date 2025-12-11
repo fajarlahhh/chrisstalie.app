@@ -81,11 +81,11 @@
                 </div>
                 <div class="mb-1">
                     <label class="form-label">Harga Beli</label>
-                    <input type="text" class="form-control" value="{{ number_format($barang['harga'] ?? 0) }}" disabled>
+                    <input type="text" class="form-control text-end" value="{{ number_format($barang['harga'] ?? 0) }}" disabled>
                 </div>
                 <div class="mb-1">
                     <label class="form-label">Qty</label>
-                    <input type="text" class="form-control" value="{{ number_format($barang['qty'] ?? 0) }}" disabled>
+                    <input type="text" class="form-control" value="{{ number_format($barang['qty'] ?? 0) }} {{ $barang['satuan'] ?? '' }}" disabled>
                 </div>
             </div>
             <div class="mb-3">
