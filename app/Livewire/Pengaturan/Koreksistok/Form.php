@@ -30,7 +30,7 @@ class Form extends Component
             'satuan' => $q->barang->barangSatuanTerkecil->nama,
             'barang_satuan_id' => $q->barang->barangSatuanTerkecil->id,
             'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
-            'harga_beli' => $q->harga_beli,
+            'harga' => $q->harga_beli,
             'kode_akun_id' => $q->barang->kode_akun_id,
             'kode_akun_modal_id' => $q->barang->kode_akun_modal_id,
             'qty' => $q->qty,
