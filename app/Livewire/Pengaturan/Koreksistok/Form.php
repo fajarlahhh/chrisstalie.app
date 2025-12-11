@@ -25,7 +25,8 @@ class Form extends Component
     {
         $this->barang_id = '';
         $this->dataBarang = Stok::select('no_batch', 'barang_id', 'tanggal_kedaluarsa', 'harga_beli', DB::raw('COUNT(*) as qty'))->groupBy('no_batch', 'barang_id', 'tanggal_kedaluarsa', 'harga_beli')->whereNull('stok_keluar_id')->with('barang.barangSatuanTerkecil')->get()->map(fn($q) => [
-            'id' => $q->barang_id,
+            'id' => $q->barang_id . '-' . $q->no_batch . '-' . $q->tanggal_kedaluarsa . '-' . $q->harga_beli,
+            'barang_id' => $q->barang_id,
             'nama' => $q->barang->nama,
             'satuan' => $q->barang->barangSatuanTerkecil->nama,
             'barang_satuan_id' => $q->barang->barangSatuanTerkecil->id,
