@@ -42,7 +42,7 @@ class Index extends Component
     private function getData($paginate = true)
     {
         $query = TarifTindakan::with([
-            'pengguna',
+            'pengguna.pegawai',
             'kodeAkun',
             'tarifTindakanAlatBarang',
         ])

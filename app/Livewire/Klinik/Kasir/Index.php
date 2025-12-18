@@ -46,7 +46,7 @@ class Index extends Component
     {
         return view('livewire.klinik.kasir.index', [
             'data' => $this->status == 1 ?
-                Registrasi::with('pasien', 'nakes', 'pengguna')
+                Registrasi::with('pasien', 'nakes', 'pengguna.pegawai')
                 ->whereDoesntHave('pembayaran')
                 // jika ada resepObat maka juga harus ada peracikanResepObat
                 ->where(function($query) {
@@ -61,7 +61,7 @@ class Index extends Component
                         ->where('nama', 'like', '%' . $this->cari . '%')
                         ->orWhere('id', 'like', '%' . $this->cari . '%')))
                 ->orderBy('id', 'asc')->paginate(10) :
-                Pembayaran::with('registrasi.pasien', 'registrasi.nakes', 'pengguna')
+                Pembayaran::with('registrasi.pasien', 'registrasi.nakes', 'pengguna.pegawai')
                 ->whereNotNull('registrasi_id')
                 ->where('created_at', 'like', $this->tanggal . '%')
                 ->where(fn($q) => $q->where('id', 'like', '%' . $this->cari . '%')

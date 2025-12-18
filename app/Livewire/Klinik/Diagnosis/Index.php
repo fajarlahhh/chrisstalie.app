@@ -35,7 +35,7 @@ class Index extends Component
     protected function getQuery()
     {
         $query = Registrasi::query()
-            ->with(['pasien', 'nakes', 'pengguna'])
+            ->with(['pasien', 'nakes', 'pengguna.pegawai'])
             ->whereHas('pemeriksaanAwal')
             ->where('ketemu_dokter', 1)
             ->whereHas('pasien', function ($q) {

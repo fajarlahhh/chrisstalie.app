@@ -31,7 +31,7 @@ class Index extends Component
             'data' => Supplier::where(fn($q) => $q
                 ->where('nama', 'like', '%' . $this->cari . '%'))
                 ->when($this->exist == '2', fn($q) => $q->onlyTrashed())
-                ->with('pengguna')
+                ->with('pengguna.pegawai')
                 ->orderBy('nama')
                 ->paginate(10)
         ]);

@@ -53,7 +53,7 @@ class Index extends Component
     public function getData($paginate = true)
     {
         $query = Aset::with([
-            'pengguna',
+            'pengguna.pegawai',
             'kodeAkun',
             'kodeAkunSumberDana'
         ])

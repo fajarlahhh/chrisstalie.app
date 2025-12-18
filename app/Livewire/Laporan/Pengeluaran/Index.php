@@ -71,7 +71,9 @@ class Index extends Component
                         });
                     });
                 }),
-            'dataPengguna' => auth()->user()->hasRole(['administrator', 'supervisor']) ? Pengguna::whereIn('id', $data->pluck('pengguna_id')->unique()->toArray())->get()->toArray() : Pengguna::where('id', auth()->user()->id)->get()->toArray()
+            'dataPengguna' => auth()->user()->hasRole(['administrator', 'supervisor']) ?
+                Pengguna::whereIn('id', $data->pluck('pengguna_id')->unique()->toArray())->with('pegawai')->get()->toArray() :
+                Pengguna::where('id', auth()->user()->id)->with('pegawai')->get()->toArray()
         ]);
     }
 }

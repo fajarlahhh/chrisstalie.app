@@ -33,7 +33,7 @@ class Index extends Component
             'data' => Pegawai::where(fn($q) => $q
                 ->where('nama', 'like', '%' . $this->cari . '%')
                 ->where('status', $this->status))
-                ->with('pengguna')
+                ->with('pengguna.pegawai')
                 ->orderBy('nama')
                 ->paginate(10)
         ]);

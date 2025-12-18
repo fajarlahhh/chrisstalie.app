@@ -35,7 +35,7 @@ class Index extends Component
     public function getQuery()
     {
         $query = Registrasi::query()
-            ->with(['pasien', 'nakes', 'pengguna'])
+            ->with(['pasien', 'nakes', 'pengguna.pegawai'])
             ->whereHas('file', function ($q) {
                 $q->where('jenis', 'Upload');
             })
