@@ -87,7 +87,7 @@
                                                         {{ $detail->barangSatuan->barang->nama }}</td>
                                                     <td class="text-nowrap w-80px">
                                                         @if ($detail->barangSatuan->konversi_satuan)
-                                                            {{ $detail->barangSatuan->nama . '<small> (' . $detail->barangSatuan->konversi_satuan . ')</small>' }}
+                                                            {!! $detail->barangSatuan->nama . '<small> (' . $detail->barangSatuan->konversi_satuan . ')</small>' !!}
                                                         @else
                                                             {{ $detail->barangSatuan->nama }}
                                                         @endif
@@ -161,7 +161,7 @@
                                                     {{ $subRow->barangSatuan->barang->nama }}</td>
                                                 <td class="p-1 text-nowrap">
                                                     @if ($subRow->barangSatuan->konversi_satuan)
-                                                        {{ $subRow->barangSatuan->nama . ' (' . $subRow->barangSatuan->konversi_satuan . ')' }}
+                                                        {!! $subRow->barangSatuan->nama . ' (' . $subRow->barangSatuan->konversi_satuan . ')' !!}
                                                     @else
                                                         {{ $subRow->barangSatuan->nama }}
                                                     @endif
