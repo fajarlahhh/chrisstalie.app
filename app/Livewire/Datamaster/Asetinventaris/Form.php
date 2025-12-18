@@ -62,14 +62,14 @@ class Form extends Component
             $this->data->kode_akun_id = $this->kode_akun_id;
             $this->data->detail = $this->detail;
             $this->data->kode_akun_sumber_dana_id = $this->kode_akun_sumber_dana_id;
-            $this->data->kode_akun_penyusutan_id = collect($this->dataKodeAkunPenyusutan)->where('nama', 'Akumulasi Penyusutan '. collect($this->dataKodeAkun)->where('id', $this->kode_akun_id)->first()['nama'])->first()['id'];
+            $this->data->kode_akun_penyusutan_id = collect($this->dataKodeAkunPenyusutan)->where('nama', 'Akumulasi Penyusutan ' . collect($this->dataKodeAkun)->where('id', $this->kode_akun_id)->first()['nama'])->first()['id'];
             $this->data->metode_penyusutan = $this->metode_penyusutan;
             $this->data->status = !$this->data->exists ? 'Aktif' : $this->status;
             $this->data->nilai_penyusutan = $this->harga_perolehan / $this->masa_manfaat;
             $this->data->nilai_residu = $this->nilai_residu;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
-            
+
             JurnalClass::insert(
                 jenis: 'Pembelian Aset Inventaris',
                 sub_jenis: 'Pembelian',
@@ -96,7 +96,7 @@ class Form extends Component
                     ]
                 ]
             );
-            
+
             if ($this->metode_penyusutan == 'Garis Lurus') {
                 $jurnal = JurnalClass::insert(
                     jenis: 'Penyusutan Aset Inventaris',
@@ -150,7 +150,7 @@ class Form extends Component
         $this->data = $data;
         $this->fill($this->data->toArray());
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '15100')->get()->toArray();
-        $this->dataKodeAkunSumberDana = KodeAkun::detail()->whereIn('parent_id', ['11100', '20000'])->get()->toArray();
+        $this->dataKodeAkunSumberDana = KodeAkun::detail()->whereIn('parent_id', ['11100', '20000'])->orWhere('id', '15300')->get()->toArray();
         $this->dataKodeAkunPenyusutan = KodeAkun::detail()->whereIn('parent_id', ['15200'])->get()->toArray();
     }
 
