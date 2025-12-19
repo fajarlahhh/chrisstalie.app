@@ -65,7 +65,7 @@ class Form extends Component
             Stok::where('barang_id', $this->barang_id)
                 ->where('no_batch', $this->barang['no_batch'])
                 ->where('tanggal_kedaluarsa', $this->barang['tanggal_kedaluarsa'])
-                ->limit($this->qty_keluar * $this->barang['rasio_dari_terkecil'])->update([
+                ->limit($this->qty_keluar)->update([
                     'stok_keluar_id' => $data->id,
                     'tanggal_keluar' => now(),
                 ]);
