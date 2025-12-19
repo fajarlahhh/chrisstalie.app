@@ -14,7 +14,7 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $dataBarang = [], $barang, $dataStok = [], $barang_id, $catatan, $qty_dikeluarkan;
+    public $dataBarang = [], $barang, $dataStok = [], $barang_id, $catatan, $qty_keluar;
 
     public function updatedBarangId($value)
     {
@@ -43,18 +43,18 @@ class Form extends Component
     {
         $this->validateWithCustomMessages([
             'barang_id' => 'required',
-            'qty_dikeluarkan' => 'required',
+            'qty_keluar' => 'required',
         ]);
 
         DB::transaction(function () {
-            if (Stok::where('barang_id', $this->barang_id)->where('no_batch', $this->barang['no_batch'])->where('tanggal_kedaluarsa', $this->barang['tanggal_kedaluarsa'])->count() < $this->qty_dikeluarkan) {
+            if (Stok::where('barang_id', $this->barang_id)->where('no_batch', $this->barang['no_batch'])->where('tanggal_kedaluarsa', $this->barang['tanggal_kedaluarsa'])->count() < $this->qty_keluar) {
                 session()->flash('error', 'Qty dikeluarkan melebihi stok yang tersedia');
                 return $this->render();
             }
             $data = new StokKeluar();
             $data->tanggal = now();
-            $data->barang_id = $this->barang_id;
-            $data->qty = $this->qty_dikeluarkan;
+            $data->barang_id = $this->barang['barang_id'];
+            $data->qty = $this->qty_keluar;
             $data->harga = 0;
             $data->catatan = $this->catatan;
             $data->pengguna_id = auth()->id();
@@ -62,11 +62,14 @@ class Form extends Component
             $data->rasio_dari_terkecil = 1;
             $data->koreksi = 1;
             $data->save();
-            Stok::where('barang_id', $this->barang_id)->where('no_batch', $this->barang['no_batch'])->where('tanggal_kedaluarsa', $this->barang['tanggal_kedaluarsa'])->update([
-                'stok_keluar_id' => $data->id,
-            ]);
+            Stok::where('barang_id', $this->barang_id)
+                ->where('no_batch', $this->barang['no_batch'])
+                ->where('tanggal_kedaluarsa', $this->barang['tanggal_kedaluarsa'])
+                ->limit($this->qty_keluar * $this->barang['rasio_dari_terkecil'])->update([
+                    'stok_keluar_id' => $data->id,
+                    'tanggal_keluar' => now(),
+                ]);
             $this->jurnal($data);
-
             session()->flash('success', 'Berhasil menyimpan data');
         });
         return $this->redirect('/pengaturan/koreksistok');
