@@ -42,6 +42,9 @@
                         <th>Alamat</th>
                         <th>No. Telp.</th>
                         <th>Catatan</th>
+                        @if ($status == 1)
+                            <th>Proses</th>
+                        @endif
                         @if ($status == 2)
                             <th>Jumlah</th>
                             <th>Pembayaran</th>
@@ -67,11 +70,28 @@
                             <td>{{ $this->status == 1 ? $row->pasien->alamat : $row->registrasi->pasien->alamat }}</td>
                             <td>{{ $this->status == 1 ? $row->pasien->no_hp : $row->registrasi->pasien->no_hp }}</td>
                             <td>{{ $this->status == 1 ? $row->catatan : $row->registrasi->catatan }}</td>
+                            <td>
+                                Tindakan : {!! $row->tindakan->count() > 0
+                                    ? '<span class="badge bg-success">' . $row->tindakan->first()->created_at . '</span>'
+                                    : '' !!}
+                                <br>
+                                Resep : {!! $row->resepObat->count() > 0
+                                    ? '<span class="badge bg-success">' . $row->resepObat->first()->created_at . '</span>'
+                                    : '' !!}
+                                <br>
+                                @if ($row->resepObat->count() > 0)
+                                    Peracikan Resep : {!! $row->peracikanResepObat
+                                        ? '<span class="badge bg-success">' . $row->peracikanResepObat->created_at . '</span>'
+                                        : '' !!}
+                                @endif
+                            </td>
                             @if ($status == 2)
                                 <td nowrap>
                                     <small>
                                         <ul>
-                                            <li>Total Tindakan : <b>{{ number_format($row->total_tindakan + $row->diskon) }}</b></li>
+                                            <li>Total Tindakan :
+                                                <b>{{ number_format($row->total_tindakan + $row->diskon) }}</b>
+                                            </li>
                                             <li>Total Resep : <b>{{ number_format($row->total_resep) }}</b></li>
                                             <li>Total Diskon : <b>{{ number_format($row->diskon) }}</b></li>
                                             <li>Total :
@@ -140,7 +160,7 @@
     </div>
     <x-alert />
     <x-modal.cetak judul='Nota' />
-    
+
     <div wire:loading>
         <x-loading />
     </div>
