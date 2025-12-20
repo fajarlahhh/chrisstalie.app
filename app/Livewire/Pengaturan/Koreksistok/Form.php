@@ -62,6 +62,7 @@ class Form extends Component
             $data->rasio_dari_terkecil = 1;
             $data->koreksi = 1;
             $data->save();
+
             Stok::where('barang_id', $this->barang_id)
                 ->where('no_batch', $this->barang['no_batch'])
                 ->where('tanggal_kedaluarsa', $this->barang['tanggal_kedaluarsa'])
@@ -69,21 +70,27 @@ class Form extends Component
                     'stok_keluar_id' => $data->id,
                     'tanggal_keluar' => now(),
                 ]);
-            $this->jurnal($data);
+
+            $hargaBeli = Stok::where('barang_id', $this->barang['barang_id'])
+                ->where('stok_keluar_id', $data->id)
+                ->sum('harga_beli');
+            $this->jurnal($data, $hargaBeli);
+
             session()->flash('success', 'Berhasil menyimpan data');
         });
         return $this->redirect('/pengaturan/koreksistok');
     }
-    private function jurnal($koreksi)
+
+    private function jurnal($koreksi, $hargaBeli)
     {
         $detail[] = [
             'kode_akun_id' => $this->barang['kode_akun_id'],
             'debet' => 0,
-            'kredit' => $this->barang['harga_beli'] * $this->qty_dikeluarkan,
+            'kredit' => $hargaBeli,
         ];
         $detail[] = [
             'kode_akun_id' => $this->barang['kode_akun_modal_id'],
-            'debet' => $this->barang['harga_beli'] * $this->qty_dikeluarkan,
+            'debet' => $hargaBeli,
             'kredit' => 0,
         ];
 
