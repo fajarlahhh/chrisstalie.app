@@ -48,4 +48,9 @@ class Pembayaran extends Model
     {
         return $this->belongsTo(Registrasi::class);
     }
+
+    public function pasien(): BelongsTo
+    {
+        return $this->belongsTo(Pasien::class);
+    }
 }
