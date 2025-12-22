@@ -70,7 +70,6 @@ class Form extends Component
                 'biaya' => $q->biaya,
             ];
         })->toArray();
-        dd($this->tindakan);
         $this->resep = collect($data->resepObat)
             ->groupBy('resep')
             ->map(function ($group) {
