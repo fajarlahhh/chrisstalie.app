@@ -61,13 +61,16 @@ class Form extends Component
                 'catatan' => $q->catatan,
                 'dokter_id' => $q->dokter_id,
                 'perawat_id' => $q->perawat_id,
+                'biaya_alat' => collect($q->tindakanAlatBarang)->whereNotNull('aset_id')->sum(function ($q) {
+                    return $q->qty * $q->biaya;
+                }),
                 'biaya_alat_barang' => $q->biaya_alat_barang,
                 'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
                 'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
                 'biaya' => $q->biaya,
             ];
         })->toArray();
-
+        dd($this->tindakan);
         $this->resep = collect($data->resepObat)
             ->groupBy('resep')
             ->map(function ($group) {
@@ -193,7 +196,7 @@ class Form extends Component
                 }
             ],
         ]);
-        
+
         DB::transaction(function () {
             // Ambil data pembayaran terakhir di bulan berjalan
             if (Pembayaran::where('registrasi_id', $this->data->id)->count() > 0) {
@@ -248,20 +251,20 @@ class Form extends Component
             })->all());
 
             $detail = array_merge($detail, collect($this->tindakan)
-            ->where('perawat_id', '!=', '-')->whereNotNull('perawat_id')->map(function ($q) {
-                return [
-                    'kode_akun_id' => '24000',
-                    'debet' => 0,
-                    'kredit' => $q['biaya_jasa_perawat'] * $q['qty'],
-                ];
-            })->all());
+                ->where('perawat_id', '!=', '-')->whereNotNull('perawat_id')->map(function ($q) {
+                    return [
+                        'kode_akun_id' => '24000',
+                        'debet' => 0,
+                        'kredit' => $q['biaya_jasa_perawat'] * $q['qty'],
+                    ];
+                })->all());
 
             //Jurnal Pendapatan Tindakan
             $detail = array_merge($detail, collect($this->tindakan)->map(function ($q) {
                 return [
                     'kode_akun_id' => $q['kode_akun_id'],
                     'debet' => 0,
-                    'kredit' => ($q['biaya'] - $q['biaya_alat_barang'] - ($q['dokter_id']? $q['biaya_jasa_dokter'] : 0) - ($q['perawat_id'] && $q['perawat_id'] != '-' ? $q['biaya_jasa_perawat'] : 0)) * $q['qty'],
+                    'kredit' => ($q['biaya'] + $q['biaya_alat'] - $q['biaya_alat_barang'] - ($q['dokter_id'] ? $q['biaya_jasa_dokter'] : 0) - ($q['perawat_id'] && $q['perawat_id'] != '-' ? $q['biaya_jasa_perawat'] : 0)) * $q['qty'],
                 ];
             })->all());
 

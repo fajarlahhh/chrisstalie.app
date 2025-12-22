@@ -32,4 +32,11 @@ class TarifTindakan extends Model
             return ($q->qty ?? 0) * ($q->barang_id ? $q->barangSatuan->harga_jual : $q->biaya);
         });
     }
+
+    public function getBiayaAlatAttribute(): int
+    {
+        return $this->tarifTindakanAlatBarang->whereNotNull('aset_id')->sum(function ($q) {
+            return $q->qty * $q->biaya;
+        });
+    }
 }

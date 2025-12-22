@@ -64,8 +64,8 @@ class Index extends Component
                 ->orderBy('id', 'asc')->paginate(10) :
                 Pembayaran::with('registrasi.pasien', 'registrasi.nakes', 'pengguna.pegawai', 'registrasi.tindakan', 'registrasi.resepObat', 'registrasi.peracikanResepObat')
                 ->whereNotNull('registrasi_id')
-                ->where('created_at', '>=', $this->tanggal1)
-                ->where('created_at', '<=', $this->tanggal2)
+                ->where('created_at', '>=', $this->tanggal1 . ' 00:00:00')
+                ->where('created_at', '<=', $this->tanggal2 . ' 23:59:59')
                 ->where(fn($q) => $q->where('id', 'like', '%' . $this->cari . '%')
                     ->orWhere('registrasi_id', 'like', '%' . $this->cari . '%')
                     ->orWhereHas('registrasi.pasien', fn($r) => $r

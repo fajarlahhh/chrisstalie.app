@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Tindakan extends Model
@@ -11,6 +12,11 @@ class Tindakan extends Model
     //
     protected $table = 'tindakan';
     
+    public function tindakanAlatBarang(): HasMany
+    {
+        return $this->hasMany(TindakanAlatBarang::class);
+    }
+
     public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class);
