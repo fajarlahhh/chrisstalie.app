@@ -28,7 +28,7 @@ class Form extends Component
         if($this->data->pembayaran){
             return abort(404);
         }
-        $this->dataTindakan = TarifTindakan::orderBy('nama')->get()->map(fn($q) => [
+        $this->dataTindakan = TarifTindakan::with('tarifTindakanAlatBarang.barangSatuan')->orderBy('nama')->get()->map(fn($q) => [
             'id' => $q->id,
             'nama' => $q->nama,
             'biaya_jasa_dokter' => $q->biaya_jasa_dokter,

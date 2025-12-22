@@ -14,7 +14,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $tanggal, $status = 1;
+    public $cari, $tanggal1 , $tanggal2, $status = 1;
 
     public function updated()
     {
@@ -23,7 +23,8 @@ class Index extends Component
 
     public function mount()
     {
-        $this->tanggal = $this->tanggal ?: date('Y-m-d');
+        $this->tanggal1 = $this->tanggal1 ?: date('Y-m-d');
+        $this->tanggal2 = $this->tanggal2 ?: date('Y-m-d');
     }
 
     public function delete($id)
@@ -63,7 +64,8 @@ class Index extends Component
                 ->orderBy('id', 'asc')->paginate(10) :
                 Pembayaran::with('registrasi.pasien', 'registrasi.nakes', 'pengguna.pegawai', 'registrasi.tindakan', 'registrasi.resepObat', 'registrasi.peracikanResepObat')
                 ->whereNotNull('registrasi_id')
-                ->where('created_at', 'like', $this->tanggal . '%')
+                ->where('created_at', '>=', $this->tanggal1)
+                ->where('created_at', '<=', $this->tanggal2)
                 ->where(fn($q) => $q->where('id', 'like', '%' . $this->cari . '%')
                     ->orWhere('registrasi_id', 'like', '%' . $this->cari . '%')
                     ->orWhereHas('registrasi.pasien', fn($r) => $r

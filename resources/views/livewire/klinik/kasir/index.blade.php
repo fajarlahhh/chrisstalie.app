@@ -18,7 +18,9 @@
                         <option value="2">Sudah Bayar</option>
                     </select>&nbsp;
                     @if ($status == 2)
-                        <input class="form-control" type="date" wire:model.lazy="tanggal"
+                        <input class="form-control" type="date" wire:model.lazy="tanggal1"
+                            max="{{ date('Y-m-d') }}" />&nbsp;
+                        <input class="form-control" type="date" wire:model.lazy="tanggal2"
                             max="{{ date('Y-m-d') }}" />&nbsp;
                     @endif
                     <input type="text" class="form-control w-200px" placeholder="Cari"
