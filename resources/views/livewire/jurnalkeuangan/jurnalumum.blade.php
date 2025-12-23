@@ -170,8 +170,6 @@
                 sumDebet: 0,
                 sumKredit: 0,
                 loadingSubmit: false,
-                loadingTambahDetail: false,
-
                 init() {
                     this.hitungTotal();
                 },
@@ -193,7 +191,6 @@
                 },
 
                 tambahDetail() {
-                    this.loadingTambahDetail = true;
                     this.detail.push({
                         id: '',
                         debet: '',
@@ -201,7 +198,6 @@
                     });
                     this.$nextTick(() => {
                         this.refreshSelect2();
-                        this.loadingTambahDetail = false;
                     });
                     this.hitungTotal();
                 },
@@ -219,6 +215,9 @@
                 hapusDetail(idx) {
                     this.detail.splice(idx, 1);
                     this.hitungTotal();
+                    this.$nextTick(() => {
+                        this.refreshSelect2();
+                    });
                 },
                 syncToLivewire() {
                     // sinkronkan data ke livewire
