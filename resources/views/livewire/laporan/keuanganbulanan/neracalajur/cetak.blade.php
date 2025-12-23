@@ -104,16 +104,16 @@
             <th>TOTAL</th>
             <th class="text-end text-nowrap">
                 @if ($cetak)
-                    {{ collect($data)->sum('debet') }}
+                    {{ collect($data)->sum('saldo_debet') }}
                 @else
-                    {{ number_format(collect($data)->sum('debet'), 2) }}
+                    {{ number_format(collect($data)->sum('saldo_debet'), 2) }}
                 @endif
             </th>
             <th class="text-end text-nowrap">
                 @if ($cetak)
-                    {{ collect($data)->sum('kredit') }}
+                    {{ collect($data)->sum('saldo_kredit') }}
                 @else
-                    {{ number_format(collect($data)->sum('kredit'), 2) }}
+                    {{ number_format(collect($data)->sum('saldo_kredit'), 2) }}
                 @endif
             </th>
             <th class="text-end text-nowrap">
