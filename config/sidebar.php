@@ -142,6 +142,10 @@ return [
                         [
                             "title" => "Neraca Lajur",
                             "method" => ["Index"],
+                        ],
+                        [
+                            "title" => "Buku Besar",
+                            "method" => ["Index"],
                         ]
                     ]
                 ],

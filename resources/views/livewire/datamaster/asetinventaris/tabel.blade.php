@@ -41,7 +41,7 @@
                     @endif
                 </td>
                 <td class="text-end">
-                    {{ $cetak == false ? number_format($item->nilai_penyusutan) : $item->nilai_penyusutan }}</td>
+                    {{ $cetak == false ? number_format($item->nilai_penyusutan, 2) : $item->nilai_penyusutan }}</td>
                 <td>{{ $item->lokasi }}</td>
                 <td>
                     @switch($item->status)
