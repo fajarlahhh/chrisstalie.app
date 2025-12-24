@@ -23,7 +23,14 @@ class Ulangtahun extends Component
     public function render(): View|Closure|string
     {
         return view('components.ulangtahun', [
-            'data' => Pasien::whereRaw('DATE_FORMAT(tanggal_lahir, "%m-%d") = ?', [date('m-d')])->get(),
+            'data' => Pasien::whereRaw('
+                (
+                    (DATE_FORMAT(tanggal_lahir, "%m-%d") >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 5 DAY), "%m-%d")
+                    AND DATE_FORMAT(tanggal_lahir, "%m-%d") <= DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 5 DAY), "%m-%d"))
+                )
+            ')
+                ->orderByRaw('DATE_FORMAT(tanggal_lahir, "%m-%d") asc')
+                ->get(),
         ]);
     }
 }

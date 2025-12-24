@@ -25,6 +25,9 @@
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach
                     </select>&nbsp;
+                    <input type="month" class="form-control w-auto" wire:model.lazy="bulanPerolehan"
+                        max="{{ date('Y-m') }}">
+                    &nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
                         wire:model.lazy="cari">
@@ -40,7 +43,7 @@
     </div>
     <x-alert />
     <x-modal.cetak judul='QR' />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

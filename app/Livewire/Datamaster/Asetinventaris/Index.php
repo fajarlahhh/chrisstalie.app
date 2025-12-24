@@ -17,7 +17,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $kode_akun_id, $dataKodeAkun = [];
+    public $cari, $kode_akun_id, $dataKodeAkun = [], $bulanPerolehan;
 
     public function updated()
     {
@@ -27,6 +27,7 @@ class Index extends Component
     public function mount()
     {
         $this->dataKodeAkun = KodeAkun::detail()->where('id', 'like', '151%')->get()->toArray();
+        $this->bulanPerolehan = $this->bulanPerolehan ?: null;
     }
 
     public function export()
@@ -60,6 +61,9 @@ class Index extends Component
             ->when($this->kode_akun_id, function ($q) {
                 $q->where('kode_akun_id', $this->kode_akun_id);
             })
+            ->when($this->bulanPerolehan, function ($q) {
+                $q->where('tanggal_perolehan', 'like', $this->bulanPerolehan . '%');
+            })
             ->where(fn($q) => $q
                 ->where('nama', 'like', '%' . $this->cari . '%'))
             ->orderBy('nama');
@@ -72,6 +76,9 @@ class Index extends Component
             'dataRaw' => Aset::when($this->kode_akun_id, function ($q) {
                 $q->where('kode_akun_id', $this->kode_akun_id);
             })
+                ->when($this->bulanPerolehan, function ($q) {
+                    $q->where('tanggal_perolehan', 'like', $this->bulanPerolehan . '%');
+                })
                 ->where(fn($q) => $q
                     ->where('nama', 'like', '%' . $this->cari . '%'))
                 ->get()
