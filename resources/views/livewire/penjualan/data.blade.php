@@ -33,6 +33,7 @@
                         <th class="w-10px">No.</th>
                         <th>ID</th>
                         <th>Waktu Bayar</th>
+                        <th>Pasien</th>
                         <th>Keterangan</th>
                         <th>Barang</th>
                         <th class="text-end">Total Harga Barang</th>
@@ -48,6 +49,7 @@
                             <td>{{ $index + 1 }}</td>
                             <td class="text-nowrap w-100px">{{ $row->id }}</td>
                             <td class="text-nowrap w-100px">{{ $row->created_at }}</td>
+                            <td>{{ $row->pasien?->id }} - {{ $row->pasien?->nama }}</td>
                             <td>{{ $row->keterangan }}</td>
                             <td nowrap>
                                 <ul class="mb-0 ps-3">
