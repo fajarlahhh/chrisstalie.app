@@ -13,6 +13,11 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
+                    "title" => "ICD 10",
+                    "urutkan" => true,
+                    "method" => ["Index", "Form"],
+                ],
+                [
                     "title" => "Barang Dagang",
                     "urutkan" => true,
                     "method" => ["Index", "Form"],
