@@ -277,7 +277,7 @@ class Form extends Component
                 return [
                     'kode_akun_id' => $q['kode_akun_id'],
                     'debet' => 0,
-                    'kredit' => ($q['biaya'] + $q['biaya_alat'] - $q['biaya_alat_barang'] - ($q['dokter_id'] ? $q['biaya_jasa_dokter'] : 0) - ($q['perawat_id'] && $q['perawat_id'] != '-' ? $q['biaya_jasa_perawat'] : 0)) * $q['qty'],
+                    'kredit' => ($q['biaya'] + $q['biaya_alat'] - $q['biaya_alat_barang'] + ($q['dokter_id'] ? $q['biaya_jasa_dokter'] : 0) + ($q['perawat_id'] && $q['perawat_id'] != '-' ? $q['biaya_jasa_perawat'] : 0)) * $q['qty'],
                 ];
             })->all());
 
@@ -345,6 +345,15 @@ class Form extends Component
                     })->all());
                 }
             }
+
+            //HPP Jasa Pelayanan
+            $detail = array_merge($detail, collect($this->tindakan)->map(function ($q) {
+                return [
+                    'kode_akun_id' => '57000',
+                    'debet' => (($q['dokter_id'] ? $q['biaya_jasa_dokter'] : 0) + ($q['perawat_id'] && $q['perawat_id'] != '-' ? $q['biaya_jasa_perawat'] : 0)) * $q['qty'],
+                    'kredit' => 0,
+                ];
+            })->all());
 
             $detail = array_merge($detail, collect($hppBahan)->map(function ($q) {
                 return [
