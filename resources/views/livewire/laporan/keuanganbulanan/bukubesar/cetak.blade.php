@@ -35,7 +35,7 @@
         @php
             $sumSaldo = $saldo;
         @endphp
-        @if ($data->count() > 0)
+        @if ($kodeAkunId)
             @foreach ($data as $index => $sub)
                 @php
                     $sumSaldo +=
