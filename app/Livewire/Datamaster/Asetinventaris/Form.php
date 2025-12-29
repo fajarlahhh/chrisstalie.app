@@ -69,8 +69,7 @@ class Form extends Component
             $this->data->nilai_residu = $this->nilai_residu;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
-            if (!$this->data->exists) {
-
+            
                 JurnalClass::insert(
                     jenis: 'Pembelian Aset Inventaris',
                     sub_jenis: 'Pembelian',
@@ -132,7 +131,7 @@ class Form extends Component
                     $penyusutan->jurnal_id = $jurnal->id;
                     $penyusutan->save();
                 }
-            }
+            
             $data = Aset::findOrFail($this->data->id);
 
             $cetak = view('livewire.datamaster.asetinventaris.qr', [
