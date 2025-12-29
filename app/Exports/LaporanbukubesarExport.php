@@ -32,6 +32,7 @@ class LaporanbukubesarExport implements FromView
                     : KodeAkunNeraca::where('kode_akun_id', $this->kodeAkunId)->where('periode', $this->bulan . '-01')->first()->kredit ?? 0)
                 : 0,
             'bulan' => $this->bulan,
+            'dataKodeAkun' => $this->dataKodeAkun,
             'kodeAkunId' => $this->kodeAkunId,
         ]);
     }
