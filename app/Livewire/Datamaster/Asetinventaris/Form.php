@@ -69,40 +69,13 @@ class Form extends Component
             $this->data->nilai_residu = $this->nilai_residu;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
+            if (!$this->data->exists) {
 
-            JurnalClass::insert(
-                jenis: 'Pembelian Aset Inventaris',
-                sub_jenis: 'Pembelian',
-                tanggal: $this->tanggal_perolehan,
-                uraian: 'Pembelian Aset Inventaris ' . $this->nama,
-                system: 1,
-                aset_id: $this->data->id,
-                pembelian_id: null,
-                stok_masuk_id: null,
-                pembayaran_id: null,
-                penggajian_id: null,
-                pelunasan_pembelian_id: null,
-                stok_keluar_id: null,
-                detail: [
-                    [
-                        'debet' => 0,
-                        'kredit' => $this->harga_perolehan,
-                        'kode_akun_id' => $this->kode_akun_sumber_dana_id
-                    ],
-                    [
-                        'debet' => $this->harga_perolehan,
-                        'kredit' => 0,
-                        'kode_akun_id' => $this->kode_akun_id
-                    ]
-                ]
-            );
-
-            if ($this->metode_penyusutan == 'Garis Lurus') {
-                $jurnal = JurnalClass::insert(
-                    jenis: 'Penyusutan Aset Inventaris',
-                    sub_jenis: 'Penyusutan',
+                JurnalClass::insert(
+                    jenis: 'Pembelian Aset Inventaris',
+                    sub_jenis: 'Pembelian',
                     tanggal: $this->tanggal_perolehan,
-                    uraian: 'Penyusutan Aset Inventaris ' . $this->nama,
+                    uraian: 'Pembelian Aset Inventaris ' . $this->nama,
                     system: 1,
                     aset_id: $this->data->id,
                     pembelian_id: null,
@@ -114,24 +87,52 @@ class Form extends Component
                     detail: [
                         [
                             'debet' => 0,
-                            'kredit' => $this->data->nilai_penyusutan,
-                            'kode_akun_id' => $this->data->kode_akun_penyusutan_id
+                            'kredit' => $this->harga_perolehan,
+                            'kode_akun_id' => $this->kode_akun_sumber_dana_id
                         ],
                         [
-                            'debet' => $this->data->nilai_penyusutan,
+                            'debet' => $this->harga_perolehan,
                             'kredit' => 0,
-                            'kode_akun_id' => '65900'
+                            'kode_akun_id' => $this->kode_akun_id
                         ]
                     ]
                 );
 
-                $penyusutan = new AsetPenyusutan();
-                $penyusutan->aset_id = $this->data->id;
-                $penyusutan->nilai = $this->data->nilai_penyusutan;
-                $penyusutan->jurnal_id = $jurnal->id;
-                $penyusutan->save();
-            }
+                if ($this->metode_penyusutan == 'Garis Lurus') {
+                    $jurnal = JurnalClass::insert(
+                        jenis: 'Penyusutan Aset Inventaris',
+                        sub_jenis: 'Penyusutan',
+                        tanggal: $this->tanggal_perolehan,
+                        uraian: 'Penyusutan Aset Inventaris ' . $this->nama,
+                        system: 1,
+                        aset_id: $this->data->id,
+                        pembelian_id: null,
+                        stok_masuk_id: null,
+                        pembayaran_id: null,
+                        penggajian_id: null,
+                        pelunasan_pembelian_id: null,
+                        stok_keluar_id: null,
+                        detail: [
+                            [
+                                'debet' => 0,
+                                'kredit' => $this->data->nilai_penyusutan,
+                                'kode_akun_id' => $this->data->kode_akun_penyusutan_id
+                            ],
+                            [
+                                'debet' => $this->data->nilai_penyusutan,
+                                'kredit' => 0,
+                                'kode_akun_id' => '65900'
+                            ]
+                        ]
+                    );
 
+                    $penyusutan = new AsetPenyusutan();
+                    $penyusutan->aset_id = $this->data->id;
+                    $penyusutan->nilai = $this->data->nilai_penyusutan;
+                    $penyusutan->jurnal_id = $jurnal->id;
+                    $penyusutan->save();
+                }
+            }
             $data = Aset::findOrFail($this->data->id);
 
             $cetak = view('livewire.datamaster.asetinventaris.qr', [
