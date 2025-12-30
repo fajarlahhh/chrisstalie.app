@@ -30,7 +30,7 @@ class JurnalClass
         $nomor = self::getNomor($tanggal);
         
         $jurnal = new Jurnal();
-        $jurnal->id = str_replace('/', '', substr($nomor, 6, 12));
+        $jurnal->id = str_replace('/', '', substr($nomor, 6, 14));
         $jurnal->nomor = $nomor;
         $jurnal->jenis = $jenis;
         $jurnal->sub_jenis = $sub_jenis;
