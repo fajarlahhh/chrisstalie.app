@@ -44,14 +44,14 @@ class Form extends Component
         ]);
 
         DB::transaction(function () {
-            $edit = false;
+            $edit = true;
             if (!$this->data->exists) {
                 $terakhir = Aset::where('kode_akun_id', $this->kode_akun_id)
                     ->orderBy('created_at', 'desc')
                     ->first();
                 $nomor = $terakhir ? (int)substr($terakhir->nomor, 6, 4) : 0;
                 $this->data->nomor = $this->kode_akun_id . '.' . sprintf('%04d', $nomor + 1);
-                $edit = true;
+                $edit = false;
             }
 
             $this->data->nama = $this->nama;
