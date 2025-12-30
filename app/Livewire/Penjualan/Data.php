@@ -39,7 +39,7 @@ class Data extends Component
         $query = Pembayaran::where('bebas', 1)->with(['stokKeluar.barang', 'stokKeluar.barangSatuan', 'pengguna.pegawai']);
 
         if ($this->tanggal1) {
-            $query->whereBetween(DB::raw('DATE(created_at)'), [$this->tanggal1, $this->tanggal2]);
+            $query->whereBetween(DB::raw('DATE(tanggal)'), [$this->tanggal1, $this->tanggal2]);
         }
 
         if ($this->cari) {
@@ -48,7 +48,7 @@ class Data extends Component
             });
         }
 
-        $data = $query->orderBy('created_at', 'desc')
+        $data = $query->orderBy('tanggal', 'desc')
             ->orderBy('id', 'desc')
             ->get();
 

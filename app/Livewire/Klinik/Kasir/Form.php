@@ -29,9 +29,11 @@ class Form extends Component
     public $metode_bayar = 1, $cash = 0, $keterangan, $dataBarang = [];
     public $keterangan_pembayaran, $total_tagihan = 0, $total_tindakan = 0, $total_resep = 0, $diskon = 0, $bahan = [], $alat = [];
     public $dataKodeAkunPenyusutan = [];
+    public $tanggal;
 
     public function mount(Registrasi $data)
     {
+        $this->tanggal = date('Y-m-d');
         $this->dataKodeAkunPenyusutan = KodeAkun::where('parent_id', '15200')->detail()->get()->toArray();
         $this->data = $data;
         if ($data->pembayaran) {
@@ -216,7 +218,7 @@ class Form extends Component
                 abort(400, 'Pembayaran sudah ada');
             }
 
-            $dataTerakhir = Pembayaran::where('created_at', 'like', date('Y-m') . '%')->orderByDesc('id')->first();
+            $dataTerakhir = Pembayaran::where('tanggal', 'like', date('Y-m') . '%')->orderByDesc('id')->first();
 
             $metodeBayar = MetodeBayar::findOrFail($this->metode_bayar);
 
@@ -233,6 +235,7 @@ class Form extends Component
             $pembayaran->total_tagihan = $this->total_tagihan;
             $pembayaran->kode_akun_id = $metodeBayar->kode_akun_id;
             $pembayaran->bebas = 0;
+            $pembayaran->tanggal = $this->tanggal;
             $pembayaran->pasien_id = $this->data->pasien_id;
             $pembayaran->registrasi_id = $this->data->id;
             $pembayaran->pengguna_id = auth()->id();
@@ -392,7 +395,7 @@ class Form extends Component
         $jurnal = JurnalClass::insert(
             jenis: 'Pendapatan Pasien Klinik',
             sub_jenis: 'Pendapatan',
-            tanggal: now(),
+            tanggal: $this->tanggal,
             uraian: 'Pendapatan Pasien Klinik No. Nota ' . $pembayaran->id,
             system: 1,
             pembayaran_id: $pembayaran->id,

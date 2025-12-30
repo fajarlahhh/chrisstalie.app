@@ -56,6 +56,15 @@
                         </select>
                     </div>
                 </div>
+                @role('administrator|superuser')
+                    <div class="mb-3">
+                        <label class="form-label">Tanggal</label>
+                        <input class="form-control" type="date" wire:model="tanggal" x-model="tanggal" />
+                        @error('tanggal')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                @endrole
                 <div class="mb-3">
                     <label class="form-label">Keterangan</label>
                     <textarea class="form-control" type="text" wire:model="keterangan" x-model="keterangan"></textarea>
@@ -213,7 +222,7 @@
         </form>
     </div>
     <x-modal.cetak judul='Nota' />
-    
+
     <div wire:loading>
         <x-loading />
     </div>
@@ -226,6 +235,7 @@
                 barang: @js($barang).map(row => ({
                     ...row
                 })),
+                tanggal: @js($tanggal ?? ''),
                 dataBarang: @js($dataBarang),
                 dataMetodeBayar: @js($dataMetodeBayar ?? []),
                 total_harga_barang: 0,
@@ -314,6 +324,7 @@
                                 $wire.set('cash', this.cash, true);
                                 $wire.set('metode_bayar', this.metode_bayar, true);
                                 $wire.set('total_tagihan', this.total_tagihan, true);
+                                $wire.set('tanggal', this.tanggal, true);
                             }
                         }
                     }

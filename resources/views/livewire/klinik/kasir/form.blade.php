@@ -18,6 +18,15 @@
                 <h4 class="panel-title">Form</h4>
             </div>
             <div class="panel-body">
+                @role('administrator|superuser')
+                    <div class="mb-3">
+                        <label class="form-label">Tanggal</label>
+                        <input class="form-control" type="date" wire:model="tanggal" x-model="tanggal" />
+                        @error('tanggal')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                @endrole
                 <table class="table p-0">
                     <thead>
                         <tr>
@@ -224,7 +233,7 @@
             </div>
         </div>
     </form>
-    
+
     <div wire:loading>
         <x-loading />
     </div>

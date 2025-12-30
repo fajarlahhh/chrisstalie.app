@@ -12,7 +12,6 @@ class Pembayaran extends Model
     protected $table = 'pembayaran';
     protected $primaryKey = 'id';
     public $incrementing = false;
-    protected $keyType = 'string';
 
     public function penjualan(): BelongsTo
     {

@@ -58,7 +58,7 @@ class Home extends Component
     }
     public function getDataPembayaranBulanIni()
     {
-        return Pembayaran::where('created_at', 'like', date('Y-m') . '%')->get();
+        return Pembayaran::where('tanggal', 'like', date('Y-m') . '%')->get();
     }
 
     public function getDataPengadaanBarangJatuhTempo()

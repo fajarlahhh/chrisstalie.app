@@ -23,7 +23,7 @@ class Index extends Component
     public $total_tagihan = 0;
     public $pasien_id;
     public $keterangan_pembayaran;
-
+    public $tanggal;
     public function submit()
     {
         $this->validateWithCustomMessages(
@@ -57,7 +57,7 @@ class Index extends Component
         );
 
         DB::transaction(function () {
-            $dataTerakhir = Pembayaran::where('created_at', 'like',  date('Y-m') . '%')->orderBy('id', 'desc')->first();
+            $dataTerakhir = Pembayaran::where('tanggal', 'like',  date('Y-m') . '%')->orderBy('id', 'desc')->first();
 
             $metodeBayar = MetodeBayar::findOrFail($this->metode_bayar);
 
@@ -77,7 +77,8 @@ class Index extends Component
             $pembayaran->kode_akun_id = $metodeBayar->kode_akun_id;
             $pembayaran->bebas = 1;
             $pembayaran->pasien_id = $this->pasien_id;
-            $pembayaran->pengguna_id = auth()->user()->id;
+            $pembayaran->pengguna_id = auth()->id();
+            $pembayaran->tanggal = $this->tanggal;
             $pembayaran->save();
 
             $barang = collect($this->barang)->map(function ($q) {
@@ -147,7 +148,7 @@ class Index extends Component
         JurnalClass::insert(
             jenis: 'Pendapatan Penjualan Barang Bebas',
             sub_jenis: 'Pendapatan',
-            tanggal: now(),
+            tanggal: $this->tanggal,
             uraian: 'Pendapatan Penjualan Barang Bebas ' . $pembayaran->id,
             system: 1,
             aset_id: null,
@@ -165,6 +166,7 @@ class Index extends Component
     {
         $this->dataMetodeBayar = MetodeBayar::get()->toArray();
         $this->dataBarang = BarangClass::getBarang('Apotek', null, 0);
+        $this->tanggal = date('Y-m-d');
     }
 
     public function render()

@@ -44,7 +44,7 @@ class Index extends Component
     public function getPendapatan()
     {
         return Pembayaran::with(['pengguna'])
-            ->where('created_at', 'like', $this->tanggal . '%')->get();
+            ->where('tanggal', 'like', $this->tanggal . '%')->get();
     }
 
     public function getPengeluaran()

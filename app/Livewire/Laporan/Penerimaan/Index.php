@@ -37,9 +37,9 @@ class Index extends Component
 
     private function getData($paginate = true)
     {
-        $query = Pembayaran::with(['registrasi.pasien', 'pengguna.pegawai'])->whereBetween(DB::raw('DATE(created_at)'), [$this->tanggal1, $this->tanggal2]);
+        $query = Pembayaran::with(['registrasi.pasien', 'pengguna.pegawai'])->whereBetween(DB::raw('DATE(tanggal)'), [$this->tanggal1, $this->tanggal2]);
         if (!auth()->user()->hasRole(['administrator', 'supervisor'])) {
-            $query->where('pengguna_id', auth()->user()->id);
+            $query->where('pengguna_id', auth()->id());
         }
         return $query->get();
     }
@@ -49,7 +49,7 @@ class Index extends Component
         $data = $this->getData(true);
         return view('livewire.laporan.penerimaan.index', [
             'data' =>  $data->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id))->when($this->metode_bayar, fn($q) => $q->where('metode_bayar', $this->metode_bayar)),
-            'dataPengguna' => auth()->user()->hasRole(['administrator', 'supervisor']) ? Pengguna::whereIn('id', $data->pluck('pengguna_id')->unique()->toArray())->get()->toArray() : Pengguna::where('id', auth()->user()->id)->get()->toArray()
+            'dataPengguna' => auth()->user()->hasRole(['administrator', 'supervisor']) ? Pengguna::whereIn('id', $data->pluck('pengguna_id')->unique()->toArray())->get()->toArray() : Pengguna::where('id', auth()->id())->get()->toArray()
         ]);
     }
 }
