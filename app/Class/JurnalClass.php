@@ -21,7 +21,7 @@ class JurnalClass
             ->orderBy('id', 'desc')
             ->first();
         $nomorTerakhir = $terakhir ? (int)substr($terakhir->id, 12, 5) : 0;
-        $nomor = str_replace('-', '/', substr($tanggal, 0, 7)) . '/' . sprintf('%05d', $nomorTerakhir + 1);
+        $nomor = 'JURNAL/' . str_replace('-', '/', substr($tanggal, 0, 7)) . '/' . sprintf('%05d', $nomorTerakhir + 1);
         return $nomor;
     }
 
@@ -30,7 +30,7 @@ class JurnalClass
         $nomor = self::getNomor($tanggal);
         
         $jurnal = new Jurnal();
-        $jurnal->id = str_replace('/', '', $nomor);
+        $jurnal->id = str_replace('/', '', substr($nomor, 6, 12));
         $jurnal->nomor = $nomor;
         $jurnal->jenis = $jenis;
         $jurnal->sub_jenis = $sub_jenis;
