@@ -26,7 +26,7 @@ class Ulangtahun extends Component
             'data' => Pasien::whereRaw('
                 (
                     (DATE_FORMAT(tanggal_lahir, "%m-%d") >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 5 DAY), "%m-%d")
-                    AND DATE_FORMAT(tanggal_lahir, "%m-%d") <= DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 5 DAY), "%m-%d"))
+                    OR DATE_FORMAT(tanggal_lahir, "%m-%d") <= DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 5 DAY), "%m-%d"))
                 )
             ')
                 ->orderByRaw('DATE_FORMAT(tanggal_lahir, "%m-%d") asc')
