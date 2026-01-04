@@ -33,12 +33,8 @@
                         <th class="w-10px">No.</th>
                         <th>Tanggal</th>
                         <th>Barang</th>
-                        <th>No Batch</th>
-                        <th>Tanggal Kedaluarsa</th>
-                        <th>Harga Beli</th>
                         <th>Qty</th>
-                        <th>Sub Total</th>
-                        <th>Keterangan</th>
+                        <th>Operator</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -48,12 +44,9 @@
                             <td>{{ $index + 1 }}</td>
                             <td class="text-nowrap w-100px">{{ $row->created_at }}</td>
                             <td class="text-nowrap w-100px">{{ $row->barang->nama }}</td>
-                            <td class="text-nowrap w-100px">{{ $row->no_batch }}</td>
-                            <td class="text-nowrap w-100px">{{ $row->tanggal_kedaluarsa }}</td>
-                            <td class="text-nowrap w-100px">{{ $row->harga_beli }}</td>
                             <td class="text-nowrap w-100px">{{ $row->qty }}</td>
-                            <td class="text-nowrap w-100px">{{ $row->sub_total }}</td>
-                            <td class="text-nowrap w-100px">{{ $row->keterangan }}</td>
+                            <td class="text-nowrap w-100px">{{ $row->pengguna->nama }}</td>
+                            <td></td>
                         </tr>
                     @empty
                         <tr>
