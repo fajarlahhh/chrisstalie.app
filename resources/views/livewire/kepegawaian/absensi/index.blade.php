@@ -42,11 +42,13 @@
             <div class="row w-100">
                 <div class="col-md-2">
                     @unlessrole(config('app.name') . '-guest')
-                        <a href="javascript:;" wire:click="download" class="btn btn-outline-secondary btn-block"
-                            wire:loading.attr="disabled">
-                            <span wire:loading class="spinner-border spinner-border-sm"></span>
-                            Download
-                        </a>
+                        @if ($connected)
+                            <a href="javascript:;" wire:click="download" class="btn btn-outline-secondary btn-block"
+                                wire:loading.attr="disabled">
+                                <span wire:loading class="spinner-border spinner-border-sm"></span>
+                                Download
+                            </a>
+                        @endif
                         <a href="javascript:;" wire:click="posting" class="btn btn-outline-secondary btn-block"
                             wire:loading.attr="disabled">
                             <span wire:loading class="spinner-border spinner-border-sm"></span>
