@@ -57,7 +57,7 @@ class Index extends Component
         );
 
         DB::transaction(function () {
-            $dataTerakhir = Pembayaran::where('tanggal', 'like',  date('Y-m') . '%')->orderBy('id', 'desc')->first();
+            $dataTerakhir = Pembayaran::where('tanggal', 'like',  substr($this->tanggal, 0, 7) . '%')->orderBy('id', 'desc')->first();
 
             $metodeBayar = MetodeBayar::findOrFail($this->metode_bayar);
 

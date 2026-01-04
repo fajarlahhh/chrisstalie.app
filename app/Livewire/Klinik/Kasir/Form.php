@@ -218,7 +218,7 @@ class Form extends Component
                 abort(400, 'Pembayaran sudah ada');
             }
 
-            $dataTerakhir = Pembayaran::where('tanggal', 'like', date('Y-m') . '%')->orderByDesc('id')->first();
+            $dataTerakhir = Pembayaran::where('tanggal', 'like', substr($this->tanggal, 0, 7) . '%')->orderByDesc('id')->first();
 
             $metodeBayar = MetodeBayar::findOrFail($this->metode_bayar);
 
