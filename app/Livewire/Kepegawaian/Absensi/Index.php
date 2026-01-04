@@ -53,7 +53,6 @@ class Index extends Component
     {
         DB::transaction(function () {
             $dataAbsensi = Absensi::with(['pegawai.kehadiran'])
-                ->when($this->pegawai_id, fn($q) => $q->where('pegawai_id', $this->pegawai_id))
                 ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                 ->when(
                     $this->cari,
