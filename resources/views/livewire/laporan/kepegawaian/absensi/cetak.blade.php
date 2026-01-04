@@ -23,8 +23,8 @@
                 <th rowspan="2">Pegawai</th>
                 <th rowspan="2">Jml.<br>Hari Kerja</th>
                 <th rowspan="2">Kehadiran</th>
-                <th rowspan="2">Tanpa<br>Keterangan</th>
-                <th rowspan="2">Telat</th>
+                <th rowspan="2" class="bg-red-100">Tanpa<br>Keterangan</th>
+                <th rowspan="2" class="bg-orange-100">Telat</th>
                 <th colspan="2">Jenis Izin</th>
             </tr>
             <tr>
@@ -40,13 +40,71 @@
                 <tr>
                     <td>{{ ++$no }}</td>
                     <td>{{ $row['nama'] }}</td>
-                    <td>{{ count($row['absensi']) }}</td>
-                    <td>{{ collect($row['absensi'])->whereNotNull('masuk')->count() }}</td>
-                    <td>{{ collect($row['absensi'])->whereNull('masuk')->count() }}</td>
-                    <td>{{ collect($row['absensi'])->whereNotNull('masuk')->where('jam_masuk', '>', 'masuk')->count() }}
+                    <td>
+                        @php
+                            $hariKerja = collect($row['absensi'])->whereNotNull('masuk')->count();
+                        @endphp
+                        @if ($hariKerja > 0)
+                            <strong>{{ $hariKerja }}</strong>
+                        @else
+                            0
+                        @endif
                     </td>
-                    <td>{{ collect($row['absensi'])->where('izin', 'Sakit')->count() }}</td>
-                    <td>{{ collect($row['absensi'])->where('izin', 'Izin')->count() }}</td>
+                    <td>
+                        @php
+                            $kehadiran = collect($row['absensi'])->whereNotNull('masuk')->count();
+                        @endphp
+                        @if ($kehadiran > 0)
+                            <strong>{{ $kehadiran }}</strong>
+                        @else
+                            0
+                        @endif
+                    </td>
+                    <td class="bg-red-100">
+                        @php
+                            $tanpaKeterangan = collect($row['absensi'])->whereNull('masuk')->count();
+                        @endphp
+                        @if ($tanpaKeterangan > 0)
+                            <strong>{{ $tanpaKeterangan }}</strong>
+                        @else
+                            0
+                        @endif
+                    </td>
+                    <td class="bg-orange-100">
+                        @php
+                            $telat = collect($row['absensi'])
+                                ->whereNotNull('masuk')
+                                ->map(function ($item) {
+                                    return $item['masuk'] > $item['jam_masuk'] ? 1 : 0;
+                                })
+                                ->sum();
+                        @endphp
+                        @if ($telat > 0)
+                            <strong>{{ $telat }}</strong>
+                        @else
+                            0
+                        @endif
+                    </td>
+                    <td>
+                        @php
+                            $sakit = collect($row['absensi'])->where('izin', 'Sakit')->count();
+                        @endphp
+                        @if ($sakit > 0)
+                            <strong>{{ $sakit }}</strong>
+                        @else
+                            0
+                        @endif
+                    </td>
+                    <td>
+                        @php
+                            $izin = collect($row['absensi'])->where('izin', 'Izin')->count();
+                        @endphp
+                        @if ($izin > 0)
+                            <strong>{{ $izin }}</strong>
+                        @else
+                            0
+                        @endif
+                    </td>
                 </tr>
             @endforeach
         </tbody>
@@ -58,10 +116,11 @@
                 <tr>
                     <th>No.</th>
                     <th>Tanggal</th>
+                    <th>Jadwal Shift</th>
                     <th>Jam Masuk</th>
                     <th>Jam Pulang</th>
                     <th>Izin</th>
-                    <th>Jadwal Shift</th>
+                    <th>Jumlah Jam Kerja</th>
                     <th>Keterangan</th>
                 </tr>
             </thead>
@@ -70,10 +129,33 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $row['tanggal'] }}</td>
-                        <td>{{ $row['masuk'] }}</td>
-                        <td>{{ $row['pulang'] }}</td>
-                        <td>{{ $row['izin'] }}</td>
                         <td>{{ $row['jam_masuk'] }} s/d {{ $row['jam_pulang'] }}</td>
+                        <td>
+                            @if (!$row['izin'])
+                                {{ $row['masuk'] }}
+                            @endif
+                        </td>
+                        <td>
+                            @if (!$row['izin'])
+                                {{ $row['masuk'] != $row['pulang'] ? $row['pulang'] : null }}
+                            @endif
+                        </td>
+                        <td>
+                            @if (!$row['izin'])
+                                {{ $row['izin'] }}
+                            @endif
+                        </td>
+                        <td>
+                            @if (!$row['izin'] && $row['masuk'] && $row['pulang'] && $row['pulang'] != $row['masuk'])
+                                @php
+                                    $detik = strtotime($row['pulang']) - strtotime($row['masuk']);
+                                    $jam = floor($detik / 3600);
+                                    $menit = floor(($detik % 3600) / 60);
+                                    $jamKerja = sprintf('%02d jam %02d menit', $jam, $menit);
+                                @endphp
+                                {{ $jamKerja }}
+                            @endif
+                        </td>
                         <td>
                             @if ($row['masuk'])
                                 @if ($row['masuk'] > $row['jam_masuk'])
