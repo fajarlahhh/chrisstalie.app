@@ -99,13 +99,8 @@ class Index extends Component
             }
             $absensi = collect($dataAbsensi)->chunk(1000);
             foreach ($absensi as $absen) {
-                Absensi::where('id', $absen['id'])->updateOrInsert([
-                    'masuk' => $absen['masuk'],
-                    'pulang' => $absen['pulang'],
-                    'pengguna_id' => auth()->id(),
-                ]);
+                Absensi::insertOrIgnore($absen->toArray());
             }
-            session()->flash('success', 'Berhasil mengambil data absensi');
         });
 
         // $Connect1 = fsockopen(config('app.fingerprint_ip'), "80", $errno, $errstr, 30);
@@ -121,6 +116,7 @@ class Index extends Component
         //         $buffer1 = $buffer1 . $Response1;
         //     }
         // }
+        session()->flash('success', 'Berhasil mengambil data absensi');
     }
 
     public function render()
