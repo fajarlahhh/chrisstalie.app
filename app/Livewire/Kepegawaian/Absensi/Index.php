@@ -4,6 +4,7 @@ namespace App\Livewire\Kepegawaian\Absensi;
 
 use App\Models\Absensi;
 use Livewire\Component;
+use App\Models\Kehadiran;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
@@ -92,7 +93,17 @@ class Index extends Component
                 ];
             });
 
-            DB::transaction(function () use ($dataAbsensi) {
+            DB::transaction(function () use ($dataAbsensi, $dataKehadiran) {
+                $kehadiran = collect($dataKehadiran)->map(function ($q) {
+                    return [
+                        'pegawai_id' => $q['pegawai_id'],
+                        'waktu' => $q['waktu'],
+                        'kode' => $q['kode'],
+                    ];
+                });
+                foreach ($kehadiran as $kehadiran) {
+                    Kehadiran::insertOrIgnore($kehadiran->toArray());
+                }
                 $absensi = collect($dataAbsensi)->chunk(1000);
                 foreach ($absensi as $absen) {
                     Absensi::insertOrIgnore($absen->toArray());

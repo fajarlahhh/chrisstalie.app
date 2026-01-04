@@ -35,6 +35,7 @@
                     <tr>
                         <th class="w-10px">No.</th>
                         <th>No. Registrasi</th>
+                        <th>No. Nota</th>
                         <th>Tgl. Registrasi</th>
                         <th>RM</th>
                         <th>Nama</th>
@@ -61,6 +62,7 @@
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
                             <td>{{ $this->status == 1 ? $row->id : $row->registrasi->id }}</td>
+                            <td>{{ $this->status == 1 ? $row->id : $row->id }}</td>
                             <td>{{ $this->status == 1 ? $row->tanggal : $row->registrasi->tanggal }}</td>
                             <td>{{ $this->status == 1 ? $row->pasien->id : $row->registrasi->pasien->id }}</td>
                             <td>{{ $this->status == 1 ? $row->pasien->nama : $row->registrasi->pasien->nama }}</td>
@@ -110,7 +112,7 @@
                                             <li>No. Nota : <b>{{ $row->id }}</b></li>
                                             <li>Metode Bayar : <b>{{ $row->metode_bayar }}</b></li>
                                             <li>Kasir : <b>{{ $row->pengguna->nama }}</b></li>
-                                            <li>Waktu : <b>{{ $row->created_at }}</b></li>
+                                            <li>Tanggal Input : <b>{{ $row->created_at }}</b></li>
                                         </ul>
                                     </small>
                                 </td>
