@@ -8,18 +8,21 @@ use App\Models\Kehadiran;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
+use App\Models\Pegawai;
 
 class Index extends Component
 {
     use WithPagination;
 
     #[Url]
-    public $cari, $tanggal1, $tanggal2;
+    public $cari, $tanggal1, $tanggal2, $pegawai_id;
+    public $dataPegawai = [];
 
     public function mount()
     {
         $this->tanggal1 = $this->tanggal1 ?: date('Y-m-01');
         $this->tanggal2 = $this->tanggal2 ?: date('Y-m-d');
+        $this->dataPegawai = Pegawai::orderBy('nama')->get()->toArray();
     }
 
     public function updatedCari()
@@ -46,10 +49,41 @@ class Index extends Component
         return $hasil;
     }
 
+    public function posting()
+    {
+        DB::transaction(function () {
+            $dataAbsensi = Absensi::with(['pegawai.kehadiran'])
+                ->when($this->pegawai_id, fn($q) => $q->where('pegawai_id', $this->pegawai_id))
+                ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
+                ->when(
+                    $this->cari,
+                    fn($q) => $q->whereHas('pegawai', fn($r) => $r
+                        ->where('nama', 'ilike', '%' . $this->cari . '%'))
+                )
+                ->orderBy('tanggal')->get()->map(function ($q) {
+                    $kehadiran = $q->pegawai->kehadiran->where('tanggal', $q->tanggal);
+                    $masuk = $kehadiran->first()?->waktu;
+                    $pulang = $kehadiran->last()?->waktu;
+                    return [
+                        'id' => $q->id,
+                        'masuk' => $masuk,
+                        'pulang' => $pulang,
+                    ];
+                });
+            foreach ($dataAbsensi as $absensi) {
+                Absensi::where('id', $absensi['id'])->update([
+                    'masuk' => $absensi['masuk'],
+                    'pulang' => $absensi['pulang'],
+                ]);
+            }
+
+            session()->flash('success', 'Berhasil mengambil data absensi');
+        });
+    }
+
     public function download()
     {
         ini_set('max_execution_time', 300);
-
         $Connect = fsockopen(config('app.fingerprint_ip'), "80", $errno, $errstr, 30);
         if ($Connect) {
 
@@ -72,6 +106,7 @@ class Index extends Component
             $data = $this->parse($buffer[$i], "<Row>", "</Row>");;
             if ($data) {
                 array_push($dataKehadiran, [
+                    'id' => $this->parse($data, "<DateTime>", "</DateTime>") . '-' . (int)$this->parse($data, "<PIN>", "</PIN>"),
                     'pegawai_id' => (int)$this->parse($data, "<PIN>", "</PIN>"),
                     'waktu' =>  substr($this->parse($data, "<DateTime>", "</DateTime>"), 11, 8),
                     'tanggal' =>  substr($this->parse($data, "<DateTime>", "</DateTime>"), 0, 10),
@@ -81,7 +116,6 @@ class Index extends Component
                 ]);
             }
         }
-
         DB::transaction(function () use ($dataKehadiran) {
             foreach ($dataKehadiran as $kehadiran) {
                 Kehadiran::insertOrIgnore($kehadiran);
@@ -107,7 +141,8 @@ class Index extends Component
     public function render()
     {
         return view('livewire.kepegawaian.absensi.index', [
-            'data' => Absensi::with(['pegawai'])
+            'data' => Absensi::with(['pegawai.kehadiran'])
+                ->when($this->pegawai_id, fn($q) => $q->where('pegawai_id', $this->pegawai_id))
                 ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                 ->when(
                     $this->cari,

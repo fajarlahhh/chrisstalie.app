@@ -17,24 +17,25 @@
 
         // Only check if the function exists for security and hosting compatibility
         if (function_exists('exec')) {
-            $pingCommand = (stripos(PHP_OS, 'WIN') === 0)
-                ? 'ping -n 1 192.168.110.36'
-                : 'ping -c 1 192.168.110.36';
+            $pingCommand =
+                stripos(PHP_OS, 'WIN') === 0
+                    ? 'ping -n 1 ' . config('app.fingerprint_ip')
+                    : 'ping -c 1 ' . config('app.fingerprint_ip');
             @exec($pingCommand, $output, $return_var);
-            $connected = ($return_var === 0);
+            $connected = $return_var === 0;
         }
     @endphp
 
     @if ($connected)
         <div class="alert alert-success">
-            Terhubung ke 192.168.110.36
+            Terhubung ke Mesin Fingerprint
         </div>
     @else
         <div class="alert alert-danger">
-            Tidak terhubung ke 192.168.110.36
+            Tidak terhubung ke Mesin Fingerprint
         </div>
     @endif
-    
+
     <div class="panel panel-inverse" data-sortable-id="table-basic-2">
         <!-- BEGIN panel-heading -->
         <div class="panel-heading">
@@ -46,11 +47,22 @@
                             <span wire:loading class="spinner-border spinner-border-sm"></span>
                             Download
                         </a>
+                        <a href="javascript:;" wire:click="posting" class="btn btn-outline-secondary btn-block"
+                            wire:loading.attr="disabled">
+                            <span wire:loading class="spinner-border spinner-border-sm"></span>
+                            Posting
+                        </a>
                     @endunlessrole
                 </div>
                 <div class="col-md-10">
                     <div class="panel-heading-btn float-end">
                         <div class="input-group w-100">
+                            <select class="form-control w-auto" wire:model="pegawai_id">
+                                <option value="">Semua Pegawai</option>
+                                @foreach ($dataPegawai as $row)
+                                    <option value="{{ $row['id'] }}">{{ $row['nama'] }}</option>
+                                @endforeach
+                            </select>
                             <input class="form-control w-auto" type="date" autocomplete="off"
                                 wire:model="tanggal1" />
                             <input class="form-control w-auto" type="date" autocomplete="off"
@@ -74,6 +86,7 @@
                             <th>No.</th>
                             <th>Tanggal</th>
                             <th>Nama</th>
+                            <th>Jadwal Shift</th>
                             <th>Izin</th>
                             <th>Masuk</th>
                             <th>Pulang</th>
@@ -87,9 +100,26 @@
                                 </td>
                                 <td>{{ $row->tanggal }}</td>
                                 <td>{{ $row->pegawai->nama }}</td>
+                                <td>
+                                    @if ($row->jam_masuk && $row->jam_pulang)
+                                        {{ $row->jam_masuk . ' s/d ' . $row->jam_pulang }}
+                                    @else
+                                        Libur
+                                    @endif
+                                </td>
                                 <td>{{ $row->izin ? $row->izin . ' (' . $row->keterangan . ')' : null }}</td>
-                                <td>{{ $row->masuk }}</td>
-                                <td>{{ $row->pulang }}</td>
+                                @if ($row->jam_masuk && $row->jam_pulang)
+                                    @php
+                                        $kehadiran = $row->pegawai->kehadiran->where('tanggal', $row->tanggal);
+                                        $masuk = $kehadiran->first()?->waktu;
+                                        $pulang = $kehadiran->last()?->waktu;
+                                    @endphp
+                                    <td>{{ $masuk }}</td>
+                                    <td>{{ $pulang }}</td>
+                                @else
+                                    <td></td>
+                                    <td></td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>
@@ -103,7 +133,7 @@
         </div>
     </div>
     <x-alert />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

@@ -38,4 +38,14 @@ class Pegawai extends Model
     {
         return $this->hasMany(Absensi::class);
     }
+
+    public function kehadiran(): HasMany
+    {
+        return $this->hasMany(Kehadiran::class);
+    }
+
+    public function jadwalShift(): HasMany
+    {
+        return $this->hasMany(JadwalShift::class);
+    }
 }
