@@ -121,6 +121,7 @@
                     <th>Jam Pulang</th>
                     <th>Izin</th>
                     <th>Jumlah Jam Kerja</th>
+                    <th>Jam Kerja Standar</th>
                     <th>Keterangan</th>
                 </tr>
             </thead>
@@ -151,15 +152,42 @@
                                     $detik = strtotime($row['pulang']) - strtotime($row['masuk']);
                                     $jam = floor($detik / 3600);
                                     $menit = floor(($detik % 3600) / 60);
-                                    $jamKerja = sprintf('%02d jam %02d menit', $jam, $menit);
+                                    $jamKerja = sprintf('%02d:%02d', $jam, $menit);
                                 @endphp
                                 {{ $jamKerja }}
                             @endif
                         </td>
                         <td>
+                            @php
+                                $detikStandar = strtotime($row['jam_pulang']) - strtotime($row['jam_masuk']);
+                                $jamStandar = floor($detikStandar / 3600);
+                                $menitStandar = floor(($detikStandar % 3600) / 60);
+                                $jamKerjaStandar = sprintf('%02d:%02d', $jamStandar, $menitStandar);
+                            @endphp
+                            {{ $jamKerjaStandar }}
+                        </td>
+                        <td>
                             @if ($row['masuk'])
                                 @if ($row['masuk'] > $row['jam_masuk'])
-                                    <span class="badge bg-warning">Telat</span>
+                                    @php
+                                        // Hitung jumlah waktu telat dalam menit
+                                        $jamMasuk = strtotime($row['jam_masuk']);
+                                        $masuk = strtotime($row['masuk']);
+                                        $terlambat = $masuk - $jamMasuk;
+                                        $telatJam = floor($terlambat / 3600);
+                                        $telatMenit = floor(($terlambat % 3600) / 60);
+                                    @endphp
+                                    <span class="badge bg-warning">
+                                        Telat
+                                        @if ($telatJam > 0)
+                                            {{ $telatJam }} jam
+                                        @endif
+                                        @if ($telatMenit > 0)
+                                            {{ $telatMenit }} menit
+                                        @elseif($telatJam == 0 && $telatMenit == 0 && $terlambat > 0)
+                                            Kurang dari 1 menit
+                                        @endif
+                                    </span>
                                 @endif
                             @else
                                 <span class="badge bg-danger">Tanpa Keterangan</span>
