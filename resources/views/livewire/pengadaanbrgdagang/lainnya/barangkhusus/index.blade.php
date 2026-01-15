@@ -48,11 +48,12 @@
                             <td>{{ $row->supplier?->nama }}</td>
                             <td>
                                 @if ($row->pelunasanPembelian)
-                                    <span class="badge bg-success">Lunas</span>
+                                    <span class="badge bg-success">Lunas
+                                        ({{ $row->pelunasanPembelian->kodeAkunPembayaran->nama }})</span>
                                 @else
                                     {!! $row->pembayaran == 'Jatuh Tempo'
-                                        ? '<span class="badge bg-danger">Jatuh Tempo : ' . $row->jatuh_tempo . '</span>'
-                                        : '<span class="badge bg-success">Lunas</span>' !!}
+                                        ? '<span class="badge bg-danger">Jatuh Tempo : ' . $row->jatuh_tempo . ' (' . $row->kode_akun_id . ' - ' . $row->kodeAkun->nama . ')</span>'
+                                        : '<span class="badge bg-success">Lunas (' . $row->kode_akun_id . ' - ' . $row->kodeAkun->nama . ')</span>' !!}
                                 @endif
                             </td>
                             <td>

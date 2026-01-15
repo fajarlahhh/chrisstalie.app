@@ -59,6 +59,11 @@ class Pembelian extends Model
         return $this->hasMany(Stok::class)->whereNotNull('stok_keluar_id');
     }
 
+    public function kodeAkun(): BelongsTo
+    {
+        return $this->belongsTo(KodeAkun::class);
+    }
+
     public function getTotalHargaAttribute(): float
     {
         return $this->pembelianDetail->sum(function ($item) {

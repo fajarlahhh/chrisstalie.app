@@ -59,7 +59,7 @@
                             <div class="stats-content">
                                 <div class="stats-title">PENGELUARAN BULAN INI</div>
                                 <div class="stats-number text-end">
-                                    {{ number_format($dataPengeluaranBulanIni->sum('kredit'), 2) }}
+                                    {{ number_format($dataPengeluaranBulanIni->sum(fn($row) => $row->jurnalDetail->sum('kredit'))) }}
                                 </div>
                                 <div class="stats-progress progress">
                                     <div class="progress-bar" style="width: 100%;"></div>
@@ -130,7 +130,9 @@
                         <tbody>
                             @foreach ($dataPengadaanBarangJatuhTempo as $row)
                                 <tr>
-                                    <td nowrap="" nowrap>{{ $row->uraian }}</td>
+                                    <td nowrap="" nowrap>
+                                        <a href="/pengadaanbrgdagang/pelunasan/form/{{ $row->id }}" class="btn btn-sm btn-outline-primary">{{ $row->uraian }}</a>
+                                    </td>   
                                     <td nowrap="" nowrap>{{ $row->supplier?->nama }}</td>
                                     <td nowrap="" nowrap>
                                         @if ($row->jatuh_tempo < date('Y-m-d'))

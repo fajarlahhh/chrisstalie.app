@@ -31,7 +31,7 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Tanggal</label>
+                    <label class="form-label">Tanggal Pelunasan</label>
                     <input class="form-control" type="date" wire:model="tanggal" max="{{ now()->format('Y-m-d') }}"
                         required />
                     @error('tanggal')

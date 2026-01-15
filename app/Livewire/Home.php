@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Jurnal;
 use App\Models\Absensi;
 use Livewire\Component;
+use App\Models\KodeAkun;
 use App\Models\Pembelian;
 use App\Models\Pembayaran;
 use App\Models\JurnalDetail;
@@ -72,12 +73,12 @@ class Home extends Component
 
     public function getDataPengeluaranBulanIni()
     {
-        return JurnalDetail::whereHas('jurnal', function ($q) {
-            $q->where('created_at', 'like', date('Y-m') . '%')
-                ->whereIn('sub_jenis', ['Pembelian', 'Pembayaran'])
-                ->where(fn($q) => $q->where('debet', '>', 0));
-        })
-            ->get();
+        return Jurnal::with('jurnalDetail.kodeAkun', 'pengguna.pegawai')
+            ->whereHas('jurnalDetail', function ($query) {
+                $query->whereIn('kode_akun_id', KodeAkun::where('parent_id', '11100')->get()->pluck('id'));
+            })
+            ->whereIn('sub_jenis', ['Pembelian', 'Pengeluaran'])
+            ->where('tanggal', 'like', date('Y-m') . '%')->get();
     }
 
     public function render()

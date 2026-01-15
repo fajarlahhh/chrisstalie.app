@@ -15,8 +15,11 @@ class Form extends Component
     use CustomValidationTrait;
     public $dataPembelian = [], $dataKodePembayaran = [], $kode_akun_pembayaran_id, $pembelian_id, $tanggal, $uraian;
 
-    public function mount()
+    public function mount($data = null)
     {
+        if ($data) {
+            $this->pembelian_id = $data;
+        }
         $this->dataPembelian = Pembelian::where('pembayaran', 'Jatuh Tempo')->with('supplier')
             ->whereDoesntHave('pelunasanPembelian')->get();
         $this->dataKodePembayaran = KodeAkun::where('parent_id', '11100')->detail()->get()->toArray();

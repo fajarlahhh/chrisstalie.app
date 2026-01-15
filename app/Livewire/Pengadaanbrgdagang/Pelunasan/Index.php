@@ -18,7 +18,7 @@ class Index extends Component
     {
         $this->bulan = $this->bulan ?: date('Y-m');
     }
-    
+
     public function delete($id)
     {
         PelunasanPembelian::findOrFail($id)->forceDelete();
@@ -35,8 +35,8 @@ class Index extends Component
         return view(
             'livewire.pengadaanbrgdagang.pelunasan.index',
             [
-                'data' => PelunasanPembelian::with(['pembelian', 'jurnal', 'pengguna.pegawai', 'kodeAkunPembayaran'])
-                ->orderBy('created_at', 'desc')->paginate(10)
+                'data' => PelunasanPembelian::with(['pembelian', 'jurnal', 'pengguna.pegawai', 'kodeAkunPembayaran'])->where('created_at', 'like', $this->bulan . '%')
+                    ->orderBy('created_at', 'desc')->paginate(10)
             ]
         );
     }

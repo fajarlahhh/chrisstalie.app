@@ -36,7 +36,7 @@ class Index extends Component
         ), 'pengeluaran.xlsx');
     }
 
-    public function getData($paginate = true)
+    public function getData()
     {
         $query = Jurnal::with('jurnalDetail.kodeAkun', 'pengguna.pegawai')
             ->whereHas('jurnalDetail', function ($query) {
