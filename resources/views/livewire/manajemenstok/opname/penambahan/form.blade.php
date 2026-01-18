@@ -26,13 +26,31 @@
                         $($el).on('change', function(e) {
                             $wire.set('barang_id', e.target.value);
                         });">
-                            <option value="" selected>-- Tidak Ada Barang --</option>
+                            <option value="" selected hidden>-- Pilih Barang --</option>
                             @foreach ($dataBarang as $item)
-                                <option value="{{ $item['id'] }}">{{ $item['nama'] }} - {{ $item['satuan'] }}</option>
+                                <option value="{{ $item['id'] }}">{{ $item['nama'] }} </option>
                             @endforeach
                         </select>
                     </div>
+                    @error('barang_id')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+                @if ($barang_id)
+                    <div class="mb-3">
+                        <label class="form-label">Satuan</label>
+                        <select class="form-control" wire:model.live="satuan_id">
+                            <option value="" selected hidden>-- Pilih Satuan --</option>
+                            @foreach ($dataBarangSatuan as $item)
+                                <option value="{{ $item['id'] }}">{{ $item['nama'] }}
+                                    {{ $item['konversi_satuan'] ? '(' . $item['konversi_satuan'] . ')' : '' }}</option>
+                            @endforeach
+                        </select>
+                        @error('satuan_id')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                @endif
                 <div class="mb-3">
                     <label class="form-label">No. Batch</label>
                     <input type="text" class="form-control" wire:model="no_batch">
@@ -55,7 +73,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Qty Masuk (Dalam {{ $barang['satuan'] ?? '' }})</label>
+                    <label class="form-label">Qty Masuk (Dalam Satuan {{ $satuan['nama'] ?? '' }})</label>
                     <input type="number" class="form-control" wire:model="qty_masuk" autocomplete="off">
                     @error('qty_masuk')
                         <span class="text-danger">{{ $message }}</span>

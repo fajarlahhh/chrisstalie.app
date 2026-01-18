@@ -78,7 +78,7 @@ class Form extends Component
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        return $this->redirect('/pengaturan/koreksistok');
+        return $this->redirect('/manajemenstok/opname/penambahan/index');
     }
 
     private function jurnal($koreksi, $hargaBeli)
@@ -95,8 +95,8 @@ class Form extends Component
         ];
 
         JurnalClass::insert(
-            jenis: 'Pengeluaran',
-            sub_jenis: 'Koreksi Stok',
+            jenis: 'Koreksi',
+            sub_jenis: 'Koreksi Pengeluaran Stok',
             tanggal: now(),
             uraian: 'Koreksi Stok Barang ' . $this->barang['nama'],
             system: 1,
