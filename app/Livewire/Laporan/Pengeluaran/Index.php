@@ -42,7 +42,7 @@ class Index extends Component
             ->whereHas('jurnalDetail', function ($query) {
                 $query->whereIn('kode_akun_id', collect($this->dataKodeAkun)->pluck('id'));
             })
-            ->whereIn('sub_jenis', ['Pembelian', 'Pengeluaran'])
+            ->whereIn('jenis', ['Pembelian', 'Pengeluaran'])
             ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2]);
 
         if (!auth()->user()->hasRole(['administrator', 'supervisor'])) {

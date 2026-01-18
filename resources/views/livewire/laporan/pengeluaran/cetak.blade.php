@@ -32,10 +32,10 @@
             <th class="bg-gray-300 text-white">No. Jurnal</th>
             <th class="bg-gray-300 text-white">Tanggal</th>
             <th class="bg-gray-300 text-white">Uraian</th>
-            <th class="bg-gray-300 text-white">Jenis</th>
-            <th class="bg-gray-300 text-white">Sub Total</th>
-            <th class="bg-gray-300 text-white">Operator</th>
+            <th class="bg-gray-300 text-white">Sub Jenis</th>
             <th class="bg-gray-300 text-white">Metode Bayar</th>
+            <th class="bg-gray-300 text-white">Operator</th>
+            <th class="bg-gray-300 text-white">Nilai</th>
         </tr>
     </thead>
     <tbody>
@@ -44,31 +44,22 @@
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $row->nomor }}</td>
                 <td nowrap>{{ $row->tanggal }}</td>
-                <td nowrap>{{ $row->uraian }}</td>
-                <td nowrap>{{ $row->jenis }}</td>
-                <td class="text-end">
-                    {{ $cetak ? $row->jurnalDetail->sum('kredit') : number_format($row->jurnalDetail->sum('kredit')) }}
-                </td>
-                @role('administrator|supervisor')
-                    <td nowrap>{{ $row['pengguna']['nama'] }}</td>
-                @endrole
+                <td>{{ $row->uraian }}</td>
+                <td>{{ $row->sub_jenis }}</td>
                 <td nowrap>
                     {{ $row->jurnalDetail->whereIn('kode_akun_id', collect($dataKodeAkun)->pluck('id'))->first()->kodeAkun->nama }}
+                </td>
+                <td nowrap>{{ $row['pengguna']['nama'] }}</td>
+                <td class="text-end">
+                    {{ $cetak ? $row->jurnalDetail->sum('kredit') : number_format($row->jurnalDetail->sum('kredit')) }}
                 </td>
             </tr>
         @endforeach
         <tr>
-            <th colspan="5">TOTAL</th>
+            <th colspan="7">TOTAL</th>
             <th class="text-end">
                 {{ $cetak ? $data->sum(fn($row) => $row->jurnalDetail->sum('kredit')) : number_format($data->sum(fn($row) => $row->jurnalDetail->sum('kredit'))) }}
             </th>
-
-            @role('administrator|supervisor')
-                <th colspan="3"></th>
-            @endrole
-            @role('operator')
-                <th colspan="2"></th>
-            @endrole
         </tr>
     </tbody>
 </table>

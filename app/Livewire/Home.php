@@ -77,7 +77,7 @@ class Home extends Component
             ->whereHas('jurnalDetail', function ($query) {
                 $query->whereIn('kode_akun_id', KodeAkun::where('parent_id', '11100')->get()->pluck('id'));
             })
-            ->whereIn('sub_jenis', ['Pembelian', 'Pengeluaran'])
+            ->whereIn('jenis', ['Pembelian', 'Pengeluaran'])
             ->where('tanggal', 'like', date('Y-m') . '%')->get();
     }
 
