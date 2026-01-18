@@ -11,7 +11,8 @@
         <div class="panel-heading">
             @role('administrator|supervisor|operator')
                 <div class="btn-group my-n1">
-                    <a class="btn btn-outline-secondary btn-block" href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=jurnalumum'">Umum</a>
+                    <a class="btn btn-outline-secondary btn-block"
+                        href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=jurnalumum'" @role('operator|guest') disabled @endrole>Umum</a>
                     <button type="button" class="btn btn-outline-secondary btn-block dropdown-toggle"
                         data-bs-toggle="dropdown"><b class="caret"></b></button>
                     <div class="dropdown-menu dropdown-menu-start">
@@ -83,8 +84,10 @@
                                     @endforeach
                                     <tr>
                                         <th class="p-1">Total</th>
-                                        <th class="p-1 text-end">{{ number_format($row->jurnalDetail->sum('debet'), 2) }}</th>
-                                        <th class="p-1 text-end">{{ number_format($row->jurnalDetail->sum('kredit'), 2) }}</th>
+                                        <th class="p-1 text-end">
+                                            {{ number_format($row->jurnalDetail->sum('debet'), 2) }}</th>
+                                        <th class="p-1 text-end">
+                                            {{ number_format($row->jurnalDetail->sum('kredit'), 2) }}</th>
                                     </tr>
                                 </table>
                             </td>
@@ -109,7 +112,7 @@
         </div>
     </div>
     <x-alert />
-    
+
     <div wire:loading>
         <x-loading />
     </div>
