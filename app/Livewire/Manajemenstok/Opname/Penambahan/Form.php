@@ -45,7 +45,7 @@ class Form extends Component
     {
         $this->validateWithCustomMessages([
             'barang_id' => 'required',
-            'qty_keluar' => 'required',
+            'qty_masuk' => 'required',
         ]);
 
         DB::transaction(function () {
