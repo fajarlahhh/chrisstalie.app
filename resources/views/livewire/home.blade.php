@@ -146,7 +146,7 @@
                                     </td>
                                     <td class="text-end" nowrap>Rp. {{ number_format($row->total_harga) }}</td>
                                     <td>
-                                        <a href="/pengadaanbrgdagang/pelunasan/form/{{ $row->id }}"
+                                        <a href="/manajemenstok/pengadaanbrgdagang/pelunasan/form/{{ $row->id }}"
                                             class="btn btn-xs btn-primary">Lunasi</a>
                                     </td>
                                 </tr>

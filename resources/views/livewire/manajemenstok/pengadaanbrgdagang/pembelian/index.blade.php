@@ -105,7 +105,7 @@
                                 </td>
                                 <td class="with-btn-group text-end" nowrap>
                                     @role('administrator|supervisor|operator')
-                                        <a href="/pengadaanbrgdagang/pembelian/form/{{ $item->id }}"
+                                        <a href="/manajemenstok/pengadaanbrgdagang/pembelian/form/{{ $item->id }}"
                                             class="btn btn-info">
                                             Input
                                         </a>
