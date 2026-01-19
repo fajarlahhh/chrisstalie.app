@@ -60,7 +60,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tgl. Kedaluarsa</label>
-                    <input type="date" class="form-control" wire:model="tanggal_kedaluarsa">
+                    <input type="date" class="form-control" wire:model="tanggal_kedaluarsa" min="{{ date('Y-m-d') }}">
                     @error('tanggal_kedaluarsa')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

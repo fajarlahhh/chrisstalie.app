@@ -13,8 +13,7 @@
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <div class="panel-heading">
             @role('administrator|supervisor|operator')
-                <a href="/manajemenstok/opname/penambahan/form"
-                    class="btn btn-primary">
+                <a href="/manajemenstok/opname/penambahan/form" class="btn btn-primary">
                     Tambah</a>
             @endrole
             <div class="w-100">
@@ -49,7 +48,14 @@
                             <td class="text-nowrap w-100px">{{ $row->barang->nama }}</td>
                             <td class="text-nowrap w-100px">{{ $row->qty }}</td>
                             <td class="text-nowrap w-100px">{{ $row->pengguna->nama }}</td>
-                            <td></td>
+                            <td class="with-btn-group text-end" nowrap>
+                                @role('administrator|supervisor')
+                                    @if ($row->keluar->count() == 0)
+                                        <x-action :row="$row" :detail="false" :edit="false" :information="false"
+                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                    @endif
+                                @endrole
+                            </td>
                         </tr>
                     @empty
                         <tr>
@@ -61,7 +67,7 @@
         </div>
     </div>
     <x-alert />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

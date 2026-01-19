@@ -17,7 +17,7 @@ class Form extends Component
     use CustomValidationTrait;
     public $dataBarang = [], $barang, $dataStok = [], $barang_id, $dataBarangSatuan = [];
 
-    public $satuan_id, $satuan, $tanggal, $qty_masuk, $catatan, $harga_beli, $tanggal_kedaluarsa;
+    public $satuan_id, $satuan, $tanggal, $qty_masuk, $catatan, $harga_beli, $tanggal_kedaluarsa, $no_batch;
 
     public function updatedBarangId($value)
     {
@@ -26,6 +26,7 @@ class Form extends Component
             'id' => $q['id'],
             'nama' => $q['nama'],
             'konversi_satuan' => $q['konversi_satuan'],
+            'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
         ])->toArray();
     }
 
@@ -48,8 +49,9 @@ class Form extends Component
             'qty_masuk' => 'required',
             'harga_beli' => 'required',
             'tanggal_kedaluarsa' => 'required',
-            'tanggal' => 'required',
             'satuan_id' => 'required',
+            'no_batch' => 'required',
+            'catatan' => 'required',
         ]);
 
         DB::transaction(function () {
@@ -57,16 +59,16 @@ class Form extends Component
             $stok = [];
 
             $data = new StokMasuk();
-            $data->tanggal = $this->tanggal;
+            $data->tanggal = date('Y-m-d');
             $data->qty = $this->qty_masuk;
-            $data->no_batch = null;
-            $data->tanggal_kedaluarsa = null;
+            $data->catatan = $this->catatan;
+            $data->no_batch = $this->no_batch;
+            $data->tanggal_kedaluarsa = $this->tanggal_kedaluarsa;
             $data->barang_id = $this->barang_id;
             $data->pembelian_id = null;
             $data->barang_satuan_id = $this->satuan_id;
             $data->rasio_dari_terkecil = $this->satuan['rasio_dari_terkecil'];
             $data->harga_beli = $this->harga_beli;
-            $data->tanggal_kedaluarsa = $this->tanggal_kedaluarsa;
             $data->pengguna_id = auth()->id();
             $data->save();
 
@@ -75,8 +77,8 @@ class Form extends Component
                     'id' => $data->id . '-' . $this->barang_id . '-' . $i,
                     'pembelian_id' => null,
                     'barang_id' => $this->barang_id,
-                    'no_batch' => null,
-                    'tanggal_kedaluarsa' => null,
+                    'no_batch' => $this->no_batch,
+                    'tanggal_kedaluarsa' => $this->tanggal_kedaluarsa,
                     'stok_masuk_id' => $data->id,
                     'tanggal_masuk' => now()->toDateTimeString(),
                     'harga_beli' => $this->harga_beli / $this->satuan['rasio_dari_terkecil'],
@@ -96,7 +98,7 @@ class Form extends Component
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        return $this->redirect('/manajemenstok/opname/penambahan/index');
+        return $this->redirect('/manajemenstok/opname/penambahan');
     }
 
     private function jurnal($koreksi, $hargaBeli)
