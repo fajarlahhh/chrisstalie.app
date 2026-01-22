@@ -30,15 +30,8 @@ class Diagnosis extends Model
 
     public function getIcd10UraianAttribute()
     {
-        // Ambil array kode dari kolom icd10 (JSON)
-        $codes = collect($this->icd10)
-            ->pluck('icd10')
-            ->filter()
-            ->unique()
-            ->toArray();
-
         // Relasi manual ke model Icd10 berdasarkan kode
-        return Icd10::whereIn('id', $codes)->get();
+        return Icd10::whereIn('id', $this->icd10)->get();
     }
 
     public function file(): HasMany
