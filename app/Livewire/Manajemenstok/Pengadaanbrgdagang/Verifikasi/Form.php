@@ -7,8 +7,8 @@ use App\Models\VerifikasiPengadaan;
 use Illuminate\Support\Str;
 use App\Models\BarangSatuan;
 use Illuminate\Support\Facades\DB;
-use App\Models\PermintaanPembelian;
-use App\Models\PermintaanPembelianDetail;
+use App\Models\PermintaanPengadaan;
+use App\Models\PermintaanPengadaanDetail;
 use App\Traits\CustomValidationTrait;
 
 class Form extends Component
@@ -34,17 +34,17 @@ class Form extends Component
 
         DB::transaction(function () {
             if ($this->status == 'Disetujui') {
-                $this->data->permintaanPembelianDetail()->delete();
-                $this->data->permintaanPembelianDetail()->insert(collect($this->barang)->map(fn($q) => [
+                $this->data->permintaanPengadaanDetail()->delete();
+                $this->data->permintaanPengadaanDetail()->insert(collect($this->barang)->map(fn($q) => [
                     'barang_id' => $q['barang_id'],
                     'qty_permintaan' => $q['qty'],
                     'qty_disetujui' => $q['qty_disetujui'],
                     'barang_satuan_id' => $q['id'],
                     'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
-                    'permintaan_pembelian_id' => $this->data->id,
+                    'permintaan_pengadaan_id' => $this->data->id,
                 ])->toArray());
             }
-            $verifikasiPengadaan = VerifikasiPengadaan::where('permintaan_pembelian_id', $this->data->id)->where('jenis', 'Permintaan Pembelian')->whereNull('status')->first();
+            $verifikasiPengadaan = VerifikasiPengadaan::where('permintaan_pengadaan_id', $this->data->id)->where('jenis', 'Permintaan Pembelian')->whereNull('status')->first();
             $verifikasiPengadaan->status = $this->status;
             $verifikasiPengadaan->catatan = $this->catatan;
             $verifikasiPengadaan->waktu_verifikasi = now();
@@ -55,12 +55,12 @@ class Form extends Component
         $this->redirect('/manajemenstok/pengadaanbrgdagang/verifikasi');
     }
 
-    public function mount(PermintaanPembelian $data)
+    public function mount(PermintaanPengadaan $data)
     {
         
         $this->data = $data;
         $this->fill($this->data->toArray());
-        $this->barang = $data->permintaanPembelianDetail->map(fn($q) => [
+        $this->barang = $data->permintaanPengadaanDetail->map(fn($q) => [
             'id' => $q->barang_satuan_id,
             'barang_id' => $q->barang_id,
             'nama' => $q->barangSatuan->barang->nama,

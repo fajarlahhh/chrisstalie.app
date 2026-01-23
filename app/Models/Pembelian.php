@@ -14,9 +14,9 @@ class Pembelian extends Model
 
     protected $table = 'pembelian';
 
-    public function permintaanPembelian(): BelongsTo
+    public function permintaanPengadaan(): BelongsTo
     {
-        return $this->belongsTo(PermintaanPembelian::class);
+        return $this->belongsTo(PermintaanPengadaan::class);
     }
 
     public function pelunasanPembelian(): HasOne

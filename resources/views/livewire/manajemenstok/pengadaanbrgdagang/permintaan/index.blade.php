@@ -94,7 +94,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($item->permintaanPembelianDetail as $detail)
+                                        @foreach ($item->permintaanPengadaanDetail as $detail)
                                             <tr>
                                                 <td class="text-nowrap w-300px p-1">
                                                     {{ $detail->barangSatuan->barang->nama }}</td>

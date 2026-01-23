@@ -12,9 +12,9 @@ use App\Class\JurnalClass;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
-use App\Models\PermintaanPembelian;
+use App\Models\PermintaanPengadaan;
 use App\Traits\CustomValidationTrait;
-use App\Models\PermintaanPembelianDetail;
+use App\Models\PermintaanPengadaanDetail;
 
 class Form extends Component
 {
@@ -22,14 +22,14 @@ class Form extends Component
     public $data, $dataSupplier = [], $barang = [], $dataKodeAkun = [];
     public $tanggal, $uraian, $jatuh_tempo, $pembayaran = "Jatuh Tempo", $ppn, $diskon, $totalHargaBeli, $supplier_id;
 
-    public function mount(PermintaanPembelian $data)
+    public function mount(PermintaanPengadaan $data)
     {
         $this->data = $data;
         $this->tanggal = $this->tanggal ?: date('Y-m-d');
 
         $this->dataSupplier = Supplier::whereNotNull('konsinyator')->orderBy('nama')->get()->toArray();
         $this->dataKodeAkun = KodeAkun::where('parent_id', '11100')->detail()->get()->toArray();
-        $this->barang = $this->data->permintaanPembelianDetail->map(fn($q) => [
+        $this->barang = $this->data->permintaanPengadaanDetail->map(fn($q) => [
             'id' => $q->barang_satuan_id,
             'barang_id' => $q->barang_id,
             'nama' => $q->barangSatuan->barang->nama,
@@ -84,7 +84,7 @@ class Form extends Component
             $data->kode_akun_id = $this->pembayaran == "Jatuh Tempo" ? '21100' : $this->pembayaran;
             $data->uraian = $this->uraian;
             $data->supplier_id = $this->supplier_id;
-            $data->permintaan_pembelian_id = $this->data->id;
+            $data->permintaan_pengadaan_id = $this->data->id;
             $data->ppn = $this->ppn;
             $data->diskon = $this->diskon;
             $data->jenis = 'Barang Dagang';

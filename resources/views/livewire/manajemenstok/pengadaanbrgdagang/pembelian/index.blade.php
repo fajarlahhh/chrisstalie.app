@@ -81,7 +81,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($item->permintaanPembelianDetail as $detail)
+                                            @foreach ($item->permintaanPengadaanDetail as $detail)
                                                 <tr>
                                                     <td class="text-nowrap w-300px">
                                                         {{ $detail->barangSatuan->barang->nama }}</td>
@@ -136,8 +136,8 @@
                                 <td>{{ $row->tanggal }}</td>
                                 <td>
                                     <ul>
-                                        <li><strong>{{ $row->permintaanPembelian->deskripsi }}</strong></li>
-                                        <li>{{ $row->permintaanPembelian->created_at->format('d-m-Y') }}</li>
+                                        <li><strong>{{ $row->permintaanPengadaan->deskripsi }}</strong></li>
+                                        <li>{{ $row->permintaanPengadaan->created_at->format('d-m-Y') }}</li>
                                     </ul>
                                 </td>
                                 <td>{{ $row->uraian }}</td>

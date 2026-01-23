@@ -3,7 +3,7 @@
 namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Permintaan;
 
 use Livewire\Component;
-use App\Models\PermintaanPembelian;
+use App\Models\PermintaanPengadaan;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 
@@ -27,7 +27,7 @@ class Index extends Component
     public function delete($id)
     {
         try {
-            PermintaanPembelian::findOrFail($id)
+            PermintaanPengadaan::findOrFail($id)
                 ->forceDelete();
             session()->flash('success', 'Berhasil menghapus data');
         } catch (\Throwable $th) {
@@ -38,10 +38,10 @@ class Index extends Component
     public function render()
     {
         return view('livewire.manajemenstok.pengadaanbrgdagang.permintaan.index', [
-            'data' => PermintaanPembelian::with([
+            'data' => PermintaanPengadaan::with([
                 'pengguna.pegawai',
-                'permintaanPembelianDetail.barangSatuan.satuanKonversi',
-                'permintaanPembelianDetail.barangSatuan.barang',
+                'permintaanPengadaanDetail.barangSatuan.satuanKonversi',
+                'permintaanPengadaanDetail.barangSatuan.barang',
                 'pembelian.stokMasuk',
                 'VerifikasiPengadaanPending',
                 'VerifikasiPengadaanDisetujui',
