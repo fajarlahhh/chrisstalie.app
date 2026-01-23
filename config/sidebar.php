@@ -155,6 +155,11 @@ return [
                             "method" => ["Index", "Form"],
                         ],
                         [
+                            "title" => "Pembelian",
+                            "urutkan" => true,
+                            "method" => ["Index", "Form"],
+                        ],
+                        [
                             "title" => "Pemesanan",
                             "urutkan" => true,
                             "method" => ["Index", "Form"],
