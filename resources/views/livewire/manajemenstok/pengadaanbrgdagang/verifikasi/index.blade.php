@@ -40,18 +40,18 @@
                             <td>{{ $item->deskripsi }}</td>
                             <td>
                                 <ul>
-                                    @foreach ($item->verifikasi as $verifikasi)
+                                    @foreach ($item->verifikasiPengadaan as $verifikasiPengadaan)
                                         <li>
-                                            @if ($verifikasi->status == 'Disetujui')
+                                            @if ($verifikasiPengadaan->status == 'Disetujui')
                                                 <span class="badge bg-success">Disetujui</span>
                                             @else
                                                 <span class="badge bg-danger">Ditolak
-                                                    {{ ' - ' . $verifikasi->catatan }}</span>
+                                                    {{ ' - ' . $verifikasiPengadaan->catatan }}</span>
                                             @endif
                                             <br>
                                             <small>
-                                                {{ $verifikasi->pengguna->nama }}<br>
-                                                {{ $verifikasi->waktu_verifikasi }}
+                                                {{ $verifikasiPengadaan->pengguna->nama }}<br>
+                                                {{ $verifikasiPengadaan->waktu_verifikasi }}
                                             </small>
                                         </li>
                                     @endforeach
@@ -90,7 +90,7 @@
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    @if ($item->verifikasi->count() > 0 )
+                                    @if ($item->verifikasiPengadaan->count() > 0 )
                                         <x-action :row="$item" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="false" />
                                     @else

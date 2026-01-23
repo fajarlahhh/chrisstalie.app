@@ -38,12 +38,12 @@ class Index extends Component
                 'pengguna.pegawai',
                 'permintaanPembelianDetail.barangSatuan.satuanKonversi',
                 'permintaanPembelianDetail.barangSatuan.barang',
-                'verifikasi.pengguna.pegawai' => fn($q) => $q->whereNotNull('status')
+                'verifikasiPengadaan.pengguna.pegawai' => fn($q) => $q->whereNotNull('status')
             ])
-                ->when($this->status == 'Pending', fn($q) => $q->whereHas('verifikasi', function ($q) {
+                ->when($this->status == 'Pending', fn($q) => $q->whereHas('verifikasiPengadaan', function ($q) {
                     $q->whereNull('status');
                 }))
-                ->whereHas('verifikasi', function ($q) {
+                ->whereHas('verifikasiPengadaan', function ($q) {
                     $q->whereNotNull('status');
                 })
                 ->whereDoesntHave('pembelian')

@@ -19,24 +19,24 @@ class PermintaanPembelian extends Model
         return $this->belongsTo(Pengguna::class);
     }
 
-    public function verifikasi()
+    public function verifikasiPengadaan()
     {
-        return $this->hasMany(Verifikasi::class)->orderBy('created_at', 'desc');
+        return $this->hasMany(VerifikasiPengadaan::class)->orderBy('created_at', 'desc');
     }
 
-    public function verifikasiPending()
+    public function VerifikasiPengadaanPending()
     {
-        return $this->hasMany(Verifikasi::class)->whereNull('status');
+        return $this->hasMany(VerifikasiPengadaan::class)->whereNull('status');
     }
 
-    public function verifikasiDisetujui()
+    public function VerifikasiPengadaanDisetujui()
     {
-        return $this->hasMany(Verifikasi::class)->where('status', 'Disetujui');
+        return $this->hasMany(VerifikasiPengadaan::class)->where('status', 'Disetujui');
     }
 
-    public function verifikasiDitolak()
+    public function VerifikasiPengadaanDitolak()
     {
-        return $this->hasMany(Verifikasi::class)->where('status', 'Ditolak');
+        return $this->hasMany(VerifikasiPengadaan::class)->where('status', 'Ditolak');
     }
 
     public function pembelian()

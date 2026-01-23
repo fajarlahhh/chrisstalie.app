@@ -6,7 +6,7 @@ use App\Models\Barang;
 use Livewire\Component;
 use App\Models\Pengguna;
 use App\Class\BarangClass;
-use App\Models\Verifikasi;
+use App\Models\VerifikasiPengadaan;
 use Illuminate\Support\Str;
 use App\Models\BarangSatuan;
 use Illuminate\Support\Facades\DB;
@@ -49,11 +49,11 @@ class Form extends Component
             })->toArray()); 
 
             if ($this->verifikator_id) {
-                $verifikasi = new Verifikasi();
-                $verifikasi->permintaan_pembelian_id = $this->data->id;
-                $verifikasi->jenis = 'Permintaan Pembelian';
-                $verifikasi->pengguna_id = $this->verifikator_id;
-                $verifikasi->save();
+                $verifikasiPengadaan = new VerifikasiPengadaan();
+                $verifikasiPengadaan->permintaan_pembelian_id = $this->data->id;
+                $verifikasiPengadaan->jenis = 'Permintaan Pembelian';
+                $verifikasiPengadaan->pengguna_id = $this->verifikator_id;
+                $verifikasiPengadaan->save();
             }
 
             session()->flash('success', 'Berhasil menyimpan data');

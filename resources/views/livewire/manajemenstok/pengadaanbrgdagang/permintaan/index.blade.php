@@ -50,19 +50,19 @@
                             <td>{{ $item->deskripsi }}</td>
                             <td>
                                 <ul>
-                                    @foreach ($item->verifikasi as $verifikasi)
-                                        @if ($verifikasi->status)
+                                    @foreach ($item->verifikasiPengadaan as $verifikasiPengadaan)
+                                        @if ($verifikasiPengadaan->status)
                                             <li>
-                                                @if ($verifikasi->status == 'Disetujui')
+                                                @if ($verifikasiPengadaan->status == 'Disetujui')
                                                     <span class="badge bg-success">Disetujui</span>
                                                 @else
                                                     <span class="badge bg-danger">Ditolak
-                                                        {{ ' - ' . $verifikasi->catatan }}</span>
+                                                        {{ ' - ' . $verifikasiPengadaan->catatan }}</span>
                                                 @endif
                                                 <br>
                                                 <small>
-                                                    {{ $verifikasi->pengguna->nama }} <br>
-                                                    {{ $verifikasi->waktu_verifikasi }}
+                                                    {{ $verifikasiPengadaan->pengguna->nama }} <br>
+                                                    {{ $verifikasiPengadaan->waktu_verifikasi }}
                                                 </small>
                                             </li>
                                         @else
@@ -118,11 +118,11 @@
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
-                                    @if ($item->verifikasiPending->count() > 0)
+                                    @if ($item->VerifikasiPengadaanPending->count() > 0)
                                         <x-action :row="$item" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                     @else
-                                        @if ($item->verifikasiDisetujui->count() > 0 || $item->verifikasiDitolak->count() > 0)
+                                        @if ($item->VerifikasiPengadaanDisetujui->count() > 0 || $item->VerifikasiPengadaanDitolak->count() > 0)
                                             @if ($item->pembelian && $item->pembelian->stokMasuk->count() > 0)
                                                 <x-action :row="$item" custom="" :detail="false"
                                                     :edit="false" :print="false" :permanentDelete="false"

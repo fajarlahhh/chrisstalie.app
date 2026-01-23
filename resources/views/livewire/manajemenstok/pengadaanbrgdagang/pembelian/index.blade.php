@@ -47,19 +47,19 @@
                                 <td>{{ $item->deskripsi }}</td>
                                 <td>
                                     <ul>
-                                        @foreach ($item->verifikasi as $verifikasi)
-                                            @if ($verifikasi->status)
+                                        @foreach ($item->verifikasiPengadaan as $verifikasiPengadaan)
+                                            @if ($verifikasiPengadaan->status)
                                                 <li>
-                                                    @if ($verifikasi->status == 'Disetujui')
+                                                    @if ($verifikasiPengadaan->status == 'Disetujui')
                                                         <span class="badge bg-success">Disetujui</span>
                                                     @else
                                                         <span class="badge bg-danger">Ditolak
-                                                            {{ ' - ' . $verifikasi->catatan }}</span>
+                                                            {{ ' - ' . $verifikasiPengadaan->catatan }}</span>
                                                     @endif
                                                     <br>
                                                     <small>
-                                                        {{ $verifikasi->pengguna->nama }} <br>
-                                                        {{ $verifikasi->waktu_verifikasi }}
+                                                        {{ $verifikasiPengadaan->pengguna->nama }} <br>
+                                                        {{ $verifikasiPengadaan->waktu_verifikasi }}
                                                     </small>
                                                 </li>
                                             @else
