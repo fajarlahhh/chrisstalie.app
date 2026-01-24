@@ -32,8 +32,8 @@
             <th class="bg-gray-300 text-white">No. Nota</th>
             <th class="bg-gray-300 text-white">Pasien</th>
             <th class="bg-gray-300 text-white">Tindakan</th>
-            <th class="bg-gray-300 text-white">Penjualan Bebas</th>
             <th class="bg-gray-300 text-white">Resep</th>
+            <th class="bg-gray-300 text-white">Penjualan Bebas</th>
             <th class="bg-gray-300 text-white">Diskon</th>
             <th class="bg-gray-300 text-white">Total</th>
             @role('administrator|supervisor')
@@ -66,8 +66,8 @@
                     {{ isset($row['registrasi']) && isset($row['registrasi']['pasien']) && isset($row['registrasi']['pasien']['nama']) ? $row['registrasi']['pasien']['nama'] : '' }}
                 </td>
                 <td class="text-end">{{ $cetak ? $tindakan : number_format($tindakan) }}</td>
-                <td class="text-end">{{ $cetak ? $bebas : number_format($bebas) }}</td>
                 <td class="text-end">{{ $cetak ? $resep : number_format($resep) }}</td>
+                <td class="text-end">{{ $cetak ? $bebas : number_format($bebas) }}</td>
                 <td class="text-end">{{ $cetak ? $diskon : number_format($diskon) }}</td>
                 <td class="text-end">
                     {{ $cetak ? $total : number_format($total) }}
@@ -93,10 +93,10 @@
             <th class="text-end">
                 {{ $cetak ? $total_tindakan : number_format($total_tindakan) }}
             </th>
-            <th class="text-end">
-                {{ $cetak ? $total_bebas : number_format($total_bebas) }}</th>
             <th class="text-end">{{ $cetak ? $total_resep : number_format($total_resep) }}
             </th>
+            <th class="text-end">
+                {{ $cetak ? $total_bebas : number_format($total_bebas) }}</th>
             <th class="text-end">{{ $cetak ? $total_diskon : number_format($total_diskon) }}</th>
             <th class="text-end">
                 {{ $cetak ? $total_total : number_format($total_total) }}
