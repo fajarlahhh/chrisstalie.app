@@ -50,7 +50,7 @@ class JurnalkeuanganClass
 
         $jurnalKeuangan->jurnalKeuanganDetail()->delete();
         $jurnalKeuangan->jurnalKeuanganDetail()->insert(collect($detail)->map(fn($q) => [
-            'jurnal_keuangan_keuangan_keuangan_id' => $jurnalKeuangan->id,
+            'jurnal_keuangan_keuangan_id' => $jurnalKeuangan->id,
             'debet' => $q['debet'],
             'kredit' => $q['kredit'],
             'kode_akun_id' => $q['kode_akun_id'],
