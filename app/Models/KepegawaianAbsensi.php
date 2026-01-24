@@ -20,9 +20,4 @@ class KepegawaianAbsensi extends Model
     {
         return $this->belongsTo(KepegawaianPegawai::class);
     }
-
-    public function jadwalShiftPegawaiDetail(): BelongsTo
-    {
-        return $this->belongsTo(JadwalShiftPegawaiDetail::class);
-    }
 }
