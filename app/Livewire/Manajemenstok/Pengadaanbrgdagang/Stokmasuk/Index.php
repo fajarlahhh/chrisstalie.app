@@ -44,9 +44,11 @@ class Index extends Component
                 ->where('created_at', 'like', $this->bulan . '%')
                 ->whereNotNull('pemesanan_pengadaan_id')
                 ->whereHas('pemesananPengadaan', fn($q) => $q->where('jenis', 'Barang Dagang'))
-                ->where(fn($q) => $q
-                    ->whereHas('barangSatuan.barang', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
-                    ->orWhereHas('pemesananPengadaan', fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%')))
+                ->where(
+                    fn($q) => $q
+                        ->whereHas('barangSatuan.barang', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
+                        ->orWhereHas('pemesananPengadaan', fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))
+                )
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
         ]);
