@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class JadwalShift extends Model
+class JadwalShiftPegawai extends Model
 {
     //
-    protected $table = 'jadwal_shift';
+    protected $table = 'jadwal_shift_pegawai';
 
     protected $casts = [
         'tanggal' => 'date',
@@ -22,8 +22,8 @@ class JadwalShift extends Model
         return $this->belongsTo(Pegawai::class);
     }
 
-    public function jadwalShiftDetail(): HasMany
+    public function jadwalShiftPegawaiDetail(): HasMany
     {
-        return $this->hasMany(JadwalShiftDetail::class);
+        return $this->hasMany(JadwalShiftPegawaiDetail::class);
     }
 }

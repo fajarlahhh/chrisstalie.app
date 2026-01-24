@@ -169,13 +169,8 @@ class Form extends Component
                 tanggal: now(),
                 uraian: 'Stok Masuk Alat dan Bahan ' . $pemesananPengadaan->uraian,
                 system: 1,
-                pemesanan_pengadaan_id: $pemesananPengadaan->id,
-                aset_id: null,
-                stok_masuk_id: null,
-                pembayaran_id: null,
-                penggajian_id: null,
-                pelunasan_pemesanan_pengadaan_id: null,
-                stok_keluar_id: null,
+                foreign_key: 'pemesanan_pengadaan_id',
+                foreign_id: $pemesananPengadaan->id,
                 detail: $detail
             );
 

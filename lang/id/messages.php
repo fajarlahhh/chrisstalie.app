@@ -85,7 +85,7 @@ return [
     'tariff_not_set' => 'Tarif untuk tindakan ini belum ditetapkan.',
 
     // Pesan Keuangan
-    'journal_posted' => 'JurnalKeuangan berhasil diposting.',
+    'journal_posted' => 'Jurnal berhasil diposting.',
     'payment_recorded' => 'Pembayaran berhasil dicatat.',
     'balance_insufficient' => 'Saldo tidak mencukupi.',
 

@@ -7,7 +7,7 @@ use App\Models\Pegawai;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Class\JurnalkeuanganClass;
-use App\Models\PegawaiUnsurGaji;
+use App\Models\UnsurGajiPegawai;
 use App\Models\Penggajian;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -25,9 +25,9 @@ class Form extends Component
         $this->tanggal = date('Y-m-01');
         $this->periode = date('Y-m');
         if (!Penggajian::where('periode', $this->periode . '-01')->exists()) {
-            $this->dataUnsurGaji = KodeAkun::detail()->whereIn('id', PegawaiUnsurGaji::pluck('kode_akun_id'))->get()->toArray();
+            $this->dataUnsurGaji = KodeAkun::detail()->whereIn('id', UnsurGajiPegawai::pluck('kode_akun_id'))->get()->toArray();
 
-            foreach (Pegawai::with('pegawaiUnsurGaji')->aktif()->get()->toArray() as $pegawai) {
+            foreach (Pegawai::with('unsurGajiPegawai')->aktif()->get()->toArray() as $pegawai) {
                 $unsurGaji = [];
                 foreach ($this->dataUnsurGaji as $item) {
                     $unsurGaji[] = [
@@ -51,9 +51,9 @@ class Form extends Component
     {
         $this->detail = [];
         if (!Penggajian::where('periode', $value . '-01')->exists()) {
-            $this->dataUnsurGaji = KodeAkun::detail()->whereIn('id', PegawaiUnsurGaji::pluck('kode_akun_id'))->get()->toArray();
+            $this->dataUnsurGaji = KodeAkun::detail()->whereIn('id', UnsurGajiPegawai::pluck('kode_akun_id'))->get()->toArray();
 
-            foreach (Pegawai::with('pegawaiUnsurGaji')->aktif()->get()->toArray() as $pegawai) {
+            foreach (Pegawai::with('unsurGajiPegawai')->aktif()->get()->toArray() as $pegawai) {
                 $unsurGaji = [];
                 foreach ($this->dataUnsurGaji as $item) {
                     $unsurGaji[] = [
@@ -106,13 +106,8 @@ class Form extends Component
                 tanggal: $this->tanggal,
                 uraian: 'Gaji Bulan ' . $this->periode,
                 system: 1,
-                penggajian_id: $penggajian->id,
-                aset_id: null,
-                pemesanan_pengadaan_id: null,
-                stok_masuk_id: null,
-                pembayaran_id: null,
-                pelunasan_pemesanan_pengadaan_id: null,
-                stok_keluar_id: null,
+                foreign_key: 'penggajian_id',
+                foreign_id: $penggajian->id,
                 detail: collect($jurnalKeuanganDetail)->values()->toArray()
             );
 

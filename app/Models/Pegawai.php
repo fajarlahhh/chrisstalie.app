@@ -19,9 +19,9 @@ class Pegawai extends Model
         return $this->belongsTo(Pengguna::class)->withTrashed();
     }
     
-    public function pegawaiUnsurGaji(): HasMany
+    public function unsurGajiPegawai(): HasMany
     {
-        return $this->hasMany(PegawaiUnsurGaji::class);
+        return $this->hasMany(UnsurGajiPegawai::class);
     }
 
     public function scopeAktif($query)
@@ -36,16 +36,16 @@ class Pegawai extends Model
 
     public function absensi(): HasMany
     {
-        return $this->hasMany(Absensi::class);
+        return $this->hasMany(AbsensiPegawai::class);
     }
 
-    public function kehadiran(): HasMany
+    public function kehadiranPegawai(): HasMany
     {
-        return $this->hasMany(Kehadiran::class);
+        return $this->hasMany(KehadiranPegawai::class);
     }
 
-    public function jadwalShift(): HasMany
+    public function jadwalShiftPegawai(): HasMany
     {
-        return $this->hasMany(JadwalShift::class);
+        return $this->hasMany(JadwalShiftPegawai::class);
     }
 }

@@ -151,13 +151,8 @@ class Index extends Component
             tanggal: $this->tanggal,
             uraian: 'Pendapatan Penjualan Barang Bebas ' . $pembayaran->id,
             system: 1,
-            aset_id: null,
-            pemesanan_pengadaan_id: null,
-            stok_masuk_id: null,
-            pembayaran_id: $pembayaran->id,
-            penggajian_id: null,
-            pelunasan_pemesanan_pengadaan_id: null,
-            stok_keluar_id: null,
+            foreign_key: 'pembayaran_id',
+            foreign_id: $pembayaran->id,
             detail: $jurnalKeuanganDetail
         );
     }

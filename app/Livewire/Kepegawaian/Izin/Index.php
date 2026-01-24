@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Kepegawaian\Izin;
 
-use App\Models\Absensi;
+use App\Models\AbsensiPegawai;
 use Livewire\Component;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
@@ -28,7 +28,7 @@ class Index extends Component
     public function delete($id)
     {
         DB::transaction(function () use ($id) {
-            $data = Absensi::findOrFail($id);
+            $data = AbsensiPegawai::findOrFail($id);
             if($data->masuk != null || $data->pulang != null){
                 $data->delete();
             } else {
@@ -43,7 +43,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.kepegawaian.izin.index', [
-            'data' => Absensi::with('pegawai')->with('jadwalShiftDetail')
+            'data' => AbsensiPegawai::with('pegawai')->with('jadwalShiftPegawaiDetail')
                 ->whereNotNull('izin')
                 ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                 ->when($this->cari, fn($q) => $q

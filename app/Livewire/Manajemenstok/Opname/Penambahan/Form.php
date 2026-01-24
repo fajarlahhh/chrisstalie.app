@@ -120,13 +120,8 @@ class Form extends Component
             tanggal: now(),
             uraian: 'Koreksi Stok Barang ' . $this->barang['nama'],
             system: 1,
-            aset_id: null,
-            pemesanan_pengadaan_id: null,
-            stok_masuk_id: $koreksi->id,
-            pembayaran_id: null,
-            penggajian_id: null,
-            pelunasan_pemesanan_pengadaan_id: null,
-            stok_keluar_id: null,
+            foreign_key: 'stok_masuk_id',
+            foreign_id: $koreksi->id,
             detail: $detail
         );
     }

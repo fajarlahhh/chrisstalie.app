@@ -15,7 +15,7 @@ class Form extends Component
     public function mount(JurnalKeuangan $data)
     {
         if ($data->exists) {
-            if ($data->jenis == 'JurnalKeuangan Umum') {
+            if ($data->jenis == 'Jurnal Umum') {
                 $this->jenis = 'jurnalumum';
             } else {
                 $this->jenis = strtolower(str_replace(' ', '', $data->sub_jenis));

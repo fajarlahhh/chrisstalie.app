@@ -80,10 +80,10 @@
                         </div>
                     </div>
                     <div class="row text-center p-2">
-                        @foreach ($dataJadwalShift as $i => $row)
+                        @foreach ($dataJadwalShiftPegawai as $i => $row)
                             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4 col-4">
                                 <div
-                                    class="card w-100 text-center  @if ($dataJadwalShift[$i]['absen'] !== false) border-1 bg-cyan-100 border-secondary @else border-1 bg-yellow-100 border-secondary @endif mb-2">
+                                    class="card w-100 text-center  @if ($dataJadwalShiftPegawai[$i]['absen'] !== false) border-1 bg-cyan-100 border-secondary @else border-1 bg-yellow-100 border-secondary @endif mb-2">
                                     <div class="card-body p-1">
                                         <strong>{{ \Carbon\Carbon::parse($row['tanggal'])->format('d') }}</strong><br>
                                         @if ($row['jam_masuk'] && $row['jam_pulang'])

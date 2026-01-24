@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Jurnalkeuangan;
 
-use App\Models\JurnalKeuangan;
 use Livewire\Component;
 use App\Models\KodeAkun;
+use App\Models\JurnalKeuangan;
 use App\Class\JurnalkeuanganClass;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
@@ -80,7 +80,7 @@ class Jurnalumum extends Component
             }
 
             $this->data->jenis = $this->jenis;
-            $this->data->sub_jenis = 'JurnalKeuangan Umum';
+            $this->data->sub_jenis = 'Jurnal Umum';
             $this->data->uraian = ucfirst($this->uraian);
             $this->data->tanggal = $this->tanggal;
             $this->data->system = 0;

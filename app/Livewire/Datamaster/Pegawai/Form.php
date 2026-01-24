@@ -5,7 +5,6 @@ namespace App\Livewire\Datamaster\Pegawai;
 use Livewire\Component;
 use App\Models\Pegawai;
 use Illuminate\Support\Facades\DB;
-use App\Models\UnsurGaji;
 use App\Traits\CustomValidationTrait;
 use App\Models\KodeAkun;
 
@@ -76,8 +75,8 @@ class Form extends Component
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
-            $this->data->pegawaiUnsurGaji()->delete();
-            $this->data->pegawaiUnsurGaji()->insert(collect($this->unsurGaji)->where('nilai', '>', 0)->map(fn($q) => [
+            $this->data->unsurGajiPegawai()->delete();
+            $this->data->unsurGajiPegawai()->insert(collect($this->unsurGaji)->where('nilai', '>', 0)->map(fn($q) => [
                 'pegawai_id' => $this->data->id,
                 'kode_akun_id' => $q['kode_akun_id'],
                 'nilai' => $q['nilai'],
@@ -104,7 +103,7 @@ class Form extends Component
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '61000')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
-        $this->unsurGaji = $this->data->pegawaiUnsurGaji->map(fn($q) => [
+        $this->unsurGaji = $this->data->unsurGajiPegawai->map(fn($q) => [
             'nilai' => $q['nilai'],
             'sifat' => $q['sifat'],
             'kode_akun_id' => $q['kode_akun_id'],

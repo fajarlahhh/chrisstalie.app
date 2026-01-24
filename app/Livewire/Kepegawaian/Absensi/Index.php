@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Livewire\Kepegawaian\Absensi;
+namespace App\Livewire\Kepegawaian\AbsensiPegawai;
 
-use App\Models\Absensi;
+use App\Models\AbsensiPegawai;
 use Livewire\Component;
-use App\Models\Kehadiran;
+use App\Models\KehadiranPegawai;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +32,7 @@ class Index extends Component
 
     public function hapus($id)
     {
-        Absensi::findOrFail($id)->delete();
+        AbsensiPegawai::findOrFail($id)->delete();
     }
 
     private function parse($data, $p1, $p2)
@@ -52,7 +52,7 @@ class Index extends Component
     public function posting()
     {
         DB::transaction(function () {
-            $dataAbsensi = Absensi::with(['pegawai.kehadiran'])
+            $dataAbsensiPegawai = AbsensiPegawai::with(['pegawai.kehadiranPegawai'])
                 ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                 ->when(
                     $this->cari,
@@ -60,17 +60,17 @@ class Index extends Component
                         ->where('nama', 'ilike', '%' . $this->cari . '%'))
                 )
                 ->orderBy('tanggal')->get()->map(function ($q) {
-                    $kehadiran = $q->pegawai->kehadiran->where('tanggal', $q->tanggal);
-                    $masuk = $kehadiran->first()?->waktu;
-                    $pulang = $kehadiran->last()?->waktu;
+                    $kehadiranPegawai = $q->pegawai->kehadiranPegawai->where('tanggal', $q->tanggal);
+                    $masuk = $kehadiranPegawai->first()?->waktu;
+                    $pulang = $kehadiranPegawai->last()?->waktu;
                     return [
                         'id' => $q->id,
                         'masuk' => $masuk,
                         'pulang' => $pulang,
                     ];
                 });
-            foreach ($dataAbsensi as $absensi) {
-                Absensi::where('id', $absensi['id'])->update([
+            foreach ($dataAbsensiPegawai as $absensi) {
+                AbsensiPegawai::where('id', $absensi['id'])->update([
                     'masuk' => $absensi['masuk'],
                     'pulang' => $absensi['pulang'],
                 ]);
@@ -116,8 +116,8 @@ class Index extends Component
             }
         }
         DB::transaction(function () use ($dataKehadiran) {
-            foreach ($dataKehadiran as $kehadiran) {
-                Kehadiran::insertOrIgnore($kehadiran);
+            foreach ($dataKehadiran as $kehadiranPegawai) {
+                KehadiranPegawai::insertOrIgnore($kehadiranPegawai);
             }
         });
 
@@ -140,7 +140,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.kepegawaian.absensi.index', [
-            'data' => Absensi::with(['pegawai.kehadiran'])
+            'data' => AbsensiPegawai::with(['pegawai.kehadiranPegawai'])
                 ->when($this->pegawai_id, fn($q) => $q->where('pegawai_id', $this->pegawai_id))
                 ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                 ->when(

@@ -5,10 +5,8 @@ namespace App\Livewire\Datamaster\Asetinventaris;
 use App\Models\Aset;
 use Livewire\Component;
 use App\Models\KodeAkun;
-use App\Class\JurnalkeuanganClass;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
-use App\Models\AsetPenyusutan;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DatamasterExport;
 

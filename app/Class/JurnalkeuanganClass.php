@@ -16,7 +16,7 @@ class JurnalkeuanganClass
     }
 
     public static function getNomor($tanggal)
-    {        
+    {
         $terakhir = JurnalKeuangan::where('tanggal', 'like', substr($tanggal, 0, 7) . '%')
             ->orderBy('id', 'desc')
             ->first();
@@ -26,10 +26,10 @@ class JurnalkeuanganClass
         return $nomor;
     }
 
-    public static function insert($jenis, $sub_jenis = null, $tanggal, $uraian, $system = 0, $aset_id = null, $pemesanan_pengadaan_id = null, $stok_masuk_id = null, $pembayaran_id = null, $penggajian_id = null, $pelunasan_pemesanan_pengadaan_id = null, $stok_keluar_id = null, $detail)
+    public static function insert($jenis, $sub_jenis = null, $tanggal, $uraian, $system = 0, $foreign_key = null, $foreign_id = null, $detail)
     {
         $nomor = self::getNomor($tanggal);
-        
+
         $jurnalKeuangan = new JurnalKeuangan();
         $jurnalKeuangan->id = str_replace('/', '', substr($nomor, 6, 14));
         $jurnalKeuangan->nomor = $nomor;
@@ -38,13 +38,12 @@ class JurnalkeuanganClass
         $jurnalKeuangan->tanggal = $tanggal;
         $jurnalKeuangan->uraian = $uraian;
         $jurnalKeuangan->system = $system;
-        $jurnalKeuangan->aset_id = $aset_id;
-        $jurnalKeuangan->pemesanan_pengadaan_id = $pemesanan_pengadaan_id;
-        $jurnalKeuangan->stok_masuk_id = $stok_masuk_id;
-        $jurnalKeuangan->pembayaran_id = $pembayaran_id;
-        $jurnalKeuangan->penggajian_id = $penggajian_id;
-        $jurnalKeuangan->pelunasan_pemesanan_pengadaan_id = $pelunasan_pemesanan_pengadaan_id;
-        $jurnalKeuangan->stok_keluar_id = $stok_keluar_id;
+
+        // Pastikan foreign_key adalah string dan tidak null lalu set jika benar
+        if ($foreign_key !== null && is_string($foreign_key) && $foreign_key !== '') {
+            $jurnalKeuangan->{$foreign_key} = $foreign_id;
+        }
+
         $jurnalKeuangan->pengguna_id = auth()->id();
         $jurnalKeuangan->save();
 

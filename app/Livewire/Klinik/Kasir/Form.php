@@ -398,13 +398,8 @@ class Form extends Component
             tanggal: $this->tanggal,
             uraian: 'Pendapatan Pasien Klinik No. Nota ' . $pembayaran->id,
             system: 1,
-            pembayaran_id: $pembayaran->id,
-            penggajian_id: null,
-            pelunasan_pemesanan_pengadaan_id: null,
-            aset_id: null,
-            pemesanan_pengadaan_id: null,
-            stok_masuk_id: null,
-            stok_keluar_id: null,
+            foreign_key: 'pembayaran_id',
+            foreign_id: $pembayaran->id,
             detail: collect($jurnalKeuanganDetail)->groupBy('kode_akun_id')->map(function ($q) {
                 return [
                     'debet' => $q->sum('debet'),

@@ -52,10 +52,10 @@
                     </td>
                     <td>
                         @php
-                            $kehadiran = collect($row['absensi'])->whereNotNull('masuk')->count();
+                            $kehadiranPegawai = collect($row['absensi'])->whereNotNull('masuk')->count();
                         @endphp
-                        @if ($kehadiran > 0)
-                            <strong>{{ $kehadiran }}</strong>
+                        @if ($kehadiranPegawai > 0)
+                            <strong>{{ $kehadiranPegawai }}</strong>
                         @else
                             0
                         @endif

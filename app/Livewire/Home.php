@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use Carbon\Carbon;
 use App\Models\JurnalKeuangan;
-use App\Models\Absensi;
+use App\Models\AbsensiPegawai;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\PemesananPengadaan;
@@ -22,10 +22,10 @@ class Home extends Component
         $this->bulanShift = $this->bulanShift ?: date('Y-m');
     }
 
-    public function getDataJadwalShift()
+    public function getDataJadwalShiftPegawai()
     {
         $detail = [];
-        $absensi = Absensi::where('pegawai_id', auth()->user()->pegawai_id)->where('tanggal', 'like', $this->bulanShift . '%')->get();
+        $absensi = AbsensiPegawai::where('pegawai_id', auth()->user()->pegawai_id)->where('tanggal', 'like', $this->bulanShift . '%')->get();
         if (!$this->bulanShift || !preg_match('/^\d{4}-\d{2}$/', $this->bulanShift)) {
             $this->bulanShift = date('Y-m');
         }
@@ -86,7 +86,7 @@ class Home extends Component
         return view(
             'livewire.home',
             [
-                'dataJadwalShift' => auth()->user()->pegawai_id ? $this->getDataJadwalShift() : [],
+                'dataJadwalShiftPegawai' => auth()->user()->pegawai_id ? $this->getDataJadwalShiftPegawai() : [],
                 'dataPembayaranBulanIni' => $this->getDataPembayaranBulanIni(),
                 'dataPengeluaranBulanIni' => $this->getDataPengeluaranBulanIni(),
                 'dataPengadaanBarangJatuhTempo' => $this->getDataPengadaanBarangJatuhTempo(),

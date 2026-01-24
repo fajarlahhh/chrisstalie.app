@@ -4,7 +4,7 @@ namespace App\Livewire\Kepegawaian\Izin;
 
 use Livewire\Component;
 use App\Models\Pegawai;
-use App\Models\Absensi;
+use App\Models\AbsensiPegawai;
 use App\Traits\CustomValidationTrait;
 
 class Form extends Component
@@ -25,10 +25,10 @@ class Form extends Component
             'tanggal' => ['required'],
             'keterangan' => 'required',
         ]);
-        if (Absensi::where('id', $this->tanggal . '-' . $this->pegawai_id)->exists()) {
+        if (AbsensiPegawai::where('id', $this->tanggal . '-' . $this->pegawai_id)->exists()) {
             session()->flash('danger', 'Data sudah ada');
         } else {
-            $data = new Absensi();
+            $data = new AbsensiPegawai();
             $data->id = $this->tanggal . '-' . $this->pegawai_id;
             $data->tanggal = $this->tanggal;
             $data->izin = $this->izin;

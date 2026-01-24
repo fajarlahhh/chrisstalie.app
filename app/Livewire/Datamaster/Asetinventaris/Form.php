@@ -79,13 +79,8 @@ class Form extends Component
                     tanggal: $this->tanggal_perolehan,
                     uraian: 'Pembelian Aset Inventaris ' . $this->nama,
                     system: 1,
-                    aset_id: $this->data->id,
-                    pemesanan_pengadaan_id: null,
-                    stok_masuk_id: null,
-                    pembayaran_id: null,
-                    penggajian_id: null,
-                    pelunasan_pemesanan_pengadaan_id: null,
-                    stok_keluar_id: null,
+                    foreign_key: 'aset_id',
+                    foreign_id: $this->data->id,
                     detail: [
                         [
                             'debet' => 0,
@@ -107,13 +102,8 @@ class Form extends Component
                         tanggal: $this->tanggal_perolehan,
                         uraian: 'Penyusutan Aset Inventaris ' . $this->nama,
                         system: 1,
-                        aset_id: $this->data->id,
-                        pemesanan_pengadaan_id: null,
-                        stok_masuk_id: null,
-                        pembayaran_id: null,
-                        penggajian_id: null,
-                        pelunasan_pemesanan_pengadaan_id: null,
-                        stok_keluar_id: null,
+                        foreign_key: 'aset_id',
+                        foreign_id: $this->data->id,
                         detail: [
                             [
                                 'debet' => 0,

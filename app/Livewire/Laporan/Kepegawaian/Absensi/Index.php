@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Laporan\Kepegawaian\Absensi;
+namespace App\Livewire\Laporan\Kepegawaian\AbsensiPegawai;
 
 use Livewire\Component;
 use App\Models\Pegawai;
