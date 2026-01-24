@@ -54,7 +54,10 @@
             <td class="w-10px">2.</td>
             <td colspan="3">Pengeluaran</td>
         </tr>
-        @foreach (collect($dataKodeAkun)->whereIn('id', $dataPengeluaran->where('kredit', '>', 0)->unique('kode_akun_id')->pluck('kode_akun_id')->toArray()) as $item)
+        @php
+            $totalPengeluaran = 0;
+        @endphp
+        @foreach (\App\Models\KodeAkun::where('parent_id', '11100')->whereIn('id', $dataPengeluaran->where('kredit', '>', 0)->unique('kode_akun_id')->pluck('kode_akun_id')->toArray())->get() as $item)
             <tr>
                 <td></td>
                 <td>{{ $item['nama'] }}</td>
@@ -65,6 +68,7 @@
             @foreach ($dataPengeluaran->where('kode_akun_id', $item['id']) as $item)
                 @php
                     $pengeluaran = $dataPengeluaran->where('id', $item['id'])->where('debet', '>', 0);
+                    $totalPengeluaran += $pengeluaran->sum('debet');
                 @endphp
                 <tr>
                     <td></td>
@@ -79,7 +83,7 @@
         <tr>
             <th></th>
             <th>Total Pengeluaran</th>
-            <th class="text-end">{{ number_format($dataPengeluaran->where('debet', '>', 0)->sum('debet')) }}
+            <th class="text-end">{{ number_format($totalPengeluaran) }}
             </th>
         </tr>
         <tr>
@@ -94,12 +98,15 @@
                     <tr>
                         <td>Total Pengeluaran</td>
                         <td>: </td>
-                        <td class="text-end">{{ number_format($dataPengeluaran->where('debet', '>', 0)->sum('debet')) }}</td>
+                        <td class="text-end">
+                            {{ number_format($totalPengeluaran) }}</td>
                     </tr>
                     <tr>
                         <td>Total Keuntungan</td>
                         <td>: </td>
-                        <td class="text-end">{{ number_format($dataPendapatan->sum('total_tagihan') - $dataPengeluaran->where('debet', '>', 0)->sum('debet')) }}</td>
+                        <td class="text-end">
+                            {{ number_format($dataPendapatan->sum('total_tagihan') - $totalPengeluaran) }}
+                        </td>
                     </tr>
                 </table>
             </td>

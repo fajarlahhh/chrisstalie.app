@@ -49,14 +49,17 @@ class Index extends Component
 
     public function getPengeluaran()
     {
-        return JurnalKeuangan::leftJoin('jurnal_keuangan_detail', 'jurnal_keuangan.id', '=', 'jurnal_keuangan_detail.jurnal_keuangan_id')
-        ->leftJoin('kode_akun', 'jurnal_keuangan_detail.kode_akun_id', '=', 'kode_akun.id')->select(
-            'jurnal_keuangan.*',
-            'jurnal_keuangan_detail.kode_akun_id as kode_akun_id',
-            'jurnal_keuangan_detail.debet as debet',
-            'jurnal_keuangan_detail.kredit as kredit',
-            'kode_akun.nama as kode_akun_nama'
-        )->with(['pengguna'])->where('sub_jenis', 'Pengeluaran')
+        return JurnalKeuangan::with('jurnalKeuanganDetail.kodeAkun', 'pengguna.pegawai')
+            ->leftJoin('jurnal_keuangan_detail', 'jurnal_keuangan.id', '=', 'jurnal_keuangan_detail.jurnal_keuangan_id')
+            ->leftJoin('kode_akun', 'jurnal_keuangan_detail.kode_akun_id', '=', 'kode_akun.id')->select(
+                'jurnal_keuangan.id as id',
+                'jurnal_keuangan.uraian as uraian',
+                'jurnal_keuangan_detail.kode_akun_id as kode_akun_id',
+                'jurnal_keuangan_detail.debet as debet',
+                'jurnal_keuangan_detail.kredit as kredit',
+                'kode_akun.nama as kode_akun_nama'
+            )
+            ->whereIn('jenis', ['Pembelian', 'Pengeluaran'])
             ->where('tanggal', $this->tanggal)->get();
     }
 
