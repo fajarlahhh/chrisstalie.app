@@ -35,13 +35,13 @@
             <tr>
                 <td>{{ ++$no }}</td>
                 <td>{{ $row['nama'] }}</td>
-                <td>{{ count($row['absensi']) }}</td>
-                <td>{{ collect($row['absensi'])->whereNotNull('masuk')->count() }}</td>
-                <td>{{ collect($row['absensi'])->whereNotNull('masuk')->where('jam_masuk', '>', 'masuk')->count() }}
+                <td>{{ count($row['kepegawaianAbsensi']) }}</td>
+                <td>{{ collect($row['kepegawaianAbsensi'])->whereNotNull('masuk')->count() }}</td>
+                <td>{{ collect($row['kepegawaianAbsensi'])->whereNotNull('masuk')->where('jam_masuk', '>', 'masuk')->count() }}
                 </td>
-                <td>{{ collect($row['absensi'])->whereNull('masuk')->count() }}</td>
-                <td>{{ collect($row['absensi'])->where('izin', 'Sakit')->count() }}</td>
-                <td>{{ collect($row['absensi'])->where('izin', 'Izin')->count() }}</td>
+                <td>{{ collect($row['kepegawaianAbsensi'])->whereNull('masuk')->count() }}</td>
+                <td>{{ collect($row['kepegawaianAbsensi'])->where('izin', 'Sakit')->count() }}</td>
+                <td>{{ collect($row['kepegawaianAbsensi'])->where('izin', 'Izin')->count() }}</td>
             </tr>
         @endforeach
     </tbody>

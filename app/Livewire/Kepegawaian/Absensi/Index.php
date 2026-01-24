@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Livewire\Kepegawaian\AbsensiPegawai;
+namespace App\Livewire\Kepegawaian\KepegawaianAbsensi;
 
-use App\Models\AbsensiPegawai;
+use App\Models\KepegawaianAbsensi;
 use Livewire\Component;
 use App\Models\KehadiranPegawai;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
-use App\Models\Pegawai;
+use App\Models\KepegawaianPegawai;
 
 class Index extends Component
 {
@@ -22,7 +22,7 @@ class Index extends Component
     {
         $this->tanggal1 = $this->tanggal1 ?: date('Y-m-01');
         $this->tanggal2 = $this->tanggal2 ?: date('Y-m-d');
-        $this->dataPegawai = Pegawai::orderBy('nama')->get()->toArray();
+        $this->dataPegawai = KepegawaianPegawai::orderBy('nama')->get()->toArray();
     }
 
     public function updatedCari()
@@ -32,7 +32,7 @@ class Index extends Component
 
     public function hapus($id)
     {
-        AbsensiPegawai::findOrFail($id)->delete();
+        KepegawaianAbsensi::findOrFail($id)->delete();
     }
 
     private function parse($data, $p1, $p2)
@@ -52,7 +52,7 @@ class Index extends Component
     public function posting()
     {
         DB::transaction(function () {
-            $dataAbsensiPegawai = AbsensiPegawai::with(['pegawai.kehadiranPegawai'])
+            $dataKepegawaianAbsensi = KepegawaianAbsensi::with(['pegawai.kepegawaianKehadiran'])
                 ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                 ->when(
                     $this->cari,
@@ -60,23 +60,23 @@ class Index extends Component
                         ->where('nama', 'ilike', '%' . $this->cari . '%'))
                 )
                 ->orderBy('tanggal')->get()->map(function ($q) {
-                    $kehadiranPegawai = $q->pegawai->kehadiranPegawai->where('tanggal', $q->tanggal);
-                    $masuk = $kehadiranPegawai->first()?->waktu;
-                    $pulang = $kehadiranPegawai->last()?->waktu;
+                    $kepegawaianKehadiran = $q->pegawai->kepegawaianKehadiran->where('tanggal', $q->tanggal);
+                    $masuk = $kepegawaianKehadiran->first()?->waktu;
+                    $pulang = $kepegawaianKehadiran->last()?->waktu;
                     return [
                         'id' => $q->id,
                         'masuk' => $masuk,
                         'pulang' => $pulang,
                     ];
                 });
-            foreach ($dataAbsensiPegawai as $absensi) {
-                AbsensiPegawai::where('id', $absensi['id'])->update([
-                    'masuk' => $absensi['masuk'],
-                    'pulang' => $absensi['pulang'],
+            foreach ($dataKepegawaianAbsensi as $kepegawaianAbsensi) {
+                KepegawaianAbsensi::where('id', $kepegawaianAbsensi['id'])->update([
+                    'masuk' => $kepegawaianAbsensi['masuk'],
+                    'pulang' => $kepegawaianAbsensi['pulang'],
                 ]);
             }
 
-            session()->flash('success', 'Berhasil mengambil data absensi');
+            session()->flash('success', 'Berhasil mengambil data kepegawaianAbsensi');
         });
     }
 
@@ -116,8 +116,8 @@ class Index extends Component
             }
         }
         DB::transaction(function () use ($dataKehadiran) {
-            foreach ($dataKehadiran as $kehadiranPegawai) {
-                KehadiranPegawai::insertOrIgnore($kehadiranPegawai);
+            foreach ($dataKehadiran as $kepegawaianKehadiran) {
+                KehadiranPegawai::insertOrIgnore($kepegawaianKehadiran);
             }
         });
 
@@ -134,13 +134,13 @@ class Index extends Component
         //         $buffer1 = $buffer1 . $Response1;
         //     }
         // }
-        session()->flash('success', 'Berhasil mengambil data absensi');
+        session()->flash('success', 'Berhasil mengambil data kepegawaianAbsensi');
     }
 
     public function render()
     {
         return view('livewire.kepegawaian.absensi.index', [
-            'data' => AbsensiPegawai::with(['pegawai.kehadiranPegawai'])
+            'data' => KepegawaianAbsensi::with(['pegawai.kepegawaianKehadiran'])
                 ->when($this->pegawai_id, fn($q) => $q->where('pegawai_id', $this->pegawai_id))
                 ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                 ->when(

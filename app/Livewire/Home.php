@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use Carbon\Carbon;
 use App\Models\JurnalKeuangan;
-use App\Models\AbsensiPegawai;
+use App\Models\KepegawaianAbsensi;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\PemesananPengadaan;
@@ -25,7 +25,7 @@ class Home extends Component
     public function getDataJadwalShiftPegawai()
     {
         $detail = [];
-        $absensi = AbsensiPegawai::where('pegawai_id', auth()->user()->pegawai_id)->where('tanggal', 'like', $this->bulanShift . '%')->get();
+        $kepegawaianAbsensi = KepegawaianAbsensi::where('pegawai_id', auth()->user()->pegawai_id)->where('tanggal', 'like', $this->bulanShift . '%')->get();
         if (!$this->bulanShift || !preg_match('/^\d{4}-\d{2}$/', $this->bulanShift)) {
             $this->bulanShift = date('Y-m');
         }
@@ -36,7 +36,7 @@ class Home extends Component
         for ($i = 0; $i < $daysInMonth; $i++) {
             $tanggal = $startDate->copy()->addDays($i)->format('Y-m-d');
 
-            $data = $absensi->firstWhere('tanggal', $tanggal);
+            $data = $kepegawaianAbsensi->firstWhere('tanggal', $tanggal);
             $detail[] = $data ? [
                 'jam_masuk' => $data->jam_masuk,
                 'jam_pulang' => $data->jam_pulang,

@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Hakakses;
 
-use App\Models\Pegawai;
+use App\Models\KepegawaianPegawai;
 use App\Models\Pengguna;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
@@ -55,7 +55,7 @@ class Form extends Component
         }
         
         $this->dataRole = Role::all()->toArray();
-        $this->pegawaiData = Pegawai::aktif()->orderBy('nama')->get()->toArray();
+        $this->pegawaiData = KepegawaianPegawai::aktif()->orderBy('nama')->get()->toArray();
         $this->fill($this->data->toArray());
         $this->role = $this->data->getRoleNames()?->first();
         $this->hakAkses = $this->data->getPermissionNames()->toArray();

@@ -3,7 +3,7 @@
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Data Master</li>
-        <li class="breadcrumb-item">Pegawai</li>
+        <li class="breadcrumb-item">KepegawaianPegawai</li>
         <li class="breadcrumb-item active">{{ !$data->exists ? 'Tambah' : 'Edit' }}</li>
     @endsection
 

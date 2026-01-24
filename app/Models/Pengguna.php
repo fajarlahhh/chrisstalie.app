@@ -58,7 +58,7 @@ class Pengguna extends Authenticatable
      */
     public function pegawai(): BelongsTo
     {
-        return $this->belongsTo(Pegawai::class)->withTrashed();
+        return $this->belongsTo(KepegawaianPegawai::class)->withTrashed();
     }
 
     public function nakes(): HasOne

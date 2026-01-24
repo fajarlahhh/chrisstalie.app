@@ -4,13 +4,13 @@ namespace App\Livewire\Laporan\Kepegawaian\Jadwalshift;
 
 use Livewire\Component;
 use Livewire\Attributes\Url;
-use App\Models\Pegawai;
-use App\Models\AbsensiPegawai;
+use App\Models\KepegawaianPegawai;
+use App\Models\KepegawaianAbsensi;
 
 class Index extends Component
 {
     #[Url]
-    public $bulan, $dataPegawai = [], $dataAbsensiPegawai = [];
+    public $bulan, $dataPegawai = [], $dataKepegawaianAbsensi = [];
 
     public function mount()
     {
@@ -29,7 +29,7 @@ class Index extends Component
 
     private function getData()
     {
-        return AbsensiPegawai::with('pegawai')->where('tanggal', 'like', $this->bulan . '%')->get();
+        return KepegawaianAbsensi::with('pegawai')->where('tanggal', 'like', $this->bulan . '%')->get();
     }
 
     public function render()

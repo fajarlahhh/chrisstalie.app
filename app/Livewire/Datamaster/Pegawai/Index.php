@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Datamaster\Pegawai;
+namespace App\Livewire\Datamaster\KepegawaianPegawai;
 
 use Livewire\Component;
-use App\Models\Pegawai;
+use App\Models\KepegawaianPegawai;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 
@@ -16,13 +16,13 @@ class Index extends Component
 
     public function delete($id)
     {
-        Pegawai::findOrFail($id)
+        KepegawaianPegawai::findOrFail($id)
             ->forceDelete();
     }
 
     public function restore($id)
     {
-        Pegawai::withTrashed()
+        KepegawaianPegawai::withTrashed()
             ->findOrFail($id)
             ->restore();
     }
@@ -30,7 +30,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.datamaster.pegawai.index', [
-            'data' => Pegawai::where(fn($q) => $q
+            'data' => KepegawaianPegawai::where(fn($q) => $q
                 ->where('nama', 'like', '%' . $this->cari . '%')
                 ->where('status', $this->status))
                 ->with('pengguna.pegawai')

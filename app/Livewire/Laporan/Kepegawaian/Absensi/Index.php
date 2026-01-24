@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Laporan\Kepegawaian\AbsensiPegawai;
+namespace App\Livewire\Laporan\Kepegawaian\KepegawaianAbsensi;
 
 use Livewire\Component;
-use App\Models\Pegawai;
+use App\Models\KepegawaianPegawai;
 use Livewire\Attributes\Url;
 
 class Index extends Component
@@ -16,7 +16,7 @@ class Index extends Component
     {
         $this->tanggal1 = $this->tanggal1 ?: date('Y-m-01');
         $this->tanggal2 = $this->tanggal2 ?: date('Y-m-t');
-        $this->dataPegawai = Pegawai::orderBy('nama')->get()->toArray();
+        $this->dataPegawai = KepegawaianPegawai::orderBy('nama')->get()->toArray();
         $this->jenis = $this->jenis ?: 'Rekap';
         $this->pegawai_id = $this->pegawai_id ?: null;
     }
@@ -28,7 +28,7 @@ class Index extends Component
 
     public function print()
     {
-        $cetak = view('livewire.laporan.kepegawaian.absensi.cetak', [
+        $cetak = view('livewire.laporan.kepegawaian.kepegawaianAbsensi.cetak', [
             'cetak' => true,
             'tanggal1' => $this->tanggal1,
             'tanggal2' => $this->tanggal2,
@@ -41,14 +41,14 @@ class Index extends Component
 
     private function getData()
     {
-        return Pegawai::with(['absensi' => function ($query) {
+        return KepegawaianPegawai::with(['kepegawaianAbsensi' => function ($query) {
             $query->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2]);
-        }])->when($this->jenis == 'Per Pegawai', fn($q) => $q->where('id', $this->pegawai_id))->get()->toArray();
+        }])->when($this->jenis == 'Per KepegawaianPegawai', fn($q) => $q->where('id', $this->pegawai_id))->get()->toArray();
     }
 
     public function render()
     {
-        return view('livewire.laporan.kepegawaian.absensi.index', [
+        return view('livewire.laporan.kepegawaian.kepegawaianAbsensi.index', [
             'data' => $this->getData(),
         ]);
     }

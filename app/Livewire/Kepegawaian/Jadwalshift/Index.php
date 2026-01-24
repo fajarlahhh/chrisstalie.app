@@ -3,8 +3,8 @@
 namespace App\Livewire\Kepegawaian\Jadwalshift;
 
 use App\Models\Shift;
-use App\Models\AbsensiPegawai;
-use App\Models\Pegawai;
+use App\Models\KepegawaianAbsensi;
+use App\Models\KepegawaianPegawai;
 use Livewire\Component;
 use Livewire\Attributes\Url;
 use Illuminate\Support\Carbon;
@@ -22,7 +22,7 @@ class Index extends Component
     {
         $this->bulan = $this->bulan ?: date('Y-m');
         $this->dataShift = Shift::orderBy('nama')->get()->toArray();
-        $this->dataPegawai = Pegawai::orderBy('nama')->get()->toArray();
+        $this->dataPegawai = KepegawaianPegawai::orderBy('nama')->get()->toArray();
         $this->pegawai_id = $this->pegawai_id ?: $this->dataPegawai[0]['id'];
         $this->getDetail($this->bulan, $this->pegawai_id);
     }
@@ -41,7 +41,7 @@ class Index extends Component
     {
         $this->reset('detail');
 
-        $absensi = AbsensiPegawai::where('pegawai_id', $this->pegawai_id)->where('tanggal', 'like', $this->bulan . '%')->get();
+        $kepegawaianAbsensi = KepegawaianAbsensi::where('pegawai_id', $this->pegawai_id)->where('tanggal', 'like', $this->bulan . '%')->get();
         if (!$this->bulan || !preg_match('/^\d{4}-\d{2}$/', $this->bulan)) {
             $this->bulan = date('Y-m');
         }
@@ -52,7 +52,7 @@ class Index extends Component
         for ($i = 0; $i < $daysInMonth; $i++) {
             $tanggal = $startDate->copy()->addDays($i)->format('Y-m-d');
 
-            $data = $absensi->firstWhere('tanggal', $tanggal);
+            $data = $kepegawaianAbsensi->firstWhere('tanggal', $tanggal);
             $this->detail[] = $data ? [
                 'jam_masuk' => $data->jam_masuk,
                 'jam_pulang' => $data->jam_pulang,
@@ -96,12 +96,12 @@ class Index extends Component
                     ];
                 })->toArray() as $q
             ) {
-                AbsensiPegawai::where('id', $q['id'])->restore();
-                if (AbsensiPegawai::where('id', $q['id'])->exists()) {
+                KepegawaianAbsensi::where('id', $q['id'])->restore();
+                if (KepegawaianAbsensi::where('id', $q['id'])->exists()) {
                     if ($q['absen'] === false) {
-                        AbsensiPegawai::where('id', $q['id'])->delete();
+                        KepegawaianAbsensi::where('id', $q['id'])->delete();
                     } else {
-                        AbsensiPegawai::where('id', $q['id'])->update([
+                        KepegawaianAbsensi::where('id', $q['id'])->update([
                             'jam_masuk' => $q['jam_masuk'],
                             'jam_pulang' => $q['jam_pulang'],
                             'shift_id' => $q['shift_id'],
@@ -109,7 +109,7 @@ class Index extends Component
                     }
                 } else {
                     if ($q['absen'] === true) {
-                        AbsensiPegawai::insert([
+                        KepegawaianAbsensi::insert([
                             'id' => $q['id'],
                             'pegawai_id' => $q['pegawai_id'],
                             'tanggal' => $q['tanggal'],

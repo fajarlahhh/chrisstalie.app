@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class AbsensiPegawai extends Model
+class KepegawaianAbsensi extends Model
 {
     use SoftDeletes;
     //
-    protected $table = 'absensi_pegawai';
+    protected $table = 'kepegawaian_absensi';
     public $incrementing = false;
     protected $keyType = 'string';
     protected $fillable = ['pegawai_id', 'tanggal', 'masuk', 'pulang', 'izin'];
@@ -18,7 +18,7 @@ class AbsensiPegawai extends Model
 
     public function pegawai(): BelongsTo
     {
-        return $this->belongsTo(Pegawai::class);
+        return $this->belongsTo(KepegawaianPegawai::class);
     }
 
     public function jadwalShiftPegawaiDetail(): BelongsTo

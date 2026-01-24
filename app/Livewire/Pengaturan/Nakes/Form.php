@@ -4,7 +4,7 @@ namespace App\Livewire\Pengaturan\Nakes;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
-use App\Models\Pegawai;
+use App\Models\KepegawaianPegawai;
 use App\Models\Nakes;
 use App\Traits\CustomValidationTrait;
 
@@ -18,7 +18,7 @@ class Form extends Component
     {
         $this->reset('nama', 'ihs', 'nik', 'alamat', 'no_hp', 'dokter');
         if ($value) {
-            $this->pegawai = Pegawai::find($this->pegawai_id);
+            $this->pegawai = KepegawaianPegawai::find($this->pegawai_id);
             $this->nama = $this->pegawai->nama;
             $this->ihs = $this->pegawai->ihs;
             $this->nik = $this->pegawai->nik;
@@ -60,7 +60,7 @@ class Form extends Component
     public function mount(Nakes $data)
     {
         
-        $this->dataPegawai = Pegawai::orderBy('nama')->get()->toArray();
+        $this->dataPegawai = KepegawaianPegawai::orderBy('nama')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
         $this->dokter = $this->data->dokter == 1 ? true : false;

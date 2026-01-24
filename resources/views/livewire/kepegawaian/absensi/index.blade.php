@@ -112,9 +112,9 @@
                                 <td>{{ $row->izin ? $row->izin . ' (' . $row->keterangan . ')' : null }}</td>
                                 @if ($row->jam_masuk && $row->jam_pulang)
                                     @php
-                                        $kehadiranPegawai = $row->pegawai->kehadiranPegawai->where('tanggal', $row->tanggal);
-                                        $masuk = $kehadiranPegawai->first()?->waktu;
-                                        $pulang = $kehadiranPegawai->last()?->waktu;
+                                        $kepegawaianKehadiran = $row->pegawai->kepegawaianKehadiran->where('tanggal', $row->tanggal);
+                                        $masuk = $kepegawaianKehadiran->first()?->waktu;
+                                        $pulang = $kepegawaianKehadiran->last()?->waktu;
                                     @endphp
                                     <td>{{ $masuk }}</td>
                                     <td>{{ $pulang }}</td>

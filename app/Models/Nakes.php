@@ -17,7 +17,7 @@ class Nakes extends Model
 
     public function pegawai(): BelongsTo
     {
-        return $this->belongsTo(Pegawai::class);
+        return $this->belongsTo(KepegawaianPegawai::class);
     }
 
     public function getNamaAttribute()

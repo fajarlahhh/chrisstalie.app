@@ -3,8 +3,8 @@
 namespace App\Livewire\Kepegawaian\Izin;
 
 use Livewire\Component;
-use App\Models\Pegawai;
-use App\Models\AbsensiPegawai;
+use App\Models\KepegawaianPegawai;
+use App\Models\KepegawaianAbsensi;
 use App\Traits\CustomValidationTrait;
 
 class Form extends Component
@@ -15,7 +15,7 @@ class Form extends Component
 
     public function mount()
     {
-        $this->dataPegawai = Pegawai::orderBy('nama')->get()->toArray();
+        $this->dataPegawai = KepegawaianPegawai::orderBy('nama')->get()->toArray();
     }
 
     public function submit()
@@ -25,10 +25,10 @@ class Form extends Component
             'tanggal' => ['required'],
             'keterangan' => 'required',
         ]);
-        if (AbsensiPegawai::where('id', $this->tanggal . '-' . $this->pegawai_id)->exists()) {
+        if (KepegawaianAbsensi::where('id', $this->tanggal . '-' . $this->pegawai_id)->exists()) {
             session()->flash('danger', 'Data sudah ada');
         } else {
-            $data = new AbsensiPegawai();
+            $data = new KepegawaianAbsensi();
             $data->id = $this->tanggal . '-' . $this->pegawai_id;
             $data->tanggal = $this->tanggal;
             $data->izin = $this->izin;

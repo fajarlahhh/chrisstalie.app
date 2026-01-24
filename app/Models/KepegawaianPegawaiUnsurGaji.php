@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class UnsurGajiPegawai extends Model
+class KepegawaianPegawaiUnsurGaji extends Model
 {
     //
-    protected $table = 'unsur_gaji_pegawai';
+    protected $table = 'kepegawaian_pegawai_unsur_gaji';
 
     public function pegawai(): BelongsTo
     {
-        return $this->belongsTo(Pegawai::class);
+        return $this->belongsTo(KepegawaianPegawai::class);
     }
 
     public function kodeAkun(): BelongsTo

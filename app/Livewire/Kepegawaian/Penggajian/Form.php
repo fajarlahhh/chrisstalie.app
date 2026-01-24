@@ -3,11 +3,11 @@
 namespace App\Livewire\Kepegawaian\Penggajian;
 
 use App\Models\JurnalKeuangan;
-use App\Models\Pegawai;
+use App\Models\KepegawaianPegawai;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Class\JurnalkeuanganClass;
-use App\Models\UnsurGajiPegawai;
+use App\Models\KepegawaianPegawaiUnsurGaji;
 use App\Models\Penggajian;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -25,9 +25,9 @@ class Form extends Component
         $this->tanggal = date('Y-m-01');
         $this->periode = date('Y-m');
         if (!Penggajian::where('periode', $this->periode . '-01')->exists()) {
-            $this->dataUnsurGaji = KodeAkun::detail()->whereIn('id', UnsurGajiPegawai::pluck('kode_akun_id'))->get()->toArray();
+            $this->dataUnsurGaji = KodeAkun::detail()->whereIn('id', KepegawaianPegawaiUnsurGaji::pluck('kode_akun_id'))->get()->toArray();
 
-            foreach (Pegawai::with('unsurGajiPegawai')->aktif()->get()->toArray() as $pegawai) {
+            foreach (KepegawaianPegawai::with('pegawaiUnsurGajiKepegawaian')->aktif()->get()->toArray() as $pegawai) {
                 $unsurGaji = [];
                 foreach ($this->dataUnsurGaji as $item) {
                     $unsurGaji[] = [
@@ -51,9 +51,9 @@ class Form extends Component
     {
         $this->detail = [];
         if (!Penggajian::where('periode', $value . '-01')->exists()) {
-            $this->dataUnsurGaji = KodeAkun::detail()->whereIn('id', UnsurGajiPegawai::pluck('kode_akun_id'))->get()->toArray();
+            $this->dataUnsurGaji = KodeAkun::detail()->whereIn('id', KepegawaianPegawaiUnsurGaji::pluck('kode_akun_id'))->get()->toArray();
 
-            foreach (Pegawai::with('unsurGajiPegawai')->aktif()->get()->toArray() as $pegawai) {
+            foreach (KepegawaianPegawai::with('pegawaiUnsurGajiKepegawaian')->aktif()->get()->toArray() as $pegawai) {
                 $unsurGaji = [];
                 foreach ($this->dataUnsurGaji as $item) {
                     $unsurGaji[] = [

@@ -9,19 +9,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Pegawai extends Model
+class KepegawaianPegawai extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'pegawai';
+    protected $table = 'kepegawaian_pegawai';
 
     public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class)->withTrashed();
     }
     
-    public function unsurGajiPegawai(): HasMany
+    public function kepegawaianPegawaiUnsurGaji(): HasMany
     {
-        return $this->hasMany(UnsurGajiPegawai::class);
+        return $this->hasMany(KepegawaianPegawaiUnsurGaji::class);
     }
 
     public function scopeAktif($query)
@@ -34,18 +34,13 @@ class Pegawai extends Model
         return $query->where('status', 'Non Aktif');
     }
 
-    public function absensi(): HasMany
+    public function kepegawaianAbsensi(): HasMany
     {
-        return $this->hasMany(AbsensiPegawai::class);
+        return $this->hasMany(KepegawaianAbsensi::class);
     }
 
-    public function kehadiranPegawai(): HasMany
+    public function kepegawaianKehadiran(): HasMany
     {
-        return $this->hasMany(KehadiranPegawai::class);
-    }
-
-    public function jadwalShiftPegawai(): HasMany
-    {
-        return $this->hasMany(JadwalShiftPegawai::class);
+        return $this->hasMany(KepegawaianKehadiran::class);
     }
 }

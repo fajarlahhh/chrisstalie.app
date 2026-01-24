@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Datamaster\Pegawai;
+namespace App\Livewire\Datamaster\KepegawaianPegawai;
 
 use Livewire\Component;
-use App\Models\Pegawai;
+use App\Models\KepegawaianPegawai;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 use App\Models\KodeAkun;
@@ -33,7 +33,7 @@ class Form extends Component
                 while ($response[$i] = fgets($Connect, 1024)) {
                     $buffer[$i] = $buffer[$i] . $response[$i];
                 }
-                Pegawai::where('id', $pegawai->id)->update(['upload' => 1]);
+                KepegawaianPegawai::where('id', $pegawai->id)->update(['upload' => 1]);
                 return true;
             }
         } catch (\Exception $e) {
@@ -75,8 +75,8 @@ class Form extends Component
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
-            $this->data->unsurGajiPegawai()->delete();
-            $this->data->unsurGajiPegawai()->insert(collect($this->unsurGaji)->where('nilai', '>', 0)->map(fn($q) => [
+            $this->data->pegawaiUnsurGajiKepegawaian()->delete();
+            $this->data->pegawaiUnsurGajiKepegawaian()->insert(collect($this->unsurGaji)->where('nilai', '>', 0)->map(fn($q) => [
                 'pegawai_id' => $this->data->id,
                 'kode_akun_id' => $q['kode_akun_id'],
                 'nilai' => $q['nilai'],
@@ -97,13 +97,13 @@ class Form extends Component
         $this->redirect('/datamaster/pegawai');
     }
 
-    public function mount(Pegawai $data)
+    public function mount(KepegawaianPegawai $data)
     {
         
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '61000')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
-        $this->unsurGaji = $this->data->unsurGajiPegawai->map(fn($q) => [
+        $this->unsurGaji = $this->data->pegawaiUnsurGajiKepegawaian->map(fn($q) => [
             'nilai' => $q['nilai'],
             'sifat' => $q['sifat'],
             'kode_akun_id' => $q['kode_akun_id'],
