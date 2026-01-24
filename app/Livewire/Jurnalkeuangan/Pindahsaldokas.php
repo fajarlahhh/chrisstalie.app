@@ -25,7 +25,7 @@ class Pindahsaldokas extends Component
             $this->tujuan_dana_id = $this->data->jurnalKeuanganDetail->firstWhere('debet', '>', 0)->kode_akun_id;
             $this->nilai = $this->data->jurnalKeuanganDetail->sum('kredit');
         }
-        $this->tanggal = date('Y-m-d');
+        // $this->tanggal = date('Y-m-d');
         $this->dataKodeAkun = KodeAkun::detail()->whereIn('parent_id', ['11100'])->get()->toArray();
     }
 

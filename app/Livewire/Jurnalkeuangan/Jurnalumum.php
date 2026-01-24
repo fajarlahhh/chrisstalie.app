@@ -19,7 +19,7 @@ class Jurnalumum extends Component
     public function mount(JurnalKeuangan $data)
     {
         $this->data = $data;
-        $this->tanggal = date('Y-m-d');
+        // $this->tanggal = date('Y-m-d');
         $this->dataKodeAkun = KodeAkun::detail()->with('parent')->get()->toArray();
         $this->fill($this->data->toArray());
         $this->detail = $this->data->jurnalKeuanganDetail->map(fn($q) => [
