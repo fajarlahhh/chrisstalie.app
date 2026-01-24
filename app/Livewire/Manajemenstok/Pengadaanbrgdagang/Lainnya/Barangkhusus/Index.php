@@ -36,7 +36,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.manajemenstok.pengadaanbrgdagang.lainnya.barangkhusus.index', [
-            'data' => PemesananPengadaan::where('jenis', 'Barang Khusus')->with(['pemesananPengadaanDetail.barangSatuan.barang', 'pengguna.pegawai', 'supplier', 'stokKeluar', 'pelunasanPemesananPengadaan.kodeAkunPembayaran', 'kodeAkun'])->where('tanggal', 'like', $this->bulan . '%')
+            'data' => PemesananPengadaan::where('jenis', 'Barang Khusus')->where(fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))->with(['pemesananPengadaanDetail.barangSatuan.barang', 'pengguna.pegawai', 'supplier', 'stokKeluar', 'pelunasanPemesananPengadaan.kodeAkunPembayaran', 'kodeAkun'])->where('tanggal', 'like', $this->bulan . '%')
                 ->paginate(10)
         ]);
     }
