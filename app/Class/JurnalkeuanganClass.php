@@ -23,7 +23,7 @@ class JurnalkeuanganClass
         $nomorTerakhir = $terakhir ? (int)substr($terakhir->id, 6, 5) : 0;
         // dd(substr($terakhir->id, 6, 5));
         $nomor = 'JURNAL/' . str_replace('-', '/', substr($tanggal, 0, 7)) . '/' . sprintf('%05d', $nomorTerakhir + 1);
-        return Str::uuid();
+        return $nomor;
     }
 
     public static function insert($jenis, $sub_jenis = null, $tanggal, $uraian, $system = 0, $foreign_key = null, $foreign_id = null, $detail)
