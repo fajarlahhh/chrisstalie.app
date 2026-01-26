@@ -8,13 +8,14 @@ use Livewire\WithPagination;
 use App\Models\PengadaanPemesanan;
 use Illuminate\Support\Facades\DB;
 use App\Models\PengadaanPermintaan;
+use App\Models\PengadaanVerifikasi;
 
 class Index extends Component
 {
     use WithPagination;
 
     #[Url]
-    public $cari, $status = 'Belum Dipesan', $bulan;
+    public $cari, $status = 'Belum Proses', $bulan;
 
     public function updated()
     {
@@ -31,6 +32,7 @@ class Index extends Component
         try {
             PengadaanPermintaan::findOrFail($id)
                 ->forceDelete();
+            PengadaanVerifikasi::where('pengadaan_permintaan_id', $id)->forceDelete();
             session()->flash('success', 'Berhasil menghapus data');
         } catch (\Throwable $th) {
             session()->flash('danger', 'Gagal menghapus data');
@@ -38,7 +40,7 @@ class Index extends Component
     }
     private function getData()
     {
-        if ($this->status == 'Belum Dipesan') {
+        if ($this->status == 'Belum Proses') {
             $data = PengadaanPermintaan::with([
                 'pengguna.kepegawaianPegawai',
                 'pengadaanPermintaanDetail.barangSatuan.satuanKonversi',
@@ -56,10 +58,12 @@ class Index extends Component
             return $data;
         } else {
             $data = PengadaanPemesanan::with([
+                'supplier',
                 'pengguna.kepegawaianPegawai',
                 'pengadaanPemesananDetail.barangSatuan.barang',
                 'pengadaanPemesananDetail.barangSatuan.satuanKonversi',
                 'pengadaanPermintaan',
+                'pengadaanVerifikasi.pengguna',
             ])
                 ->whereHas('pengadaanPermintaan', function ($q) {
                     $q->where(fn($q) => $q

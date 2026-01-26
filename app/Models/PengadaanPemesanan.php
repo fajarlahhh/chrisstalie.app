@@ -64,6 +64,11 @@ class PengadaanPemesanan extends Model
         return $this->belongsTo(KodeAkun::class);
     }
 
+    public function pengadaanPemesananVerifikasi(): HasOne
+    {
+        return $this->hasOne(PengadaanVerifikasi::class);
+    }
+
     public function getTotalHargaAttribute(): float
     {
         return $this->pengadaanPemesananDetail->sum(function ($item) {

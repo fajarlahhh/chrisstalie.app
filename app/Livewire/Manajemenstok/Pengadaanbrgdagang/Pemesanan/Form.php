@@ -64,8 +64,8 @@ class Form extends Component
             }
 
             $pengadaanVerifikasi = new PengadaanVerifikasi();
-            $pengadaanVerifikasi->pengadaan_permintaan_id = $this->data->id;
-            $pengadaanVerifikasi->jenis = 'Permintaan Pengadaan';
+            $pengadaanVerifikasi->pengadaan_pemesanan_id = $data->id;
+            $pengadaanVerifikasi->jenis = 'Persetujuan Pemesanan Pengadaan';
             $pengadaanVerifikasi->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });

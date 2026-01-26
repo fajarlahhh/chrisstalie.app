@@ -14,10 +14,11 @@
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
                     <select class="form-select" wire:model.lazy="status">
-                        <option value="Belum Dipesan">Belum Dipesan</option>
-                        <option value="Sudah Dipesan">Sudah Dipesan</option>
+                        <option value="Belum Proses">Belum Proses</option>
+                        <option value="Sudah Proses">Sudah Proses</option>
+                        <option value="Sudah Persetujuan">Sudah Persetujuan</option>
                     </select>&nbsp;
-                    @if ($status == 'Sudah Dipesan')
+                    @if ($status == 'Sudah Proses' || $status == 'Sudah Persetujuan')
                         <input type="month" class="form-control w-auto" wire:model.lazy="bulan"
                             max="{{ date('Y-m') }}">
                         &nbsp;
@@ -29,7 +30,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
-            @if ($status == 'Belum Dipesan')
+            @if ($status == 'Belum Proses')
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -51,7 +52,7 @@
                                                 <th>Barang</th>
                                                 <th>Satuan</th>
                                                 <th>Qty Permintaan</th>
-                                                <th>Qty Sudah Dipesan</th>
+                                                <th>Qty Pemesanan</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -150,6 +151,9 @@
                                         @if (!$item->pengadaanPermintaan->pengadaanVerifikasiPersetujuan)
                                             <x-action :row="$item" custom="" :detail="false" :edit="false"
                                                 :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                        @else
+                                            <x-action :row="$item" custom="" :detail="false" :edit="true"
+                                                :print="true" :permanentDelete="false" :restore="false" :delete="false" />
                                         @endif
                                     @endrole
                                 </td>
