@@ -39,7 +39,7 @@ class Index extends Component
     {
         return view('livewire.manajemenstok.pengadaanbrgdagang.permintaan.index', [
             'data' => PermintaanPengadaan::with([
-                'pengguna.pegawai',
+                'pengguna.kepegawaianPegawai',
                 'permintaanPengadaanDetail.barangSatuan.satuanKonversi',
                 'permintaanPengadaanDetail.barangSatuan.barang',
                 'pemesananPengadaan.stokMasuk',

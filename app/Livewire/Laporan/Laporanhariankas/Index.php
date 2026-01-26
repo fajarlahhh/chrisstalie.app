@@ -35,7 +35,7 @@ class Index extends Component
             'tanggal' => $this->tanggal,
             'dataMetodeBayar' => $this->dataMetodeBayar,
             'dataKodeAkun' => $this->dataKodeAkun,
-            'pengguna' => $this->pengguna_id ? Pengguna::find($this->pengguna_id)?->pegawai?->nama ?? Pengguna::find($this->pengguna_id)?->nama : 'Semua Pengguna',
+            'pengguna' => $this->pengguna_id ? Pengguna::find($this->pengguna_id)?->kepegawaianPegawai?->nama ?? Pengguna::find($this->pengguna_id)?->nama : 'Semua Pengguna',
             'data' => $this->getData(),
         ])->render();
         session()->flash('cetak', $cetak);
@@ -49,7 +49,7 @@ class Index extends Component
 
     public function getPengeluaran()
     {
-        return JurnalKeuangan::with('jurnalKeuanganDetail.kodeAkun', 'pengguna.pegawai')
+        return JurnalKeuangan::with('jurnalKeuanganDetail.kodeAkun', 'pengguna.kepegawaianPegawai')
             ->leftJoin('jurnal_keuangan_detail', 'jurnal_keuangan.id', '=', 'jurnal_keuangan_detail.jurnal_keuangan_id')
             ->leftJoin('kode_akun', 'jurnal_keuangan_detail.kode_akun_id', '=', 'kode_akun.id')->select(
                 'jurnal_keuangan.id as id',

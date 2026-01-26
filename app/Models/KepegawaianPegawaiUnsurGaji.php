@@ -10,7 +10,7 @@ class KepegawaianPegawaiUnsurGaji extends Model
     //
     protected $table = 'kepegawaian_pegawai_unsur_gaji';
 
-    public function pegawai(): BelongsTo
+    public function kepegawaianPegawai(): BelongsTo
     {
         return $this->belongsTo(KepegawaianPegawai::class);
     }

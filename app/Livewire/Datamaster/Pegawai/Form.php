@@ -15,7 +15,7 @@ class Form extends Component
     public $dataKodeAkun = [];
     public $nama, $alamat, $no_hp, $tanggal_masuk, $tanggal_lahir, $jenis_kelamin, $nik, $npwp, $no_bpjs, $gaji, $tunjangan, $tunjangan_transport, $tunjangan_bpjs, $office, $satuan_tugas, $status, $upload = false, $panggilan;
 
-    public function upload($pegawai)
+    public function upload($kepegawaianPegawai)
     {
         try {
             $buffer = [];
@@ -23,7 +23,7 @@ class Form extends Component
             $i = 0;
             $Connect = fsockopen(config('app.fingerprint_ip'), "80", $errno, $errstr, 30);
             if ($Connect) {
-                $soap_request = "<SetUserInfo><ArgComKey Xsi:type=\"xsd:integer\">" . config('app.fingerprint_key') . "</ArgComKey><Arg><PIN>" . $pegawai->id . "</PIN><Name>" . $pegawai->panggilan . "</Name><Password>" . $pegawai->id . "</Password><Privilege>19</Privilege></Arg></SetUserInfo>";
+                $soap_request = "<SetUserInfo><ArgComKey Xsi:type=\"xsd:integer\">" . config('app.fingerprint_key') . "</ArgComKey><Arg><PIN>" . $kepegawaianPegawai->id . "</PIN><Name>" . $kepegawaianPegawai->panggilan . "</Name><Password>" . $kepegawaianPegawai->id . "</Password><Privilege>19</Privilege></Arg></SetUserInfo>";
                 $newLine = "\r\n";
                 fputs($Connect, "POST /iWsService HTTP/1.0" . $newLine);
                 fputs($Connect, "Content-Type: text/xml" . $newLine);
@@ -33,7 +33,7 @@ class Form extends Component
                 while ($response[$i] = fgets($Connect, 1024)) {
                     $buffer[$i] = $buffer[$i] . $response[$i];
                 }
-                KepegawaianPegawai::where('id', $pegawai->id)->update(['upload' => 1]);
+                KepegawaianPegawai::where('id', $kepegawaianPegawai->id)->update(['upload' => 1]);
                 return true;
             }
         } catch (\Exception $e) {

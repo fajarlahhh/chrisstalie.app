@@ -43,11 +43,11 @@ class Index extends Component
     public function render()
     {
         return view('livewire.kepegawaian.izin.index', [
-            'data' => KepegawaianAbsensi::with('pegawai')->with('jadwalShiftPegawaiDetail')
+            'data' => KepegawaianAbsensi::with('kepegawaianPegawai')->with('jadwalShiftPegawaiDetail')
                 ->whereNotNull('izin')
                 ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                 ->when($this->cari, fn($q) => $q
-                    ->whereHas('pegawai', fn($r) => $r
+                    ->whereHas('kepegawaianPegawai', fn($r) => $r
                         ->where('nama', 'ilike', '%' . $this->cari . '%')))
                 ->orderBy('tanggal', 'desc')
                 ->paginate(10)

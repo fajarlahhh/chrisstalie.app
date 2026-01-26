@@ -67,10 +67,10 @@ class Form extends Component
                 'biaya' => 0,
             ];
         }
-        $this->dataNakes = Nakes::with('pegawai')->orderBy('nama')->get()->map(fn($q) => [
+        $this->dataNakes = Nakes::with('kepegawaianPegawai')->orderBy('nama')->get()->map(fn($q) => [
             'id' => $q->id,
             'dokter' => $q->dokter,
-            'nama' => $q->pegawai ? $q->pegawai->nama : $q->nama,
+            'nama' => $q->kepegawaianPegawai ? $q->kepegawaianPegawai->nama : $q->nama,
         ])->toArray();
     }
 

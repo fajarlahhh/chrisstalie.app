@@ -14,7 +14,7 @@ class KepegawaianKehadiran extends Model
     protected $keyType = 'string';
     public $timestamps = false;
 
-    public function pegawai(): BelongsTo
+    public function kepegawaianPegawai(): BelongsTo
     {
         return $this->belongsTo(KepegawaianPegawai::class);
     }

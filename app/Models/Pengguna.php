@@ -52,11 +52,11 @@ class Pengguna extends Authenticatable
     }
 
     /**
-     * Get the pegawai that owns the User
+     * Get the kepegawaianPegawai that owns the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function pegawai(): BelongsTo
+    public function kepegawaianPegawai(): BelongsTo
     {
         return $this->belongsTo(KepegawaianPegawai::class)->withTrashed();
     }
@@ -73,8 +73,8 @@ class Pengguna extends Authenticatable
 
     public function getNamaAttribute(): string
     {
-        if ($this->pegawai && isset($this->pegawai->nama)) {
-            return $this->pegawai->nama;
+        if ($this->kepegawaianPegawai && isset($this->kepegawaianPegawai->nama)) {
+            return $this->kepegawaianPegawai->nama;
         }
         // Fallback: try to get original 'nama' directly from attributes
         return $this->attributes['nama'] ?? '';
@@ -82,8 +82,8 @@ class Pengguna extends Authenticatable
 
     public function getPanggilanAttribute(): string
     {
-        if ($this->pegawai && isset($this->pegawai->panggilan)) {
-            return $this->pegawai->panggilan;
+        if ($this->kepegawaianPegawai && isset($this->kepegawaianPegawai->panggilan)) {
+            return $this->kepegawaianPegawai->panggilan;
         }
         // Fallback: try to get original 'panggilan' directly from attributes
         return $this->attributes['panggilan'] ?? '';

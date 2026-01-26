@@ -24,8 +24,8 @@ class Index extends Component
     {
         return view('livewire.manajemenstok.pengadaanbrgdagang.verifikasi.index', [
             'data' => PermintaanPengadaan::with([
-                'pengguna.pegawai',
-                'verifikasiPengadaan.pengguna.pegawai',
+                'pengguna.kepegawaianPegawai',
+                'verifikasiPengadaan.pengguna.kepegawaianPegawai',
                 'permintaanPengadaanDetail.barangSatuan.satuanKonversi',
                 'permintaanPengadaanDetail.barangSatuan.barang',
             ])->with(['verifikasiPengadaan' => fn($q) => $q->whereNotNull('status')])

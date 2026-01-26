@@ -45,7 +45,7 @@
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
                             <td>{{ $row->nama }}</td>
-                            <td>{{ $row->pegawai ? $row->pegawai->satuan_tugas : '' }}</td>
+                            <td>{{ $row->kepegawaianPegawai ? $row->kepegawaianPegawai->satuan_tugas : '' }}</td>
                             <td>{{ $row->uid }}</td>
                             <td>{{ $row->getRoleNames()->first() }}
                             </td>

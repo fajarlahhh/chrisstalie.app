@@ -36,12 +36,12 @@ class Index extends Component
     {
         $this->tanggal = $this->tanggal ?: date('Y-m-d');
         $this->dataNakes = Nakes::dokter()
-            ->with('pegawai')
+            ->with('kepegawaianPegawai')
             ->orderBy('nama')
             ->get()
             ->map(fn($q) => [
                 'id' => $q->id,
-                'nama' => $q->nama ?: ($q->pegawai->nama ?? ''),
+                'nama' => $q->nama ?: ($q->kepegawaianPegawai->nama ?? ''),
             ])
             ->toArray();
     }

@@ -38,7 +38,7 @@ class Index extends Component
 
     public function getData()
     {
-        $query = JurnalKeuangan::with('jurnalKeuanganDetail.kodeAkun', 'pengguna.pegawai')
+        $query = JurnalKeuangan::with('jurnalKeuanganDetail.kodeAkun', 'pengguna.kepegawaianPegawai')
             ->whereHas('jurnalKeuanganDetail', function ($query) {
                 $query->whereIn('kode_akun_id', collect($this->dataKodeAkun)->pluck('id'));
             })
@@ -72,8 +72,8 @@ class Index extends Component
                     });
                 }),
             'dataPengguna' => auth()->user()->hasRole(['administrator', 'supervisor']) ?
-                Pengguna::whereIn('id', $data->pluck('pengguna_id')->unique()->toArray())->with('pegawai')->get()->toArray() :
-                Pengguna::where('id', auth()->id())->with('pegawai')->get()->toArray()
+                Pengguna::whereIn('id', $data->pluck('pengguna_id')->unique()->toArray())->with('kepegawaianPegawai')->get()->toArray() :
+                Pengguna::where('id', auth()->id())->with('kepegawaianPegawai')->get()->toArray()
         ]);
     }
 }

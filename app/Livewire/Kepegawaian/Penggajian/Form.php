@@ -27,20 +27,20 @@ class Form extends Component
         if (!Penggajian::where('periode', $this->periode . '-01')->exists()) {
             $this->dataUnsurGaji = KodeAkun::detail()->whereIn('id', KepegawaianPegawaiUnsurGaji::pluck('kode_akun_id'))->get()->toArray();
 
-            foreach (KepegawaianPegawai::with('pegawaiUnsurGajiKepegawaian')->aktif()->get()->toArray() as $pegawai) {
+            foreach (KepegawaianPegawai::with('pegawaiUnsurGajiKepegawaian')->aktif()->get()->toArray() as $kepegawaianPegawai) {
                 $unsurGaji = [];
                 foreach ($this->dataUnsurGaji as $item) {
                     $unsurGaji[] = [
-                        'pegawai_id' => $pegawai['id'],
-                        'nilai' => collect($pegawai['pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['nilai'] ?? 0,
+                        'pegawai_id' => $kepegawaianPegawai['id'],
+                        'nilai' => collect($kepegawaianPegawai['pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['nilai'] ?? 0,
                         'kode_akun_id' => $item['id'],
                         'kode_akun_nama' => $item['nama'],
-                        'sifat' => collect($pegawai['pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['sifat'] ?? null,
+                        'sifat' => collect($kepegawaianPegawai['pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['sifat'] ?? null,
                     ];
                 }
                 $this->detail[] = [
-                    'pegawai_id' => $pegawai['id'],
-                    'nama' => $pegawai['nama'],
+                    'pegawai_id' => $kepegawaianPegawai['id'],
+                    'nama' => $kepegawaianPegawai['nama'],
                     'pegawai_unsur_gaji' => $unsurGaji,
                 ];
             }
@@ -53,20 +53,20 @@ class Form extends Component
         if (!Penggajian::where('periode', $value . '-01')->exists()) {
             $this->dataUnsurGaji = KodeAkun::detail()->whereIn('id', KepegawaianPegawaiUnsurGaji::pluck('kode_akun_id'))->get()->toArray();
 
-            foreach (KepegawaianPegawai::with('pegawaiUnsurGajiKepegawaian')->aktif()->get()->toArray() as $pegawai) {
+            foreach (KepegawaianPegawai::with('pegawaiUnsurGajiKepegawaian')->aktif()->get()->toArray() as $kepegawaianPegawai) {
                 $unsurGaji = [];
                 foreach ($this->dataUnsurGaji as $item) {
                     $unsurGaji[] = [
-                        'pegawai_id' => $pegawai['id'],
-                        'nilai' => collect($pegawai['pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['nilai'] ?? 0,
+                        'pegawai_id' => $kepegawaianPegawai['id'],
+                        'nilai' => collect($kepegawaianPegawai['pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['nilai'] ?? 0,
                         'kode_akun_id' => $item['id'],
                         'kode_akun_nama' => $item['nama'],
-                        'sifat' => collect($pegawai['pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['sifat'] ?? null,
+                        'sifat' => collect($kepegawaianPegawai['pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['sifat'] ?? null,
                     ];
                 }
                 $this->detail[] = [
-                    'pegawai_id' => $pegawai['id'],
-                    'nama' => $pegawai['nama'],
+                    'pegawai_id' => $kepegawaianPegawai['id'],
+                    'nama' => $kepegawaianPegawai['nama'],
                     'pegawai_unsur_gaji' => $unsurGaji,
                 ];
             }

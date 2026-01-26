@@ -52,15 +52,15 @@ class Index extends Component
     public function posting()
     {
         DB::transaction(function () {
-            $dataKepegawaianAbsensi = KepegawaianAbsensi::with(['pegawai.kepegawaianKehadiran'])
+            $dataKepegawaianAbsensi = KepegawaianAbsensi::with(['kepegawaianPegawai.kepegawaianKehadiran'])
                 ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                 ->when(
                     $this->cari,
-                    fn($q) => $q->whereHas('pegawai', fn($r) => $r
+                    fn($q) => $q->whereHas('kepegawaianPegawai', fn($r) => $r
                         ->where('nama', 'ilike', '%' . $this->cari . '%'))
                 )
                 ->orderBy('tanggal')->get()->map(function ($q) {
-                    $kepegawaianKehadiran = $q->pegawai->kepegawaianKehadiran->where('tanggal', $q->tanggal);
+                    $kepegawaianKehadiran = $q->kepegawaianPegawai->kepegawaianKehadiran->where('tanggal', $q->tanggal);
                     $masuk = $kepegawaianKehadiran->first()?->waktu;
                     $pulang = $kepegawaianKehadiran->last()?->waktu;
                     return [
@@ -140,12 +140,12 @@ class Index extends Component
     public function render()
     {
         return view('livewire.kepegawaian.absensi.index', [
-            'data' => KepegawaianAbsensi::with(['pegawai.kepegawaianKehadiran'])
+            'data' => KepegawaianAbsensi::with(['kepegawaianPegawai.kepegawaianKehadiran'])
                 ->when($this->pegawai_id, fn($q) => $q->where('pegawai_id', $this->pegawai_id))
                 ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                 ->when(
                     $this->cari,
-                    fn($q) => $q->whereHas('pegawai', fn($r) => $r
+                    fn($q) => $q->whereHas('kepegawaianPegawai', fn($r) => $r
                         ->where('nama', 'ilike', '%' . $this->cari . '%'))
                 )
                 ->orderBy('tanggal')->paginate(10)

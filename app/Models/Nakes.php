@@ -15,39 +15,39 @@ class Nakes extends Model
         return $this->belongsTo(Pengguna::class);
     }
 
-    public function pegawai(): BelongsTo
+    public function kepegawaianPegawai(): BelongsTo
     {
         return $this->belongsTo(KepegawaianPegawai::class);
     }
 
     public function getNamaAttribute()
     {
-        if ($this->pegawai_id && $this->pegawai) {
-            return $this->pegawai->nama;
+        if ($this->pegawai_id && $this->kepegawaianPegawai) {
+            return $this->kepegawaianPegawai->nama;
         }
         return $this->attributes['nama'] ?? null;
     }
 
     public function getNikAttribute()
     {
-        if ($this->pegawai_id && $this->pegawai) {
-            return $this->pegawai->nik;
+        if ($this->pegawai_id && $this->kepegawaianPegawai) {
+            return $this->kepegawaianPegawai->nik;
         }
         return $this->attributes['nik'] ?? null;
     }
 
     public function getAlamatAttribute()
     {
-        if ($this->pegawai_id && $this->pegawai) {
-            return $this->pegawai->alamat;
+        if ($this->pegawai_id && $this->kepegawaianPegawai) {
+            return $this->kepegawaianPegawai->alamat;
         }
         return $this->attributes['alamat'] ?? null;
     }
     
     public function getNoHpAttribute()
     {
-        if ($this->pegawai_id && $this->pegawai) {
-            return $this->pegawai->no_hp;
+        if ($this->pegawai_id && $this->kepegawaianPegawai) {
+            return $this->kepegawaianPegawai->no_hp;
         }
         return $this->attributes['no_hp'] ?? null;
     }

@@ -35,7 +35,7 @@ class Index extends Component
     {
         switch ($this->jenis) {
             case 'pertransaksi':
-                return StokMasuk::with(['barang', 'pemesananPengadaan.pemesananPengadaanDetail', 'pemesananPengadaan.kodeAkun', 'barangSatuan.satuanKonversi', 'pemesananPengadaan.supplier', 'pengguna.pegawai'])
+                return StokMasuk::with(['barang', 'pemesananPengadaan.pemesananPengadaanDetail', 'pemesananPengadaan.kodeAkun', 'barangSatuan.satuanKonversi', 'pemesananPengadaan.supplier', 'pengguna.kepegawaianPegawai'])
                     ->when($this->persediaan, fn($q) => $q->whereHas('barang', fn($q) => $q->where('persediaan', $this->persediaan)))
                     ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                     ->orderBy('tanggal', 'desc')
@@ -53,7 +53,7 @@ class Index extends Component
                             'total' => $q->qty * $q->pemesananPengadaan->pemesananPengadaanDetail->where('barang_id', $q->barang_id)->first()->harga_beli,
                             'supplier' => $q->pemesananPengadaan->supplier?->nama,
                             'uraian' => $q->pemesananPengadaan->uraian,
-                            'operator' => $q->pengguna->pegawai->nama,
+                            'operator' => $q->pengguna->kepegawaianPegawai->nama,
                         ];
                     })->sortBy('barang_id')->groupBy('barang_id')->toArray();
                 break;

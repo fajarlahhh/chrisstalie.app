@@ -25,7 +25,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.kepegawaian.penggajian.index', [
-            'data' => Penggajian::with('kodeAkunPembayaran','pengguna.pegawai')->where('periode', 'like', $this->tahun . '%')->orderBy('periode', 'desc')->get()
+            'data' => Penggajian::with('kodeAkunPembayaran','pengguna.kepegawaianPegawai')->where('periode', 'like', $this->tahun . '%')->orderBy('periode', 'desc')->get()
         ]);
     }
 }

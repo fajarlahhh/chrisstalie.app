@@ -41,9 +41,9 @@ class Index extends Component
             'data' => Nakes::where(
                 fn($q) => $q
                     ->where('nama', 'like', '%' . $this->cari . '%')
-                    ->orWhereHas('pegawai', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
+                    ->orWhereHas('kepegawaianPegawai', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
             )->where('aktif', $this->aktif)
-                ->with('pengguna.pegawai', 'pegawai')
+                ->with('pengguna.kepegawaianPegawai', 'kepegawaianPegawai')
                 ->orderBy('nama')->paginate(10)
         ]);
     }

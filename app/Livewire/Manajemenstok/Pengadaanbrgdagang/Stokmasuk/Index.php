@@ -40,7 +40,7 @@ class Index extends Component
                 ->groupBy('pemesanan_pengadaan.id', 'tanggal', 'supplier_id', 'uraian')
                 ->havingRaw('SUM(pemesanan_pengadaan_detail.qty) > (SELECT ifnull(SUM(stok_masuk.qty), 0) FROM stok_masuk WHERE pemesanan_pengadaan_id = pemesanan_pengadaan.id )')
                 ->get()->count(),
-            'data' => StokMasuk::with(['pengguna.pegawai', 'barangSatuan.barang', 'pemesananPengadaan.supplier', 'keluar'])
+            'data' => StokMasuk::with(['pengguna.kepegawaianPegawai', 'barangSatuan.barang', 'pemesananPengadaan.supplier', 'keluar'])
                 ->where('created_at', 'like', $this->bulan . '%')
                 ->whereNotNull('pemesanan_pengadaan_id')
                 ->whereHas('pemesananPengadaan', fn($q) => $q->where('jenis', 'Barang Dagang'))

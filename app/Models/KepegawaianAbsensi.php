@@ -16,7 +16,7 @@ class KepegawaianAbsensi extends Model
     protected $fillable = ['pegawai_id', 'tanggal', 'masuk', 'pulang', 'izin'];
 
 
-    public function pegawai(): BelongsTo
+    public function kepegawaianPegawai(): BelongsTo
     {
         return $this->belongsTo(KepegawaianPegawai::class);
     }

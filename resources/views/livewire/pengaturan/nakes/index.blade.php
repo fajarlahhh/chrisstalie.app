@@ -54,7 +54,7 @@
                             <td>{{ $row->alamat }}</td>
                             <td>{{ $row->no_hp }}</td>
                             <td>{{ $row->dokter == 1 ? 'Ya' : '' }}</td>
-                            <td>{{ $row->pegawai ? 'Ya': '' }}</td>
+                            <td>{{ $row->kepegawaianPegawai ? 'Ya': '' }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
                                     <x-action :row="$row" custom="" :detail="false" :edit="true"

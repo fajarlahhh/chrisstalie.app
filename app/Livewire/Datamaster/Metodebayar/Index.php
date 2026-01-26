@@ -28,7 +28,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.datamaster.metodebayar.index', [
-            'data' => MetodeBayar::with(['pengguna.pegawai','kodeAkun'])->where('nama', 'like', '%' . $this->cari . '%')->paginate(10)
+            'data' => MetodeBayar::with(['pengguna.kepegawaianPegawai','kodeAkun'])->where('nama', 'like', '%' . $this->cari . '%')->paginate(10)
         ]);
     }
 }

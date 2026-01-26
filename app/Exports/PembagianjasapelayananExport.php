@@ -21,7 +21,7 @@ class PembagianjasapelayananExport implements FromView
 
     public function getNakes()
     {
-        return (Nakes::with('pegawai')->withTrashed()->whereIn('id', KasirPelayananTindakan::whereHas('kasir', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->get()->map(function ($item) {
+        return (Nakes::with('kepegawaianPegawai')->withTrashed()->whereIn('id', KasirPelayananTindakan::whereHas('kasir', fn($q) => $q->whereBetween('date', [$this->date1, $this->date2]))->get()->map(function ($item) {
             return [
                 'nakes_id' => $item->nakes_id,
                 'beautician_id' => $item->beautician_id,
@@ -30,7 +30,7 @@ class PembagianjasapelayananExport implements FromView
             return $value !== null;
         })->toArray())->get()->map(fn($q) => [
             'id' => $q->id,
-            'name' => $q->pegawai ? $q->pegawai->nama : $q->name,
+            'name' => $q->kepegawaianPegawai ? $q->kepegawaianPegawai->nama : $q->name,
         ]));
     }
 

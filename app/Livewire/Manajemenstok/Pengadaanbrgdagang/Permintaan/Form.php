@@ -65,7 +65,7 @@ class Form extends Component
     {
         
         $this->dataBarang = BarangClass::getBarangBySatuanUtama('Apotek');
-        $this->dataPengguna = Pengguna::with('pegawai')->where(fn($q) => $q->whereHas('permissions', function ($q) {
+        $this->dataPengguna = Pengguna::with('kepegawaianPegawai')->where(fn($q) => $q->whereHas('permissions', function ($q) {
             $q->where('name', 'pengadaanbrg.dagangverifikasi');
         })->orWhere(fn($q) => $q->whereHas('roles', fn($q) => $q->where('name', 'administrator'))))->orderBy('nama')->get()->toArray();
         $this->data = $data;

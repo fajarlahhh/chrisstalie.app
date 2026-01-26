@@ -45,10 +45,10 @@ class Form extends Component
 
         $this->dataMetodeBayar = MetodeBayar::orderBy('nama')->get(['id', 'nama'])->toArray();
 
-        $this->dataNakes = Nakes::with('pegawai')->orderBy('nama')->get()->map(fn($q) => [
+        $this->dataNakes = Nakes::with('kepegawaianPegawai')->orderBy('nama')->get()->map(fn($q) => [
             'id' => $q->id,
             'dokter' => $q->dokter,
-            'nama' => $q->pegawai ? $q->pegawai->nama : $q->nama,
+            'nama' => $q->kepegawaianPegawai ? $q->kepegawaianPegawai->nama : $q->nama,
         ])->toArray();
 
         $this->tindakan = $data->tindakan->map(function ($q) {

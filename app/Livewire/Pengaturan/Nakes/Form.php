@@ -11,21 +11,21 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $data, $dataPegawai = [], $pegawai;
+    public $data, $dataPegawai = [], $kepegawaianPegawai;
     public $nama, $ihs, $nik, $alamat, $no_hp, $dokter = false, $pegawai_id;
 
     public function updatedPegawaiId($value)
     {
         $this->reset('nama', 'ihs', 'nik', 'alamat', 'no_hp', 'dokter');
         if ($value) {
-            $this->pegawai = KepegawaianPegawai::find($this->pegawai_id);
-            $this->nama = $this->pegawai->nama;
-            $this->ihs = $this->pegawai->ihs;
-            $this->nik = $this->pegawai->nik;
-            $this->alamat = $this->pegawai->alamat;
-            $this->no_hp = $this->pegawai->no_hp;
+            $this->kepegawaianPegawai = KepegawaianPegawai::find($this->pegawai_id);
+            $this->nama = $this->kepegawaianPegawai->nama;
+            $this->ihs = $this->kepegawaianPegawai->ihs;
+            $this->nik = $this->kepegawaianPegawai->nik;
+            $this->alamat = $this->kepegawaianPegawai->alamat;
+            $this->no_hp = $this->kepegawaianPegawai->no_hp;
         } else {
-            $this->pegawai = null;
+            $this->kepegawaianPegawai = null;
         }
     }
 

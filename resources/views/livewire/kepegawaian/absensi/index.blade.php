@@ -101,7 +101,7 @@
                                     {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                                 </td>
                                 <td>{{ $row->tanggal }}</td>
-                                <td>{{ $row->pegawai->nama }}</td>
+                                <td>{{ $row->kepegawaianPegawai->nama }}</td>
                                 <td>
                                     @if ($row->jam_masuk && $row->jam_pulang)
                                         {{ $row->jam_masuk . ' s/d ' . $row->jam_pulang }}
@@ -112,7 +112,7 @@
                                 <td>{{ $row->izin ? $row->izin . ' (' . $row->keterangan . ')' : null }}</td>
                                 @if ($row->jam_masuk && $row->jam_pulang)
                                     @php
-                                        $kepegawaianKehadiran = $row->pegawai->kepegawaianKehadiran->where('tanggal', $row->tanggal);
+                                        $kepegawaianKehadiran = $row->kepegawaianPegawai->kepegawaianKehadiran->where('tanggal', $row->tanggal);
                                         $masuk = $kepegawaianKehadiran->first()?->waktu;
                                         $pulang = $kepegawaianKehadiran->last()?->waktu;
                                     @endphp

@@ -57,7 +57,7 @@
                                 <td>
                                     {{ $row->tanggal }}
                                 </td>
-                                <td>{{ $row->pegawai->nama }}</td>
+                                <td>{{ $row->kepegawaianPegawai->nama }}</td>
                                 <td>{{ $row->izin }}</td>
                                 <td>{{ $row->keterangan }}</td>
                                 <td class="text-end  text-nowrap">
