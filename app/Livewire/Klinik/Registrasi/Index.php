@@ -60,11 +60,11 @@ class Index extends Component
             $this->tanggal_lahir = $this->pasien->tanggal_lahir ? $this->pasien->tanggal_lahir->format('Y-m-d') : null;
             $this->no_hp = $this->pasien->no_hp;
         } else {
-            $this->resetPatient();
+            $this->resetPasien();
         }
     }
 
-    public function resetPatient()
+    public function resetPasien()
     {
         $this->reset([
             'nik',

@@ -21,13 +21,13 @@
                         <ul class="nav nav-tabs bg-gray-100">
                             <li class="nav-item">
                                 <a href="#default-tab-1" data-bs-toggle="tab" class="nav-link active"
-                                    wire:click="resetPatient" wire:ignore.self>
+                                    wire:click="resetPasien" wire:ignore.self>
                                     <span class="d-sm-none">Pasien Baru</span>
                                     <span class="d-sm-block d-none">Pasien Baru</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#default-tab-2" data-bs-toggle="tab" class="nav-link" wire:click="resetPatient"
+                                <a href="#default-tab-2" data-bs-toggle="tab" class="nav-link" wire:click="resetPasien"
                                     wire:ignore.self>
                                     <span class="d-sm-none">Pasien Lama</span>
                                     <span class="d-sm-block d-none">Pasien Lama</span>
@@ -234,7 +234,7 @@
                                 styleBase: 'form-control'
                             })"
                                 wire:model="nakes_id" data-width="100%">
-                                <option selected value="">-- Tidak Ada Dokter --</option>
+                                <option selected value="">-- Pilih Dokter --</option>
                                 @foreach ($dataNakes as $row)
                                     <option value="{{ $row['id'] }}">
                                         {{ $row['nama'] }}
