@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Datamaster\KepegawaianPegawai;
+namespace App\Livewire\Datamaster\Pegawai;
 
 use Livewire\Component;
 use App\Models\KepegawaianPegawai;
