@@ -19,24 +19,24 @@ class PengadaanPermintaan extends Model
         return $this->belongsTo(Pengguna::class);
     }
 
-    public function verifikasiPengadaan()
+    public function pengadaanVerifikasi()
     {
-        return $this->hasMany(VerifikasiPengadaan::class)->orderBy('created_at', 'desc');
+        return $this->hasMany(PengadaanVerifikasi::class)->orderBy('created_at', 'desc');
     }
 
-    public function VerifikasiPengadaanPending()
+    public function PengadaanVerifikasiPending()
     {
-        return $this->hasMany(VerifikasiPengadaan::class)->whereNull('status');
+        return $this->hasMany(PengadaanVerifikasi::class)->whereNull('status');
     }
 
-    public function VerifikasiPengadaanDisetujui()
+    public function PengadaanVerifikasiDisetujui()
     {
-        return $this->hasMany(VerifikasiPengadaan::class)->where('status', 'Disetujui');
+        return $this->hasMany(PengadaanVerifikasi::class)->where('status', 'Disetujui');
     }
 
-    public function VerifikasiPengadaanDitolak()
+    public function PengadaanVerifikasiDitolak()
     {
-        return $this->hasMany(VerifikasiPengadaan::class)->where('status', 'Ditolak');
+        return $this->hasMany(PengadaanVerifikasi::class)->where('status', 'Ditolak');
     }
 
     public function pengadaanPemesanan()

@@ -40,18 +40,18 @@
                             <td>{{ $item->deskripsi }}</td>
                             <td>
                                 <ul>
-                                    @foreach ($item->verifikasiPengadaan as $verifikasiPengadaan)
+                                    @foreach ($item->pengadaanVerifikasi as $pengadaanVerifikasi)
                                         <li>
-                                            @if ($verifikasiPengadaan->status == 'Disetujui')
+                                            @if ($pengadaanVerifikasi->status == 'Disetujui')
                                                 <span class="badge bg-success">Disetujui</span>
                                             @else
                                                 <span class="badge bg-danger">Ditolak
-                                                    {{ ' - ' . $verifikasiPengadaan->catatan }}</span>
+                                                    {{ ' - ' . $pengadaanVerifikasi->catatan }}</span>
                                             @endif
                                             <br>
                                             <small>
-                                                {{ $verifikasiPengadaan->pengguna->nama }}<br>
-                                                {{ $verifikasiPengadaan->waktu_verifikasi }}
+                                                {{ $pengadaanVerifikasi->pengguna->nama }}<br>
+                                                {{ $pengadaanVerifikasi->waktu_verifikasi }}
                                             </small>
                                         </li>
                                     @endforeach
@@ -90,7 +90,7 @@
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    @if ($item->verifikasiPengadaan->count() > 0 )
+                                    @if ($item->pengadaanVerifikasi->count() > 0 )
                                         <x-action :row="$item" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="false" />
                                     @else

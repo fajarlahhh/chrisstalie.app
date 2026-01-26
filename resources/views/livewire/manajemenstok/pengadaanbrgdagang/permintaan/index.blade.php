@@ -50,19 +50,19 @@
                             <td>{{ $item->deskripsi }}</td>
                             <td>
                                 <ul>
-                                    @foreach ($item->verifikasiPengadaan as $verifikasiPengadaan)
-                                        @if ($verifikasiPengadaan->status)
+                                    @foreach ($item->pengadaanVerifikasi as $pengadaanVerifikasi)
+                                        @if ($pengadaanVerifikasi->status)
                                             <li>
-                                                @if ($verifikasiPengadaan->status == 'Disetujui')
+                                                @if ($pengadaanVerifikasi->status == 'Disetujui')
                                                     <span class="badge bg-success">Disetujui</span>
                                                 @else
                                                     <span class="badge bg-danger">Ditolak
-                                                        {{ ' - ' . $verifikasiPengadaan->catatan }}</span>
+                                                        {{ ' - ' . $pengadaanVerifikasi->catatan }}</span>
                                                 @endif
                                                 <br>
                                                 <small>
-                                                    {{ $verifikasiPengadaan->pengguna->nama }} <br>
-                                                    {{ $verifikasiPengadaan->waktu_verifikasi }}
+                                                    {{ $pengadaanVerifikasi->pengguna->nama }} <br>
+                                                    {{ $pengadaanVerifikasi->waktu_verifikasi }}
                                                 </small>
                                             </li>
                                         @else
@@ -118,11 +118,11 @@
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
-                                    @if ($item->VerifikasiPengadaanPending->count() > 0)
+                                    @if ($item->PengadaanVerifikasiPending->count() > 0)
                                         <x-action :row="$item" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                     @else
-                                        @if ($item->VerifikasiPengadaanDisetujui->count() > 0 || $item->VerifikasiPengadaanDitolak->count() > 0)
+                                        @if ($item->PengadaanVerifikasiDisetujui->count() > 0 || $item->PengadaanVerifikasiDitolak->count() > 0)
                                             @if ($item->pengadaanPemesanan && $item->pengadaanPemesanan->stokMasuk->count() > 0)
                                                 <x-action :row="$item" custom="" :detail="false"
                                                     :edit="false" :print="false" :permanentDelete="false"

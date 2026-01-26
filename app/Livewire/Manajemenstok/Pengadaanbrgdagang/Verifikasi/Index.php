@@ -3,7 +3,7 @@
 namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Verifikasi;
 
 use Livewire\Component;
-use App\Models\VerifikasiPengadaan;
+use App\Models\PengadaanVerifikasi;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\PengadaanPermintaan;
@@ -25,14 +25,14 @@ class Index extends Component
         return view('livewire.manajemenstok.pengadaanbrgdagang.verifikasi.index', [
             'data' => PengadaanPermintaan::with([
                 'pengguna.kepegawaianPegawai',
-                'verifikasiPengadaan.pengguna.kepegawaianPegawai',
+                'pengadaanVerifikasi.pengguna.kepegawaianPegawai',
                 'pengadaanPermintaanDetail.barangSatuan.satuanKonversi',
                 'pengadaanPermintaanDetail.barangSatuan.barang',
-            ])->with(['verifikasiPengadaan' => fn($q) => $q->whereNotNull('status')])
-                ->when($this->status == 'Pending', fn($q) => $q->whereHas('verifikasiPengadaan', function ($q) {
+            ])->with(['pengadaanVerifikasi' => fn($q) => $q->whereNotNull('status')])
+                ->when($this->status == 'Pending', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {
                     $q->whereNull('status');
                 }))
-                ->when($this->status == 'Terverifikasi', fn($q) => $q->whereHas('verifikasiPengadaan', function ($q) {
+                ->when($this->status == 'Terverifikasi', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {
                     $q->whereNotNull('status');
                 }))
                 ->where(fn($q) => $q

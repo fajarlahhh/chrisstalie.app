@@ -3,7 +3,7 @@
 namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Verifikasi;
 
 use Livewire\Component;
-use App\Models\VerifikasiPengadaan;
+use App\Models\PengadaanVerifikasi;
 use Illuminate\Support\Str;
 use App\Models\BarangSatuan;
 use Illuminate\Support\Facades\DB;
@@ -44,11 +44,11 @@ class Form extends Component
                     'pengadaan_permintaan_id' => $this->data->id,
                 ])->toArray());
             }
-            $verifikasiPengadaan = VerifikasiPengadaan::where('pengadaan_permintaan_id', $this->data->id)->where('jenis', 'Permintaan Pengadaan')->whereNull('status')->first();
-            $verifikasiPengadaan->status = $this->status;
-            $verifikasiPengadaan->catatan = $this->catatan;
-            $verifikasiPengadaan->waktu_verifikasi = now();
-            $verifikasiPengadaan->save();
+            $pengadaanVerifikasi = PengadaanVerifikasi::where('pengadaan_permintaan_id', $this->data->id)->where('jenis', 'Permintaan Pengadaan')->whereNull('status')->first();
+            $pengadaanVerifikasi->status = $this->status;
+            $pengadaanVerifikasi->catatan = $this->catatan;
+            $pengadaanVerifikasi->waktu_verifikasi = now();
+            $pengadaanVerifikasi->save();
 
             session()->flash('success', 'Berhasil menyimpan data');
         });

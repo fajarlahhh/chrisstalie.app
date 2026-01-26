@@ -38,12 +38,12 @@ class Index extends Component
                 'pengguna.kepegawaianPegawai',
                 'pengadaanPermintaanDetail.barangSatuan.satuanKonversi',
                 'pengadaanPermintaanDetail.barangSatuan.barang',
-                'verifikasiPengadaan.pengguna.kepegawaianPegawai' => fn($q) => $q->whereNotNull('status')
+                'pengadaanVerifikasi.pengguna.kepegawaianPegawai' => fn($q) => $q->whereNotNull('status')
             ])
-                ->when($this->status == 'Pending', fn($q) => $q->whereHas('verifikasiPengadaan', function ($q) {
+                ->when($this->status == 'Pending', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {
                     $q->whereNull('status');
                 }))
-                ->whereHas('verifikasiPengadaan', function ($q) {
+                ->whereHas('pengadaanVerifikasi', function ($q) {
                     $q->whereNotNull('status');
                 })
                 ->whereDoesntHave('pengadaanPemesanan')
@@ -51,7 +51,7 @@ class Index extends Component
                     ->where('deskripsi', 'like', '%' . $this->cari . '%'))
                 ->orderBy('created_at', 'desc')
                 ->paginate(10) :
-                PengadaanPemesanan::with(['pemesananPengadaanDetail.barangSatuan.barang', 'pengguna.kepegawaianPegawai', 'stokMasuk', 'pelunasanPengadaanPemesanan', 'supplier', 'pengadaanPermintaan'])
+                PengadaanPemesanan::with(['pemesananPengadaanDetail.barangSatuan.barang', 'pengguna.kepegawaianPegawai', 'stokMasuk', 'pengadaanPelunasanPemesanan', 'supplier', 'pengadaanPermintaan'])
                 ->where('jenis', 'Barang Dagang')
                 ->where('tanggal', 'like', $this->bulan . '%')
                 ->where(fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))

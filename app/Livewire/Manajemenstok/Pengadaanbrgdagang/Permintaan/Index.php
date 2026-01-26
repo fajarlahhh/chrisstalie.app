@@ -43,18 +43,18 @@ class Index extends Component
                 'pengadaanPermintaanDetail.barangSatuan.satuanKonversi',
                 'pengadaanPermintaanDetail.barangSatuan.barang',
                 'pengadaanPemesanan.stokMasuk',
-                'VerifikasiPengadaanPending',
-                'VerifikasiPengadaanDisetujui',
-                'VerifikasiPengadaanDitolak',
-                'verifikasiPengadaan.pengguna'
+                'PengadaanVerifikasiPending',
+                'PengadaanVerifikasiDisetujui',
+                'PengadaanVerifikasiDitolak',
+                'pengadaanVerifikasi.pengguna'
             ])
                 ->where(fn($q) => $q
                     ->where('deskripsi', 'like', '%' . $this->cari . '%'))
-                ->when($this->status == 'Pending', fn($q) => $q->whereHas('verifikasiPengadaan', function ($q) {
+                ->when($this->status == 'Pending', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {
                     $q->whereNull('status');
-                })->orWhereDoesntHave('verifikasiPengadaan'))
-                ->when($this->status == 'Ditolak', fn($q) => $q->whereHas('VerifikasiPengadaanDitolak'))
-                ->when($this->status == 'Disetujui', fn($q) => $q->whereHas('VerifikasiPengadaanDisetujui')->where('created_at', 'like', $this->tanggal . '%'))
+                })->orWhereDoesntHave('pengadaanVerifikasi'))
+                ->when($this->status == 'Ditolak', fn($q) => $q->whereHas('PengadaanVerifikasiDitolak'))
+                ->when($this->status == 'Disetujui', fn($q) => $q->whereHas('PengadaanVerifikasiDisetujui')->where('created_at', 'like', $this->tanggal . '%'))
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
         ]);

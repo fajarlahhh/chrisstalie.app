@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\PengadaanPemesanan;
 use App\Class\JurnalkeuanganClass;
-use App\Models\PelunasanPengadaan;
+use App\Models\PengadaanPelunasan;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 
@@ -22,7 +22,7 @@ class Form extends Component
             $this->pengadaanPemesanan = PengadaanPemesanan::with('supplier', 'pemesananPengadaanDetail')->find($data);
         }
         $this->dataPembelian = PengadaanPemesanan::where('pembayaran', 'Jatuh Tempo')->with('supplier', 'pemesananPengadaanDetail')
-            ->whereDoesntHave('pelunasanPengadaanPemesanan')->get();
+            ->whereDoesntHave('pengadaanPelunasanPemesanan')->get();
         $this->dataKodePembayaran = KodeAkun::where('parent_id', '11100')->detail()->get()->toArray();
     }
 
@@ -43,7 +43,7 @@ class Form extends Component
         DB::transaction(function () {
             $pengadaanPemesanan = PengadaanPemesanan::find($this->pengadaan_pemesanan_id);
 
-            $data = new PelunasanPengadaan();
+            $data = new PengadaanPelunasan();
             $data->pengadaan_pemesanan_id = $this->pengadaan_pemesanan_id;
             $data->tanggal = $this->tanggal;
             $data->uraian = $this->uraian;
@@ -57,7 +57,7 @@ class Form extends Component
                 tanggal: $this->tanggal,
                 uraian: $this->uraian,
                 system: 1,
-                foreign_key: 'pelunasan_pengadaan_id',
+                foreign_key: 'pengadaan_pelunasan_id',
                 foreign_id: $data->id,
                 detail: [
                     [

@@ -3,7 +3,7 @@
 namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Pelunasan;
 
 use Livewire\Component;
-use App\Models\PelunasanPengadaan;
+use App\Models\PengadaanPelunasan;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 
@@ -21,7 +21,7 @@ class Index extends Component
 
     public function delete($id)
     {
-        PelunasanPengadaan::findOrFail($id)->forceDelete();
+        PengadaanPelunasan::findOrFail($id)->forceDelete();
         session()->flash('success', 'Berhasil menghapus data');
     }
 
@@ -35,7 +35,7 @@ class Index extends Component
         return view(
             'livewire.manajemenstok.pengadaanbrgdagang.pelunasan.index',
             [
-                'data' => PelunasanPengadaan::with(['pengadaanPemesanan', 'keuanganJurnal', 'pengguna.kepegawaianPegawai', 'kodeAkunPembayaran'])->where('created_at', 'like', $this->bulan . '%')
+                'data' => PengadaanPelunasan::with(['pengadaanPemesanan', 'keuanganJurnal', 'pengguna.kepegawaianPegawai', 'kodeAkunPembayaran'])->where('created_at', 'like', $this->bulan . '%')
                     ->orderBy('created_at', 'desc')->paginate(10)
             ]
         );

@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PelunasanPengadaan extends Model
+class PengadaanPelunasan extends Model
 {
     //
-    protected $table = 'pelunasan_pengadaan';
+    protected $table = 'pengadaan_pelunasan';
 
     public function pengadaanPemesanan()
     {

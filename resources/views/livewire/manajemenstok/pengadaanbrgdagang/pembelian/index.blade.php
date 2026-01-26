@@ -47,19 +47,19 @@
                                 <td>{{ $item->deskripsi }}</td>
                                 <td>
                                     <ul>
-                                        @foreach ($item->verifikasiPengadaan as $verifikasiPengadaan)
-                                            @if ($verifikasiPengadaan->status)
+                                        @foreach ($item->pengadaanVerifikasi as $pengadaanVerifikasi)
+                                            @if ($pengadaanVerifikasi->status)
                                                 <li>
-                                                    @if ($verifikasiPengadaan->status == 'Disetujui')
+                                                    @if ($pengadaanVerifikasi->status == 'Disetujui')
                                                         <span class="badge bg-success">Disetujui</span>
                                                     @else
                                                         <span class="badge bg-danger">Ditolak
-                                                            {{ ' - ' . $verifikasiPengadaan->catatan }}</span>
+                                                            {{ ' - ' . $pengadaanVerifikasi->catatan }}</span>
                                                     @endif
                                                     <br>
                                                     <small>
-                                                        {{ $verifikasiPengadaan->pengguna->nama }} <br>
-                                                        {{ $verifikasiPengadaan->waktu_verifikasi }}
+                                                        {{ $pengadaanVerifikasi->pengguna->nama }} <br>
+                                                        {{ $pengadaanVerifikasi->waktu_verifikasi }}
                                                     </small>
                                                 </li>
                                             @else
@@ -143,7 +143,7 @@
                                 <td>{{ $row->uraian }}</td>
                                 <td>{{ $row->supplier->nama }}</td>
                                 <td>
-                                    @if ($row->pelunasanPengadaanPemesanan)
+                                    @if ($row->pengadaanPelunasanPemesanan)
                                         <span class="badge bg-success">Lunas</span>
                                     @else
                                         {!! $row->pembayaran == 'Jatuh Tempo'

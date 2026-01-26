@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class VerifikasiPengadaan extends Model
+class PengadaanVerifikasi extends Model
 {
     //
-    protected $table = 'verifikasi_pengadaan';
+    protected $table = 'pengadaan_verifikasi';
 
     public function pengguna()
     {

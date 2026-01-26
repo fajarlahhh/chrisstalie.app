@@ -19,9 +19,9 @@ class PengadaanPemesanan extends Model
         return $this->belongsTo(PengadaanPermintaan::class);
     }
 
-    public function pelunasanPengadaanPemesanan(): HasOne
+    public function pengadaanPelunasanPemesanan(): HasOne
     {
-        return $this->hasOne(PelunasanPengadaan::class);
+        return $this->hasOne(PengadaanPelunasan::class);
     }
 
     public function pemesananPengadaanDetail(): HasMany
