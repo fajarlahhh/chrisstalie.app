@@ -34,8 +34,8 @@ class Penjualan extends Model
         return $this->hasMany(Stok::class);
     }
 
-    public function jurnalKeuangan(): HasMany
+    public function keuanganJurnal(): HasMany
     {
-        return $this->hasMany(JurnalKeuangan::class, 'referensi_id')->where('jenis', 'Penjualan');
+        return $this->hasMany(KeuanganJurnal::class, 'referensi_id')->where('jenis', 'Penjualan');
     }
 }

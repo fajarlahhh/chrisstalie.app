@@ -4,14 +4,14 @@ namespace App\Livewire\Laporan\Laporanhariankas;
 
 use App\Models\Sale;
 use App\Models\Kasir;
-use App\Models\JurnalKeuangan;
+use App\Models\KeuanganJurnal;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\Pengguna;
 use App\Models\Pembayaran;
 use App\Models\Expenditure;
 use App\Models\MetodeBayar;
-use App\Models\JurnalKeuanganDetail;
+use App\Models\KeuanganJurnalDetail;
 use Livewire\Attributes\Url;
 
 class Index extends Component
@@ -49,11 +49,11 @@ class Index extends Component
 
     public function getPengeluaran()
     {
-        return JurnalKeuangan::with('jurnalKeuanganDetail.kodeAkun', 'pengguna.kepegawaianPegawai')
-            ->leftJoin('jurnal_keuangan_detail', 'jurnal_keuangan.id', '=', 'jurnal_keuangan_detail.jurnal_keuangan_id')
+        return KeuanganJurnal::with('keuanganJurnalDetail.kodeAkun', 'pengguna.kepegawaianPegawai')
+            ->leftJoin('jurnal_keuangan_detail', 'keuangan_jurnal.id', '=', 'jurnal_keuangan_detail.jurnal_keuangan_id')
             ->leftJoin('kode_akun', 'jurnal_keuangan_detail.kode_akun_id', '=', 'kode_akun.id')->select(
-                'jurnal_keuangan.id as id',
-                'jurnal_keuangan.uraian as uraian',
+                'keuangan_jurnal.id as id',
+                'keuangan_jurnal.uraian as uraian',
                 'jurnal_keuangan_detail.kode_akun_id as kode_akun_id',
                 'jurnal_keuangan_detail.debet as debet',
                 'jurnal_keuangan_detail.kredit as kredit',

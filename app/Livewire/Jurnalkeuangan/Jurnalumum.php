@@ -4,7 +4,7 @@ namespace App\Livewire\Jurnalkeuangan;
 
 use Livewire\Component;
 use App\Models\KodeAkun;
-use App\Models\JurnalKeuangan;
+use App\Models\KeuanganJurnal;
 use App\Class\JurnalkeuanganClass;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
@@ -12,17 +12,17 @@ use App\Traits\CustomValidationTrait;
 class Jurnalumum extends Component
 {
     use CustomValidationTrait;
-    public JurnalKeuangan $data;
+    public KeuanganJurnal $data;
     public $tanggal, $uraian, $kode_akun_id, $nilai, $jenis;
     public  $dataJenis = ['Barang Masuk', 'Hutang', 'Koreksi', 'Modal', 'Pembelian', 'Pendapatan', 'Pengeluaran', 'Penyusutan', 'Piutang'], $dataKodeAkun = [], $detail = [];
 
-    public function mount(JurnalKeuangan $data)
+    public function mount(KeuanganJurnal $data)
     {
         $this->data = $data;
         // $this->tanggal = date('Y-m-d');
         $this->dataKodeAkun = KodeAkun::detail()->with('parent')->get()->toArray();
         $this->fill($this->data->toArray());
-        $this->detail = $this->data->jurnalKeuanganDetail->map(fn($q) => [
+        $this->detail = $this->data->keuanganJurnalDetail->map(fn($q) => [
             'id' => $q->kode_akun_id,
             'debet' => $q->debet,
             'kredit' => $q->kredit,
@@ -87,8 +87,8 @@ class Jurnalumum extends Component
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
-            $this->data->jurnalKeuanganDetail()->delete();
-            $this->data->jurnalKeuanganDetail()->insert(collect($this->detail)->map(fn($q) => [
+            $this->data->keuanganJurnalDetail()->delete();
+            $this->data->keuanganJurnalDetail()->insert(collect($this->detail)->map(fn($q) => [
                 'jurnal_keuangan_id' => $this->data->id,
                 'debet' => $q['debet'],
                 'kredit' => $q['kredit'],

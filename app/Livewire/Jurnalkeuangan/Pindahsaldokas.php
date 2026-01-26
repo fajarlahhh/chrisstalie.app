@@ -6,24 +6,24 @@ use Livewire\Component;
 use App\Class\JurnalkeuanganClass;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
-use App\Models\JurnalKeuangan;
+use App\Models\KeuanganJurnal;
 use App\Models\KodeAkun;
 
 class Pindahsaldokas extends Component
 {
     use CustomValidationTrait;
-    public JurnalKeuangan $data;
+    public KeuanganJurnal $data;
     public $tanggal, $uraian, $sumber_dana_id, $tujuan_dana_id, $nilai;
     public  $dataKodeAkun = [];
 
-    public function mount(JurnalKeuangan $data)
+    public function mount(KeuanganJurnal $data)
     {
         $this->data = $data;
         if ($this->data->exists) {
             $this->fill($this->data->toArray());
-            $this->sumber_dana_id = $this->data->jurnalKeuanganDetail->firstWhere('kredit', '>', 0)->kode_akun_id;
-            $this->tujuan_dana_id = $this->data->jurnalKeuanganDetail->firstWhere('debet', '>', 0)->kode_akun_id;
-            $this->nilai = $this->data->jurnalKeuanganDetail->sum('kredit');
+            $this->sumber_dana_id = $this->data->keuanganJurnalDetail->firstWhere('kredit', '>', 0)->kode_akun_id;
+            $this->tujuan_dana_id = $this->data->keuanganJurnalDetail->firstWhere('debet', '>', 0)->kode_akun_id;
+            $this->nilai = $this->data->keuanganJurnalDetail->sum('kredit');
         }
         // $this->tanggal = date('Y-m-d');
         $this->dataKodeAkun = KodeAkun::detail()->whereIn('parent_id', ['11100'])->get()->toArray();

@@ -65,9 +65,9 @@ class Index extends Component
                         ->where("periode", $periode->format('Y-m-01'))
                 ])
                     ->with([
-                        'jurnalKeuanganDetail' => fn($q) => $q->withoutGlobalScopes()->selectRaw("kode_akun_id, sum(debet) debet, sum(kredit) kredit")
+                        'keuanganJurnalDetail' => fn($q) => $q->withoutGlobalScopes()->selectRaw("kode_akun_id, sum(debet) debet, sum(kredit) kredit")
                             ->whereHas(
-                                'jurnalKeuangan',
+                                'keuanganJurnal',
                                 fn($r) =>
                                 $r->whereRaw("DATE_FORMAT(tanggal, '%Y-%m') = ?", [$periode->format('Y-m')])
                             )
@@ -79,14 +79,14 @@ class Index extends Component
 
                 if ($dataAkun) {
                     $labaRugi = $dataAkun->filter(fn($q) => $q['kategori'] == 'Pendapatan')->sum(
-                        fn($q) => ($q->jurnalKeuanganDetail->sum('kredit')) - ($q->jurnalKeuanganDetail->sum('debet'))
+                        fn($q) => ($q->keuanganJurnalDetail->sum('kredit')) - ($q->keuanganJurnalDetail->sum('debet'))
                     ) - $dataAkun->filter(fn($q) => $q['kategori'] == 'Beban')->sum(
-                        fn($q) => ($q->jurnalKeuanganDetail->sum('debet')) - ($q->jurnalKeuanganDetail->sum('kredit'))
+                        fn($q) => ($q->keuanganJurnalDetail->sum('debet')) - ($q->keuanganJurnalDetail->sum('kredit'))
                     );
 
                     foreach ($dataAkun as $key => $row) {
-                        $debetJurnal = $row->jurnalKeuanganDetail->sum('debet');
-                        $kreditJurnal = $row->jurnalKeuanganDetail->sum('kredit');
+                        $debetJurnal = $row->keuanganJurnalDetail->sum('debet');
+                        $kreditJurnal = $row->keuanganJurnalDetail->sum('kredit');
 
                         $saldoDebet = sizeof($row->kodeAkunNeraca) > 0 ? $row->kodeAkunNeraca->sum('debet') : 0;
                         $saldoKredit = sizeof($row->kodeAkunNeraca) > 0 ? $row->kodeAkunNeraca->sum('kredit') : 0;

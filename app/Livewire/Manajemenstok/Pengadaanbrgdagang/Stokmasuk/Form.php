@@ -3,14 +3,14 @@
 namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Stokmasuk;
 
 use App\Models\Stok;
-use App\Models\JurnalKeuangan;
+use App\Models\KeuanganJurnal;
 use Livewire\Component;
 use App\Models\PemesananPengadaan;
 use App\Models\StokMasuk;
 use App\Class\JurnalkeuanganClass;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
-use App\Models\JurnalKeuanganDetail;
+use App\Models\KeuanganJurnalDetail;
 use App\Models\PembelianDetail;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;

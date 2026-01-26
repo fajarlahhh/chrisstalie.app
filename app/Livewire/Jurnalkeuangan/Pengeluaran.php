@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Jurnalkeuangan;
 
-use App\Models\JurnalKeuangan;
+use App\Models\KeuanganJurnal;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Class\JurnalkeuanganClass;
@@ -13,18 +13,18 @@ use App\Traits\CustomValidationTrait;
 class Pengeluaran extends Component
 {
     use CustomValidationTrait;
-    public JurnalKeuangan $data;
+    public KeuanganJurnal $data;
     public $tanggal, $uraian, $jenis_pengeluaran_id, $sumber_dana_id, $nilai;
     public  $dataJenisPengeluaran = [], $dataSumberDana = [];
 
-    public function mount(JurnalKeuangan $data)
+    public function mount(KeuanganJurnal $data)
     {
         $this->data = $data;
         if ($this->data->exists) {
             $this->fill($this->data->toArray());
-            $this->sumber_dana_id = $this->data->jurnalKeuanganDetail->firstWhere('kredit', '>', 0)->kode_akun_id;
-            $this->jenis_pengeluaran_id = $this->data->jurnalKeuanganDetail->firstWhere('debet', '>', 0)->kode_akun_id;
-            $this->nilai = $this->data->jurnalKeuanganDetail->sum('kredit');
+            $this->sumber_dana_id = $this->data->keuanganJurnalDetail->firstWhere('kredit', '>', 0)->kode_akun_id;
+            $this->jenis_pengeluaran_id = $this->data->keuanganJurnalDetail->firstWhere('debet', '>', 0)->kode_akun_id;
+            $this->nilai = $this->data->keuanganJurnalDetail->sum('kredit');
         }
         // $this->tanggal = date('Y-m-d');
         $this->dataJenisPengeluaran = KodeAkun::detail()->where('id', '!=', '21100')->whereIn('kategori', ['Beban'])->get()->toArray();

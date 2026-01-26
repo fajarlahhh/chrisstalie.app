@@ -15,8 +15,8 @@ class AsetPenyusutan extends Model
         return $this->belongsTo(Aset::class);
     }
 
-    public function jurnalKeuangan(): BelongsTo
+    public function keuanganJurnal(): BelongsTo
     {
-        return $this->belongsTo(JurnalKeuangan::class);
+        return $this->belongsTo(KeuanganJurnal::class);
     }
 }

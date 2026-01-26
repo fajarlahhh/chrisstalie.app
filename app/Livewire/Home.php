@@ -3,13 +3,13 @@
 namespace App\Livewire;
 
 use Carbon\Carbon;
-use App\Models\JurnalKeuangan;
+use App\Models\KeuanganJurnal;
 use App\Models\KepegawaianAbsensi;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\PemesananPengadaan;
 use App\Models\Pembayaran;
-use App\Models\JurnalKeuanganDetail;
+use App\Models\KeuanganJurnalDetail;
 use Livewire\Attributes\Url;
 
 class Home extends Component
@@ -73,8 +73,8 @@ class Home extends Component
 
     public function getDataPengeluaranBulanIni()
     {
-        return JurnalKeuangan::with('jurnalKeuanganDetail.kodeAkun', 'pengguna.kepegawaianPegawai')
-            ->whereHas('jurnalKeuanganDetail', function ($query) {
+        return KeuanganJurnal::with('keuanganJurnalDetail.kodeAkun', 'pengguna.kepegawaianPegawai')
+            ->whereHas('keuanganJurnalDetail', function ($query) {
                 $query->whereIn('kode_akun_id', KodeAkun::where('parent_id', '11100')->get()->pluck('id'));
             })
             ->whereIn('jenis', ['Pembelian', 'Pengeluaran'])

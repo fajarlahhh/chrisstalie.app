@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Kepegawaian\Penggajian;
 
-use App\Models\JurnalKeuangan;
+use App\Models\KeuanganJurnal;
 use App\Models\KepegawaianPegawai;
 use Livewire\Component;
 use App\Models\KodeAkun;
@@ -89,12 +89,12 @@ class Form extends Component
             $penggajian->pengguna_id = auth()->id();
             $penggajian->save();
 
-            $jurnalKeuanganDetail = collect($this->detail)->pluck('pegawai_unsur_gaji')->flatten(1)->groupBy('kode_akun_id')->map(fn($q) => [
+            $keuanganJurnalDetail = collect($this->detail)->pluck('pegawai_unsur_gaji')->flatten(1)->groupBy('kode_akun_id')->map(fn($q) => [
                 'debet' => $q->sum('nilai'),
                 'kredit' => 0,
                 'kode_akun_id' => $q->first()['kode_akun_id'],
             ])->toArray();
-            $jurnalKeuanganDetail[] = [
+            $keuanganJurnalDetail[] = [
                 'debet' => 0,
                 'kredit' => collect($this->detail)->pluck('pegawai_unsur_gaji')->flatten(1)->sum('nilai'),
                 'kode_akun_id' => $this->metode_bayar,
@@ -108,7 +108,7 @@ class Form extends Component
                 system: 1,
                 foreign_key: 'penggajian_id',
                 foreign_id: $penggajian->id,
-                detail: collect($jurnalKeuanganDetail)->values()->toArray()
+                detail: collect($keuanganJurnalDetail)->values()->toArray()
             );
 
             session()->flash('success', 'Berhasil menyimpan data');

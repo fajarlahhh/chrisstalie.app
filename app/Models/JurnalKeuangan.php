@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class JurnalKeuangan extends Model
+class KeuanganJurnal extends Model
 {
     //
-    protected $table = 'jurnal_keuangan';
+    protected $table = 'keuangan_jurnal';
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
 
-    public function jurnalKeuanganDetail(): HasMany
+    public function keuanganJurnalDetail(): HasMany
     {
-        return $this->hasMany(JurnalKeuanganDetail::class)->orderBy('kode_akun_id', 'asc');
+        return $this->hasMany(KeuanganJurnalDetail::class)->orderBy('kode_akun_id', 'asc');
     }
 
     public function pengguna(): BelongsTo

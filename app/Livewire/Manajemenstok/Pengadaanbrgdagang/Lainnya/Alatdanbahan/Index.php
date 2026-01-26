@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\StokMasuk;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
-use App\Models\JurnalKeuangan;
+use App\Models\KeuanganJurnal;
 use Illuminate\Support\Facades\DB;
 use App\Models\PemesananPengadaan;
 

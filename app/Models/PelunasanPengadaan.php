@@ -14,9 +14,9 @@ class PelunasanPengadaan extends Model
         return $this->belongsTo(PemesananPengadaan::class);
     }
 
-    public function jurnalKeuangan()
+    public function keuanganJurnal()
     {
-        return $this->hasOne(JurnalKeuangan::class);
+        return $this->hasOne(KeuanganJurnal::class);
     }
 
     public function pengguna()

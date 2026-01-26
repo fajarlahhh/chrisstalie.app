@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\KodeAkun;
 
-class JurnalKeuanganDetail extends Model
+class KeuanganJurnalDetail extends Model
 {
     //
     protected $table = 'jurnal_keuangan_detail';
 
-    public function jurnalKeuangan(): BelongsTo
+    public function keuanganJurnal(): BelongsTo
     {
-        return $this->belongsTo(JurnalKeuangan::class);
+        return $this->belongsTo(KeuanganJurnal::class);
     }
 
     public function kodeAkun(): BelongsTo

@@ -94,14 +94,14 @@ class Form extends Component
             if (!empty($stok)) {
                 Stok::insert($stok);
             }
-            $this->jurnalKeuangan($data, $this->harga_beli / $this->satuan['rasio_dari_terkecil'] * $this->qty_masuk);
+            $this->keuanganJurnal($data, $this->harga_beli / $this->satuan['rasio_dari_terkecil'] * $this->qty_masuk);
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
         return $this->redirect('/manajemenstok/opname/penambahan');
     }
 
-    private function jurnalKeuangan($koreksi, $hargaBeli)
+    private function keuanganJurnal($koreksi, $hargaBeli)
     {
         $detail[] = [
             'kode_akun_id' => $this->barang['kode_akun_id'],

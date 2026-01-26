@@ -74,14 +74,14 @@ class Form extends Component
             $hargaBeli = Stok::where('barang_id', $this->barang['barang_id'])
                 ->where('stok_keluar_id', $data->id)
                 ->sum('harga_beli');
-            $this->jurnalKeuangan($data, $hargaBeli);
+            $this->keuanganJurnal($data, $hargaBeli);
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
         return $this->redirect('/manajemenstok/opname/penambahan/index');
     }
 
-    private function jurnalKeuangan($koreksi, $hargaBeli)
+    private function keuanganJurnal($koreksi, $hargaBeli)
     {
         $detail[] = [
             'kode_akun_id' => $this->barang['kode_akun_id'],

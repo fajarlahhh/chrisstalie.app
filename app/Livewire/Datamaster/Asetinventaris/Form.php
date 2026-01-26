@@ -96,7 +96,7 @@ class Form extends Component
                 );
 
                 if ($this->metode_penyusutan == 'Garis Lurus') {
-                    $jurnalKeuangan = JurnalkeuanganClass::insert(
+                    $keuanganJurnal = JurnalkeuanganClass::insert(
                         jenis: 'Penyusutan',
                         sub_jenis: 'Penyusutan Aset Inventaris',
                         tanggal: $this->tanggal_perolehan,
@@ -121,7 +121,7 @@ class Form extends Component
                     $penyusutan = new AsetPenyusutan();
                     $penyusutan->aset_id = $this->data->id;
                     $penyusutan->nilai = $this->data->nilai_penyusutan;
-                    $penyusutan->jurnal_keuangan_id = $jurnalKeuangan->id;
+                    $penyusutan->jurnal_keuangan_id = $keuanganJurnal->id;
                     $penyusutan->save();
                 }
             }

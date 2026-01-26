@@ -111,7 +111,7 @@ class Index extends Component
 
     private function jurnalPendapatan($pembayaran, $metodeBayar, $hpp)
     {
-        $jurnalKeuanganDetail = [];
+        $keuanganJurnalDetail = [];
 
         // foreach (
         //     collect($this->barang)->groupBy('kode_akun_penjualan_id')->map(fn($q) => [
@@ -119,25 +119,25 @@ class Index extends Component
         //         'total' => $q->sum(fn($q) => $q['harga'] * $q['qty']),
         //     ]) as $barang
         // ) {
-        //     $jurnalKeuanganDetail[] = [
+        //     $keuanganJurnalDetail[] = [
         //         'debet' => 0,
         //         'kredit' => $barang['total'],
         //         'kode_akun_id' => $barang['kode_akun_id']
         //     ];
         // }
         if ($this->diskon > 0) {
-            $jurnalKeuanganDetail[] = [
+            $keuanganJurnalDetail[] = [
                 'debet' => $this->diskon,
                 'kredit' => 0,
                 'kode_akun_id' => '44000'
             ];
         }
-        $jurnalKeuanganDetail[] = [
+        $keuanganJurnalDetail[] = [
             'debet' => $this->total_tagihan,
             'kredit' => 0,
             'kode_akun_id' => $metodeBayar->kode_akun_id
         ];
-        $jurnalKeuanganDetail = array_merge($jurnalKeuanganDetail, collect($hpp)->map(function ($q) {
+        $keuanganJurnalDetail = array_merge($keuanganJurnalDetail, collect($hpp)->map(function ($q) {
             return [
                 'kode_akun_id' => $q['kode_akun_id'],
                 'debet' =>  $q['debet'],
@@ -153,7 +153,7 @@ class Index extends Component
             system: 1,
             foreign_key: 'pembayaran_id',
             foreign_id: $pembayaran->id,
-            detail: $jurnalKeuanganDetail
+            detail: $keuanganJurnalDetail
         );
     }
 

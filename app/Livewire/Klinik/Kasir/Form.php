@@ -250,14 +250,14 @@ class Form extends Component
                 ]);
             }
 
-            //JurnalKeuangan Kas
+            //KeuanganJurnal Kas
             $detail[] = [
                 'debet' => $this->total_tagihan,
                 'kredit' => 0,
                 'kode_akun_id' => $metodeBayar->kode_akun_id
             ];
 
-            //JurnalKeuangan Kewajiban Biaya Dokter & Perawat
+            //KeuanganJurnal Kewajiban Biaya Dokter & Perawat
             $detail = array_merge($detail, collect($this->tindakan)->whereNotNull('dokter_id')->map(function ($q) {
                 return [
                     'kode_akun_id' => '21300',
@@ -275,7 +275,7 @@ class Form extends Component
                     ];
                 })->all());
 
-            //JurnalKeuangan Pendapatan Tindakan
+            //KeuanganJurnal Pendapatan Tindakan
             $detail = array_merge($detail, collect($this->tindakan)->map(function ($q) {
                 return [
                     'kode_akun_id' => $q['kode_akun_id'],
@@ -298,7 +298,7 @@ class Form extends Component
                 ];
             })->toArray(), $pembayaran->id, $this->tanggal);
 
-            //JurnalKeuangan Penyusutan Alat
+            //KeuanganJurnal Penyusutan Alat
             $detail = array_merge($detail, collect($this->alat)->where('metode_penyusutan', 'Satuan Hasil Produksi')->map(function ($q) {
                 return [
                     'kode_akun_id' => $q['kode_akun_penyusutan_id'],
@@ -383,7 +383,7 @@ class Form extends Component
     {
         $id = Str::uuid();
 
-        $jurnalKeuanganDetail = collect($detail)->map(function ($q) use ($id) {
+        $keuanganJurnalDetail = collect($detail)->map(function ($q) use ($id) {
             return [
                 'jurnal_keuangan_id' => $id,
                 'debet' => $q['debet'],
@@ -392,7 +392,7 @@ class Form extends Component
             ];
         })->all();
 
-        $jurnalKeuangan = JurnalkeuanganClass::insert(
+        $keuanganJurnal = JurnalkeuanganClass::insert(
             jenis: 'Pendapatan',
             sub_jenis: 'Pendapatan',
             tanggal: $this->tanggal,
@@ -400,7 +400,7 @@ class Form extends Component
             system: 1,
             foreign_key: 'pembayaran_id',
             foreign_id: $pembayaran->id,
-            detail: collect($jurnalKeuanganDetail)->groupBy('kode_akun_id')->map(function ($q) {
+            detail: collect($keuanganJurnalDetail)->groupBy('kode_akun_id')->map(function ($q) {
                 return [
                     'debet' => $q->sum('debet'),
                     'kredit' => $q->sum('kredit'),
@@ -417,7 +417,7 @@ class Form extends Component
                 $asetPenyusutan[] = [
                     'aset_id' => $alat['id'],
                     'nilai' => $alat['biaya'],
-                    'jurnal_keuangan_id' => $jurnalKeuangan->id,
+                    'jurnal_keuangan_id' => $keuanganJurnal->id,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];

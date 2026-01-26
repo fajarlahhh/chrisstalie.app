@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Laporan\Pengeluaran;
 
-use App\Models\JurnalKeuangan;
+use App\Models\KeuanganJurnal;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\Pengguna;
@@ -38,8 +38,8 @@ class Index extends Component
 
     public function getData()
     {
-        $query = JurnalKeuangan::with('jurnalKeuanganDetail.kodeAkun', 'pengguna.kepegawaianPegawai')
-            ->whereHas('jurnalKeuanganDetail', function ($query) {
+        $query = KeuanganJurnal::with('keuanganJurnalDetail.kodeAkun', 'pengguna.kepegawaianPegawai')
+            ->whereHas('keuanganJurnalDetail', function ($query) {
                 $query->whereIn('kode_akun_id', collect($this->dataKodeAkun)->pluck('id'));
             })
             ->whereIn('jenis', ['Pembelian', 'Pengeluaran'])
@@ -62,7 +62,7 @@ class Index extends Component
                 })
                 ->when($this->metode_bayar, function ($collection) {
                     return $collection->filter(function ($item) {
-                        return $item->jurnalKeuanganDetail->contains(function ($detail) {
+                        return $item->keuanganJurnalDetail->contains(function ($detail) {
                             // $this->metode_bayar may be string or array, handle both
                             if (is_array($this->metode_bayar)) {
                                 return in_array($detail->kode_akun_id, $this->metode_bayar);
