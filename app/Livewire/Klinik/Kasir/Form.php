@@ -385,7 +385,7 @@ class Form extends Component
 
         $keuanganJurnalDetail = collect($detail)->map(function ($q) use ($id) {
             return [
-                'jurnal_keuangan_id' => $id,
+                'keuangan_jurnal_id' => $id,
                 'debet' => $q['debet'],
                 'kredit' => $q['kredit'],
                 'kode_akun_id' => $q['kode_akun_id'],
@@ -417,7 +417,7 @@ class Form extends Component
                 $asetPenyusutan[] = [
                     'aset_id' => $alat['id'],
                     'nilai' => $alat['biaya'],
-                    'jurnal_keuangan_id' => $keuanganJurnal->id,
+                    'keuangan_jurnal_id' => $keuanganJurnal->id,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];

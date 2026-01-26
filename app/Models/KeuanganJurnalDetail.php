@@ -9,7 +9,7 @@ use App\Models\KodeAkun;
 class KeuanganJurnalDetail extends Model
 {
     //
-    protected $table = 'jurnal_keuangan_detail';
+    protected $table = 'keuangan_jurnal_detail';
 
     public function keuanganJurnal(): BelongsTo
     {

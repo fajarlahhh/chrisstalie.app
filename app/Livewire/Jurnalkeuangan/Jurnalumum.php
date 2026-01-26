@@ -89,7 +89,7 @@ class Jurnalumum extends Component
 
             $this->data->keuanganJurnalDetail()->delete();
             $this->data->keuanganJurnalDetail()->insert(collect($this->detail)->map(fn($q) => [
-                'jurnal_keuangan_id' => $this->data->id,
+                'keuangan_jurnal_id' => $this->data->id,
                 'debet' => $q['debet'],
                 'kredit' => $q['kredit'],
                 'kode_akun_id' => $q['id'],

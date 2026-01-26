@@ -50,13 +50,13 @@ class Index extends Component
     public function getPengeluaran()
     {
         return KeuanganJurnal::with('keuanganJurnalDetail.kodeAkun', 'pengguna.kepegawaianPegawai')
-            ->leftJoin('jurnal_keuangan_detail', 'keuangan_jurnal.id', '=', 'jurnal_keuangan_detail.jurnal_keuangan_id')
-            ->leftJoin('kode_akun', 'jurnal_keuangan_detail.kode_akun_id', '=', 'kode_akun.id')->select(
+            ->leftJoin('keuangan_jurnal_detail', 'keuangan_jurnal.id', '=', 'keuangan_jurnal_detail.keuangan_jurnal_id')
+            ->leftJoin('kode_akun', 'keuangan_jurnal_detail.kode_akun_id', '=', 'kode_akun.id')->select(
                 'keuangan_jurnal.id as id',
                 'keuangan_jurnal.uraian as uraian',
-                'jurnal_keuangan_detail.kode_akun_id as kode_akun_id',
-                'jurnal_keuangan_detail.debet as debet',
-                'jurnal_keuangan_detail.kredit as kredit',
+                'keuangan_jurnal_detail.kode_akun_id as kode_akun_id',
+                'keuangan_jurnal_detail.debet as debet',
+                'keuangan_jurnal_detail.kredit as kredit',
                 'kode_akun.nama as kode_akun_nama'
             )
             ->whereIn('jenis', ['Pembelian', 'Pengeluaran'])

@@ -75,8 +75,8 @@ class Form extends Component
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
-            $this->data->pegawaiUnsurGajiKepegawaian()->delete();
-            $this->data->pegawaiUnsurGajiKepegawaian()->insert(collect($this->unsurGaji)->where('nilai', '>', 0)->map(fn($q) => [
+            $this->data->kepegawaianPegawaiUnsurGaji()->delete();
+            $this->data->kepegawaianPegawaiUnsurGaji()->insert(collect($this->unsurGaji)->where('nilai', '>', 0)->map(fn($q) => [
                 'pegawai_id' => $this->data->id,
                 'kode_akun_id' => $q['kode_akun_id'],
                 'nilai' => $q['nilai'],
@@ -103,7 +103,7 @@ class Form extends Component
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '61000')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
-        $this->unsurGaji = $this->data->pegawaiUnsurGajiKepegawaian->map(fn($q) => [
+        $this->unsurGaji = $this->data->kepegawaianPegawaiUnsurGaji->map(fn($q) => [
             'nilai' => $q['nilai'],
             'sifat' => $q['sifat'],
             'kode_akun_id' => $q['kode_akun_id'],

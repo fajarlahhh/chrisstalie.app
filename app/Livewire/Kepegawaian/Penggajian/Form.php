@@ -27,7 +27,7 @@ class Form extends Component
         if (!Penggajian::where('periode', $this->periode . '-01')->exists()) {
             $this->dataUnsurGaji = KodeAkun::detail()->whereIn('id', KepegawaianPegawaiUnsurGaji::pluck('kode_akun_id'))->get()->toArray();
 
-            foreach (KepegawaianPegawai::with('pegawaiUnsurGajiKepegawaian')->aktif()->get()->toArray() as $kepegawaianPegawai) {
+            foreach (KepegawaianPegawai::with('kepegawaianPegawaiUnsurGaji')->aktif()->get()->toArray() as $kepegawaianPegawai) {
                 $unsurGaji = [];
                 foreach ($this->dataUnsurGaji as $item) {
                     $unsurGaji[] = [
@@ -53,7 +53,7 @@ class Form extends Component
         if (!Penggajian::where('periode', $value . '-01')->exists()) {
             $this->dataUnsurGaji = KodeAkun::detail()->whereIn('id', KepegawaianPegawaiUnsurGaji::pluck('kode_akun_id'))->get()->toArray();
 
-            foreach (KepegawaianPegawai::with('pegawaiUnsurGajiKepegawaian')->aktif()->get()->toArray() as $kepegawaianPegawai) {
+            foreach (KepegawaianPegawai::with('kepegawaianPegawaiUnsurGaji')->aktif()->get()->toArray() as $kepegawaianPegawai) {
                 $unsurGaji = [];
                 foreach ($this->dataUnsurGaji as $item) {
                     $unsurGaji[] = [

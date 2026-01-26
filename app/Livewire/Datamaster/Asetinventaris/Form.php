@@ -121,7 +121,7 @@ class Form extends Component
                     $penyusutan = new AsetPenyusutan();
                     $penyusutan->aset_id = $this->data->id;
                     $penyusutan->nilai = $this->data->nilai_penyusutan;
-                    $penyusutan->jurnal_keuangan_id = $keuanganJurnal->id;
+                    $penyusutan->keuangan_jurnal_id = $keuanganJurnal->id;
                     $penyusutan->save();
                 }
             }
