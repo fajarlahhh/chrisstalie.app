@@ -48,6 +48,7 @@ class Form extends Component
             $pengadaanVerifikasi->status = $this->status;
             $pengadaanVerifikasi->catatan = $this->catatan;
             $pengadaanVerifikasi->waktu_verifikasi = now();
+            $pengadaanVerifikasi->pengguna_id = auth()->id();
             $pengadaanVerifikasi->save();
 
             session()->flash('success', 'Berhasil menyimpan data');

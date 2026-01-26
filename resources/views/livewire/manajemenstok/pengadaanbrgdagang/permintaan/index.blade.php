@@ -6,7 +6,7 @@
         <li class="breadcrumb-item active">Permintaan</li>
     @endsection
 
-    <h1 class="page-header">Permintaan</h1>
+    <h1 class="page-header">Permintaan <small>Pengadaan Barang Dagang</small></h1>
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">
@@ -23,7 +23,7 @@
                         <option value="Pending">Pending</option>
                     </select>&nbsp;
                     @if ($status == 'Disetujui')
-                        <input type="date" class="form-control w-200px" wire:model.lazy="tanggal" />&nbsp;
+                        <input type="month" class="form-control w-200px" wire:model.lazy="bulan" max="{{ date('Y-m') }}" />&nbsp;
                     @endif
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
@@ -61,7 +61,7 @@
                                                 @endif
                                                 <br>
                                                 <small>
-                                                    {{ $pengadaanVerifikasi->pengguna->nama }} <br>
+                                                    {{ $pengadaanVerifikasi->pengguna->nama }} -
                                                     {{ $pengadaanVerifikasi->waktu_verifikasi }}
                                                 </small>
                                             </li>
@@ -118,11 +118,11 @@
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
-                                    @if ($item->PengadaanVerifikasiPending->count() > 0)
+                                    @if ($item->pengadaanVerifikasiPending->count() > 0)
                                         <x-action :row="$item" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                     @else
-                                        @if ($item->PengadaanVerifikasiDisetujui->count() > 0 || $item->PengadaanVerifikasiDitolak->count() > 0)
+                                        @if ($item->pengadaanVerifikasiDisetujui->count() > 0 || $item->PengadaanVerifikasiDitolak->count() > 0)
                                             @if ($item->pengadaanPemesanan && $item->pengadaanPemesanan->stokMasuk->count() > 0)
                                                 <x-action :row="$item" custom="" :detail="false"
                                                     :edit="false" :print="false" :permanentDelete="false"
@@ -150,7 +150,7 @@
         </div>
     </div>
     <x-alert />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

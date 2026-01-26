@@ -64,7 +64,7 @@ class Home extends Component
 
     public function getDataPengadaanBarangJatuhTempo()
     {
-        return PengadaanPemesanan::with('supplier', 'pemesananPengadaanDetail')
+        return PengadaanPemesanan::with('supplier', 'pengadaanPemesananDetail')
             ->whereNotNull('jatuh_tempo')
             ->where(fn($q) => $q->where('jatuh_tempo', '<=', date('Y-m-d', strtotime('+2 days')))
                 ->whereDoesntHave('pengadaanPelunasanPemesanan'))

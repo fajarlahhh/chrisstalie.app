@@ -105,7 +105,7 @@
                                 </td>
                                 <td class="with-btn-group text-end" nowrap>
                                     @role('administrator|supervisor|operator')
-                                        <a href="/manajemenstok/pengadaanbrgdagang/pengadaan_pemesanan/form/{{ $item->id }}"
+                                        <a href="/manajemenstok/pengadaanbrgdagang/pemesanan/form/{{ $item->id }}"
                                             class="btn btn-info">
                                             Input
                                         </a>
@@ -160,7 +160,7 @@
                                             <th class="w-50px p-1">Qty</th>
                                             <th class="w-100px p-1">Harga</th>
                                         </tr>
-                                        @foreach ($row->pemesananPengadaanDetail as $j => $subRow)
+                                        @foreach ($row->pengadaanPemesananDetail as $j => $subRow)
                                             <tr>
                                                 <td class="p-1">
                                                     {{ $subRow->barangSatuan->barang->nama }}</td>
@@ -182,7 +182,7 @@
                                         <tr>
                                             <td class="p-1" colspan="4">Total</td>
                                             <td class="text-end p-1  text-nowrap">
-                                                {{ number_format($row->pemesananPengadaanDetail->sum(fn($q) => $q->harga_beli * $q->qty)) }}
+                                                {{ number_format($row->pengadaanPemesananDetail->sum(fn($q) => $q->harga_beli * $q->qty)) }}
                                             </td>
                                         </tr>
                                         <tr>
@@ -200,7 +200,7 @@
                                         <tr>
                                             <th class="p-1" colspan="4">Sub Total</th>
                                             <th class="text-end p-1  text-nowrap">
-                                                {{ number_format($row->pemesananPengadaanDetail->sum(fn($q) => $q->harga_beli * $q->qty) - $row->diskon + $row->ppn) }}
+                                                {{ number_format($row->pengadaanPemesananDetail->sum(fn($q) => $q->harga_beli * $q->qty) - $row->diskon + $row->ppn) }}
                                             </th>
                                         </tr>
                                     </table>

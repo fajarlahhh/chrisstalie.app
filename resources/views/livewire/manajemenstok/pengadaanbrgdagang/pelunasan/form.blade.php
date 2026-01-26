@@ -89,7 +89,7 @@
                                         </thead>
                                         <tbody>
                                             @if ($pengadaanPemesanan)
-                                                @foreach ($pengadaanPemesanan->pemesananPengadaanDetail as $item)
+                                                @foreach ($pengadaanPemesanan->pengadaanPemesananDetail as $item)
                                                     <tr>
                                                         <td>{{ $item->barangSatuan->barang->nama }}</td>
                                                         <td>{{ $item->barangSatuan->nama }}</td>

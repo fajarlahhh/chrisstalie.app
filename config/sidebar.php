@@ -155,11 +155,6 @@ return [
                             "method" => ["Index", "Form"],
                         ],
                         [
-                            "title" => "Pembelian",
-                            "urutkan" => true,
-                            "method" => ["Index", "Form"],
-                        ],
-                        [
                             "title" => "Pemesanan",
                             "urutkan" => true,
                             "method" => ["Index", "Form"],
@@ -183,23 +178,7 @@ return [
                             "title" => "Pelunasan",
                             "urutkan" => true,
                             "method" => ["Index", "Form"],
-                        ],
-                        [
-                            "title" => "Lainnya",
-                            "urutkan" => true,
-                            "sub_menu" => [
-                                [
-                                    "title" => "Alat Dan Bahan",
-                                    "urutkan" => true,
-                                    "method" => ["Index", "Form"],
-                                ],
-                                [
-                                    "title" => "Barang Khusus",
-                                    "urutkan" => true,
-                                    "method" => ["Index", "Form"],
-                                ]
-                            ]
-                        ],
+                        ]
                     ]
                 ],
             ],

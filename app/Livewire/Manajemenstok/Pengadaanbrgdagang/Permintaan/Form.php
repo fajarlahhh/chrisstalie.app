@@ -10,14 +10,25 @@ use App\Models\PengadaanVerifikasi;
 use Illuminate\Support\Str;
 use App\Models\BarangSatuan;
 use Illuminate\Support\Facades\DB;
-use App\Models\PengadaanPermintaan; 
+use App\Models\PengadaanPermintaan;
 use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
     use CustomValidationTrait;
     public $dataBarang = [], $dataPengguna = [], $barang = [];
-    public $deskripsi, $data, $verifikator_id;
+    public $deskripsi, $data, $verifikator_id, $jenis_barang = 'Persediaan Apotek', $kirim = 0;
+
+    public function getBarang($jenis)
+    {
+        if ($jenis == 'Persediaan Apotek') {
+            return BarangClass::getBarangBySatuanUtama('Apotek');
+        } else if ($jenis == 'Alat Dan Bahan') {
+            return BarangClass::getBarangBySatuanUtama('Klinik', 0);
+        } else if ($jenis == 'Barang Khusus') {
+            return BarangClass::getBarangBySatuanUtama('Apotek', 1);
+        }
+    }
 
     public function submit()
     {
@@ -29,14 +40,13 @@ class Form extends Component
         ]);
 
         DB::transaction(function () {
-            
-
+            $this->data->jenis_barang = $this->jenis_barang;
             $this->data->deskripsi = $this->deskripsi;
+            $this->data->kirim = $this->kirim;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
             $this->data->pengadaanPermintaanDetail()->delete();
-
             $this->data->pengadaanPermintaanDetail()->insert(collect($this->barang)->map(function ($q) {
                 $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
                 return [
@@ -46,16 +56,14 @@ class Form extends Component
                     'rasio_dari_terkecil' => $brg['rasio_dari_terkecil'],
                     'barang_id' => $brg['barang_id'],
                 ];
-            })->toArray()); 
+            })->toArray());
 
-            if ($this->verifikator_id) {
+            if ($this->kirim) {
                 $pengadaanVerifikasi = new PengadaanVerifikasi();
                 $pengadaanVerifikasi->pengadaan_permintaan_id = $this->data->id;
                 $pengadaanVerifikasi->jenis = 'Permintaan Pengadaan';
-                $pengadaanVerifikasi->pengguna_id = $this->verifikator_id;
                 $pengadaanVerifikasi->save();
             }
-
             session()->flash('success', 'Berhasil menyimpan data');
         });
         $this->redirect('/manajemenstok/pengadaanbrgdagang/permintaan');
@@ -63,21 +71,16 @@ class Form extends Component
 
     public function mount(PengadaanPermintaan $data)
     {
-        
-        $this->dataBarang = BarangClass::getBarangBySatuanUtama('Apotek');
-        $this->dataPengguna = Pengguna::with('kepegawaianPegawai')->where(fn($q) => $q->whereHas('permissions', function ($q) {
-            $q->where('name', 'pengadaanbrg.dagangverifikasi');
-        })->orWhere(fn($q) => $q->whereHas('roles', fn($q) => $q->where('name', 'administrator'))))->orderBy('nama')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
         if ($this->data->exists) {
-            # code...
             $this->barang = $this->data->pengadaanPermintaanDetail->map(fn($q) => [
                 'id' => $q->barang_satuan_id,
                 'barang_id' => $q->barang_id,
                 'qty' => $q->qty_permintaan,
             ])->toArray();
         }
+        $this->dataBarang = $this->getBarang($this->jenis_barang);
     }
 
     public function render()

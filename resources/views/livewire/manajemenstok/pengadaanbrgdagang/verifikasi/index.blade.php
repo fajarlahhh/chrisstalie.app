@@ -90,7 +90,7 @@
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    @if ($item->pengadaanVerifikasi->count() > 0 )
+                                    @if ($item->pengadaanPemesanan->count() > 0 )
                                         <x-action :row="$item" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="false" />
                                     @else

@@ -45,14 +45,12 @@
                                 @foreach ($barang as $index => $row)
                                     <tr>
                                         <td>
-                                            <input type="text" class="form-control"
-                                                value="{{ $row['nama'] . ' - ' . $row['satuan'] }}" autocomplete="off"
-                                                disabled>
+                                            <input type="text" class="form-control" value="{{ $row['nama'] }}"
+                                                autocomplete="off" disabled>
                                         </td>
                                         <td>
                                             <input type="text" class="form-control"
-                                                wire:model="barang.{{ $index }}.satuan" autocomplete="off"
-                                                disabled>
+                                                value="{{ $row['satuan'] }}" autocomplete="off" disabled>
                                             @error('barang.' . $index . '.satuan')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -60,7 +58,7 @@
                                         <td>
                                             <input type="number" class="form-control w-100px" min="0"
                                                 step="1" min="0" max="100"
-                                                wire:model="barang.{{ $index }}.qty" autocomplete="off" disabled>
+                                                value="{{ $row['qty'] }}" autocomplete="off" disabled>
                                             @error('barang.' . $index . '.qty')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -109,7 +107,7 @@
     <x-alert />
 
     <x-modal.cetak judul='Nota' />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

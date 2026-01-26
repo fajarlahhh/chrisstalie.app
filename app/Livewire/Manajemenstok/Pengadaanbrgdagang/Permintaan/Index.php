@@ -12,7 +12,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $status = 'Pending', $tanggal;
+    public $cari, $status = 'Pending', $bulan;
 
     public function updated()
     {
@@ -21,7 +21,7 @@ class Index extends Component
 
     public function mount()
     {
-        $this->tanggal = $this->tanggal ?: date('Y-m-d');
+        $this->bulan = $this->bulan ?: date('Y-m');
     }
 
     public function delete($id)
@@ -35,28 +35,38 @@ class Index extends Component
         };
     }
 
-    public function render()
+    private function getData()
     {
-        return view('livewire.manajemenstok.pengadaanbrgdagang.permintaan.index', [
-            'data' => PengadaanPermintaan::with([
+        if ($this->status == 'Pending') {
+            $data = PengadaanPermintaan::with([
                 'pengguna.kepegawaianPegawai',
                 'pengadaanPermintaanDetail.barangSatuan.satuanKonversi',
                 'pengadaanPermintaanDetail.barangSatuan.barang',
                 'pengadaanPemesanan.stokMasuk',
-                'PengadaanVerifikasiPending',
-                'PengadaanVerifikasiDisetujui',
-                'PengadaanVerifikasiDitolak',
+                'pengadaanVerifikasiPending',
+                'pengadaanVerifikasiDisetujui',
+                'pengadaanVerifikasiDitolak',
                 'pengadaanVerifikasi.pengguna'
             ])
                 ->where(fn($q) => $q
                     ->where('deskripsi', 'like', '%' . $this->cari . '%'))
+                ->when(auth()->user()->hasRole('operator|guest'), fn($q) => $q->whereIn('jenis_barang', ['Persediaan Apotek', 'Alat Dan Bahan']))
                 ->when($this->status == 'Pending', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {
                     $q->whereNull('status');
                 })->orWhereDoesntHave('pengadaanVerifikasi'))
-                ->when($this->status == 'Ditolak', fn($q) => $q->whereHas('PengadaanVerifikasiDitolak'))
-                ->when($this->status == 'Disetujui', fn($q) => $q->whereHas('PengadaanVerifikasiDisetujui')->where('created_at', 'like', $this->tanggal . '%'))
+                ->when($this->status == 'Ditolak', fn($q) => $q->whereHas('pengadaanVerifikasiDitolak'))
+                ->when($this->status == 'Disetujui', fn($q) => $q->whereHas('pengadaanVerifikasiDisetujui')->where('created_at', 'like', $this->bulan . '%'))
                 ->orderBy('created_at', 'desc')
-                ->paginate(10)
+                ->get();
+            return $data;
+        } else {
+        }
+    }
+
+    public function render()
+    {
+        return view('livewire.manajemenstok.pengadaanbrgdagang.permintaan.index', [
+            'data' => $this->getData()
         ]);
     }
 }

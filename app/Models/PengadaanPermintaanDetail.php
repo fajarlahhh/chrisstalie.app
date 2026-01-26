@@ -8,6 +8,7 @@ class PengadaanPermintaanDetail extends Model
 {
     //
     protected $table = 'pengadaan_permintaan_detail';
+    public $timestamps = false;
 
     public function pengadaanPermintaan()
     {

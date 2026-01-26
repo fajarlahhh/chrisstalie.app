@@ -134,7 +134,8 @@
                                             </td>
                                             <td>
                                                 <input type="number" class="form-control" min="0" step="1"
-                                                    x-model="row.qty" step="1" :max="row.qty_disetujui"  autocomplete="off">
+                                                    x-model="row.qty" step="1" :max="row.qty_disetujui"
+                                                    autocomplete="off">
                                                 @error('barang.' . $index . '.qty')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -203,7 +204,7 @@
                         Simpan
                     </button>
                 @endunlessrole
-                <button type="button" onclick="window.location.href='/pengadaanbrgdagang/pengadaan_pemesanan'"
+                <button type="button" onclick="window.location.href='/manajemenstok/pengadaanbrgdagang/pemesanan'"
                     class="btn btn-danger" wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal
@@ -212,7 +213,7 @@
         </form>
     </div>
     <x-alert />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

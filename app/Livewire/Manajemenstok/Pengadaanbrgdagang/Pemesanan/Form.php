@@ -3,9 +3,99 @@
 namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Pemesanan;
 
 use Livewire\Component;
+use App\Models\Supplier;
+use App\Models\PengadaanPemesanan;
+use Illuminate\Support\Facades\DB;
+use App\Models\PengadaanPermintaan;
+use App\Models\PengadaanVerifikasi;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
+    public $dataBarang = [], $dataPengguna = [], $barang = [], $deskripsi, $data, $verifikator_id, $status = 'Ditolak', $catatan, $dataSupplier = [], $supplier_id, $barangSudahDipesan = [], $tanggal;
+
+    public function submit()
+    {
+
+        $this->validateWithCustomMessages([
+            'tanggal' => 'required|date',
+            'supplier_id' => 'required|integer|exists:supplier,id',
+            'barang' => 'required|array',
+            'barang.*.id' => 'required|integer',
+            'barang.*.qty' => [
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) {
+                    $matches = [];
+                    if (preg_match('/^barang\.(\d+)\.qty$/', $attribute, $matches)) {
+                        $index = (int)$matches[1];
+                        if (isset($this->barang[$index]['qty_disetujui']) && $value > $this->barang[$index]['qty_disetujui']) {
+                            $fail('Max ' . ($this->barang[$index]['qty_disetujui'] - $this->barang[$index]['qty_sudah_dipesan']) . ' ' . ($this->barang[$index]['satuan'] ?? ''));
+                        }
+                    }
+                }
+            ],
+            'barang.*.harga_beli' => 'required|integer',
+        ]);
+
+        DB::transaction(function () {
+            $data = new PengadaanPemesanan();
+            $data->tanggal = $this->tanggal;
+            $data->catatan = $this->catatan;
+            $data->supplier_id = $this->supplier_id;
+            $data->pengadaan_permintaan_id = $this->data->id;
+            $data->pengguna_id = auth()->id();
+            $data->save();
+            $data->pengadaanPemesananDetail()->delete();
+            $data->pengadaanPemesananDetail()->insert(collect($this->barang)->map(fn($q) => [
+                'qty' => $q['qty'],
+                'harga_beli' => $q['harga_beli'],
+                'barang_id' => $q['barang_id'],
+                'barang_satuan_id' => $q['id'],
+                'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
+                'harga_beli_terkecil' => $q['harga_beli'] / $q['rasio_dari_terkecil'],
+                'pengadaan_pemesanan_id' => $data->id,
+            ])->toArray());
+            foreach ($this->barang as $q) {
+                $this->data->pengadaanPermintaanDetail()->where('barang_id', $q['barang_id'])->update([
+                    'qty_sudah_dipesan' => $q['qty'],
+                ]);
+            }
+
+            $pengadaanVerifikasi = new PengadaanVerifikasi();
+            $pengadaanVerifikasi->pengadaan_permintaan_id = $this->data->id;
+            $pengadaanVerifikasi->jenis = 'Permintaan Pengadaan';
+            $pengadaanVerifikasi->save();
+            session()->flash('success', 'Berhasil menyimpan data');
+        });
+        $this->redirect('/manajemenstok/pengadaanbrgdagang/pemesanan');
+    }
+
+    public function mount(PengadaanPermintaan $data)
+    {
+        $this->data = $data;
+        if ($this->data->pengadaanVerifikasiDisetujui()->count() == 0) {
+            return abort(404);
+        }
+        $this->fill($this->data->toArray());
+        $this->barangSudahDipesan = $data->pengadaanPemesanan?->pengadaanPemesananDetail->groupBy('barang_id')->map(fn($q) => [
+            'barang_id' => $q->first()->barang_id,
+            'qty' => $q->sum('qty'),
+        ])->toArray();
+        $this->barang = $data->pengadaanPermintaanDetail->map(fn($q) => [
+            'id' => $q->barang_satuan_id,
+            'barang_id' => $q->barang_id,
+            'nama' => $q->barangSatuan->barang->nama,
+            'satuan' => $q->barangSatuan->nama,
+            'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
+            'qty_permintaan' => $q->qty_disetujui,
+            'qty_sudah_dipesan' => collect($this->barangSudahDipesan)->firstWhere('barang_id', $q->barang_id)['qty'] ?? 0,
+            'qty' => 0,
+        ])->toArray();
+        $this->dataSupplier = Supplier::whereNotNull('konsinyator')->orderBy('nama')->get()->toArray();
+    }
+
     public function render()
     {
         return view('livewire.manajemenstok.pengadaanbrgdagang.pemesanan.form');

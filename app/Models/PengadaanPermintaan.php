@@ -21,31 +21,30 @@ class PengadaanPermintaan extends Model
 
     public function pengadaanVerifikasi()
     {
-        return $this->hasMany(PengadaanVerifikasi::class)->orderBy('created_at', 'desc');
+        return $this->hasMany(PengadaanVerifikasi::class)->orderBy('created_at', 'desc')->where('jenis', 'Permintaan Pengadaan');
     }
 
-    public function PengadaanVerifikasiPending()
-    {
-        return $this->hasMany(PengadaanVerifikasi::class)->whereNull('status');
+    public function pengadaanVerifikasiPersetujuan(){
+        return $this->hasOne(PengadaanVerifikasi::class, 'pengadaan_permintaan_id', 'id')->where('jenis', 'Persetujuan Pemesanan');
     }
 
-    public function PengadaanVerifikasiDisetujui()
+    public function pengadaanVerifikasiPending()
     {
-        return $this->hasMany(PengadaanVerifikasi::class)->where('status', 'Disetujui');
+        return $this->hasMany(PengadaanVerifikasi::class)->whereNull('status')->where('jenis', 'Permintaan Pengadaan');
     }
 
-    public function PengadaanVerifikasiDitolak()
+    public function pengadaanVerifikasiDisetujui()
     {
-        return $this->hasMany(PengadaanVerifikasi::class)->where('status', 'Ditolak');
+        return $this->hasMany(PengadaanVerifikasi::class)->where('status', 'Disetujui')->where('jenis', 'Permintaan Pengadaan');
+    }
+
+    public function pengadaanVerifikasiDitolak()
+    {
+        return $this->hasMany(PengadaanVerifikasi::class)->where('status', 'Ditolak')->where('jenis', 'Permintaan Pengadaan');
     }
 
     public function pengadaanPemesanan()
     {
-        return $this->hasOne(PengadaanPemesanan::class);
-    }
-
-    public function stokMasuk()
-    {
-        return $this->hasMany(StokMasuk::class);
+        return $this->hasMany(PengadaanPemesanan::class);
     }
 }
