@@ -5,7 +5,7 @@ namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Lainnya\Barangkhusus;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\Supplier;
-use App\Models\PemesananPengadaan;
+use App\Models\PengadaanPemesanan;
 use App\Class\BarangClass;
 use App\Class\JurnalkeuanganClass;
 use App\Models\StokMasuk;
@@ -47,21 +47,21 @@ class Form extends Component
         ]);
 
         DB::transaction(function () {
-            $pemesananPengadaan = new PemesananPengadaan();
-            $pemesananPengadaan->tanggal = $this->tanggal;
-            $pemesananPengadaan->jatuh_tempo = $this->pembayaran == "Jatuh Tempo" ? $this->jatuh_tempo : null;
-            $pemesananPengadaan->pembayaran = $this->pembayaran == "Jatuh Tempo" ? $this->pembayaran : "Lunas";
-            $pemesananPengadaan->kode_akun_id = $this->pembayaran == "Jatuh Tempo" ? '21100' : $this->pembayaran;
-            $pemesananPengadaan->uraian = $this->uraian;
-            $pemesananPengadaan->supplier_id = $this->supplier_id != '' ? $this->supplier_id : null;
-            $pemesananPengadaan->permintaan_pengadaan_id = null;
-            $pemesananPengadaan->ppn = $this->ppn;
-            $pemesananPengadaan->diskon = $this->diskon;
-            $pemesananPengadaan->jenis = 'Barang Khusus';
-            $pemesananPengadaan->pengguna_id = auth()->id();
-            $pemesananPengadaan->save();
-            $pemesananPengadaan->pemesananPengadaanDetail()->delete();
-            $pemesananPengadaan->pemesananPengadaanDetail()->insert(collect($this->barang)->map(function ($q) use ($pemesananPengadaan) {
+            $pengadaanPemesanan = new PengadaanPemesanan();
+            $pengadaanPemesanan->tanggal = $this->tanggal;
+            $pengadaanPemesanan->jatuh_tempo = $this->pembayaran == "Jatuh Tempo" ? $this->jatuh_tempo : null;
+            $pengadaanPemesanan->pembayaran = $this->pembayaran == "Jatuh Tempo" ? $this->pembayaran : "Lunas";
+            $pengadaanPemesanan->kode_akun_id = $this->pembayaran == "Jatuh Tempo" ? '21100' : $this->pembayaran;
+            $pengadaanPemesanan->uraian = $this->uraian;
+            $pengadaanPemesanan->supplier_id = $this->supplier_id != '' ? $this->supplier_id : null;
+            $pengadaanPemesanan->permintaan_pengadaan_id = null;
+            $pengadaanPemesanan->ppn = $this->ppn;
+            $pengadaanPemesanan->diskon = $this->diskon;
+            $pengadaanPemesanan->jenis = 'Barang Khusus';
+            $pengadaanPemesanan->pengguna_id = auth()->id();
+            $pengadaanPemesanan->save();
+            $pengadaanPemesanan->pemesananPengadaanDetail()->delete();
+            $pengadaanPemesanan->pemesananPengadaanDetail()->insert(collect($this->barang)->map(function ($q) use ($pengadaanPemesanan) {
                 $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
                 return [
                     'qty' => $q['qty'],
@@ -70,7 +70,7 @@ class Form extends Component
                     'rasio_dari_terkecil' => $brg['rasio_dari_terkecil'],
                     'barang_id' => $brg['barang_id'],
                     'harga_beli_terkecil' => $q['harga_beli'] / $brg['rasio_dari_terkecil'],
-                    'pemesanan_pengadaan_id' => $pemesananPengadaan->id,
+                    'pengadaan_pemesanan_id' => $pengadaanPemesanan->id,
                 ];
             })->toArray());
 
@@ -78,7 +78,7 @@ class Form extends Component
             $stokMasuk = [];
 
             foreach (
-                collect($this->barang)->map(function ($q) use ($pemesananPengadaan) {
+                collect($this->barang)->map(function ($q) use ($pengadaanPemesanan) {
                     $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
                     return [
                         'barang_id' => $brg['barang_id'],
@@ -90,7 +90,7 @@ class Form extends Component
                         'tanggal_kedaluarsa' => $q['tanggal_kedaluarsa'],
                         'barang_satuan_id' => $q['id'],
                         'rasio_dari_terkecil' => $brg['rasio_dari_terkecil'],
-                        'pemesanan_pengadaan_id' => $pemesananPengadaan->id,
+                        'pengadaan_pemesanan_id' => $pengadaanPemesanan->id,
                     ];
                 })->toArray() as $key => $value
             ) {
@@ -101,7 +101,7 @@ class Form extends Component
                     $stokMasuk->no_batch = $value['no_batch'];
                     $stokMasuk->tanggal_kedaluarsa = $value['tanggal_kedaluarsa'];
                     $stokMasuk->barang_id = $value['barang_id'];
-                    $stokMasuk->pemesanan_pengadaan_id = $value['pemesanan_pengadaan_id'];
+                    $stokMasuk->pengadaan_pemesanan_id = $value['pengadaan_pemesanan_id'];
                     $stokMasuk->barang_satuan_id = $value['barang_satuan_id'];
                     $stokMasuk->rasio_dari_terkecil = $value['rasio_dari_terkecil'];
                     $stokMasuk->pengguna_id = auth()->id();
@@ -110,7 +110,7 @@ class Form extends Component
                     for ($i = 0; $i < $value['rasio_dari_terkecil'] * $value['qty']; $i++) {
                         $stok[] = [
                             'id' => $stokMasuk->id . '-' . $value['barang_id'] . '-' . $i,
-                            'pemesanan_pengadaan_id' => $value['pemesanan_pengadaan_id'],
+                            'pengadaan_pemesanan_id' => $value['pengadaan_pemesanan_id'],
                             'barang_id' => $value['barang_id'],
                             'no_batch' => $value['no_batch'],
                             'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
@@ -133,7 +133,7 @@ class Form extends Component
                 Stok::insert($stok);
             }
 
-            $detail = collect($this->barang)->map(function ($q) use ($pemesananPengadaan) {
+            $detail = collect($this->barang)->map(function ($q) use ($pengadaanPemesanan) {
                 $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
                 return [
                     'kode_akun_id' => $brg['kode_akun_id'],
@@ -148,7 +148,7 @@ class Form extends Component
                 ];
             })->values()->toArray();
             $detail[] = [
-                'kode_akun_id' => $pemesananPengadaan->kode_akun_id,
+                'kode_akun_id' => $pengadaanPemesanan->kode_akun_id,
                 'debet' => 0,
                 'kredit' => collect($detail)->sum('debet') - $this->diskon + $this->ppn,
             ];
@@ -167,10 +167,10 @@ class Form extends Component
                 jenis: 'Pembelian',
                 sub_jenis: 'Stok Masuk Barang Khusus',
                 tanggal: now(),
-                uraian: 'Stok Masuk Barang Khusus ' . $pemesananPengadaan->uraian,
+                uraian: 'Stok Masuk Barang Khusus ' . $pengadaanPemesanan->uraian,
                 system: 1,
-                foreign_key: 'pemesanan_pengadaan_id',
-                foreign_id: $pemesananPengadaan->id,
+                foreign_key: 'pengadaan_pemesanan_id',
+                foreign_id: $pengadaanPemesanan->id,
                 detail: $detail
             );
 

@@ -4,7 +4,7 @@ namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Pelunasan;
 
 use Livewire\Component;
 use App\Models\KodeAkun;
-use App\Models\PemesananPengadaan;
+use App\Models\PengadaanPemesanan;
 use App\Class\JurnalkeuanganClass;
 use App\Models\PelunasanPengadaan;
 use Illuminate\Support\Facades\DB;
@@ -13,42 +13,42 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $pemesananPengadaan, $dataPembelian = [], $dataKodePembayaran = [], $kode_akun_pembayaran_id, $pemesanan_pengadaan_id, $tanggal, $uraian;
+    public $pengadaanPemesanan, $dataPembelian = [], $dataKodePembayaran = [], $kode_akun_pembayaran_id, $pengadaan_pemesanan_id, $tanggal, $uraian;
 
     public function mount($data = null)
     {
         if ($data) {
-            $this->pemesanan_pengadaan_id = $data;
-            $this->pemesananPengadaan = PemesananPengadaan::with('supplier', 'pemesananPengadaanDetail')->find($data);
+            $this->pengadaan_pemesanan_id = $data;
+            $this->pengadaanPemesanan = PengadaanPemesanan::with('supplier', 'pemesananPengadaanDetail')->find($data);
         }
-        $this->dataPembelian = PemesananPengadaan::where('pembayaran', 'Jatuh Tempo')->with('supplier', 'pemesananPengadaanDetail')
+        $this->dataPembelian = PengadaanPemesanan::where('pembayaran', 'Jatuh Tempo')->with('supplier', 'pemesananPengadaanDetail')
             ->whereDoesntHave('pelunasanPemesananPengadaan')->get();
         $this->dataKodePembayaran = KodeAkun::where('parent_id', '11100')->detail()->get()->toArray();
     }
 
     public function updatedPembelianId()
     {
-        $this->pemesananPengadaan = PemesananPengadaan::with('supplier', 'pemesananPengadaanDetail')->find($this->pemesanan_pengadaan_id);
+        $this->pengadaanPemesanan = PengadaanPemesanan::with('supplier', 'pemesananPengadaanDetail')->find($this->pengadaan_pemesanan_id);
     }
 
     public function submit()
     {
         $this->validateWithCustomMessages([
-            'pemesanan_pengadaan_id' => 'required',
+            'pengadaan_pemesanan_id' => 'required',
             'tanggal' => 'required',
             'uraian' => 'required',
             'kode_akun_pembayaran_id' => 'required',
         ]);
 
         DB::transaction(function () {
-            $pemesananPengadaan = PemesananPengadaan::find($this->pemesanan_pengadaan_id);
+            $pengadaanPemesanan = PengadaanPemesanan::find($this->pengadaan_pemesanan_id);
 
             $data = new PelunasanPengadaan();
-            $data->pemesanan_pengadaan_id = $this->pemesanan_pengadaan_id;
+            $data->pengadaan_pemesanan_id = $this->pengadaan_pemesanan_id;
             $data->tanggal = $this->tanggal;
             $data->uraian = $this->uraian;
             $data->kode_akun_pembayaran_id = $this->kode_akun_pembayaran_id;
-            $data->jumlah = $pemesananPengadaan->total_harga;
+            $data->jumlah = $pengadaanPemesanan->total_harga;
             $data->save();
 
             JurnalkeuanganClass::insert(
@@ -62,13 +62,13 @@ class Form extends Component
                 detail: [
                     [
                         'debet' => 0,
-                        'kredit' => $pemesananPengadaan->total_harga,
+                        'kredit' => $pengadaanPemesanan->total_harga,
                         'kode_akun_id' => $this->kode_akun_pembayaran_id,
                     ],
                     [
-                        'debet' => $pemesananPengadaan->total_harga,
+                        'debet' => $pengadaanPemesanan->total_harga,
                         'kredit' => 0,
-                        'kode_akun_id' => $pemesananPengadaan->kode_akun_id,
+                        'kode_akun_id' => $pengadaanPemesanan->kode_akun_id,
                     ],
                 ],
             );

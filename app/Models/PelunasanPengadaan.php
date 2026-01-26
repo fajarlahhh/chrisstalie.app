@@ -9,9 +9,9 @@ class PelunasanPengadaan extends Model
     //
     protected $table = 'pelunasan_pengadaan';
 
-    public function pemesananPengadaan()
+    public function pengadaanPemesanan()
     {
-        return $this->belongsTo(PemesananPengadaan::class);
+        return $this->belongsTo(PengadaanPemesanan::class);
     }
 
     public function keuanganJurnal()

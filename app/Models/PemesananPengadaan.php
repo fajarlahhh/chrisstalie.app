@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class PemesananPengadaan extends Model
+class PengadaanPemesanan extends Model
 {
     use HasFactory;
 
-    protected $table = 'pemesanan_pengadaan';
+    protected $table = 'pengadaan_pemesanan';
 
     public function permintaanPengadaan(): BelongsTo
     {

@@ -3,7 +3,7 @@
 namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Pembelian;
 
 use Livewire\Component;
-use App\Models\PemesananPengadaan;
+use App\Models\PengadaanPemesanan;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\PermintaanPengadaan;
@@ -27,7 +27,7 @@ class Index extends Component
 
     public function delete($id)
     {
-        PemesananPengadaan::findOrFail($id)->forceDelete();
+        PengadaanPemesanan::findOrFail($id)->forceDelete();
         session()->flash('success', 'Berhasil menghapus data');
     }
 
@@ -46,12 +46,12 @@ class Index extends Component
                 ->whereHas('verifikasiPengadaan', function ($q) {
                     $q->whereNotNull('status');
                 })
-                ->whereDoesntHave('pemesananPengadaan')
+                ->whereDoesntHave('pengadaanPemesanan')
                 ->where(fn($q) => $q
                     ->where('deskripsi', 'like', '%' . $this->cari . '%'))
                 ->orderBy('created_at', 'desc')
                 ->paginate(10) :
-                PemesananPengadaan::with(['pemesananPengadaanDetail.barangSatuan.barang', 'pengguna.kepegawaianPegawai', 'stokMasuk', 'pelunasanPemesananPengadaan', 'supplier', 'permintaanPengadaan'])
+                PengadaanPemesanan::with(['pemesananPengadaanDetail.barangSatuan.barang', 'pengguna.kepegawaianPegawai', 'stokMasuk', 'pelunasanPemesananPengadaan', 'supplier', 'permintaanPengadaan'])
                 ->where('jenis', 'Barang Dagang')
                 ->where('tanggal', 'like', $this->bulan . '%')
                 ->where(fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))

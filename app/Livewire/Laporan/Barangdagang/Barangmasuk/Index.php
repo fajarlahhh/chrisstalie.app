@@ -35,7 +35,7 @@ class Index extends Component
     {
         switch ($this->jenis) {
             case 'pertransaksi':
-                return StokMasuk::with(['barang', 'pemesananPengadaan.pemesananPengadaanDetail', 'pemesananPengadaan.kodeAkun', 'barangSatuan.satuanKonversi', 'pemesananPengadaan.supplier', 'pengguna.kepegawaianPegawai'])
+                return StokMasuk::with(['barang', 'pengadaanPemesanan.pemesananPengadaanDetail', 'pengadaanPemesanan.kodeAkun', 'barangSatuan.satuanKonversi', 'pengadaanPemesanan.supplier', 'pengguna.kepegawaianPegawai'])
                     ->when($this->persediaan, fn($q) => $q->whereHas('barang', fn($q) => $q->where('persediaan', $this->persediaan)))
                     ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                     ->orderBy('tanggal', 'desc')
@@ -46,13 +46,13 @@ class Index extends Component
                             'barang' => $q->barang->nama,
                             'satuan' => $q->barangSatuan->nama . ' ' . $q->barangSatuan->konversi_satuan,
                             'no_batch' => $q->no_batch,
-                            'metode_bayar' => $q->pemesananPengadaan->pembayaran? ($q->pemesananPengadaan->pembayaran == 'Lunas' ? $q->pemesananPengadaan->kodeAkun->nama : 'Jatuh Tempo') : '<span class="text-danger">Koreksi</span>',
+                            'metode_bayar' => $q->pengadaanPemesanan->pembayaran? ($q->pengadaanPemesanan->pembayaran == 'Lunas' ? $q->pengadaanPemesanan->kodeAkun->nama : 'Jatuh Tempo') : '<span class="text-danger">Koreksi</span>',
                             'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
-                            'harga_beli' => $q->pemesananPengadaan->pemesananPengadaanDetail->where('barang_id', $q->barang_id)->first()->harga_beli,
+                            'harga_beli' => $q->pengadaanPemesanan->pemesananPengadaanDetail->where('barang_id', $q->barang_id)->first()->harga_beli,
                             'qty' => $q->qty,
-                            'total' => $q->qty * $q->pemesananPengadaan->pemesananPengadaanDetail->where('barang_id', $q->barang_id)->first()->harga_beli,
-                            'supplier' => $q->pemesananPengadaan->supplier?->nama,
-                            'uraian' => $q->pemesananPengadaan->uraian,
+                            'total' => $q->qty * $q->pengadaanPemesanan->pemesananPengadaanDetail->where('barang_id', $q->barang_id)->first()->harga_beli,
+                            'supplier' => $q->pengadaanPemesanan->supplier?->nama,
+                            'uraian' => $q->pengadaanPemesanan->uraian,
                             'operator' => $q->pengguna->kepegawaianPegawai->nama,
                         ];
                     })->sortBy('barang_id')->groupBy('barang_id')->toArray();

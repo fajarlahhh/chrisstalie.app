@@ -10,16 +10,16 @@ class PemesananPengadaanDetail extends Model
 {
     use HasFactory;
 
-    protected $table = 'pemesanan_pengadaan_detail';
+    protected $table = 'pengadaan_pemesanan_detail';
 
     public function barang(): BelongsTo
     {
         return $this->belongsTo(Barang::class);
     }
 
-    public function pemesananPengadaan(): BelongsTo
+    public function pengadaanPemesanan(): BelongsTo
     {
-        return $this->belongsTo(PemesananPengadaan::class);
+        return $this->belongsTo(PengadaanPemesanan::class);
     }
 
     public function barangSatuan(): BelongsTo

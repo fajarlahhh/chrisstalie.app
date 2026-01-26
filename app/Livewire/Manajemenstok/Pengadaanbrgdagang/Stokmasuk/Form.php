@@ -5,7 +5,7 @@ namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Stokmasuk;
 use App\Models\Stok;
 use App\Models\KeuanganJurnal;
 use Livewire\Component;
-use App\Models\PemesananPengadaan;
+use App\Models\PengadaanPemesanan;
 use App\Models\StokMasuk;
 use App\Class\JurnalkeuanganClass;
 use Illuminate\Support\Str;
@@ -19,17 +19,17 @@ class Form extends Component
 {
     use CustomValidationTrait;
     public $data, $dataPembelian = [], $barang = [];
-    public $pemesanan_pengadaan_id, $tanggal;
+    public $pengadaan_pemesanan_id, $tanggal;
 
 
     public function updatedPembelianId($value)
     {
         $this->barang = [];
-        $stokMasuk = StokMasuk::where('pemesanan_pengadaan_id', $value)->get()->map(fn($q) => [
+        $stokMasuk = StokMasuk::where('pengadaan_pemesanan_id', $value)->get()->map(fn($q) => [
             'id' => $q->barangSatuan->barang_id,
             'qty_masuk' => $q->qty,
         ]);
-        $barang = PembelianDetail::where('pemesanan_pengadaan_id', $value)->with('barang')->get()->map(fn($q) => [
+        $barang = PembelianDetail::where('pengadaan_pemesanan_id', $value)->with('barang')->get()->map(fn($q) => [
             'id' => $q->barangSatuan->barang_id,
             'nama' => $q->barangSatuan->barang->nama,
             'kode_akun_id' => $q->barangSatuan->barang->kode_akun_id,
@@ -50,17 +50,17 @@ class Form extends Component
 
     public function mount()
     {
-        $this->dataPembelian = PemesananPengadaan::select(DB::raw('pemesanan_pengadaan.id id'), 'tanggal', 'supplier_id', 'uraian')
-            ->leftJoin('pemesanan_pengadaan_detail', 'pemesanan_pengadaan.id', '=', 'pemesanan_pengadaan_detail.pemesanan_pengadaan_id')
-            ->groupBy('pemesanan_pengadaan.id', 'tanggal', 'supplier_id', 'uraian')
-            ->havingRaw('SUM(pemesanan_pengadaan_detail.qty) > (SELECT ifnull(SUM(stok_masuk.qty), 0) FROM stok_masuk WHERE pemesanan_pengadaan_id = pemesanan_pengadaan.id )')
+        $this->dataPembelian = PengadaanPemesanan::select(DB::raw('pengadaan_pemesanan.id id'), 'tanggal', 'supplier_id', 'uraian')
+            ->leftJoin('pengadaan_pemesanan_detail', 'pengadaan_pemesanan.id', '=', 'pengadaan_pemesanan_detail.pengadaan_pemesanan_id')
+            ->groupBy('pengadaan_pemesanan.id', 'tanggal', 'supplier_id', 'uraian')
+            ->havingRaw('SUM(pengadaan_pemesanan_detail.qty) > (SELECT ifnull(SUM(stok_masuk.qty), 0) FROM stok_masuk WHERE pengadaan_pemesanan_id = pengadaan_pemesanan.id )')
             ->with('supplier')->get()->toArray();
     }
 
     public function submit()
     {
         $this->validateWithCustomMessages([
-            'pemesanan_pengadaan_id' => 'required',
+            'pengadaan_pemesanan_id' => 'required',
             'tanggal' => 'required|date',
             'barang' => 'required|array',
             'barang.*.qty_masuk' => [
@@ -117,7 +117,7 @@ class Form extends Component
                     $stokMasuk->no_batch = $value['no_batch'];
                     $stokMasuk->tanggal_kedaluarsa = $value['tanggal_kedaluarsa'];
                     $stokMasuk->barang_id = $value['id'];
-                    $stokMasuk->pemesanan_pengadaan_id = $this->pemesanan_pengadaan_id;
+                    $stokMasuk->pengadaan_pemesanan_id = $this->pengadaan_pemesanan_id;
                     $stokMasuk->barang_satuan_id = $value['barang_satuan_id'];
                     $stokMasuk->rasio_dari_terkecil = $value['rasio_dari_terkecil'];
                     $stokMasuk->pengguna_id = auth()->id();
@@ -130,7 +130,7 @@ class Form extends Component
                             'id' => Str::uuid(),
                             'barang_id' => $value['id'],
                             'no_batch' => $value['no_batch'],
-                            'pemesanan_pengadaan_id' => $this->pemesanan_pengadaan_id,
+                            'pengadaan_pemesanan_id' => $this->pengadaan_pemesanan_id,
                             'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
                             'stok_masuk_id' => $stokMasuk->id,
                             'tanggal_masuk' => now(),
@@ -146,8 +146,8 @@ class Form extends Component
                         tanggal: now(),
                         uraian: 'Stok Masuk Barang Dagang ' . $value['nama'],
                         system: 1,
-                        foreign_key: 'pemesanan_pengadaan_id',
-                        foreign_id: $this->pemesanan_pengadaan_id,
+                        foreign_key: 'pengadaan_pemesanan_id',
+                        foreign_id: $this->pengadaan_pemesanan_id,
                         detail: [[
                             'kode_akun_id' => $value['kode_akun_id'],
                             'debet' => $value['harga_beli'] * $value['qty_masuk'],

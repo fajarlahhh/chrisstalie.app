@@ -1,4 +1,4 @@
-<div x-data="pemesanan_pengadaanForm()" x-init="init()" x-ref="alpineRoot">
+<div x-data="pemesananForm()" x-init="init()" x-ref="alpineRoot">
     @section('title', 'Alat Dan Bahan')
 
     @section('breadcrumb')
@@ -251,7 +251,7 @@
 </div>
 
 <script>
-    function pemesanan_pengadaanForm() {
+    function pemesananForm() {
         return {
             tanggal: @js($tanggal ?? ''),
             uraian: @js($uraian ?? ''),

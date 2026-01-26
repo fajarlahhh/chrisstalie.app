@@ -46,8 +46,8 @@ class StokMasuk extends Model
         return $this->hasMany(Stok::class)->whereNotNull('stok_keluar_id');
     }
 
-    public function pemesananPengadaan(): BelongsTo
+    public function pengadaanPemesanan(): BelongsTo
     {
-        return $this->belongsTo(PemesananPengadaan::class);
+        return $this->belongsTo(PengadaanPemesanan::class);
     }
 }

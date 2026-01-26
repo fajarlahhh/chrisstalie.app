@@ -55,9 +55,9 @@
                             <td>
                                 <small>
                                     <ul>
-                                        <li><strong>{{ $row->pemesananPengadaan->uraian }}</strong></li>
-                                        <li>Supplier : {{ $row->pemesananPengadaan->supplier->nama }}</li>
-                                        <li>Tanggal : {{ $row->pemesananPengadaan->tanggal }}</li>
+                                        <li><strong>{{ $row->pengadaanPemesanan->uraian }}</strong></li>
+                                        <li>Supplier : {{ $row->pengadaanPemesanan->supplier->nama }}</li>
+                                        <li>Tanggal : {{ $row->pengadaanPemesanan->tanggal }}</li>
                                     </ul>
                                 </small>
                             </td>

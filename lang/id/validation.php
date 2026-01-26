@@ -240,8 +240,8 @@ return [
         'supplier' => 'Supplier',
         
         // Pembelian
-        'pemesanan_pengadaan_id' => 'Pembelian',
-        'tanggal_pemesanan_pengadaan' => 'Tanggal Pembelian',
+        'pengadaan_pemesanan_id' => 'Pembelian',
+        'tanggal_pengadaan_pemesanan' => 'Tanggal Pembelian',
         'tanggal_jatuh_tempo' => 'Tanggal Jatuh Tempo',
         
         // Tindakan

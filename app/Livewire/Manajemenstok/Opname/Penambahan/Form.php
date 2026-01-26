@@ -65,7 +65,7 @@ class Form extends Component
             $data->no_batch = $this->no_batch;
             $data->tanggal_kedaluarsa = $this->tanggal_kedaluarsa;
             $data->barang_id = $this->barang_id;
-            $data->pemesanan_pengadaan_id = null;
+            $data->pengadaan_pemesanan_id = null;
             $data->barang_satuan_id = $this->satuan_id;
             $data->rasio_dari_terkecil = $this->satuan['rasio_dari_terkecil'];
             $data->harga_beli = $this->harga_beli;
@@ -75,7 +75,7 @@ class Form extends Component
             for ($i = 0; $i < $this->satuan['rasio_dari_terkecil'] * $this->qty_masuk; $i++) {
                 $stok[] = [
                     'id' => $data->id . '-' . $this->barang_id . '-' . $i,
-                    'pemesanan_pengadaan_id' => null,
+                    'pengadaan_pemesanan_id' => null,
                     'barang_id' => $this->barang_id,
                     'no_batch' => $this->no_batch,
                     'tanggal_kedaluarsa' => $this->tanggal_kedaluarsa,

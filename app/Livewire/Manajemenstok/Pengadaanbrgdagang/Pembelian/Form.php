@@ -5,7 +5,7 @@ namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Pembelian;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\Supplier;
-use App\Models\PemesananPengadaan;
+use App\Models\PengadaanPemesanan;
 use App\Class\JurnalkeuanganClass;
 use Illuminate\Support\Facades\DB;
 use App\Models\PermintaanPengadaan;
@@ -72,7 +72,7 @@ class Form extends Component
         }
 
         DB::transaction(function () {
-            $data = new PemesananPengadaan();
+            $data = new PengadaanPemesanan();
             $data->tanggal = $this->tanggal;
             $data->jatuh_tempo = $this->pembayaran == "Jatuh Tempo" ? $this->jatuh_tempo : null;
             $data->pembayaran = $this->pembayaran == "Jatuh Tempo" ? $this->pembayaran : "Lunas";
@@ -93,7 +93,7 @@ class Form extends Component
                 'barang_satuan_id' => $q['id'],
                 'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
                 'harga_beli_terkecil' => $q['harga_beli'] / $q['rasio_dari_terkecil'],
-                'pemesanan_pengadaan_id' => $data->id,
+                'pengadaan_pemesanan_id' => $data->id,
             ])->toArray());
             
             JurnalkeuanganClass::insert(
@@ -102,7 +102,7 @@ class Form extends Component
                 tanggal: $this->tanggal,
                 uraian: $this->uraian,
                 system: 1,
-                foreign_key: 'pemesanan_pengadaan_id',
+                foreign_key: 'pengadaan_pemesanan_id',
                 foreign_id: $data->id,
                 detail: [
                     [

@@ -3,7 +3,7 @@
 namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Lainnya\Barangkhusus;
 
 use Livewire\Component;
-use App\Models\PemesananPengadaan;
+use App\Models\PengadaanPemesanan;
 use App\Models\StokMasuk;
 use App\Models\KeuanganJurnal;
 use Livewire\Attributes\Url;
@@ -29,14 +29,14 @@ class Index extends Component
 
     public function delete($id)
     {
-        PemesananPengadaan::find($id)->delete();
+        PengadaanPemesanan::find($id)->delete();
         session()->flash('success', 'Berhasil menghapus data');
     }
 
     public function render()
     {
         return view('livewire.manajemenstok.pengadaanbrgdagang.lainnya.barangkhusus.index', [
-            'data' => PemesananPengadaan::where('jenis', 'Barang Khusus')->where(fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))->with(['pemesananPengadaanDetail.barangSatuan.barang', 'pengguna.kepegawaianPegawai', 'supplier', 'stokKeluar', 'pelunasanPemesananPengadaan.kodeAkunPembayaran', 'kodeAkun'])->where('tanggal', 'like', $this->bulan . '%')
+            'data' => PengadaanPemesanan::where('jenis', 'Barang Khusus')->where(fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))->with(['pemesananPengadaanDetail.barangSatuan.barang', 'pengguna.kepegawaianPegawai', 'supplier', 'stokKeluar', 'pelunasanPemesananPengadaan.kodeAkunPembayaran', 'kodeAkun'])->where('tanggal', 'like', $this->bulan . '%')
                 ->paginate(10)
         ]);
     }
