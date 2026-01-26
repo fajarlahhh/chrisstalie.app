@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Livewire\Kepegawaian\Penggajian;
+namespace App\Livewire\Kepegawaian\KepegawaianPenggajian;
 
 use Livewire\Component;
 use Livewire\Attributes\Url;
-use App\Models\Penggajian;
+use App\Models\KepegawaianPenggajian;
 
 class Index extends Component
 {
@@ -18,14 +18,14 @@ class Index extends Component
 
     public function delete($id)
     {
-        Penggajian::findOrFail($id)->delete();
+        KepegawaianPenggajian::findOrFail($id)->delete();
         session()->flash('success', 'Berhasil menghapus data');
     }
 
     public function render()
     {
         return view('livewire.kepegawaian.penggajian.index', [
-            'data' => Penggajian::with('kodeAkunPembayaran','pengguna.kepegawaianPegawai')->where('periode', 'like', $this->tahun . '%')->orderBy('periode', 'desc')->get()
+            'data' => KepegawaianPenggajian::with('kodeAkunPembayaran','pengguna.kepegawaianPegawai')->where('periode', 'like', $this->tahun . '%')->orderBy('periode', 'desc')->get()
         ]);
     }
 }

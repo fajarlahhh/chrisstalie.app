@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Kepegawaian\Penggajian;
+namespace App\Livewire\Kepegawaian\KepegawaianPenggajian;
 
 use App\Models\KeuanganJurnal;
 use App\Models\KepegawaianPegawai;
@@ -8,7 +8,7 @@ use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Class\JurnalkeuanganClass;
 use App\Models\KepegawaianPegawaiUnsurGaji;
-use App\Models\Penggajian;
+use App\Models\KepegawaianPenggajian;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
@@ -24,7 +24,7 @@ class Form extends Component
         $this->dataKodeAkun = KodeAkun::detail()->whereIn('parent_id', ['11100'])->get()->toArray();
         $this->tanggal = date('Y-m-01');
         $this->periode = date('Y-m');
-        if (!Penggajian::where('periode', $this->periode . '-01')->exists()) {
+        if (!KepegawaianPenggajian::where('periode', $this->periode . '-01')->exists()) {
             $this->dataUnsurGaji = KodeAkun::detail()->whereIn('id', KepegawaianPegawaiUnsurGaji::pluck('kode_akun_id'))->get()->toArray();
 
             foreach (KepegawaianPegawai::with('kepegawaianPegawaiUnsurGaji')->aktif()->get()->toArray() as $kepegawaianPegawai) {
@@ -50,7 +50,7 @@ class Form extends Component
     public function updatedPeriode($value)
     {
         $this->detail = [];
-        if (!Penggajian::where('periode', $value . '-01')->exists()) {
+        if (!KepegawaianPenggajian::where('periode', $value . '-01')->exists()) {
             $this->dataUnsurGaji = KodeAkun::detail()->whereIn('id', KepegawaianPegawaiUnsurGaji::pluck('kode_akun_id'))->get()->toArray();
 
             foreach (KepegawaianPegawai::with('kepegawaianPegawaiUnsurGaji')->aktif()->get()->toArray() as $kepegawaianPegawai) {
@@ -81,7 +81,7 @@ class Form extends Component
         ]);
 
         DB::transaction(function () {
-            $penggajian = new Penggajian();
+            $penggajian = new KepegawaianPenggajian();
             $penggajian->tanggal = $this->tanggal;
             $penggajian->periode = $this->periode . '-01';
             $penggajian->detail = $this->detail;

@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Penggajian extends Model
+class KepegawaianPenggajian extends Model
 {
     //
-    protected $table = 'penggajian';
+    protected $table = 'kepegawaian_penggajian';
 
     protected $casts = [
         'detail' => 'array',
