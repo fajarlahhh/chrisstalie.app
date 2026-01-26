@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PermintaanPengadaan extends Model
+class PengadaanPermintaan extends Model
 {
     //
-    protected $table = 'permintaan_pengadaan';
+    protected $table = 'pengadaan_permintaan';
 
-    public function permintaanPengadaanDetail()
+    public function pengadaanPermintaanDetail()
     {
-        return $this->hasMany(PermintaanPengadaanDetail::class);
+        return $this->hasMany(PengadaanPermintaanDetail::class);
     }
 
     public function pengguna()

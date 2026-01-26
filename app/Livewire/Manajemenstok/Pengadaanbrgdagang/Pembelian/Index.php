@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\PengadaanPemesanan;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
-use App\Models\PermintaanPengadaan;
+use App\Models\PengadaanPermintaan;
 
 class Index extends Component
 {
@@ -34,10 +34,10 @@ class Index extends Component
     public function render()
     {
         return view('livewire.manajemenstok.pengadaanbrgdagang.pembelian.index', [
-            'data' => $this->status == 1 ? PermintaanPengadaan::with([
+            'data' => $this->status == 1 ? PengadaanPermintaan::with([
                 'pengguna.kepegawaianPegawai',
-                'permintaanPengadaanDetail.barangSatuan.satuanKonversi',
-                'permintaanPengadaanDetail.barangSatuan.barang',
+                'pengadaanPermintaanDetail.barangSatuan.satuanKonversi',
+                'pengadaanPermintaanDetail.barangSatuan.barang',
                 'verifikasiPengadaan.pengguna.kepegawaianPegawai' => fn($q) => $q->whereNotNull('status')
             ])
                 ->when($this->status == 'Pending', fn($q) => $q->whereHas('verifikasiPengadaan', function ($q) {
@@ -51,7 +51,7 @@ class Index extends Component
                     ->where('deskripsi', 'like', '%' . $this->cari . '%'))
                 ->orderBy('created_at', 'desc')
                 ->paginate(10) :
-                PengadaanPemesanan::with(['pemesananPengadaanDetail.barangSatuan.barang', 'pengguna.kepegawaianPegawai', 'stokMasuk', 'pelunasanPemesananPengadaan', 'supplier', 'permintaanPengadaan'])
+                PengadaanPemesanan::with(['pemesananPengadaanDetail.barangSatuan.barang', 'pengguna.kepegawaianPegawai', 'stokMasuk', 'pelunasanPengadaanPemesanan', 'supplier', 'pengadaanPermintaan'])
                 ->where('jenis', 'Barang Dagang')
                 ->where('tanggal', 'like', $this->bulan . '%')
                 ->where(fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))

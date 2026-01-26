@@ -47,9 +47,9 @@
                             <td>{{ $row->uraian }}</td>
                             <td>{{ $row->supplier?->nama }}</td>
                             <td>
-                                @if ($row->pelunasanPemesananPengadaan)
+                                @if ($row->pelunasanPengadaanPemesanan)
                                     <span class="badge bg-success">Lunas
-                                        ({{ $row->pelunasanPemesananPengadaan->kodeAkunPembayaran->nama }})</span>
+                                        ({{ $row->pelunasanPengadaanPemesanan->kodeAkunPembayaran->nama }})</span>
                                 @else
                                     {!! $row->pembayaran == 'Jatuh Tempo'
                                         ? '<span class="badge bg-danger">Jatuh Tempo : ' . $row->jatuh_tempo . ' (' . $row->kode_akun_id . ' - ' . $row->kodeAkun->nama . ')</span>'

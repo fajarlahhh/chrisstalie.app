@@ -54,7 +54,7 @@ class Form extends Component
             $pengadaanPemesanan->kode_akun_id = $this->pembayaran == "Jatuh Tempo" ? '21100' : $this->pembayaran;
             $pengadaanPemesanan->uraian = $this->uraian;
             $pengadaanPemesanan->supplier_id = $this->supplier_id != '' ? $this->supplier_id : null;
-            $pengadaanPemesanan->permintaan_pengadaan_id = null;
+            $pengadaanPemesanan->pengadaan_permintaan_id = null;
             $pengadaanPemesanan->ppn = $this->ppn;
             $pengadaanPemesanan->diskon = $this->diskon;
             $pengadaanPemesanan->jenis = 'Alat dan Bahan';

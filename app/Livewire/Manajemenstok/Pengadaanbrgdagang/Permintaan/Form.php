@@ -10,7 +10,7 @@ use App\Models\VerifikasiPengadaan;
 use Illuminate\Support\Str;
 use App\Models\BarangSatuan;
 use Illuminate\Support\Facades\DB;
-use App\Models\PermintaanPengadaan; 
+use App\Models\PengadaanPermintaan; 
 use App\Traits\CustomValidationTrait;
 
 class Form extends Component
@@ -35,13 +35,13 @@ class Form extends Component
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
-            $this->data->permintaanPengadaanDetail()->delete();
+            $this->data->pengadaanPermintaanDetail()->delete();
 
-            $this->data->permintaanPengadaanDetail()->insert(collect($this->barang)->map(function ($q) {
+            $this->data->pengadaanPermintaanDetail()->insert(collect($this->barang)->map(function ($q) {
                 $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
                 return [
                     'qty_permintaan' => $q['qty'],
-                    'permintaan_pengadaan_id' => $this->data->id,
+                    'pengadaan_permintaan_id' => $this->data->id,
                     'barang_satuan_id' => $q['id'],
                     'rasio_dari_terkecil' => $brg['rasio_dari_terkecil'],
                     'barang_id' => $brg['barang_id'],
@@ -50,7 +50,7 @@ class Form extends Component
 
             if ($this->verifikator_id) {
                 $verifikasiPengadaan = new VerifikasiPengadaan();
-                $verifikasiPengadaan->permintaan_pengadaan_id = $this->data->id;
+                $verifikasiPengadaan->pengadaan_permintaan_id = $this->data->id;
                 $verifikasiPengadaan->jenis = 'Permintaan Pengadaan';
                 $verifikasiPengadaan->pengguna_id = $this->verifikator_id;
                 $verifikasiPengadaan->save();
@@ -61,7 +61,7 @@ class Form extends Component
         $this->redirect('/manajemenstok/pengadaanbrgdagang/permintaan');
     }
 
-    public function mount(PermintaanPengadaan $data)
+    public function mount(PengadaanPermintaan $data)
     {
         
         $this->dataBarang = BarangClass::getBarangBySatuanUtama('Apotek');
@@ -72,7 +72,7 @@ class Form extends Component
         $this->fill($this->data->toArray());
         if ($this->data->exists) {
             # code...
-            $this->barang = $this->data->permintaanPengadaanDetail->map(fn($q) => [
+            $this->barang = $this->data->pengadaanPermintaanDetail->map(fn($q) => [
                 'id' => $q->barang_satuan_id,
                 'barang_id' => $q->barang_id,
                 'qty' => $q->qty_permintaan,

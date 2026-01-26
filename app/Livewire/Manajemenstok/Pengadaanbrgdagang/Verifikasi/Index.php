@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\VerifikasiPengadaan;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
-use App\Models\PermintaanPengadaan;
+use App\Models\PengadaanPermintaan;
 
 class Index extends Component
 {
@@ -23,11 +23,11 @@ class Index extends Component
     public function render()
     {
         return view('livewire.manajemenstok.pengadaanbrgdagang.verifikasi.index', [
-            'data' => PermintaanPengadaan::with([
+            'data' => PengadaanPermintaan::with([
                 'pengguna.kepegawaianPegawai',
                 'verifikasiPengadaan.pengguna.kepegawaianPegawai',
-                'permintaanPengadaanDetail.barangSatuan.satuanKonversi',
-                'permintaanPengadaanDetail.barangSatuan.barang',
+                'pengadaanPermintaanDetail.barangSatuan.satuanKonversi',
+                'pengadaanPermintaanDetail.barangSatuan.barang',
             ])->with(['verifikasiPengadaan' => fn($q) => $q->whereNotNull('status')])
                 ->when($this->status == 'Pending', fn($q) => $q->whereHas('verifikasiPengadaan', function ($q) {
                     $q->whereNull('status');

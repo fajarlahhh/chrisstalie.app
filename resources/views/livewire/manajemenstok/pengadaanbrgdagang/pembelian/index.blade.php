@@ -81,7 +81,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($item->permintaanPengadaanDetail as $detail)
+                                            @foreach ($item->pengadaanPermintaanDetail as $detail)
                                                 <tr>
                                                     <td class="text-nowrap w-300px">
                                                         {{ $detail->barangSatuan->barang->nama }}</td>
@@ -136,14 +136,14 @@
                                 <td>{{ $row->tanggal }}</td>
                                 <td>
                                     <ul>
-                                        <li><strong>{{ $row->permintaanPengadaan->deskripsi }}</strong></li>
-                                        <li>{{ $row->permintaanPengadaan->created_at->format('d-m-Y') }}</li>
+                                        <li><strong>{{ $row->pengadaanPermintaan->deskripsi }}</strong></li>
+                                        <li>{{ $row->pengadaanPermintaan->created_at->format('d-m-Y') }}</li>
                                     </ul>
                                 </td>
                                 <td>{{ $row->uraian }}</td>
                                 <td>{{ $row->supplier->nama }}</td>
                                 <td>
-                                    @if ($row->pelunasanPemesananPengadaan)
+                                    @if ($row->pelunasanPengadaanPemesanan)
                                         <span class="badge bg-success">Lunas</span>
                                     @else
                                         {!! $row->pembayaran == 'Jatuh Tempo'

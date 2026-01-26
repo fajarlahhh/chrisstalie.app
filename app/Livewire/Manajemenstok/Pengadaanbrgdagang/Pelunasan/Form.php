@@ -22,7 +22,7 @@ class Form extends Component
             $this->pengadaanPemesanan = PengadaanPemesanan::with('supplier', 'pemesananPengadaanDetail')->find($data);
         }
         $this->dataPembelian = PengadaanPemesanan::where('pembayaran', 'Jatuh Tempo')->with('supplier', 'pemesananPengadaanDetail')
-            ->whereDoesntHave('pelunasanPemesananPengadaan')->get();
+            ->whereDoesntHave('pelunasanPengadaanPemesanan')->get();
         $this->dataKodePembayaran = KodeAkun::where('parent_id', '11100')->detail()->get()->toArray();
     }
 

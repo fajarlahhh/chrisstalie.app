@@ -14,19 +14,19 @@ class PengadaanPemesanan extends Model
 
     protected $table = 'pengadaan_pemesanan';
 
-    public function permintaanPengadaan(): BelongsTo
+    public function pengadaanPermintaan(): BelongsTo
     {
-        return $this->belongsTo(PermintaanPengadaan::class);
+        return $this->belongsTo(PengadaanPermintaan::class);
     }
 
-    public function pelunasanPemesananPengadaan(): HasOne
+    public function pelunasanPengadaanPemesanan(): HasOne
     {
         return $this->hasOne(PelunasanPengadaan::class);
     }
 
     public function pemesananPengadaanDetail(): HasMany
     {
-        return $this->hasMany(PemesananPengadaanDetail::class);
+        return $this->hasMany(PengadaanPemesananDetail::class);
     }
 
     public function supplier(): BelongsTo
