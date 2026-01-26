@@ -159,26 +159,26 @@ return [
                             "urutkan" => true,
                             "method" => ["Index", "Form"],
                         ],
-                        [
-                            "title" => "Pemesanan",
-                            "urutkan" => true,
-                            "method" => ["Index", "Form"],
-                        ],
-                        [
-                            "title" => "Persetujuan Pemesanan",
-                            "urutkan" => true,
-                            "method" => ["Index", "Form"],
-                        ],
+                        // [
+                        //     "title" => "Pemesanan",
+                        //     "urutkan" => true,
+                        //     "method" => ["Index", "Form"],
+                        // ],
+                        // [
+                        //     "title" => "Persetujuan Pemesanan",
+                        //     "urutkan" => true,
+                        //     "method" => ["Index", "Form"],
+                        // ],
                         [
                             "title" => "Stok Masuk",
                             "urutkan" => true,
                             "method" => ["Index", "Form"],
                         ],
-                        [
-                            "title" => "Tagihan",
-                            "urutkan" => true,
-                            "method" => ["Index", "Form"],
-                        ],
+                        // [
+                        //     "title" => "Tagihan",
+                        //     "urutkan" => true,
+                        //     "method" => ["Index", "Form"],
+                        // ],
                         [
                             "title" => "Pelunasan",
                             "urutkan" => true,

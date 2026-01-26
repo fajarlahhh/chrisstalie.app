@@ -10,7 +10,7 @@
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">
-            
+
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
                     <select class="form-select" wire:model.lazy="status">
@@ -105,7 +105,7 @@
                                 </td>
                                 <td class="with-btn-group text-end" nowrap>
                                     @role('administrator|supervisor|operator')
-                                        <a href="/manajemenstok/pengadaanbrgdagang/pengadaan_pemesanan/form/{{ $item->id }}"
+                                        <a href="/manajemenstok/pengadaanbrgdagang/pembelian/form/{{ $item->id }}"
                                             class="btn btn-info">
                                             Input
                                         </a>
@@ -224,7 +224,7 @@
         </div>
     </div>
     <x-alert />
-    
+
     <div wire:loading>
         <x-loading />
     </div>
