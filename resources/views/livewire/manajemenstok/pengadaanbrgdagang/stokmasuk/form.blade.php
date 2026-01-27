@@ -32,8 +32,8 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tanggal</label>
-                    <input class="form-control" type="date" wire:model="tanggal" x-model="tanggal"
-                        max="{{ now()->format('Y-m-d') }}" required />
+                    <input class="form-control" type="date" wire:model="tanggal" max="{{ now()->format('Y-m-d') }}"
+                        required />
                     @error('tanggal')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -114,7 +114,7 @@
     </div>
 
     <x-alert />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

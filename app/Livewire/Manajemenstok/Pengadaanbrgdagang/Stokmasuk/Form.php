@@ -11,7 +11,7 @@ use App\Class\JurnalkeuanganClass;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use App\Models\KeuanganJurnalDetail;
-use App\Models\PembelianDetail;
+use App\Models\PengadaanPemesananDetail;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 
@@ -22,14 +22,14 @@ class Form extends Component
     public $pengadaan_pemesanan_id, $tanggal;
 
 
-    public function updatedPembelianId($value)
+    public function updatedPengadaanPemesananId($value)
     {
         $this->barang = [];
         $stokMasuk = StokMasuk::where('pengadaan_pemesanan_id', $value)->get()->map(fn($q) => [
             'id' => $q->barangSatuan->barang_id,
             'qty_masuk' => $q->qty,
         ]);
-        $barang = PembelianDetail::where('pengadaan_pemesanan_id', $value)->with('barang')->get()->map(fn($q) => [
+        $barang = PengadaanPemesananDetail::where('pengadaan_pemesanan_id', $value)->with('barang')->get()->map(fn($q) => [
             'id' => $q->barangSatuan->barang_id,
             'nama' => $q->barangSatuan->barang->nama,
             'kode_akun_id' => $q->barangSatuan->barang->kode_akun_id,
