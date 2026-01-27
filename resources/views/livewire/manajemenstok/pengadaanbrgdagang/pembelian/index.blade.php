@@ -34,7 +34,7 @@
                     <thead>
                         <tr>
                             <th class="w-10px">No.</th>
-                            <th>Deskripsi</th>
+                            <th>Deskripsi Permintaan</th>
                             <th>History Verifikasi</th>
                             <th class="w-600px">Detail</th>
                             <th class="w-10px"></th>
@@ -126,6 +126,9 @@
                             <th>Supplier</th>
                             <th>Pembayaran</th>
                             <th>Barang/Item</th>
+                            @if ($status == 2)
+                                <th>Status Stok Masuk</th>
+                            @endif
                             <th class="w-10px"></th>
                         </tr>
                     </thead>
@@ -151,6 +154,15 @@
                                             : '<span class="badge bg-success">Lunas</span>' !!}
                                     @endif
                                 </td>
+                                @if ($status == 2)
+                                    <td class="text-center">
+                                        @if ($row->stokMasuk->count() > 0)
+                                            <span class="badge bg-success"> Stok Sudah Masuk</span>
+                                        @else
+                                            <span class="badge bg-warning"> Stok Belum Masuk</span>
+                                        @endif
+                                    </td>
+                                @endif
                                 <td class="w-400px">
                                     <table class="table-bordered fs-10px">
                                         <tr class="bg-gray-100">
@@ -160,7 +172,7 @@
                                             <th class="w-50px p-1">Qty</th>
                                             <th class="w-100px p-1">Harga</th>
                                         </tr>
-                                        @foreach ($row->pemesananPengadaanDetail as $j => $subRow)
+                                        @foreach ($row->pengadaanPemesananDetail as $j => $subRow)
                                             <tr>
                                                 <td class="p-1">
                                                     {{ $subRow->barangSatuan->barang->nama }}</td>
@@ -182,7 +194,7 @@
                                         <tr>
                                             <td class="p-1" colspan="4">Total</td>
                                             <td class="text-end p-1  text-nowrap">
-                                                {{ number_format($row->pemesananPengadaanDetail->sum(fn($q) => $q->harga_beli * $q->qty)) }}
+                                                {{ number_format($row->pengadaanPemesananDetail->sum(fn($q) => $q->harga_beli * $q->qty)) }}
                                             </td>
                                         </tr>
                                         <tr>
@@ -200,7 +212,7 @@
                                         <tr>
                                             <th class="p-1" colspan="4">Sub Total</th>
                                             <th class="text-end p-1  text-nowrap">
-                                                {{ number_format($row->pemesananPengadaanDetail->sum(fn($q) => $q->harga_beli * $q->qty) - $row->diskon + $row->ppn) }}
+                                                {{ number_format($row->pengadaanPemesananDetail->sum(fn($q) => $q->harga_beli * $q->qty) - $row->diskon + $row->ppn) }}
                                             </th>
                                         </tr>
                                     </table>

@@ -89,7 +89,7 @@
                                         </thead>
                                         <tbody>
                                             @if ($pengadaanPemesanan)
-                                                @foreach ($pengadaanPemesanan->pemesananPengadaanDetail as $item)
+                                                @foreach ($pengadaanPemesanan->pengadaanPemesananDetail as $item)
                                                     <tr>
                                                         <td>{{ $item->barangSatuan->barang->nama }}</td>
                                                         <td>{{ $item->barangSatuan->nama }}</td>
@@ -120,7 +120,7 @@
                         Simpan
                     </button>
                 @endunlessrole
-                <button type="button" onclick="window.location.href='/pengadaanbrgdagang/stokmasuk'"
+                <button type="button" onclick="window.location.href='/manajemenstok/pengadaanbrgdagang/stokmasuk'"
                     class="btn btn-danger" wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Kembali

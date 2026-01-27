@@ -104,7 +104,7 @@
                         Simpan
                     </button>
                 @endunlessrole
-                <button type="button" onclick="window.location.href='/pengadaanbrgdagang/stokmasuk'"
+                <button type="button" onclick="window.location.href='/manajemenstok/pengadaanbrgdagang/stokmasuk'"
                     class="btn btn-danger" wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Kembali

@@ -24,7 +24,7 @@ class PengadaanPemesanan extends Model
         return $this->hasOne(PengadaanPelunasan::class);
     }
 
-    public function pemesananPengadaanDetail(): HasMany
+    public function pengadaanPemesananDetail(): HasMany
     {
         return $this->hasMany(PengadaanPemesananDetail::class);
     }
@@ -66,7 +66,7 @@ class PengadaanPemesanan extends Model
 
     public function getTotalHargaAttribute(): float
     {
-        return $this->pemesananPengadaanDetail->sum(function ($item) {
+        return $this->pengadaanPemesananDetail->sum(function ($item) {
             return $item->harga_beli * $item->qty;
         }) - $this->diskon + $this->ppn;
     }

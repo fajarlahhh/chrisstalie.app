@@ -85,8 +85,8 @@ class Form extends Component
             $data->jenis = 'Barang Dagang';
             $data->pengguna_id = auth()->id();
             $data->save();
-            $data->pemesananPengadaanDetail()->delete();
-            $data->pemesananPengadaanDetail()->insert(collect($this->barang)->map(fn($q) => [
+            $data->pengadaanPemesananDetail()->delete();
+            $data->pengadaanPemesananDetail()->insert(collect($this->barang)->map(fn($q) => [
                 'qty' => $q['qty'],
                 'harga_beli' => $q['harga_beli'],
                 'barang_id' => $q['barang_id'],

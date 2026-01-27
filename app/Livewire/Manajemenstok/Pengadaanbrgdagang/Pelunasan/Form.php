@@ -19,16 +19,16 @@ class Form extends Component
     {
         if ($data) {
             $this->pengadaan_pemesanan_id = $data;
-            $this->pengadaanPemesanan = PengadaanPemesanan::with('supplier', 'pemesananPengadaanDetail')->find($data);
+            $this->pengadaanPemesanan = PengadaanPemesanan::with('supplier', 'pengadaanPemesananDetail')->find($data);
         }
-        $this->dataPembelian = PengadaanPemesanan::where('pembayaran', 'Jatuh Tempo')->with('supplier', 'pemesananPengadaanDetail')
+        $this->dataPembelian = PengadaanPemesanan::where('pembayaran', 'Jatuh Tempo')->with('supplier', 'pengadaanPemesananDetail')
             ->whereDoesntHave('pengadaanPelunasanPemesanan')->get();
         $this->dataKodePembayaran = KodeAkun::where('parent_id', '11100')->detail()->get()->toArray();
     }
 
     public function updatedPembelianId()
     {
-        $this->pengadaanPemesanan = PengadaanPemesanan::with('supplier', 'pemesananPengadaanDetail')->find($this->pengadaan_pemesanan_id);
+        $this->pengadaanPemesanan = PengadaanPemesanan::with('supplier', 'pengadaanPemesananDetail')->find($this->pengadaan_pemesanan_id);
     }
 
     public function submit()

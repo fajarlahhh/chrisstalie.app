@@ -60,8 +60,8 @@ class Form extends Component
             $pengadaanPemesanan->jenis = 'Barang Khusus';
             $pengadaanPemesanan->pengguna_id = auth()->id();
             $pengadaanPemesanan->save();
-            $pengadaanPemesanan->pemesananPengadaanDetail()->delete();
-            $pengadaanPemesanan->pemesananPengadaanDetail()->insert(collect($this->barang)->map(function ($q) use ($pengadaanPemesanan) {
+            $pengadaanPemesanan->pengadaanPemesananDetail()->delete();
+            $pengadaanPemesanan->pengadaanPemesananDetail()->insert(collect($this->barang)->map(function ($q) use ($pengadaanPemesanan) {
                 $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
                 return [
                     'qty' => $q['qty'],

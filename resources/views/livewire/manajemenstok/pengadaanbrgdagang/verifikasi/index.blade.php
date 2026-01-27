@@ -27,9 +27,12 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
-                        <th>Deskripsi</th>
+                        <th>Deskripsi Permintaan</th>
                         <th>History Verifikasi</th>
                         <th class="w-600px">Detail</th>
+                        @if ($status == 'Terverifikasi')
+                            <th>Status Pembelian</th>
+                        @endif
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -88,14 +91,23 @@
                                     </tbody>
                                 </table>
                             </td>
+                            @if ($status == 'Terverifikasi')
+                                <td class="text-center">
+                                    @if ($item->pengadaanPemesanan)
+                                        <span class="badge bg-success">Sudah Pembelian</span>
+                                    @else
+                                        <span class="badge bg-warning">Belum Pembelian</span>
+                                    @endif
+                                </td>
+                            @endif
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    @if ($item->pengadaanVerifikasi->count() > 0 )
+                                    @if ($item->pengadaanPemesanan)
                                         <x-action :row="$item" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="false" />
                                     @else
-                                        <x-action :row="$item" custom="" :detail="false" :edit="true"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                        <x-action :row="$item" custom="" :detail="false" :edit="false"
+                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                     @endif
                                 @endrole
                             </td>
@@ -109,7 +121,7 @@
         </div>
     </div>
     <x-alert />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

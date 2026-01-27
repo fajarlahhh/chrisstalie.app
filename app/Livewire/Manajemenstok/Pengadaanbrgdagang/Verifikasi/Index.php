@@ -26,6 +26,7 @@ class Index extends Component
             'data' => PengadaanPermintaan::with([
                 'pengguna.kepegawaianPegawai',
                 'pengadaanVerifikasi.pengguna.kepegawaianPegawai',
+                'pengadaanPemesanan',
                 'pengadaanPermintaanDetail.barangSatuan.satuanKonversi',
                 'pengadaanPermintaanDetail.barangSatuan.barang',
             ])->with(['pengadaanVerifikasi' => fn($q) => $q->whereNotNull('status')])

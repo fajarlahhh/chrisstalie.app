@@ -35,7 +35,7 @@ class Index extends Component
     {
         switch ($this->jenis) {
             case 'pertransaksi':
-                return StokMasuk::with(['barang', 'pengadaanPemesanan.pemesananPengadaanDetail', 'pengadaanPemesanan.kodeAkun', 'barangSatuan.satuanKonversi', 'pengadaanPemesanan.supplier', 'pengguna.kepegawaianPegawai'])
+                return StokMasuk::with(['barang', 'pengadaanPemesanan.pengadaanPemesananDetail', 'pengadaanPemesanan.kodeAkun', 'barangSatuan.satuanKonversi', 'pengadaanPemesanan.supplier', 'pengguna.kepegawaianPegawai'])
                     ->when($this->persediaan, fn($q) => $q->whereHas('barang', fn($q) => $q->where('persediaan', $this->persediaan)))
                     ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                     ->orderBy('tanggal', 'desc')
@@ -48,9 +48,9 @@ class Index extends Component
                             'no_batch' => $q->no_batch,
                             'metode_bayar' => $q->pengadaanPemesanan->pembayaran? ($q->pengadaanPemesanan->pembayaran == 'Lunas' ? $q->pengadaanPemesanan->kodeAkun->nama : 'Jatuh Tempo') : '<span class="text-danger">Koreksi</span>',
                             'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
-                            'harga_beli' => $q->pengadaanPemesanan->pemesananPengadaanDetail->where('barang_id', $q->barang_id)->first()->harga_beli,
+                            'harga_beli' => $q->pengadaanPemesanan->pengadaanPemesananDetail->where('barang_id', $q->barang_id)->first()->harga_beli,
                             'qty' => $q->qty,
-                            'total' => $q->qty * $q->pengadaanPemesanan->pemesananPengadaanDetail->where('barang_id', $q->barang_id)->first()->harga_beli,
+                            'total' => $q->qty * $q->pengadaanPemesanan->pengadaanPemesananDetail->where('barang_id', $q->barang_id)->first()->harga_beli,
                             'supplier' => $q->pengadaanPemesanan->supplier?->nama,
                             'uraian' => $q->pengadaanPemesanan->uraian,
                             'operator' => $q->pengguna->kepegawaianPegawai->nama,
