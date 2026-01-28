@@ -29,7 +29,7 @@ class Index extends Component
     
     public function render()
     {
-        $query = StokKeluar::with(['barang', 'barangSatuan'])->whereNull('pembayaran_id');
+        $query = StokKeluar::with(['barang', 'barangSatuan', 'pengguna'])->whereNull('pembayaran_id');
 
         if ($this->tanggal1) {
             $query->whereBetween(DB::raw('DATE(created_at)'), [$this->tanggal1, $this->tanggal2]);

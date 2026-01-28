@@ -94,7 +94,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Qty Dikeluarkan (Dalam Satuan {{ $barang['satuan'] ?? '' }})</label>
-                    <input type="number" class="form-control" wire:model="qty_keluar" autocomplete="off">
+                    <input type="number" class="form-control" wire:model="qty_keluar" min="1" autocomplete="off">
                     @error('qty_keluar')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

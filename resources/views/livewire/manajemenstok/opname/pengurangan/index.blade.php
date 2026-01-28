@@ -31,6 +31,7 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
+                        <th>ID</th>
                         <th>Tanggal</th>
                         <th>Catatan</th>
                         <th>Barang</th>
@@ -43,6 +44,7 @@
                     @forelse ($data as $index => $row)
                         <tr>
                             <td>{{ $index + 1 }}</td>
+                            <td class="text-nowrap w-100px">{{ $row->id }}</td>
                             <td class="text-nowrap w-100px">{{ $row->created_at }}</td>
                             <td class="text-nowrap w-100px">{{ $row->catatan }}</td>
                             <td class="text-nowrap w-100px">{{ $row->barang->nama }}</td>
