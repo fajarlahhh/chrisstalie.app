@@ -1,5 +1,5 @@
 <div>
-    @section('title', 'Penambahan')
+    @section('title', 'Penambahan Opname')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Manajemen Stok</li>
@@ -8,7 +8,7 @@
         <li class="breadcrumb-item active">Tambah</li>
     @endsection
 
-    <h1 class="page-header">Opname <small>Penambahan</small></h1>
+    <h1 class="page-header">Penambahan <small>Opname</small></h1>
 
     <form wire:submit="submit">
         <div class="panel panel-inverse" data-sortable-id="form-stuff-1">

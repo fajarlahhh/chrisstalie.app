@@ -55,7 +55,7 @@ class Form extends Component
             $data->tanggal = now();
             $data->barang_id = $this->barang['barang_id'];
             $data->qty = $this->qty_keluar;
-            $data->harga = 0;
+            $data->harga = $this->barang['harga'];
             $data->catatan = $this->catatan;
             $data->pengguna_id = auth()->id();
             $data->barang_satuan_id = $this->barang['barang_satuan_id'];
@@ -66,6 +66,7 @@ class Form extends Component
             Stok::where('barang_id', $this->barang['barang_id'])
                 ->where('no_batch', $this->barang['no_batch'])
                 ->where('tanggal_kedaluarsa', $this->barang['tanggal_kedaluarsa'])
+                ->where('harga_beli', $this->barang['harga'])
                 ->limit($this->qty_keluar)->update([
                     'stok_keluar_id' => $data->id,
                     'tanggal_keluar' => now(),

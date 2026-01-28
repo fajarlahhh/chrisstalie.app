@@ -98,6 +98,7 @@ class BarangClass
             Stok::where('barang_id', $brg['barang_id'])->available()->orderBy('tanggal_kedaluarsa', 'asc')->limit($brg['qty'] * $brg['rasio_dari_terkecil'])->update([
                 'tanggal_keluar' => now(),
                 'stok_keluar_id' => $stokKeluar->id,
+                'harga_jual' => $brg['harga'],
             ]);
 
             $hargaBeli = Stok::where('barang_id', $brg['barang_id'])

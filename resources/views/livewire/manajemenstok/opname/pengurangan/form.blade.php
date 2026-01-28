@@ -1,5 +1,5 @@
 <div>
-    @section('title', 'Opname Pengurangan')
+    @section('title', 'Pengurangan Opname')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Manajemen Stok</li>
@@ -8,7 +8,7 @@
         <li class="breadcrumb-item active">Tambah</li>
     @endsection
 
-    <h1 class="page-header">Opname <small>Pengurangan</small></h1>
+    <h1 class="page-header">Pengurangan <small>Opname</small></h1>
 
     <form wire:submit="submit">
         <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
@@ -35,16 +35,16 @@
                                     var qty = option.data('qty');
                                     if (!nama) return state.text;
                                     return $(`
-                                                                                                                                                                                                <div>
-                                                                                                                                                                                                    <div style='font-weight:bold'>${nama}</div>
-                                                                                                                                                                                                    <div style='font-size:90%;color:#6c757d'>
-                                                                                                                                                                                                        Harga Beli : ${harga} <br/>
-                                                                                                                                                                                                        Tgl. Kedaluarsa : ${tglExp} <br/>
-                                                                                                                                                                                                        Batch : ${batch} <br/>
-                                                                                                                                                                                                        Qty : ${qty} ${satuan} <br/>
-                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                </div>
-                                                                                                                                                                                            `);
+                                                                                                                                                                                                                            <div>
+                                                                                                                                                                                                                                <div style='font-weight:bold'>${nama}</div>
+                                                                                                                                                                                                                                <div style='font-size:90%;color:#6c757d'>
+                                                                                                                                                                                                                                    Harga Beli : ${harga} <br/>
+                                                                                                                                                                                                                                    Tgl. Kedaluarsa : ${tglExp} <br/>
+                                                                                                                                                                                                                                    Batch : ${batch} <br/>
+                                                                                                                                                                                                                                    Qty : ${qty} ${satuan} <br/>
+                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                        `);
                                 },
                                 templateSelection: function(state) {
                                     if (!state.id) return state.text;
@@ -92,21 +92,23 @@
                             value="{{ number_format($barang['qty'] ?? 0) }} {{ $barang['satuan'] ?? '' }}" disabled>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Qty Dikeluarkan (Dalam Satuan {{ $barang['satuan'] ?? '' }})</label>
-                    <input type="number" class="form-control" wire:model="qty_keluar" min="1"
-                        max="{{ $barang['qty'] }}" autocomplete="off">
-                    @error('qty_keluar')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Catatan</label>
-                    <textarea class="form-control" type="text" wire:model="catatan"></textarea>
-                    @error('catatan')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
+                @if ($barang)
+                    <div class="mb-3">
+                        <label class="form-label">Qty Dikeluarkan (Dalam Satuan {{ $barang['satuan'] ?? '' }})</label>
+                        <input type="number" class="form-control" wire:model="qty_keluar" min="1"
+                            max="{{ $barang['qty'] }}" autocomplete="off">
+                        @error('qty_keluar')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Catatan</label>
+                        <textarea class="form-control" type="text" wire:model="catatan"></textarea>
+                        @error('catatan')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                @endif
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')

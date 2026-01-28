@@ -1,5 +1,5 @@
 <div>
-    @section('title', 'Opname Pengurangan')
+    @section('title', 'Pengurangan Opname')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Manajemen Stok</li>
@@ -8,7 +8,7 @@
         <li class="breadcrumb-item active">Data</li>
     @endsection
 
-    <h1 class="page-header">Opname <small></small></h1>
+    <h1 class="page-header">Pengurangan <small>Opname</small></h1>
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <div class="panel-heading">
@@ -36,6 +36,9 @@
                         <th>Catatan</th>
                         <th>Barang</th>
                         <th>Qty</th>
+                        <th>Harga Beli</th>
+                        <th>No. Batch</th>
+                        <th>Tgl. Kedaluarsa</th>
                         <th>Operator</th>
                         <th class="w-10px"></th>
                     </tr>
@@ -49,6 +52,9 @@
                             <td class="text-nowrap w-100px">{{ $row->catatan }}</td>
                             <td class="text-nowrap w-100px">{{ $row->barang->nama }}</td>
                             <td class="text-nowrap w-100px">{{ $row->qty }}</td>
+                            <td class="text-nowrap w-100px">{{ $row->harga }}</td>
+                            <td class="text-nowrap w-100px">{{ $row->no_batch }}</td>
+                            <td class="text-nowrap w-100px">{{ $row->tanggal_kedaluarsa }}</td>
                             <td class="text-nowrap w-100px">{{ $row->pengguna->nama }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
