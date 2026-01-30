@@ -58,8 +58,8 @@
                     <div class="mb-3" wire:loading.remove wire:target="barang_id">
                         <label class="form-label">Satuan Konversi</label>
                         <div class="input-group">
-                            <select class="form-control" wire:model="satuan_konversi_id" data-width="100%"
-                                x-init="$($el).selectpicker({
+                            <select @if ($data->exists) disabled @endif class="form-control"
+                                wire:model="satuan_konversi_id" data-width="100%" x-init="$($el).selectpicker({
                                     liveSearch: true,
                                     width: 'auto',
                                     size: 10,
@@ -75,7 +75,8 @@
                                         {{ $item['nama'] }}</option>
                                 @endforeach
                             </select>
-                            <input class="form-control" type="text" wire:model="faktor_konversi">
+                            <input @if ($data->exists) disabled @endif class="form-control" type="text"
+                                wire:model="faktor_konversi">
                         </div>
                         @error('faktor_konversi')
                             <span class="text-danger">{{ $message }}</span>
@@ -111,7 +112,7 @@
 
     <x-alert />
 
-    
+
     <div wire:loading>
         <x-loading />
     </div>
