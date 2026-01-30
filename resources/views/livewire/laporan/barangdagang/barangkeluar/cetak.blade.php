@@ -48,7 +48,7 @@
                         <td nowrap>{{ $row[0]['nama'] }}</td>
                         <td nowrap>{{ $row[0]['satuan'] }}</td>
                         <td nowrap class="text-end">{{ number_format($row[0]['harga_jual'], 2) }}</td>
-                        <td nowrap class="text-end">{{ number_format(collect($row)->sum('qty'),2) }}</td>
+                        <td nowrap class="text-end">{{ number_format(collect($row)->sum('qty'), 2) }}</td>
                         <td nowrap class="text-end">
                             {{ number_format(collect($row)->sum(fn($q) => $q['qty'] * $q['harga_jual']), 2) }}</td>
                         @php
@@ -83,7 +83,7 @@
                         <td nowrap>{{ $row[0]['nama'] }}</td>
                         <td nowrap>{{ $row[0]['tanggal_kedaluarsa'] }}</td>
                         <td nowrap>{{ $row[0]['satuan'] }}</td>
-                        <td nowrap class="text-end">{{ number_format(collect($row)->sum('qty'),2) }}</td>
+                        <td nowrap class="text-end">{{ number_format(collect($row)->sum('qty'), 2) }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -106,7 +106,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td nowrap>{{ $row[0]['nama'] }}</td>
                         <td nowrap>{{ $row[0]['satuan'] }}</td>
-                        <td nowrap class="text-end">{{ number_format(collect($row)->sum('qty'),2) }}</td>
+                        <td nowrap class="text-end">{{ number_format(collect($row)->sum('qty'), 2) }}</td>
                     </tr>
                 @endforeach
             </tbody>

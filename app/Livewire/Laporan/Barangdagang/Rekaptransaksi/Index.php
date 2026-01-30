@@ -36,15 +36,16 @@ class Index extends Component
     {
         return Barang::with([
             'barangSatuanUtama.satuanKonversi',
+            'barangSatuan',
             'kodeAkun',
             'stokAwal' => function ($q) {
                 $q->where('tanggal', 'like', $this->bulan . '%');
             },
             'stokMasuk' => function ($q) {
-                $q->where('tanggal', 'like', $this->bulan . '%');
+                $q->with('barangSatuan')->where('tanggal', 'like', $this->bulan . '%');
             },
             'stokKeluar' => function ($q) {
-                $q->where('tanggal', 'like', $this->bulan . '%');
+                $q->with('barangSatuan')->where('tanggal', 'like', $this->bulan . '%');
             },
         ])
             ->when($this->persediaan, fn($q) => $q->where('persediaan', $this->persediaan))

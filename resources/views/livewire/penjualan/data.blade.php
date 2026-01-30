@@ -100,11 +100,11 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="9" class="text-center">Tidak ada data.</td>
+                            <td colspan="11" class="text-center">Tidak ada data.</td>
                         </tr>
                     @endforelse
                     <tr>
-                        <td colspan="7" class="text-end">
+                        <td colspan="8" class="text-end">
                             <strong>Total :</strong>
                         </td>
                         <td class="text-end">
