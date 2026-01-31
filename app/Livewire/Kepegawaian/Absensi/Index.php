@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Livewire\Kepegawaian\KepegawaianAbsensi;
+namespace App\Livewire\Kepegawaian\Absensi;
 
-use App\Models\KepegawaianAbsensi;
 use Livewire\Component;
-use App\Models\KehadiranPegawai;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\DB;
+use App\Models\KepegawaianAbsensi;
 use App\Models\KepegawaianPegawai;
+use Illuminate\Support\Facades\DB;
+use App\Models\KepegawaianKehadiran;
 
 class Index extends Component
 {
@@ -117,7 +117,7 @@ class Index extends Component
         }
         DB::transaction(function () use ($dataKehadiran) {
             foreach ($dataKehadiran as $kepegawaianKehadiran) {
-                KehadiranPegawai::insertOrIgnore($kepegawaianKehadiran);
+                KepegawaianKehadiran::insertOrIgnore($kepegawaianKehadiran);
             }
         });
 
