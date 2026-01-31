@@ -250,6 +250,10 @@ return [
                         [
                             "title" => "Gaji",
                             "method" => ["Index"],
+                        ],
+                        [
+                            "title" => "Pegawai",
+                            "method" => ["Index"],
                         ]
                     ]
                 ],
