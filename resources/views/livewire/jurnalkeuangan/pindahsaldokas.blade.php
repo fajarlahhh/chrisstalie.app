@@ -69,7 +69,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="nilai">Nilai</label>
-                    <input type="number" class="form-control" wire:model="nilai" id="nilai" min="0">
+                    <input type="number" class="form-control" step="any" wire:model="nilai" id="nilai" min="0">
                     @error('nilai')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

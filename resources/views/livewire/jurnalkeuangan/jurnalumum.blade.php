@@ -83,7 +83,7 @@
                                         </td>
                                         <td>
                                             <input type="number" class="form-control w-150px text-end" min="0"
-                                                step="any" x-model.number="row.debet" @input="hitungTotal()">
+                                                step="any" x-model.number="row.debet" step="any" @input="hitungTotal()">
                                             <template x-if="errors['detail.'+index+'.debet']">
                                                 <span class="text-danger"
                                                     x-text="errors['detail.'+index+'.debet']"></span>
@@ -91,7 +91,7 @@
                                         </td>
                                         <td>
                                             <input type="number" class="form-control w-150px text-end" min="0"
-                                                step="any" x-model.number="row.kredit" @input="hitungTotal()">
+                                                step="any" x-model.number="row.kredit" step="any" @input="hitungTotal()">
                                             <template x-if="errors['detail.'+index+'.kredit']">
                                                 <span class="text-danger"
                                                     x-text="errors['detail.'+index+'.kredit']"></span>
