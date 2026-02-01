@@ -34,7 +34,7 @@ class Form extends Component
                 $this->data->uid = $this->uid;
                 $this->data->password = Hash::make($this->uid);
             }
-            $this->data->nama = $this->nama;
+            $this->data->nama = $this->kepegawaian_pegawai_id ? KepegawaianPegawai::find($this->kepegawaian_pegawai_id)->nama : $this->nama;
             $this->data->kepegawaian_pegawai_id = $this->kepegawaian_pegawai_id;
             $this->data->save();
 
@@ -52,7 +52,7 @@ class Form extends Component
         if ($data->uid == 'administrator') {
             abort(404);
         }
-        
+
         $this->dataRole = Role::all()->toArray();
         $this->pegawaiData = KepegawaianPegawai::aktif()->orderBy('nama')->get()->toArray();
         $this->fill($this->data->toArray());
