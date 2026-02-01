@@ -3,10 +3,11 @@
 namespace App\Livewire\Datamaster\Pegawai;
 
 use Livewire\Component;
+use App\Models\KodeAkun;
+use App\Models\Pengguna;
 use App\Models\KepegawaianPegawai;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
-use App\Models\KodeAkun;
 
 class Form extends Component
 {
@@ -69,6 +70,9 @@ class Form extends Component
             $this->data->panggilan = $this->panggilan;
             if ($this->data->exists) {
                 $this->data->status = $this->status == 'Aktif' ? 'Aktif' : 'Non Aktif';
+                if ($this->data->status == 'Non Aktif') {
+                    Pengguna::where('kepegawaian_pegawai_id', $this->data->id)->delete();
+                }
             } else {
                 $this->data->status = 'Aktif';
             }

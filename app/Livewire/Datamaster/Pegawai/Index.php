@@ -3,9 +3,11 @@
 namespace App\Livewire\Datamaster\Pegawai;
 
 use Livewire\Component;
-use App\Models\KepegawaianPegawai;
+use App\Models\Pengguna;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
+use App\Models\KepegawaianPegawai;
+use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
@@ -16,8 +18,18 @@ class Index extends Component
 
     public function delete($id)
     {
-        KepegawaianPegawai::findOrFail($id)
-            ->forceDelete();
+        DB::transaction(function () use ($id) {
+            try {
+                KepegawaianPegawai::findOrFail($id)
+                    ->forceDelete();
+            } catch (\Throwable $th) {
+                KepegawaianPegawai::where('id', $id)
+                    ->update([
+                        'status' => 'Non Aktif',
+                    ]);
+            }
+            Pengguna::where('kepegawaian_pegawai_id', $id)->delete();
+        });
     }
 
     public function restore($id)
