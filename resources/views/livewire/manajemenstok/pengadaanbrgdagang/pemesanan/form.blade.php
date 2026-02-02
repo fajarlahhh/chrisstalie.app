@@ -17,7 +17,7 @@
         <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
             <div class="panel-body">
                 <div class="alert alert-info">
-                    <h4 class="alert-heading">Data Pemesanan</h4>
+                    <h4 class="alert-heading">Data Permintaan</h4>
                     <div class="mb-3">
                         <label class="form-label">Deskripsi</label>
                         <textarea class="form-control" disabled>{{ $data->deskripsi }}</textarea>
@@ -27,7 +27,7 @@
                         <input class="form-control" type="text" value="{{ $data->created_at }}" disabled />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Pengguna</label>
+                        <label class="form-label">Operator</label>
                         <input class="form-control" type="text" value="{{ $data->pengguna?->nama }}" disabled />
                     </div>
                 </div>
@@ -136,7 +136,7 @@
                         Simpan
                     </button>
                 @endrole
-                <button type="button" onclick="window.location.href='/pengadaanbrgdagang/verifikasi'"
+                <button type="button" onclick="window.location.href='/manajemenstok/pengadaanbrgdagang/pemesanan'"
                     class="btn btn-danger" wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal

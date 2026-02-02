@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Kepegawaian\KepegawaianPenggajian;
+namespace App\Livewire\Kepegawaian\Penggajian;
 
 use App\Models\KeuanganJurnal;
 use App\Models\KepegawaianPegawai;
@@ -32,16 +32,16 @@ class Form extends Component
                 foreach ($this->dataUnsurGaji as $item) {
                     $unsurGaji[] = [
                         'kepegawaian_pegawai_id' => $kepegawaianPegawai['id'],
-                        'nilai' => collect($kepegawaianPegawai['pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['nilai'] ?? 0,
+                        'nilai' => collect($kepegawaianPegawai['kepegawaian_pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['nilai'] ?? 0,
                         'kode_akun_id' => $item['id'],
                         'kode_akun_nama' => $item['nama'],
-                        'sifat' => collect($kepegawaianPegawai['pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['sifat'] ?? null,
+                        'sifat' => collect($kepegawaianPegawai['kepegawaian_pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['sifat'] ?? null,
                     ];
                 }
                 $this->detail[] = [
                     'kepegawaian_pegawai_id' => $kepegawaianPegawai['id'],
                     'nama' => $kepegawaianPegawai['nama'],
-                    'pegawai_unsur_gaji' => $unsurGaji,
+                    'kepegawaian_pegawai_unsur_gaji' => $unsurGaji,
                 ];
             }
         }
@@ -58,16 +58,16 @@ class Form extends Component
                 foreach ($this->dataUnsurGaji as $item) {
                     $unsurGaji[] = [
                         'kepegawaian_pegawai_id' => $kepegawaianPegawai['id'],
-                        'nilai' => collect($kepegawaianPegawai['pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['nilai'] ?? 0,
+                        'nilai' => collect($kepegawaianPegawai['kepegawaian_pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['nilai'] ?? 0,
                         'kode_akun_id' => $item['id'],
                         'kode_akun_nama' => $item['nama'],
-                        'sifat' => collect($kepegawaianPegawai['pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['sifat'] ?? null,
+                        'sifat' => collect($kepegawaianPegawai['kepegawaian_pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['sifat'] ?? null,
                     ];
                 }
                 $this->detail[] = [
                     'kepegawaian_pegawai_id' => $kepegawaianPegawai['id'],
                     'nama' => $kepegawaianPegawai['nama'],
-                    'pegawai_unsur_gaji' => $unsurGaji,
+                    'kepegawaian_pegawai_unsur_gaji' => $unsurGaji,
                 ];
             }
         }
@@ -89,14 +89,14 @@ class Form extends Component
             $penggajian->pengguna_id = auth()->id();
             $penggajian->save();
 
-            $keuanganJurnalDetail = collect($this->detail)->pluck('pegawai_unsur_gaji')->flatten(1)->groupBy('kode_akun_id')->map(fn($q) => [
+            $keuanganJurnalDetail = collect($this->detail)->pluck('kepegawaian_pegawai_unsur_gaji')->flatten(1)->groupBy('kode_akun_id')->map(fn($q) => [
                 'debet' => $q->sum('nilai'),
                 'kredit' => 0,
                 'kode_akun_id' => $q->first()['kode_akun_id'],
             ])->toArray();
             $keuanganJurnalDetail[] = [
                 'debet' => 0,
-                'kredit' => collect($this->detail)->pluck('pegawai_unsur_gaji')->flatten(1)->sum('nilai'),
+                'kredit' => collect($this->detail)->pluck('kepegawaian_pegawai_unsur_gaji')->flatten(1)->sum('nilai'),
                 'kode_akun_id' => $this->metode_bayar,
             ];
             

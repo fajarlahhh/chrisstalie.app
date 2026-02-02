@@ -20,7 +20,7 @@
                     <select wire:model.lazy="status" class="form-control w-auto">
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
-                        <option value="Pending">Pending</option>
+                        <option value="Pending Verifikasi">Pending Verifikasi</option>
                         <option value="Belum Kirim Verifikasi">Belum Kirim Verifikasi</option>
                     </select>&nbsp;
                     @if ($status == 'Disetujui')
@@ -69,7 +69,7 @@
                                             </li>
                                         @else
                                             <li>
-                                                <span class="badge bg-warning">Pending</span>
+                                                <span class="badge bg-warning">Pending Verifikasi</span>
                                             </li>
                                         @endif
                                     @endforeach

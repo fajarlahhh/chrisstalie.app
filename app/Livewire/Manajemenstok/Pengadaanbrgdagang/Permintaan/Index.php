@@ -49,7 +49,7 @@ class Index extends Component
                 ->where('deskripsi', 'like', '%' . $this->cari . '%'))
             ->when(auth()->user()->hasRole('operator|guest'), fn($q) => $q->whereIn('jenis_barang', ['Persediaan Apotek', 'Alat Dan Bahan']))
             ->when($this->status == 'Belum Kirim Verifikasi', fn($q) => $q->whereDoesntHave('pengadaanVerifikasi'))
-            ->when($this->status == 'Pending', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {
+            ->when($this->status == 'Pending Verifikasi', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {
                 $q->whereNull('status');
             })->orWhereDoesntHave('pengadaanVerifikasi'))
             ->when($this->status == 'Ditolak', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {

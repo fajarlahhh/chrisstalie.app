@@ -58,15 +58,15 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td> {{ $item['nama'] }}
                                     </td>
-                                    @foreach ($item['pegawai_unsur_gaji'] as $subIndex => $subItem)
+                                    @foreach ($item['kepegawaian_pegawai_unsur_gaji'] as $subIndex => $subItem)
                                         <td>
                                             <input class="form-control text-end" type="text"
-                                                wire:model.lazy="detail.{{ $index }}.pegawai_unsur_gaji.{{ $subIndex }}.nilai" />
+                                                wire:model.lazy="detail.{{ $index }}.kepegawaian_pegawai_unsur_gaji.{{ $subIndex }}.nilai" />
                                         </td>
                                     @endforeach
                                     <td>
                                         <input class="form-control text-end" type="text"
-                                            value="{{ number_format(collect($item['pegawai_unsur_gaji'])->sum('nilai')) }}"
+                                            value="{{ number_format(collect($item['kepegawaian_pegawai_unsur_gaji'])->sum('nilai')) }}"
                                             disabled />
                                     </td>
                                 </tr>
@@ -75,16 +75,16 @@
                         <tfoot>
                             <tr>
                                 <th colspan="{{ collect($dataUnsurGaji)->count() + 2 }}">Total</th>
-                                @foreach ($maxPegawai['pegawai_unsur_gaji'] ?? [] as $subItem)
+                                @foreach ($maxPegawai['kepegawaian_pegawai_unsur_gaji'] ?? [] as $subItem)
                                     <th>
                                         <input class="form-control text-end" type="text"
-                                            value="{{ number_format(collect($detail)->sum(fn($p) => collect($p['pegawai_unsur_gaji'])->firstWhere('kode_akun_id', $subItem['kode_akun_id'])['nilai'] ?? 0)) }}"
+                                            value="{{ number_format(collect($detail)->sum(fn($p) => collect($p['kepegawaian_pegawai_unsur_gaji'])->firstWhere('kode_akun_id', $subItem['kode_akun_id'])['nilai'] ?? 0)) }}"
                                             disabled />
                                     </th>
                                 @endforeach
                                 <th>
                                     <input class="form-control text-end" type="text"
-                                        value="{{ number_format(collect($detail)->sum(fn($p) => collect($p['pegawai_unsur_gaji'])->sum('nilai'))) }}"
+                                        value="{{ number_format(collect($detail)->sum(fn($p) => collect($p['kepegawaian_pegawai_unsur_gaji'])->sum('nilai'))) }}"
                                         disabled />
                                 </th>
                             </tr>

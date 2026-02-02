@@ -42,6 +42,7 @@ class Form extends Component
         DB::transaction(function () {
             $data = new PengadaanPemesanan();
             $data->tanggal = $this->tanggal;
+            $data->jenis = $this->data->jenis_barang;
             $data->catatan = $this->catatan;
             $data->supplier_id = $this->supplier_id;
             $data->pengadaan_permintaan_id = $this->data->id;
@@ -61,6 +62,7 @@ class Form extends Component
 
             $pengadaanVerifikasi = new PengadaanVerifikasi();
             $pengadaanVerifikasi->pengadaan_pemesanan_id = $data->id;
+            $pengadaanVerifikasi->pengadaan_permintaan_id = $this->data->id;
             $pengadaanVerifikasi->jenis = 'Persetujuan Pemesanan Pengadaan';
             $pengadaanVerifikasi->save();
             session()->flash('success', 'Berhasil menyimpan data');
@@ -71,7 +73,7 @@ class Form extends Component
     public function mount(PengadaanPermintaan $data)
     {
         $this->data = $data;
-        if ($this->data->pengadaanVerifikasiDisetujui()->count() == 0) {
+        if ($this->data->pengadaanVerifikasi->where('status', 'Disetujui')->count() == 0) {
             return abort(404);
         }
         $this->fill($this->data->toArray());

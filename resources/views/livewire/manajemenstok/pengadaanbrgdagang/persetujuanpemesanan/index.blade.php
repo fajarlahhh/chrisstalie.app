@@ -13,9 +13,14 @@
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
                     <select class="form-select" wire:model.lazy="status">
-                        <option value="Belum Proses">Belum Proses</option>
-                        <option value="Sudah Proses">Sudah Proses</option>
+                        <option value="Belum Disetujui">Belum Disetujui</option>
+                        <option value="Sudah Disetujui">Sudah Disetujui</option>
                     </select>&nbsp;
+                    @if ($status == 'Sudah Disetujui')
+                        <input type="month" class="form-control w-auto" wire:model.lazy="bulan"
+                            max="{{ date('Y-m') }}">
+                        &nbsp;
+                    @endif
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
                         wire:model.lazy="cari">
@@ -27,10 +32,11 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
+                        <th>Data Permintaan</th>
                         <th>Tanggal Pemesanan</th>
-                        <th>Deskripsi Permintaan</th>
                         <th>Supplier</th>
-                        <th class="w-600px">Detail</th>
+                        <th>Catatan</th>
+                        <th class="w-600px">Detail Barang Pemesanan</th>
                         <th class="w-100px">Total Harga</th>
                         <th class="w-10px"></th>
                     </tr>
@@ -39,9 +45,12 @@
                     @foreach ($data as $item)
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
+                            <td>Deskripsi: {{ $item->pengadaanPermintaan?->deskripsi }}<br>Tanggal:
+                                {{ $item->pengadaanPermintaan?->created_at }}<br>Jenis Barang:
+                                {{ $item->pengadaanPermintaan?->jenis_barang }}</td>
                             <td>{{ $item->tanggal }}</td>
-                            <td>{{ $item->pengadaanPermintaan->deskripsi }}</td>
                             <td>{{ $item->supplier->nama }}</td>
+                            <td>{{ $item->catatan }}</td>
                             <td>
                                 <table class="table table-bordered fs-11px">
                                     <thead>
@@ -80,8 +89,10 @@
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
-                                    <x-action :row="$item" custom="" :detail="false" :edit="true"
-                                        :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                    <a href="/manajemenstok/pengadaanbrgdagang/persetujuanpemesanan/form/{{ $item->id }}"
+                                        class="btn btn-info btn-sm">
+                                        Buat SP
+                                    </a>
                                 @endrole
                             </td>
                         </tr>

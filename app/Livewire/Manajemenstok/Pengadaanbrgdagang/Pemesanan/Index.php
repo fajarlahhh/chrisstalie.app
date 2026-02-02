@@ -6,7 +6,6 @@ use Livewire\Component;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\PengadaanPemesanan;
-use Illuminate\Support\Facades\DB;
 use App\Models\PengadaanPermintaan;
 use App\Models\PengadaanVerifikasi;
 
@@ -25,6 +24,15 @@ class Index extends Component
     public function mount()
     {
         $this->bulan = $this->bulan ?: date('Y-m');
+    }
+
+    public function print($id)
+    {
+        $data = PengadaanPemesanan::findOrFail($id);
+        $cetak = view('livewire.manajemenstok.pengadaanbrgdagang.pemesanan.cetak', [
+            'data' => $data,
+        ])->render();
+        session()->flash('cetak', $cetak);
     }
 
     public function delete($id)
@@ -49,13 +57,15 @@ class Index extends Component
                 'pengadaanPemesananDetail'
             ])
                 ->whereRaw('(select ifnull(sum(qty),0) from pengadaan_pemesanan_detail where pengadaan_permintaan_id = pengadaan_permintaan.id ) < (select sum(qty_disetujui) from pengadaan_permintaan_detail where pengadaan_permintaan_id = pengadaan_permintaan.id)')
-                ->where(fn($q) => $q
-                    ->where('deskripsi', 'like', '%' . $this->cari . '%'))
-                ->when(auth()->user()->hasRole('operator|guest'), fn($q) => $q->whereIn('jenis_barang', ['Persediaan Apotek', 'Alat Dan Bahan']))
+                ->where(
+                    fn($q) => $q
+                        ->where('deskripsi', 'like', '%' . $this->cari . '%')
+                        ->when(auth()->user()->hasRole('operator|guest'), fn($q) => $q->whereIn('jenis_barang', ['Persediaan Apotek', 'Alat Dan Bahan']))
+                )
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
             return $data;
-        } else if ($this->status == 'Sudah Dipesan') {
+        } else {
             $data = PengadaanPemesanan::with([
                 'supplier',
                 'pengguna.kepegawaianPegawai',
@@ -64,10 +74,18 @@ class Index extends Component
                 'pengadaanPermintaan',
                 'pengadaanPemesananVerifikasi.pengguna',
             ])
-                ->whereHas('pengadaanPermintaan', function ($q) {
-                    $q->where(fn($q) => $q
-                        ->where('deskripsi', 'like', '%' . $this->cari . '%'));
+                ->where(fn($z) => $z->whereHas('pengadaanPermintaan', function ($q) {
+                    $q->where(
+                        fn($q) => $q
+                            ->where('deskripsi', 'like', '%' . $this->cari . '%')
+                            ->when(auth()->user()->hasRole('operator|guest'), fn($q) => $q->whereIn('jenis_barang', ['Persediaan Apotek', 'Alat Dan Bahan']))
+                    );
+                })->orWhereHas('supplier', function ($q) {
+                    $q->where('nama', 'like', '%' . $this->cari . '%');
                 })
+                    ->orWhere('catatan', 'like', '%' . $this->cari . '%'))
+                ->when($this->status == 'Pending Persetujuan', fn($q) => $q->whereHas('pengadaanPemesananVerifikasi', fn($q) => $q->whereNull('status')))
+                ->when($this->status == 'Sudah Persetujuan', fn($q) => $q->whereHas('pengadaanPemesananVerifikasi', fn($q) => $q->where('status', 'Disetujui')->where('waktu_verifikasi', 'like', $this->bulan . '%')))
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
             return $data;
