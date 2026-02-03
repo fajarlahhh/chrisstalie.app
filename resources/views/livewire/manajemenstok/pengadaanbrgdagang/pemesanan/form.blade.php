@@ -40,6 +40,14 @@
                     @enderror
                 </div>
                 <div class="mb-3">
+                    <label class="form-label">Estimasi Kedatangan</label>
+                    <input class="form-control" type="date" wire:model="tanggal_estimasi_kedatangan" x-model="tanggal_estimasi_kedatangan"
+                        min="{{ now()->format('Y-m-d') }}" required />
+                    @error('tanggal_estimasi_kedatangan')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
                     <label class="form-label">Supplier</label>
                     <div wire:ignore>
                         <select class="form-control" x-init="$($el).select2({
@@ -48,7 +56,7 @@
                         });
                         $($el).on('change', function(e) {
                             supplier_id = e.target.value;
-                        });" x-model="supplier_id">
+                        });" x-model="supplier_id" required>
                             <option value="">-- Pilih Supplier --</option>
                             <template x-for="item in dataSupplier" :key="item.id">
                                 <option :value="item.id" :selected="supplier_id == item.id"
@@ -133,7 +141,7 @@
                 @role('administrator|supervisor|operator')
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
-                        Simpan
+                        Kirim Utk Persetujuan
                     </button>
                 @endrole
                 <button type="button" onclick="window.location.href='/manajemenstok/pengadaanbrgdagang/pemesanan'"
@@ -159,6 +167,7 @@
     function form() {
         return {
             tanggal: @js($tanggal ?? ''),
+            tanggal_estimasi_kedatangan: @js($tanggal_estimasi_kedatangan ?? ''),
             dataSupplier: @json($dataSupplier ?? []),
             supplier_id: @js($supplier_id ?? ''),
             barang: @json($barang ?? []),

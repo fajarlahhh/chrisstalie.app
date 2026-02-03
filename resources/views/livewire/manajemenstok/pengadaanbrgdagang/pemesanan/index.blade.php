@@ -115,7 +115,7 @@
                         @foreach ($data as $item)
                             <tr>
                                 <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
-                                <td>
+                                <td nowrap>
                                     <ul>
                                         <li>Deskripsi: {{ $item->pengadaanPermintaan?->deskripsi }}</li>
                                         <li>Tanggal: {{ $item->pengadaanPermintaan?->created_at }}</li>
@@ -162,15 +162,22 @@
                                     {{ number_format($item->pengadaanPemesananDetail->sum(fn($q) => $q->harga_beli * $q->qty)) }}
                                 </td>
                                 @if ($status == 'Sudah Persetujuan')
-                                    <td>
-                                        <ul>
-                                            <li>
-                                                Operator : {{ $item->pengadaanPemesananVerifikasi?->pengguna?->nama }}
-                                            </li>
-                                            <li>
-                                                Waktu : {{ $item->pengadaanPemesananVerifikasi?->waktu_verifikasi }}
-                                            </li>
-                                        </ul>
+                                    <td nowrap>
+                                        <small>
+                                            <ul>
+                                                <li>
+                                                    Nomor : {{ $item->nomor }}
+                                                </li>
+                                                <li>
+                                                    Operator :
+                                                    {{ $item->pengadaanPemesananVerifikasi?->pengguna?->nama }}
+                                                </li>
+                                                <li>
+                                                    Waktu :
+                                                    {{ $item->pengadaanPemesananVerifikasi?->waktu_verifikasi }}
+                                                </li>
+                                            </ul>
+                                        </small>
                                     </td>
                                 @endif
                                 <td class="with-btn-group text-end" nowrap>
@@ -182,7 +189,7 @@
                                             @if ($status == 'Sudah Persetujuan')
                                                 <x-action :row="$item" custom="" :detail="false"
                                                     :edit="false" :print="true" :permanentDelete="false"
-                                                    :restore="false" :delete="false" />
+                                                    :restore="false" :delete="true" />
                                             @else
                                                 <x-action :row="$item" custom="" :detail="false"
                                                     :edit="false" :print="false" :permanentDelete="false"

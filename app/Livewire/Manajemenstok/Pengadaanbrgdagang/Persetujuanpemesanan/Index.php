@@ -49,10 +49,12 @@ class Index extends Component
             ->when($this->status == 'Belum Disetujui', fn($q) => $q->whereHas('pengadaanPemesananVerifikasi', function ($q) {
                 $q->whereNull('status');
             }))
-            ->when($this->status == 'Sudah Disetujui', fn($q) => $q->whereHas('pengadaanPemesananVerifikasi', function ($q) {
-                $q->where('status', 'Disetujui');
-            })
-                ->where('waktu_verifikasi', 'like', $this->bulan . '%'))
+            ->when(
+                $this->status == 'Sudah Disetujui',
+                fn($q) => $q->whereHas('pengadaanPemesananVerifikasi', function ($q) {
+                    $q->where('status', 'Disetujui')->where('waktu_verifikasi', 'like', $this->bulan . '%');
+                })
+            )
             ->where(fn($q) => $q
                 ->where('uraian', 'like', '%' . $this->cari . '%')
                 ->orWhereHas('supplier', function ($q) {

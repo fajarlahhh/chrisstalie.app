@@ -20,6 +20,16 @@ class Form extends Component
         ]);
 
         DB::transaction(function () {
+            $terakhir = PengadaanPemesanan::where('tanggal', 'like', substr($this->data->tanggal, 0, 7) . '%')
+                ->whereNotNull('nomor')
+                ->orderBy('id', 'desc')
+                ->first();
+            $nomorTerakhir = $terakhir ? (int)substr($terakhir->id, 6, 5) : 0;
+            // dd(substr($terakhir->id, 6, 5));
+            $nomor = sprintf('%05d', $nomorTerakhir + 1) . '/SP-CHRISSTALIE/' . substr($this->data->tanggal, 5, 2) . '/' . substr($this->data->tanggal, 0, 4);
+            $this->data->nomor = $nomor;
+            $this->data->save();
+            
             $pengadaanVerifikasi = PengadaanVerifikasi::where('pengadaan_pemesanan_id', $this->data->id)->where('jenis', 'Persetujuan Pemesanan Pengadaan')->whereNull('status')->first();
             $pengadaanVerifikasi->status = 'Disetujui';
             $pengadaanVerifikasi->waktu_verifikasi = now();
@@ -33,7 +43,6 @@ class Form extends Component
 
     public function mount(PengadaanPemesanan $data)
     {
-
         $this->data = $data;
         $this->fill($this->data->toArray());
         $this->barang = $data->pengadaanPemesananDetail->map(fn($q) => [

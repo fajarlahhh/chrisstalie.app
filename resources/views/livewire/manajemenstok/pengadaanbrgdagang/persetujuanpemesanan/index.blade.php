@@ -38,6 +38,9 @@
                         <th>Catatan</th>
                         <th class="w-600px">Detail Barang Pemesanan</th>
                         <th class="w-100px">Total Harga</th>
+                        @if ($status == 'Sudah Disetujui')
+                            <th>Detail Persetujuan</th>
+                        @endif
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -87,12 +90,33 @@
                             <td class="text-nowrap text-end w-100px">
                                 {{ number_format($item->pengadaanPemesananDetail->sum(fn($q) => $q->harga_beli * $q->qty)) }}
                             </td>
+                            @if ($status == 'Sudah Disetujui')
+                                <td nowrap>
+                                    <small>
+                                        <ul>
+                                            <li>
+                                                Nomor : {{ $item->nomor }}
+                                            </li>
+                                            <li>
+                                                Operator :
+                                                {{ $item->pengadaanPemesananVerifikasi?->pengguna?->nama }}
+                                            </li>
+                                            <li>
+                                                Waktu :
+                                                {{ $item->pengadaanPemesananVerifikasi?->waktu_verifikasi }}
+                                            </li>
+                                        </ul>
+                                    </small>
+                                </td>
+                            @endif
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
-                                    <a href="/manajemenstok/pengadaanbrgdagang/persetujuanpemesanan/form/{{ $item->id }}"
-                                        class="btn btn-info btn-sm">
-                                        Buat SP
-                                    </a>
+                                    @if ($status == 'Belum Disetujui')
+                                        <a href="/manajemenstok/pengadaanbrgdagang/persetujuanpemesanan/form/{{ $item->id }}"
+                                            class="btn btn-info btn-sm">
+                                            Input
+                                        </a>
+                                    @endif
                                 @endrole
                             </td>
                         </tr>

@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\PengadaanPemesanan;
+use Illuminate\Support\Facades\DB;
 use App\Models\PengadaanPermintaan;
 use App\Models\PengadaanVerifikasi;
 
@@ -37,14 +38,14 @@ class Index extends Component
 
     public function delete($id)
     {
-        try {
-            PengadaanPermintaan::findOrFail($id)
+        DB::transaction(function () use ($id) {
+            PengadaanVerifikasi::where('pengadaan_pemesanan_id', $id)
+                ->where('jenis', 'Persetujuan Pemesanan Pengadaan')
                 ->forceDelete();
-            PengadaanVerifikasi::where('pengadaan_permintaan_id', $id)->forceDelete();
+            PengadaanPemesanan::findOrFail($id)
+                ->forceDelete();
             session()->flash('success', 'Berhasil menghapus data');
-        } catch (\Throwable $th) {
-            session()->flash('danger', 'Gagal menghapus data');
-        };
+        });
     }
     private function getData()
     {

@@ -13,13 +13,14 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $dataBarang = [], $dataPengguna = [], $barang = [], $deskripsi, $data, $verifikator_id, $status = 'Ditolak', $catatan, $dataSupplier = [], $supplier_id, $barangSudahDipesan = [], $tanggal;
+    public $dataBarang = [], $dataPengguna = [], $barang = [], $deskripsi, $data, $verifikator_id, $status = 'Ditolak', $catatan, $dataSupplier = [], $supplier_id, $barangSudahDipesan = [], $tanggal, $tanggal_estimasi_kedatangan;
 
     public function submit()
     {
 
         $this->validateWithCustomMessages([
             'tanggal' => 'required|date',
+            'tanggal_estimasi_kedatangan' => 'required|date',
             'supplier_id' => 'required|integer|exists:supplier,id',
             'barang' => 'required|array',
             'barang.*.id' => 'required|integer',
@@ -43,6 +44,7 @@ class Form extends Component
             $data = new PengadaanPemesanan();
             $data->tanggal = $this->tanggal;
             $data->jenis = $this->data->jenis_barang;
+            $data->tanggal_estimasi_kedatangan = $this->tanggal_estimasi_kedatangan;
             $data->catatan = $this->catatan;
             $data->supplier_id = $this->supplier_id;
             $data->pengadaan_permintaan_id = $this->data->id;

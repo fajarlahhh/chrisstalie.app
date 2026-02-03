@@ -107,12 +107,15 @@
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
-                        <span wire:loading class="spinner-border spinner-border-sm"></span>
-                        Buat SP
-                    </button>
+                    @if (auth()->user()->kepegawaian_pegawai_id)
+                        <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                            <span wire:loading class="spinner-border spinner-border-sm"></span>
+                            Buat SP
+                        </button>
+                    @endif
                 @endrole
-                <button type="button" onclick="window.location.href='/manajemenstok/pengadaanbrgdagang/persetujuanpemesanan'"
+                <button type="button"
+                    onclick="window.location.href='/manajemenstok/pengadaanbrgdagang/persetujuanpemesanan'"
                     class="btn btn-danger" wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal

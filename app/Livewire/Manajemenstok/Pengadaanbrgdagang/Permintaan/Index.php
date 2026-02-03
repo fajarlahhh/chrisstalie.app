@@ -3,9 +3,11 @@
 namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Permintaan;
 
 use Livewire\Component;
-use App\Models\PengadaanPermintaan;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
+use App\Models\PengadaanPermintaan;
+use App\Models\PengadaanVerifikasi;
 
 class Index extends Component
 {
@@ -26,13 +28,9 @@ class Index extends Component
 
     public function delete($id)
     {
-        try {
-            PengadaanPermintaan::findOrFail($id)
-                ->forceDelete();
-            session()->flash('success', 'Berhasil menghapus data');
-        } catch (\Throwable $th) {
-            session()->flash('danger', 'Gagal menghapus data');
-        };
+        PengadaanPermintaan::findOrFail($id)
+            ->pengadaanPermintaanDetail()->delete();
+        session()->flash('success', 'Berhasil menghapus data');
     }
 
     private function getData()
