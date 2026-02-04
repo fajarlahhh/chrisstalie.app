@@ -81,7 +81,7 @@
                         ->map(
                             fn($q) => [
                                 'qty' =>
-                                    ($q->qty * $q->barangSatuan->rasio_dari_terkecil) /
+                                    ($q->qty * $q->rasio_dari_terkecil) /
                                     $row->barangSatuanUtama?->rasio_dari_terkecil,
                             ],
                         )
@@ -90,7 +90,7 @@
                         ->map(
                             fn($q) => [
                                 'qty' =>
-                                    ($q->qty * $q->barangSatuan->rasio_dari_terkecil) /
+                                    ($q->qty * $q->rasio_dari_terkecil) /
                                     $row->barangSatuanUtama?->rasio_dari_terkecil,
                             ],
                         )

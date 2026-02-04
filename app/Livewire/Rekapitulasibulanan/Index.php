@@ -39,9 +39,9 @@ class Index extends Component
                     'tanggal' =>  $bulanSelanjutnya,
                     'qty' => ($q->stokAwal->sum('qty') ?? 0) +
                         ($q->stokMasuk->sum(fn($r) => $r['qty'] *
-                            $r->barangSatuan->rasio_dari_terkecil / $q->barangSatuanUtama?->rasio_dari_terkecil)) -
+                            $r->rasio_dari_terkecil / $q->barangSatuanUtama?->rasio_dari_terkecil)) -
                         ($q->stokKeluar->sum(fn($r) => $r['qty'] *
-                            $r->barangSatuan->rasio_dari_terkecil / $q->barangSatuanUtama?->rasio_dari_terkecil)),
+                            $r->rasio_dari_terkecil / $q->barangSatuanUtama?->rasio_dari_terkecil)),
                     'pengguna_id' => auth()->id(),
                     'created_at' => now(),
                     'updated_at' => now(),
