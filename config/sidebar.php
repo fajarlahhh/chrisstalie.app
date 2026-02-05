@@ -56,11 +56,6 @@ return [
                 //     "urutkan" => true,
                 //     "method" => ["Index"],
                 // ],
-                [
-                    "title" => "Metode Bayar",
-                    "urutkan" => true,
-                    "method" => ["Index", "Form"],
-                ],
             ]
         ],
         [
@@ -70,6 +65,12 @@ return [
             "sub_menu" => [
                 [
                     "title" => "Shift",
+                    "urutkan" => true,
+                    "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Metode Bayar",
+                    "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
                 [

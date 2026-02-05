@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Datamaster\Metodebayar;
+namespace App\Livewire\Pengaturan\Metodebayar;
 
 use Livewire\Component;
 use App\Models\MetodeBayar;
@@ -27,8 +27,8 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.datamaster.metodebayar.index', [
-            'data' => MetodeBayar::with(['pengguna.kepegawaianPegawai','kodeAkun'])->where('nama', 'like', '%' . $this->cari . '%')->paginate(10)
+        return view('livewire.pengaturan.metodebayar.index', [
+            'data' => MetodeBayar::with(['pengguna.kepegawaianPegawai','kodeAkun'])->where('nama', 'like', '%' . $this->cari . '%')->orderBy('nama', 'asc')->paginate(10)
         ]);
     }
 }
