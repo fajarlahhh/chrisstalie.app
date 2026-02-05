@@ -25,7 +25,7 @@
                                 $wire.set('pengadaan_pemesanan_id', e.target.value);
                             });" wire:model="pengadaan_pemesanan_id" required>
                                 <option selected value="" hidden>-- Cari Data Pembelian --</option>
-                                @foreach ($dataPembelian as $row)
+                                @foreach ($dataPengadaanPemesanan as $row)
                                     <option value="{{ $row['id'] }}">
                                         {{ $row['uraian'] }}
                                     </option>
