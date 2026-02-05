@@ -17,13 +17,13 @@ class Form extends Component
 
     public function mount($data = null)
     {
+        $this->dataPengadaanPemesanan = PengadaanPemesanan::where('pembayaran', 'Jatuh Tempo')->with('supplier', 'pengadaanPemesananDetail')
+            ->whereDoesntHave('pengadaanPelunasanPemesanan')->get()->toArray();
+        $this->dataKodePembayaran = KodeAkun::where('parent_id', '11100')->detail()->get()->toArray();
         if ($data) {
             $this->pengadaan_pemesanan_id = $data;
             $this->pengadaanPemesanan = PengadaanPemesanan::with('supplier', 'pengadaanPemesananDetail')->find($data);
         }
-        $this->dataPengadaanPemesanan = PengadaanPemesanan::where('pembayaran', 'Jatuh Tempo')->with('supplier', 'pengadaanPemesananDetail')
-            ->whereDoesntHave('pengadaanPelunasanPemesanan')->get();
-        $this->dataKodePembayaran = KodeAkun::where('parent_id', '11100')->detail()->get()->toArray();
     }
 
     public function updatedPengadaanPemesananId()

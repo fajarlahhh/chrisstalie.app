@@ -18,16 +18,21 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="mb-3" wire:ignore>
+                        <div class="mb-3">
                             <label class="form-label">Uraian/No. Faktur Pembelian</label>
-                            <select class="form-control" x-init="$($el).select2({ width: '100%', dropdownAutoWidth: true });
-                            $($el).on('change', function(e) {
-                                $wire.set('pengadaan_pemesanan_id', e.target.value);
-                            });" wire:model="pengadaan_pemesanan_id" required>
+                            <select class="form-control" x-init="$($el).selectpicker({
+                                liveSearch: true,
+                                width: 'auto',
+                                size: 10,
+                                container: 'body',
+                                style: '',
+                                showSubtext: true,
+                                styleBase: 'form-control'
+                            })" wire:model.live="pengadaan_pemesanan_id" required>
                                 <option selected value="" hidden>-- Cari Data Pembelian --</option>
                                 @foreach ($dataPengadaanPemesanan as $row)
                                     <option value="{{ $row['id'] }}">
-                                        {{ $row['uraian'] }}
+                                        {{ $row['tanggal'] }} - {{ $row['uraian'] }}, Supplier : {{ $row['supplier']['nama'] }}
                                     </option>
                                 @endforeach
                             </select>
