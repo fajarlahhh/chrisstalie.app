@@ -19,7 +19,7 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $data, $dataPembelian = [], $barang = [];
+    public $data, $dataPemesanan = [], $barang = [];
     public $pengadaan_pemesanan_id;
 
 
@@ -51,7 +51,7 @@ class Form extends Component
 
     public function mount()
     {
-        $this->dataPembelian = PengadaanPemesanan::select(DB::raw('pengadaan_pemesanan.id id'), 'tanggal', 'supplier_id', 'uraian', 'nomor')
+        $this->dataPemesanan = PengadaanPemesanan::select(DB::raw('pengadaan_pemesanan.id id'), 'tanggal', 'supplier_id', 'uraian', 'nomor')
             ->leftJoin('pengadaan_pemesanan_detail', 'pengadaan_pemesanan.id', '=', 'pengadaan_pemesanan_detail.pengadaan_pemesanan_id')
             ->groupBy('pengadaan_pemesanan.id', 'tanggal', 'supplier_id', 'uraian')
             ->havingRaw('SUM(pengadaan_pemesanan_detail.qty) > (SELECT ifnull(SUM(stok_masuk.qty), 0) FROM stok_masuk WHERE pengadaan_pemesanan_id = pengadaan_pemesanan.id )')

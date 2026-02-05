@@ -67,7 +67,7 @@
                                     style: '',
                                     showSubtext: true,
                                     styleBase: 'form-control'
-                                })">
+                                })" @if ($data->exists) disabled @endif>
                                 <option hidden selected>-- Tidak Ada Satuan Konversi --</option>
                                 @foreach ($dataBarangSatuan as $item)
                                     <option data-subtext="Rp. {{ number_format($item['harga_jual'], 0, ',', '.') }}"
@@ -75,7 +75,7 @@
                                         {{ $item['nama'] }}</option>
                                 @endforeach
                             </select>
-                            <input class="form-control" type="text" wire:model="faktor_konversi">
+                            <input class="form-control" type="text" wire:model="faktor_konversi" @if ($data->exists) disabled @endif>
                         </div>
                         @error('faktor_konversi')
                             <span class="text-danger">{{ $message }}</span>

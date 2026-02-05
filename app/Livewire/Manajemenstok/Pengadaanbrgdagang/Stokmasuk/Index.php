@@ -3,11 +3,9 @@
 namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Stokmasuk;
 
 use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\Attributes\Url;
 use App\Models\StokMasuk;
-use App\Models\PengadaanPemesanan;
-use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Url;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
