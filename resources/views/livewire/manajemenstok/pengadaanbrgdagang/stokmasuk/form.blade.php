@@ -29,7 +29,7 @@
                         if (!state.id) {
                             return state.text;
                         }
-                        return 'No. Pemesanan : ' + state.text;
+                        return state.text;
                     }
                     $($el).on('change', function(e) {
                         $wire.set('pengadaan_pemesanan_id', e.target.value);
@@ -37,7 +37,7 @@
                         <option selected value="" hidden>-- Cari Data Pembelian --</option>
                         @foreach ($dataPemesanan as $row)
                             <option value="{{ $row['id'] }}">
-                                {{ $row['nomor'] }} - {{ $row['supplier']['nama'] }}
+                                {{ $row['nomor'] }}, {{ $row['supplier']['nama'] }}
                             </option>
                         @endforeach
                     </select>

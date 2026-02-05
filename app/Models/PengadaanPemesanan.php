@@ -69,6 +69,11 @@ class PengadaanPemesanan extends Model
         return $this->hasOne(PengadaanVerifikasi::class)->where('jenis', 'Persetujuan Pemesanan Pengadaan');
     }
 
+    public function pengadaanTagihan(): HasOne
+    {
+        return $this->hasOne(PengadaanTagihan::class);
+    }
+
     public function getTotalHargaAttribute(): float
     {
         return $this->pengadaanPemesananDetail->sum(function ($item) {

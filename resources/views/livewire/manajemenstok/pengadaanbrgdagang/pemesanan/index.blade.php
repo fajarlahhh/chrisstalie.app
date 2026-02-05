@@ -10,7 +10,6 @@
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">
-
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
                     <select class="form-select" wire:model.lazy="status">
@@ -185,7 +184,7 @@
                                     </td>
                                 @endif
                                 <td class="with-btn-group text-end" nowrap>
-                                    @role('administrator|supervisor|operator')
+                                    @role('administrator|supervisor')
                                         @if (!$item->pengadaanPemesananVerifikasi)
                                             <x-action :row="$item" custom="" :detail="false" :edit="false"
                                                 :print="false" :permanentDelete="false" :restore="false" :delete="true" />
