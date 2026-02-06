@@ -12,7 +12,7 @@
         <div class="panel-heading">
             <div class="row w-100">
                 <div class="col-md-2">
-                    @unlessrole(config('app.name') . '-guest')
+                    @unlessrole('guest')
                         <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
                             class="btn btn-outline-secondary btn-block">Tambah</a>
                     @endunlessrole
@@ -39,97 +39,91 @@
                             <th>Detail</th>
                             <th>Metode Bayar</th>
                             <th>Total</th>
-                            @unlessrole(config('app.name') . '-guest')
+                            @unlessrole('guest')
                                 <th class="w-5px"></th>
                             @endunlessrole
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($data->count() > 0)
-                            @foreach ($data as $i => $row)
-                                <tr>
-                                    <td class=" w-5px">
-                                        {{ ++$i }}
-                                    </td>
-                                    <td nowrap>{{ substr($row->periode, 0, 7) }}</td>
-                                    <td>{{ $row->tanggal }}</td>
-                                    <td>{{ $row->kepegawaianPegawai?->nama }}</td>
-                                    <td>
-                                        @if ($row->kepegawaian_pegawai_id)
-                                            <table class="table table-bordered fs-10px">
-                                                <thead>
+                        @foreach ($data as $i => $row)
+                            <tr>
+                                <td class=" w-5px">
+                                    {{ ++$i }}
+                                </td>
+                                <td nowrap>{{ substr($row->periode, 0, 7) }}</td>
+                                <td>{{ $row->tanggal }}</td>
+                                <td>{{ $row->kepegawaianPegawai?->nama }}</td>
+                                <td>
+                                    @if ($row->kepegawaian_pegawai_id)
+                                        <table class="table table-bordered fs-10px">
+                                            <thead>
+                                                <tr>
+                                                    <th>Kode Akun</th>
+                                                    <th>Nilai</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($row->detail as $item)
                                                     <tr>
-                                                        <th>Kode Akun</th>
-                                                        <th>Nilai</th>
+                                                        <td>{{ $item['kode_akun_id'] ?? null }}</td>
+                                                        <td class="text-end p-1">
+                                                            {{ number_format($item['debet'] ?? 0) }}</td>
                                                     </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($row->detail as $item)
-                                                        <tr>
-                                                            <td>{{ $item['kode_akun_id'] ?? null }}</td>
-                                                            <td class="text-end p-1">
-                                                                {{ number_format($item['debet'] ?? 0) }}</td>
-                                                        </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        @php
+                                            $unsurGaji = collect($data->pluck('detail')->flatten(1))
+                                                ->sortByDesc(fn($p) => count($p['pegawai_unsur_gaji']))
+                                                ->first()['pegawai_unsur_gaji'];
+                                        @endphp
+                                        <table class="table table-bordered fs-10px">
+                                            <thead>
+                                                <tr class="bg-gray-100">
+                                                    <th rowspan="2" class="p-1">Pegawai</th>
+                                                    <th class="p-1" colspan="{{ collect($unsurGaji)->count() }}">
+                                                        Unsur Gaji</th>
+                                                </tr>
+                                                <tr class="bg-gray-100">
+                                                    @foreach ($unsurGaji as $subRow)
+                                                        <th class="p-1">{{ $subRow['kode_akun_nama'] ?? null }}
+                                                        </th>
                                                     @endforeach
-                                                </tbody>
-                                            </table>
-                                        @else
-                                            @php
-                                                $unsurGaji = collect($data->pluck('detail')->flatten(1))
-                                                    ->sortByDesc(fn($p) => count($p['pegawai_unsur_gaji']))
-                                                    ->first()['pegawai_unsur_gaji'];
-                                            @endphp
-                                            <table class="table table-bordered fs-10px">
-                                                <thead>
-                                                    <tr class="bg-gray-100">
-                                                        <th rowspan="2" class="p-1">Pegawai</th>
-                                                        <th class="p-1" colspan="{{ collect($unsurGaji)->count() }}">
-                                                            Unsur Gaji</th>
-                                                    </tr>
-                                                    <tr class="bg-gray-100">
-                                                        @foreach ($unsurGaji as $subRow)
-                                                            <th class="p-1">{{ $subRow['kode_akun_nama'] ?? null }}
-                                                            </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($row->detail as $item)
+                                                    <tr>
+                                                        <td class="p-1" nowrap>{{ $item['nama'] }}</td>
+                                                        @foreach ($item['pegawai_unsur_gaji'] as $subRow)
+                                                            <td class="text-end p-1">
+                                                                {{ number_format($subRow['nilai'] ?? 0) }}</td>
                                                         @endforeach
                                                     </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($row->detail as $item)
-                                                        <tr>
-                                                            <td class="p-1" nowrap>{{ $item['nama'] }}</td>
-                                                            @foreach ($item['pegawai_unsur_gaji'] as $subRow)
-                                                                <td class="text-end p-1">
-                                                                    {{ number_format($subRow['nilai'] ?? 0) }}</td>
-                                                            @endforeach
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        @endif
-                                    </td>
-                                    <td nowrap>{{ $row->kode_akun_pembayaran_id }} <br>
-                                        {{ $row->kodeAkunPembayaran->nama ?? null }}
-                                    </td>
-                                    <td class="text-end">
-                                        @if ($row->kepegawaian_pegawai_id)
-                                            {{ number_format(collect($row->detail)->sum('debet')) }}
-                                        @else
-                                            {{ number_format(collect($row->detail)->sum(fn($q) => collect($q['pegawai_unsur_gaji'])->sum('nilai'))) }}
-                                        @endif
-                                    </td>
-                                    @unlessrole(config('app.name') . '-guest')
-                                        <td class="text-end text-nowrap">
-                                            <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                                :print="false" :permanentDelete="false" :restore="false" :delete="true" />
-                                        </td>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @endif
+                                </td>
+                                <td nowrap>{{ $row->kode_akun_pembayaran_id }} <br>
+                                    {{ $row->kodeAkunPembayaran->nama ?? null }}
+                                </td>
+                                <td class="text-end">
+                                    @if ($row->kepegawaian_pegawai_id)
+                                        {{ number_format(collect($row->detail)->sum('debet')) }}
+                                    @else
+                                        {{ number_format(collect($row->detail)->sum(fn($q) => collect($q['pegawai_unsur_gaji'])->sum('nilai'))) }}
+                                    @endif
+                                </td>
+                                <td class="text-end text-nowrap">
+                                    @unlessrole('guest')
+                                        <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                     @endunlessrole
-                                </tr>
-                            @endforeach
-                        @else
-                            <tr>
-                                <td colspan="8" class="text-center">Tidak ada data</td>
+                                </td>
                             </tr>
-                        @endif
+                        @endforeach
                     </tbody>
                 </table>
             </div>

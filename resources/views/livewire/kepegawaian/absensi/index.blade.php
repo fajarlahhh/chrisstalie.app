@@ -41,7 +41,7 @@
         <div class="panel-heading">
             <div class="row w-100">
                 <div class="col-md-2">
-                    @unlessrole(config('app.name') . '-guest')
+                    @unlessrole('guest')
                         @if ($connected)
                             <a href="javascript:;" wire:click="download" class="btn btn-outline-secondary btn-block"
                                 wire:loading.attr="disabled">

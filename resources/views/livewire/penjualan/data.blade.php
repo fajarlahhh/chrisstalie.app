@@ -44,7 +44,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($data as $index => $row)
+                    @foreach ($data as $index => $row)
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td class="text-nowrap w-100px">{{ $row->id }}</td>
@@ -98,11 +98,7 @@
                                 @endrole
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="11" class="text-center">Tidak ada data.</td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                     <tr>
                         <td colspan="8" class="text-end">
                             <strong>Total :</strong>

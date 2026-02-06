@@ -18,8 +18,10 @@
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal1" />&nbsp;
-                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal2" />&nbsp;
+                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                        wire:model.lazy="tanggal1" />&nbsp;
+                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                        wire:model.lazy="tanggal2" />&nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
                         wire:model.lazy="cari" placeholder="Cari">
@@ -43,7 +45,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($data as $index => $row)
+                    @foreach ($data as $index => $row)
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td class="text-nowrap w-100px">{{ $row->created_at }}</td>
@@ -63,11 +65,7 @@
                                 @endrole
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="10" class="text-center">Tidak ada data.</td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
         </div>

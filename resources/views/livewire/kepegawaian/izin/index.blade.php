@@ -12,7 +12,7 @@
         <div class="panel-heading">
             <div class="row w-100">
                 <div class="col-md-2">
-                    @unlessrole(config('app.name') . '-guest')
+                    @unlessrole('guest')
                         <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
                             class="btn btn-outline-secondary btn-block">Tambah</a>
                     @endunlessrole
@@ -61,7 +61,7 @@
                                 <td>{{ $row->izin }}</td>
                                 <td>{{ $row->keterangan }}</td>
                                 <td class="text-end  text-nowrap">
-                                    @unlessrole(config('app.name') . '-guest')
+                                    @unlessrole('guest')
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                     @endunlessrole

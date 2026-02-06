@@ -63,7 +63,7 @@
                 </div>
             </div>
             <div class="panel-footer">
-                @unlessrole(config('app.name') . '-guest')
+                @unlessrole('guest')
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Simpan
