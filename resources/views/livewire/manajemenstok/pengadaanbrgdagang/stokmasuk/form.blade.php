@@ -42,6 +42,17 @@
                         @endforeach
                     </select>
                 </div>
+                @if ($pengadaan_pemesanan_id)
+                    <div class="alert alert-info">
+                        <h4>Data Permintaan</h4>
+                        <ul>
+                            <li>Nomor: {{ $data->pengadaanPermintaan?->nomor }}</li>
+                            <li>Deskripsi: {{ $data->pengadaanPermintaan?->deskripsi }}</li>
+                            <li>Tanggal: {{ $data->pengadaanPermintaan?->created_at }}</li>
+                            <li>Jenis Barang: {{ $data->pengadaanPermintaan?->jenis_barang }}</li>
+                        </ul>
+                    </div>
+                @endif
                 <div class="note alert-secondary mb-0">
                     <div class="note-content table-responsive">
                         <table class="table table-borderless">

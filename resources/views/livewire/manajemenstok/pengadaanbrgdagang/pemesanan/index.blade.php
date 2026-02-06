@@ -115,12 +115,14 @@
                             <tr>
                                 <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
                                 <td nowrap>
-                                    <ul>
-                                        <li>Nomor: {{ $item->pengadaanPermintaan?->nomor }}</li>
-                                        <li>Deskripsi: {{ $item->pengadaanPermintaan?->deskripsi }}</li>
-                                        <li>Tanggal: {{ $item->pengadaanPermintaan?->created_at }}</li>
-                                        <li>Jenis Barang: {{ $item->pengadaanPermintaan?->jenis_barang }}</li>
-                                    </ul>
+                                    <small>
+                                        <ul>
+                                            <li>Nomor: {{ $item->pengadaanPermintaan?->nomor }}</li>
+                                            <li>Deskripsi: {{ $item->pengadaanPermintaan?->deskripsi }}</li>
+                                            <li>Tanggal: {{ $item->pengadaanPermintaan?->created_at }}</li>
+                                            <li>Jenis Barang: {{ $item->pengadaanPermintaan?->jenis_barang }}</li>
+                                        </ul>
+                                    </small>
                                 </td>
                                 <td>{{ $item->tanggal }}</td>
                                 <td>{{ $item->supplier->nama }}</td>

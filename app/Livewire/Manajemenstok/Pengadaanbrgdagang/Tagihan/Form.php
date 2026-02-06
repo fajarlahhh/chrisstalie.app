@@ -4,15 +4,16 @@ namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Tagihan;
 
 use Livewire\Component;
 use App\Models\PengadaanTagihan;
+use App\Class\JurnalkeuanganClass;
 use App\Models\PengadaanPemesanan;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
+use App\Traits\KodeakuntransaksiTrait;
 use App\Models\PengadaanPemesananDetail;
-use App\Class\JurnalkeuanganClass;
 
 class Form extends Component
 {
-    use CustomValidationTrait;
+    use CustomValidationTrait, KodeakuntransaksiTrait;
     public $data, $dataPemesanan = [], $barang = [], $pengadaanPemesanan, $pengadaan_pemesanan_id, $no_faktur, $tanggal, $jatuh_tempo, $diskon, $ppn, $catatan, $total_harga_barang, $total_tagihan;
 
     public function updatedPengadaanPemesananId($value)
@@ -33,7 +34,6 @@ class Form extends Component
 
     public function submit()
     {
-        dd($this->pengadaanPemesanan);
         $this->validateWithCustomMessages([
             'pengadaan_pemesanan_id' => 'required',
             'no_faktur' => 'required',
@@ -58,29 +58,24 @@ class Form extends Component
             $data->pengguna_id = auth()->id();
             $data->save();
 
-            JurnalkeuanganClass::insert(
-                jenis: 'Hutang',
-                sub_jenis: 'Tagihan Pengadaan',
-                tanggal: $this->tanggal,
-                uraian: 'Tagihan pengadaan ' . $this->pengadaanPemesanan->jenis . ' ' . $this->pengadaanPemesanan->nomor . ' dari supplier ' . $this->pengadaanPemesanan->supplier->nama . ' dengan nomor faktur ' . $this->no_faktur . ' tanggal ' . $this->tanggal,
-                system: 1,
-                foreign_key: 'pengadaan_tagihan_id',
-                foreign_id: $data->id,
-                detail: [
+            $this->jurnalKeuangan(
+                'Hutang pengadaan ' . $this->pengadaanPemesanan->jenis . ' ' . $this->pengadaanPemesanan->nomor . ' dari supplier ' . $this->pengadaanPemesanan->supplier->nama . ' dengan nomor faktur ' . $this->no_faktur . ' tanggal ' . $this->tanggal,
+                $data->id,
+                [
                     [
                         'debet' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']),
                         'kredit' => 0,
-                        'kode_akun_id' => '12000'
-                    ],
-                    [
-                        'debet' => 0,
-                        'kredit' => $this->diskon,
-                        'kode_akun_id' => '45000'
+                        'kode_akun_id' => $this->getAkunTransaksiByTransaksi('Stok Masuk Barang')->kode_akun_id
                     ],
                     [
                         'debet' => $this->ppn,
                         'kredit' => 0,
-                        'kode_akun_id' => '11400'
+                        'kode_akun_id' => $this->getAkunTransaksiByTransaksi('PPN Pembelian')->kode_akun_id
+                    ],
+                    [
+                        'debet' => 0,
+                        'kredit' => $this->diskon,
+                        'kode_akun_id' => $this->getAkunTransaksiByTransaksi('Diskon Pembelian')->kode_akun_id
                     ],
                     [
                         'debet' => 0,
@@ -92,6 +87,20 @@ class Form extends Component
             session()->flash('success', 'Berhasil menyimpan data');
         });
         $this->redirect('/manajemenstok/pengadaanbrgdagang/tagihan');
+    }
+
+    private function jurnalKeuangan($uraian, $foreign_id, $detail)
+    {
+        JurnalkeuanganClass::insert(
+            jenis: 'Hutang',
+            sub_jenis: 'Hutang Pengadaan Barang Dagang',
+            tanggal: $this->tanggal,
+            uraian: $uraian,
+            system: 1,
+            foreign_key: 'pengadaan_tagihan_id',
+            foreign_id: $foreign_id,
+            detail: $detail
+        );
     }
 
     public function mount()

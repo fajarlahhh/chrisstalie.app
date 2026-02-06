@@ -44,6 +44,7 @@ class Form extends Component
         $this->barang = collect($barang)->filter(function ($q) {
             return $q['qty_masuk'] < $q['qty'];
         })->sortBy('barang_id')->values()->toArray();
+        $this->data = PengadaanPemesanan::with('pengadaanPermintaan')->find($value);
     }
 
     public function mount()
@@ -59,6 +60,7 @@ class Form extends Component
     {
         $this->validateWithCustomMessages([
             'pengadaan_pemesanan_id' => 'required',
+            'data' => 'required',
             'barang' => 'required|array',
             'barang.*.qty_masuk' => [
                 'numeric',
@@ -105,7 +107,6 @@ class Form extends Component
         DB::transaction(function () {
             $stok = [];
 
-            $pengadaanPemesanan = PengadaanPemesanan::find($this->pengadaan_pemesanan_id);
             foreach ($this->barang as $key => $value) {
                 if ($value['qty_masuk'] > 0) {
                     $stokMasuk = new StokMasuk();
@@ -150,7 +151,7 @@ class Form extends Component
                         ]
                     ];
                     $this->jurnalKeuangan(
-                        'Persediaan masuk ' . $value['nama'] . ' sejumlah ' . $value['qty_masuk'] . ' ' . $value['satuan'] . ' No. SP ' . $pengadaanPemesanan->nomor . ' supplier  ' . $pengadaanPemesanan->supplier->nama . ' tanggal ' . $pengadaanPemesanan->tanggal,
+                        'Persediaan masuk ' . $value['nama'] . ' sejumlah ' . $value['qty_masuk'] . ' ' . $value['satuan'] . ' No. SP ' . $this->data->pengadaanPermintaan?->nomor . ' supplier  ' . $this->data->supplier->nama . ' tanggal ' . $this->data->tanggal,
                         $stokMasuk->id,
                         $detail
                     );

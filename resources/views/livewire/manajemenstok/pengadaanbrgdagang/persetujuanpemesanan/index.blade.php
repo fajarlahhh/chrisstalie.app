@@ -48,9 +48,16 @@
                     @foreach ($data as $item)
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
-                            <td>Deskripsi: {{ $item->pengadaanPermintaan?->deskripsi }}<br>Tanggal:
-                                {{ $item->pengadaanPermintaan?->created_at }}<br>Jenis Barang:
-                                {{ $item->pengadaanPermintaan?->jenis_barang }}</td>
+                            <td nowrap>
+                                <small>
+                                    <ul>
+                                        <li>Nomor: {{ $item->pengadaanPermintaan?->nomor }}</li>
+                                        <li>Deskripsi: {{ $item->pengadaanPermintaan?->deskripsi }}</li>
+                                        <li>Tanggal: {{ $item->pengadaanPermintaan?->created_at }}</li>
+                                        <li>Jenis Barang: {{ $item->pengadaanPermintaan?->jenis_barang }}</li>
+                                    </ul>
+                                </small>
+                            </td>
                             <td>{{ $item->tanggal }}</td>
                             <td>{{ $item->supplier->nama }}</td>
                             <td>{{ $item->catatan }}</td>
