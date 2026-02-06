@@ -51,7 +51,7 @@ class Form extends Component
             $pengadaanPemesanan->tanggal = $this->tanggal;
             $pengadaanPemesanan->jatuh_tempo = $this->pembayaran == "Jatuh Tempo" ? $this->jatuh_tempo : null;
             $pengadaanPemesanan->pembayaran = $this->pembayaran == "Jatuh Tempo" ? $this->pembayaran : "Lunas";
-            $pengadaanPemesanan->kode_akun_id = $this->pembayaran == "Jatuh Tempo" ? '21100' : $this->pembayaran;
+            $pengadaanPemesanan->kode_akun_id = $this->pembayaran == "Jatuh Tempo" ? '21110' : $this->pembayaran;
             $pengadaanPemesanan->uraian = $this->uraian;
             $pengadaanPemesanan->supplier_id = $this->supplier_id != '' ? $this->supplier_id : null;
             $pengadaanPemesanan->pengadaan_permintaan_id = null;

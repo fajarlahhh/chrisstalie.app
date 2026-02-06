@@ -27,7 +27,7 @@ class Pengeluaran extends Component
             $this->nilai = $this->data->keuanganJurnalDetail->sum('kredit');
         }
         // $this->tanggal = date('Y-m-d');
-        $this->dataJenisPengeluaran = KodeAkun::detail()->where('id', '!=', '21100')->whereIn('kategori', ['Beban'])->get()->toArray();
+        $this->dataJenisPengeluaran = KodeAkun::detail()->where('id', '!=', '21110')->whereIn('kategori', ['Beban'])->get()->toArray();
         $this->dataSumberDana = KodeAkun::detail()->whereIn('parent_id', ['11100', '21200'])->get()->toArray();
     }
 
