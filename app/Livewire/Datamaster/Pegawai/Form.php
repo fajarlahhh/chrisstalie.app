@@ -8,13 +8,17 @@ use App\Models\Pengguna;
 use App\Models\KepegawaianPegawai;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
+use App\Traits\FileTrait;
+use Livewire\WithFileUploads;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class Form extends Component
 {
-    use CustomValidationTrait;
+    use CustomValidationTrait, FileTrait, WithFileUploads;
     public $data, $unsurGaji = [];
     public $dataKodeAkun = [];
-    public $nama, $alamat, $no_hp, $tanggal_masuk, $tanggal_lahir, $jenis_kelamin, $nik, $npwp, $no_bpjs, $gaji, $tunjangan, $tunjangan_transport, $tunjangan_bpjs, $office, $satuan_tugas, $status, $upload = false, $panggilan;
+    public $nama, $alamat, $no_hp, $tanggal_masuk, $tanggal_lahir, $jenis_kelamin, $nik, $npwp, $no_bpjs, $gaji, $tunjangan, $tunjangan_transport, $tunjangan_bpjs, $office, $satuan_tugas, $status, $upload = false, $panggilan, $tanda_tangan, $file_ttd, $sipa;
 
     public function upload($kepegawaianPegawai)
     {
@@ -54,6 +58,7 @@ class Form extends Component
             'tanggal_masuk' => 'required|date',
             'nik' => 'required|numeric|digits:16',
             'no_bpjs' => 'required',
+            'file_ttd' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         DB::transaction(function () {
@@ -68,6 +73,17 @@ class Form extends Component
             $this->data->no_bpjs = $this->no_bpjs;
             $this->data->satuan_tugas = $this->satuan_tugas;
             $this->data->panggilan = $this->panggilan;
+            if ($this->file_ttd) {
+                $extensi = $this->file_ttd->getClientOriginalExtension();
+                $namaFile = $this->nik . '.' . $extensi;
+                $gambar = Image::make($this->file_ttd)->encode('jpg', 0)->resize(300, null, function ($c) {
+                    $c->aspectRatio();
+                    $c->upsize();
+                });
+                Storage::put('public/pegawai/' . $namaFile, $gambar->stream());
+                $this->data->tanda_tangan = 'pegawai/' . $namaFile;
+            }
+            $this->data->sipa = $this->sipa;
             if ($this->data->exists) {
                 $this->data->status = $this->status == 'Aktif' ? 'Aktif' : 'Non Aktif';
                 if ($this->data->status == 'Non Aktif') {
@@ -103,7 +119,7 @@ class Form extends Component
 
     public function mount(KepegawaianPegawai $data)
     {
-        
+
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '61000')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());

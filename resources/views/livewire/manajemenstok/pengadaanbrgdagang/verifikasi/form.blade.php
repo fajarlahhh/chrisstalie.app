@@ -16,12 +16,23 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
-                <div class="mb-3">
-                    <label class="form-label">Deskripsi</label>
-                    <textarea class="form-control" wire:model="deskripsi" disabled></textarea>
+                <div class="alert alert-info">
+                    <h4 class="alert-heading">Data Permintaan</h4>
+                    <div class="mb-3">
+                        <label class="form-label">Deskripsi</label>
+                        <textarea class="form-control" disabled>{{ $data->deskripsi }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tanggal</label>
+                        <input class="form-control" type="text" value="{{ $data->created_at }}" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Operator</label>
+                        <input class="form-control" type="text" value="{{ $data->pengguna?->nama }}" disabled />
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Status</label>
+                    <label class="form-label">Status Verifikasi</label>
                     <select class="form-control" wire:model.live="status">
                         <option value="Disetujui">Setuju</option>
                         <option value="Ditolak">Tolak</option>
@@ -45,14 +56,12 @@
                                 @foreach ($barang as $index => $row)
                                     <tr>
                                         <td>
-                                            <input type="text" class="form-control"
-                                                value="{{ $row['nama'] . ' - ' . $row['satuan'] }}" autocomplete="off"
-                                                disabled>
+                                            <input type="text" class="form-control" value="{{ $row['nama'] }}"
+                                                autocomplete="off" disabled>
                                         </td>
                                         <td>
                                             <input type="text" class="form-control"
-                                                wire:model="barang.{{ $index }}.satuan" autocomplete="off"
-                                                disabled>
+                                                value="{{ $row['satuan'] }}" autocomplete="off" disabled>
                                             @error('barang.' . $index . '.satuan')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -60,7 +69,7 @@
                                         <td>
                                             <input type="number" class="form-control w-100px" min="0"
                                                 step="1" min="0" max="100"
-                                                wire:model="barang.{{ $index }}.qty" autocomplete="off" disabled>
+                                                value="{{ $row['qty'] }}" autocomplete="off" disabled>
                                             @error('barang.' . $index . '.qty')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -109,7 +118,7 @@
     <x-alert />
 
     <x-modal.cetak judul='Nota' />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

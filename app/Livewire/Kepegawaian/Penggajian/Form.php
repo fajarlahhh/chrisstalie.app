@@ -2,14 +2,11 @@
 
 namespace App\Livewire\Kepegawaian\Penggajian;
 
-use App\Models\KeuanganJurnal;
 use App\Models\KepegawaianPegawai;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Class\JurnalkeuanganClass;
-use App\Models\KepegawaianPegawaiUnsurGaji;
 use App\Models\KepegawaianPenggajian;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 

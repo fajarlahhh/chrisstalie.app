@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Datamaster\Metodebayar;
+namespace App\Livewire\Pengaturan\Metodebayar;
 
 use Livewire\Component;
 use App\Models\KodeAkun;
@@ -13,22 +13,25 @@ class Form extends Component
     use CustomValidationTrait;
     public $data, $dataKodeAkun = [];
     public $nama, $kode_akun_id;
+    public $biaya_admin;
 
     public function submit()
     {
         $this->validateWithCustomMessages([
             'nama' => 'required',
+            'biaya_admin' => 'required|numeric|min:0',
             'kode_akun_id' => 'required',
         ]);
 
         DB::transaction(function () {
             $this->data->nama = $this->nama;
             $this->data->kode_akun_id = $this->kode_akun_id;
+            $this->data->biaya_admin = $this->biaya_admin;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('/datamaster/metodebayar');
+        $this->redirect('/pengaturan/metodebayar');
     }
 
     public function mount(MetodeBayar $data)
@@ -41,6 +44,6 @@ class Form extends Component
 
     public function render()
     {
-        return view('livewire.datamaster.metodebayar.form');
+        return view('livewire.pengaturan.metodebayar.form');
     }
 }

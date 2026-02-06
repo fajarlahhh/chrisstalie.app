@@ -30,11 +30,13 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
-                        <th>Tanggal</th>
-                        <th>Pembelian</th>
-                        <th>Uraian</th>
-                        <th>Pembayaran</th>
-                        <th>Jumlah</th>
+                        <th>Data Tagihan</th>
+                        <th>Tanggal Bayar</th>
+                        <th>Catatan</th>
+                        <th>Total Bayar</th>
+                        <th>Metode Pembayaran</th>
+                        <th>Bukti</th>
+                        <th>No. Jurnal</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -42,20 +44,31 @@
                     @foreach ($data as $index => $row)
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
-                            <td>{{ $row->tanggal }}</td>
                             <td>
                                 <ul>
-                                    <li><strong>{{ $row->pengadaanPemesanan->uraian }}</strong></li>
-                                    <li>{{ $row->pengadaanPemesanan->tanggal }}</li>
+                                    @foreach ($row->pengadaanPelunasanDetail as $subRow)
+                                        <li>No. Tagihan : {{ $subRow->pengadaanTagihan->no_faktur }},
+                                            {{ $subRow->pengadaanTagihan->tanggal }} <strong>Rp.
+                                                {{ number_format($subRow->tagihan) }}</strong></li>
+                                    @endforeach
                                 </ul>
                             </td>
-                            <td>{{ $row->uraian }}</td>
-                            <td>{{ $row->kodeAkunPembayaran->nama }}</td>
+                            <td>{{ $row->tanggal }}</td>
+                            <td>{{ $row->catatan }}</td>
                             <td>{{ number_format($row->jumlah) }}</td>
+                            <td>{{ $row->kodeAkunPembayaran->nama }}</td>
+                            <td>{{ $row->bukti }}</td>
+                            <td><a href="/jurnalkeuangan?bulan={{ substr($row->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $row->keuanganJurnal?->id }}"
+                                    target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
                             <td class="with-btn-group text-end" nowrap>
-                                @role('administrator|supervisor')
-                                    <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                        :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                @role('administrator')
+                                    @if ($row->keuanganJurnal->waktu_tutup_buku)
+                                        <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                            :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                    @else
+                                        <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                    @endif
                                 @endrole
                             </td>
                         </tr>
@@ -68,7 +81,7 @@
         </div>
     </div>
     <x-alert />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

@@ -12,12 +12,22 @@ class Nakes extends Model
 
     public function pengguna(): BelongsTo
     {
-        return $this->belongsTo(Pengguna::class)->withTrashed();
+        return $this->belongsTo(Pengguna::class)->with('kepegawaianPegawai')->withTrashed();
     }
 
     public function kepegawaianPegawai(): BelongsTo
     {
         return $this->belongsTo(KepegawaianPegawai::class);
+    }
+
+    public function kodeAkunJasaDokter(): BelongsTo
+    {
+        return $this->belongsTo(KodeAkun::class, 'kode_akun_jasa_dokter_id');
+    }
+
+    public function kodeAkunJasaPerawat(): BelongsTo
+    {
+        return $this->belongsTo(KodeAkun::class, 'kode_akun_jasa_perawat_id');
     }
 
     public function getNamaAttribute()

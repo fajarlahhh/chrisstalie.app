@@ -29,8 +29,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Nama</label>
-                            <input class="form-control" type="text" wire:model="nama"
-                                x-model="nama"
+                            <input class="form-control" type="text" wire:model="nama" x-model="nama"
                                 @if ($status == 'Non Aktif') disabled @endif />
                             @error('nama')
                                 <span class="text-danger">{{ $message }}</span>
@@ -38,8 +37,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Panggilan</label>
-                            <input class="form-control" type="text" wire:model="panggilan"
-                                x-model="panggilan"
+                            <input class="form-control" type="text" wire:model="panggilan" x-model="panggilan"
                                 @if ($status == 'Non Aktif') disabled @endif />
                             @error('panggilan')
                                 <span class="text-danger">{{ $message }}</span>
@@ -47,8 +45,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Alamat</label>
-                            <input class="form-control" type="text" wire:model="alamat"
-                                x-model="alamat"
+                            <input class="form-control" type="text" wire:model="alamat" x-model="alamat"
                                 @if ($status == 'Non Aktif') disabled @endif />
                             @error('alamat')
                                 <span class="text-danger">{{ $message }}</span>
@@ -56,8 +53,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">No. Hp</label>
-                            <input class="form-control" type="text" wire:model="no_hp"
-                                x-model="no_hp"
+                            <input class="form-control" type="text" wire:model="no_hp" x-model="no_hp"
                                 @if ($status == 'Non Aktif') disabled @endif />
                             @error('no_hp')
                                 <span class="text-danger">{{ $message }}</span>
@@ -66,8 +62,8 @@
                         <div class="mb-3">
                             <label class="form-label">Jenis Kelamin</label>
                             <select data-container="body" class="form-control " wire:model="jenis_kelamin"
-                                x-model="jenis_kelamin"
-                                data-width="100%" @if ($status == 'Non Aktif') disabled @endif>
+                                x-model="jenis_kelamin" data-width="100%"
+                                @if ($status == 'Non Aktif') disabled @endif>
                                 <option selected hidden>-- Tidak Ada Jenis Kelamin --</option>
                                 <option value="Laki-laki">Laki-laki</option>
                                 <option value="Perempuan">Perempuan</option>
@@ -79,70 +75,89 @@
                         <div class="mb-3">
                             <label class="form-label">Tanggal Lahir</label>
                             <input class="form-control" type="date" wire:model="tanggal_lahir"
-                                x-model="tanggal_lahir"
-                                @if ($status == 'Non Aktif') disabled @endif />
+                                x-model="tanggal_lahir" @if ($status == 'Non Aktif') disabled @endif />
                             @error('tanggal_lahir')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <hr>
                         <div class="mb-3">
-                            <label class="form-label">Tanggal Masuk</label>
-                            <input class="form-control" type="date" wire:model="tanggal_masuk"
-                                x-model="tanggal_masuk"
+                            <label class="form-label">Tanda Tangan</label>
+                            @if ($data->exists && $data->tanda_tangan)
+                                <br>
+                                <img src="{{ Storage::url($data->tanda_tangan) }}" alt="Tanda Tangan"
+                                    class="img-fluid">
+                            @endif
+                            <input type="file" class="form-control" wire:model="file_ttd" x-model="file_ttd"
                                 @if ($status == 'Non Aktif') disabled @endif />
-                            @error('tanggal_masuk')
+                            @error('file_ttd')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">NPWP</label>
-                            <input class="form-control" type="text" wire:model="npwp"
-                                x-model="npwp"
-                                @if ($status == 'Non Aktif') disabled @endif />
-                            @error('npwp')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">No. BPJS Kesehatan</label>
-                            <input class="form-control" type="text" wire:model="no_bpjs"
-                                x-model="no_bpjs"
-                                @if ($status == 'Non Aktif') disabled @endif />
-                            @error('no_bpjs')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Satuan Tugas</label>
-                            <input class="form-control" type="text" wire:model="satuan_tugas"
-                                x-model="satuan_tugas"
-                                @if ($status == 'Non Aktif') disabled @endif />
-                            @error('satuan_tugas')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        @if ($data->exists)
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" wire:model="status"
-                                    x-model="status"
-                                    @if ($status == 'Aktif') checked @endif />
-                                <label class="form-check-label" for="status">
-                                    Aktif
-                                </label>
-                            </div>
-                        @endif
-                        <div class="mb-3">
-                            <input class="form-check-input" type="checkbox" wire:model="upload"
-                                x-model="upload"
-                                @if ($upload == 1) checked disabled @endif />
-                            <label class="form-check-label" for="upload">
-                                Upload Ke Mesin
-                            </label>
                         </div>
                     </div>
                     <div class="col-md-6">
+                        <div class="note alert-info">
+                            <div class="note-content">
+                                <h4>Data Kepegawaian</h4>
+                                <hr>
+                                <div class="mb-3">
+                                    <label class="form-label">Tanggal Masuk</label>
+                                    <input class="form-control" type="date" wire:model="tanggal_masuk"
+                                        x-model="tanggal_masuk" @if ($status == 'Non Aktif') disabled @endif />
+                                    @error('tanggal_masuk')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">NPWP</label>
+                                    <input class="form-control" type="text" wire:model="npwp" x-model="npwp"
+                                        @if ($status == 'Non Aktif') disabled @endif />
+                                    @error('npwp')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">No. BPJS Kesehatan</label>
+                                    <input class="form-control" type="text" wire:model="no_bpjs"
+                                        x-model="no_bpjs" @if ($status == 'Non Aktif') disabled @endif />
+                                    @error('no_bpjs')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Satuan Tugas</label>
+                                    <input class="form-control" type="text" wire:model="satuan_tugas"
+                                        x-model="satuan_tugas" @if ($status == 'Non Aktif') disabled @endif />
+                                    @error('satuan_tugas')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">SIPA</label>
+                                    <input class="form-control" type="text" wire:model="sipa" x-model="sipa"
+                                        @if ($status == 'Non Aktif') disabled @endif />
+                                    @error('sipa')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                @if ($data->exists)
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" wire:model="status"
+                                            x-model="status" @if ($status == 'Aktif') checked @endif />
+                                        <label class="form-check-label" for="status">
+                                            Aktif
+                                        </label>
+                                    </div>
+                                @endif
+                                <div class="mb-3">
+                                    <input class="form-check-input" type="checkbox" wire:model="upload"
+                                        x-model="upload" @if ($upload == 1) checked disabled @endif />
+                                    <label class="form-check-label" for="upload">
+                                        Upload Ke Mesin
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="note alert-secondary mb-0">
                             <div class="note-content">
                                 <h4>Gaji & Tunjangan</h4>
@@ -236,68 +251,78 @@
 </div>
 
 @push('scripts')
-<script>
-    function pegawaiForm() {
-        return {
-            nik: @js(old('nik', $data->nik ?? '')),
-            nama: @js(old('nama', $data->nama ?? '')),
-            panggilan: @js(old('panggilan', $data->panggilan ?? '')),
-            alamat: @js(old('alamat', $data->alamat ?? '')),
-            no_hp: @js(old('no_hp', $data->no_hp ?? '')),
-            jenis_kelamin: @js(old('jenis_kelamin', $data->jenis_kelamin ?? '')),
-            tanggal_lahir: @js(old('tanggal_lahir', $data->tanggal_lahir ?? '')),
-            tanggal_masuk: @js(old('tanggal_masuk', $data->tanggal_masuk ?? '')),
-            npwp: @js(old('npwp', $data->npwp ?? '')),
-            no_bpjs: @js(old('no_bpjs', $data->no_bpjs ?? '')),
-            satuan_tugas: @js(old('satuan_tugas', $data->satuan_tugas ?? '')),
-            status: @js(old('status', $data->status ?? 'Aktif')),
-            upload: @js(old('upload', $data->upload ?? 0)),
-            unsurGaji: @js($unsurGaji).map(row => ({ ...row })),
-            tambahUnsurGaji() {
-                this.unsurGaji.push({
-                    id: '',
-                    sifat: '+',
-                    kode_akun_id: null,
-                    nilai: null,
-                });
-            },
-            hapusUnsurGaji(index) {
-                // sama persis dengan di contoh: agar urutan index stabil & aman
-                const filteredIndexes = this.unsurGaji
-                    .map((item, i) => ({ item, i }))
-                    .map(({ i }) => i);
-                // Remove the right index from filtered items
-                if (filteredIndexes[index] !== undefined) {
-                    this.unsurGaji.splice(filteredIndexes[index], 1);
-                }
-            },
-            syncToLivewire() {
-                let componentId = this.$root.closest('[wire\\:id]')?.getAttribute('wire:id');
-                if (componentId) {
-                    let $wire = window.Livewire.find(componentId);
-                    if ($wire && typeof $wire.set === 'function') {
-                        $wire.set('nik', this.nik, false);
-                        $wire.set('nama', this.nama, false);
-                        $wire.set('panggilan', this.panggilan, false);
-                        $wire.set('alamat', this.alamat, false);
-                        $wire.set('no_hp', this.no_hp, false);
-                        $wire.set('jenis_kelamin', this.jenis_kelamin, false);
-                        $wire.set('tanggal_lahir', this.tanggal_lahir, false);
-                        $wire.set('tanggal_masuk', this.tanggal_masuk, false);
-                        $wire.set('npwp', this.npwp, false);
-                        $wire.set('no_bpjs', this.no_bpjs, false);
-                        $wire.set('satuan_tugas', this.satuan_tugas, false);
-                        $wire.set('status', this.status, false);
-                        $wire.set('upload', this.upload, false);
-                        $wire.set('unsurGaji', JSON.parse(JSON.stringify(this.unsurGaji)), false);
+    <script>
+        function pegawaiForm() {
+            return {
+                nik: @js(old('nik', $data->nik ?? '')),
+                sipa: @js(old('sipa', $data->sipa ?? '')),
+                nama: @js(old('nama', $data->nama ?? '')),
+                panggilan: @js(old('panggilan', $data->panggilan ?? '')),
+                alamat: @js(old('alamat', $data->alamat ?? '')),
+                no_hp: @js(old('no_hp', $data->no_hp ?? '')),
+                jenis_kelamin: @js(old('jenis_kelamin', $data->jenis_kelamin ?? '')),
+                tanggal_lahir: @js(old('tanggal_lahir', $data->tanggal_lahir ?? '')),
+                tanggal_masuk: @js(old('tanggal_masuk', $data->tanggal_masuk ?? '')),
+                npwp: @js(old('npwp', $data->npwp ?? '')),
+                no_bpjs: @js(old('no_bpjs', $data->no_bpjs ?? '')),
+                satuan_tugas: @js(old('satuan_tugas', $data->satuan_tugas ?? '')),
+                file_ttd: @js(old('file_ttd', $data->file_ttd ?? '')),
+                status: @js(old('status', $data->status ?? 'Aktif')),
+                upload: @js(old('upload', $data->upload ?? 0)),
+                unsurGaji: @js($unsurGaji).map(row => ({
+                    ...row
+                })),
+                tambahUnsurGaji() {
+                    this.unsurGaji.push({
+                        id: '',
+                        sifat: '+',
+                        kode_akun_id: null,
+                        nilai: null,
+                    });
+                },
+                hapusUnsurGaji(index) {
+                    // sama persis dengan di contoh: agar urutan index stabil & aman
+                    const filteredIndexes = this.unsurGaji
+                        .map((item, i) => ({
+                            item,
+                            i
+                        }))
+                        .map(({
+                            i
+                        }) => i);
+                    // Remove the right index from filtered items
+                    if (filteredIndexes[index] !== undefined) {
+                        this.unsurGaji.splice(filteredIndexes[index], 1);
                     }
+                },
+                syncToLivewire() {
+                    let componentId = this.$root.closest('[wire\\:id]')?.getAttribute('wire:id');
+                    if (componentId) {
+                        let $wire = window.Livewire.find(componentId);
+                        if ($wire && typeof $wire.set === 'function') {
+                            $wire.set('nik', this.nik, false);
+                            $wire.set('sipa', this.sipa, false);
+                            $wire.set('nama', this.nama, false);
+                            $wire.set('panggilan', this.panggilan, false);
+                            $wire.set('alamat', this.alamat, false);
+                            $wire.set('no_hp', this.no_hp, false);
+                            $wire.set('jenis_kelamin', this.jenis_kelamin, false);
+                            $wire.set('tanggal_lahir', this.tanggal_lahir, false);
+                            $wire.set('tanggal_masuk', this.tanggal_masuk, false);
+                            $wire.set('npwp', this.npwp, false);
+                            $wire.set('no_bpjs', this.no_bpjs, false);
+                            $wire.set('satuan_tugas', this.satuan_tugas, false);
+                            $wire.set('status', this.status, false);
+                            $wire.set('upload', this.upload, false);
+                            $wire.set('unsurGaji', JSON.parse(JSON.stringify(this.unsurGaji)), false);
+                        }
+                    }
+                },
+                init() {
+                    // Di form tindakan init() = setup/restore/refresh, bisa tambahkan observer jika perlu
+                    // Contoh: $watch bila mau sinkronisasi dynamic tanpa submit
                 }
-            },
-            init() {
-                // Di form tindakan init() = setup/restore/refresh, bisa tambahkan observer jika perlu
-                // Contoh: $watch bila mau sinkronisasi dynamic tanpa submit
             }
         }
-    }
-</script>
+    </script>
 @endpush

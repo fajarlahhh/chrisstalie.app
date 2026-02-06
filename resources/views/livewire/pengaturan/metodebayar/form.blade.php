@@ -2,7 +2,7 @@
     @section('title', (!$data->exists ? 'Tambah' : 'Edit') . ' Metode Bayar')
 
     @section('breadcrumb')
-        <li class="breadcrumb-item">Data Master</li>
+        <li class="breadcrumb-item">Pengaturan</li>
         <li class="breadcrumb-item">Metode Bayar</li>
         <li class="breadcrumb-item active">{{ !$data->exists ? 'Tambah' : 'Edit' }}</li>
     @endsection
@@ -46,6 +46,13 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+                <div class="mb-3">
+                    <label class="form-label">Biaya Admin <small class="text-muted">(Biaya admin yang dikenakan pada setiap transaksi)</small></label>
+                    <input class="form-control" type="number" step="any" min="0" wire:model="biaya_admin" />
+                    @error('biaya_admin')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')
@@ -54,7 +61,7 @@
                         Simpan
                     </button>
                 @endrole
-                <button type="button" onclick="window.location.href='/datamaster/metodebayar'" class="btn btn-danger"
+                <button type="button" onclick="window.location.href='/pengaturan/metodebayar'" class="btn btn-danger"
                     wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal
@@ -63,7 +70,7 @@
             </div>
         </form>
     </div>
-    
+
     <div wire:loading>
         <x-loading />
     </div>

@@ -95,35 +95,35 @@ class Form extends Component
                     ]
                 );
 
-                if ($this->metode_penyusutan == 'Garis Lurus') {
-                    $keuanganJurnal = JurnalkeuanganClass::insert(
-                        jenis: 'Penyusutan',
-                        sub_jenis: 'Penyusutan Aset Inventaris',
-                        tanggal: $this->tanggal_perolehan,
-                        uraian: 'Penyusutan Aset Inventaris ' . $this->nama,
-                        system: 1,
-                        foreign_key: 'aset_id',
-                        foreign_id: $this->data->id,
-                        detail: [
-                            [
-                                'debet' => 0,
-                                'kredit' => $this->data->nilai_penyusutan,
-                                'kode_akun_id' => $this->data->kode_akun_penyusutan_id
-                            ],
-                            [
-                                'debet' => $this->data->nilai_penyusutan,
-                                'kredit' => 0,
-                                'kode_akun_id' => '65900'
-                            ]
-                        ]
-                    );
+                // if ($this->metode_penyusutan == 'Garis Lurus') {
+                //     $keuanganJurnal = JurnalkeuanganClass::insert(
+                //         jenis: 'Penyusutan',
+                //         sub_jenis: 'Penyusutan Aset Inventaris',
+                //         tanggal: $this->tanggal_perolehan,
+                //         uraian: 'Penyusutan Aset Inventaris ' . $this->nama,
+                //         system: 1,
+                //         foreign_key: 'aset_id',
+                //         foreign_id: $this->data->id,
+                //         detail: [
+                //             [
+                //                 'debet' => 0,
+                //                 'kredit' => $this->data->nilai_penyusutan,
+                //                 'kode_akun_id' => $this->data->kode_akun_penyusutan_id
+                //             ],
+                //             [
+                //                 'debet' => $this->data->nilai_penyusutan,
+                //                 'kredit' => 0,
+                //                 'kode_akun_id' => '65900'
+                //             ]
+                //         ]
+                //     );
 
-                    $penyusutan = new AsetPenyusutan();
-                    $penyusutan->aset_id = $this->data->id;
-                    $penyusutan->nilai = $this->data->nilai_penyusutan;
-                    $penyusutan->keuangan_jurnal_id = $keuanganJurnal->id;
-                    $penyusutan->save();
-                }
+                //     $penyusutan = new AsetPenyusutan();
+                //     $penyusutan->aset_id = $this->data->id;
+                //     $penyusutan->nilai = $this->data->nilai_penyusutan;
+                //     $penyusutan->keuangan_jurnal_id = $keuanganJurnal->id;
+                //     $penyusutan->save();
+                // }
             }
             $data = Aset::findOrFail($this->data->id);
 

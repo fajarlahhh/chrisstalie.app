@@ -3,6 +3,7 @@
 namespace App\Class;
 
 use App\Models\KeuanganJurnal;
+use App\Models\KeuanganSaldo;
 use Illuminate\Support\Str;
 
 class JurnalkeuanganClass
@@ -56,5 +57,15 @@ class JurnalkeuanganClass
         ])->toArray());
 
         return $keuanganJurnal;
+    }
+
+    public static function tutupBuku($tanggal) : bool
+    {
+        $periode = \Carbon\Carbon::parse($tanggal)->addMonth()->format('Y-m-01');
+        $keuanganJurnal = KeuanganSaldo::where('periode', $periode)->get();
+        if ($keuanganJurnal->count() > 0) {
+            return true;
+        }
+        return false;
     }
 }

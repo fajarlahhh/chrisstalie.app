@@ -8,6 +8,7 @@ class PengadaanPermintaanDetail extends Model
 {
     //
     protected $table = 'pengadaan_permintaan_detail';
+    public $timestamps = false;
 
     public function pengadaanPermintaan()
     {
@@ -16,6 +17,6 @@ class PengadaanPermintaanDetail extends Model
 
     public function barangSatuan()
     {
-        return $this->belongsTo(BarangSatuan::class);
+        return $this->belongsTo(BarangSatuan::class)->with('satuanKonversi');
     }
 }

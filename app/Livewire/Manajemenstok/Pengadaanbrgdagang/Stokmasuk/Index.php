@@ -3,10 +3,11 @@
 namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Stokmasuk;
 
 use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\Attributes\Url;
 use App\Models\StokMasuk;
-use App\Models\PengadaanPemesanan;
+use App\Class\BarangClass;
+use Livewire\Attributes\Url;
+use Livewire\WithPagination;
+use App\Class\JurnalkeuanganClass;
 use Illuminate\Support\Facades\DB;
 
 class Index extends Component
@@ -28,22 +29,26 @@ class Index extends Component
 
     public function delete($id)
     {
-        StokMasuk::findOrFail($id)->forceDelete();
-        session()->flash('success', 'Berhasil menghapus data');
+        if (JurnalkeuanganClass::tutupBuku($this->bulan . '-01')) {
+            session()->flash('error', 'Pembukuan periode ini sudah ditutup');
+            return;
+        }
+        DB::transaction(function () use ($id) {
+            $stokMasuk = StokMasuk::findOrFail($id);
+            if (BarangClass::hapusStok($stokMasuk->barang_id, $stokMasuk->qty, $stokMasuk->id)) {
+                session()->flash('success', 'Berhasil menghapus data');
+                $stokMasuk->forceDelete();
+            }
+        });
     }
 
     public function render()
     {
         return view('livewire.manajemenstok.pengadaanbrgdagang.stokmasuk.index', [
-            'pending' => PengadaanPemesanan::select(DB::raw('pengadaan_pemesanan.id id'), 'tanggal', 'supplier_id', 'uraian')->with('supplier')
-                ->leftJoin('pengadaan_pemesanan_detail', 'pengadaan_pemesanan.id', '=', 'pengadaan_pemesanan_detail.pengadaan_pemesanan_id')
-                ->groupBy('pengadaan_pemesanan.id', 'tanggal', 'supplier_id', 'uraian')
-                ->havingRaw('SUM(pengadaan_pemesanan_detail.qty) > (SELECT ifnull(SUM(stok_masuk.qty), 0) FROM stok_masuk WHERE pengadaan_pemesanan_id = pengadaan_pemesanan.id )')
-                ->get()->count(),
-            'data' => StokMasuk::with(['pengguna.kepegawaianPegawai', 'barangSatuan.barang', 'pengadaanPemesanan.supplier', 'keluar'])
-                ->where('created_at', 'like', $this->bulan . '%')
+            'data' => StokMasuk::with(['pengguna.kepegawaianPegawai', 'keuanganJurnal', 'barangSatuan.barang', 'pengadaanPemesanan.supplier', 'pengadaanPemesanan.pengadaanPermintaan','pengadaanPemesanan.pengadaanTagihan', 'keluar'])
+                ->where('tanggal', 'like', $this->bulan . '%')
                 ->whereNotNull('pengadaan_pemesanan_id')
-                ->whereHas('pengadaanPemesanan', fn($q) => $q->where('jenis', 'Barang Dagang'))
+                ->when(auth()->user()->hasRole('operator|guest'), fn($q) => $q->whereHas('pengadaanPemesanan', fn($q) => $q->whereIn('jenis', ['Persediaan Apotek', 'Alat Dan Bahan'])))
                 ->where(
                     fn($q) => $q
                         ->whereHas('barangSatuan.barang', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))

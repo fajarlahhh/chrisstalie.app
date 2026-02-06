@@ -7,13 +7,39 @@
         <li class="breadcrumb-item active">Form</li>
     @endsection
 
-    <h1 class="page-header">Permintaan</h1>
+    <h1 class="page-header">Permintaan <small>Pengadaan Barang Dagang</small></h1>
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <div class="panel-heading ui-sortable-handle">
             <h4 class="panel-title">Form</h4>
         </div>
         <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
             <div class="panel-body">
+                <div class="mb-3">
+                    <label class="form-label mb-2">Jenis Barang</label>
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="jenis_barang_apotek" name="jenis_barang"
+                            value="Persediaan Apotek" x-model="jenis_barang" @change="updatedJenisBarang()">
+                        <label class="form-check-label" for="jenis_barang_apotek">Persediaan Apotek</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="jenis_barang_alat" name="jenis_barang"
+                            value="Alat Dan Bahan" wire:model.live="jenis_barang" x-model="jenis_barang"
+                            @change="updatedJenisBarang()">
+                        <label class="form-check-label" for="jenis_barang_alat">Alat Dan Bahan</label>
+                    </div>
+                    @role('administrator|supervisor')
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="jenis_barang_khusus" name="jenis_barang"
+                                value="Barang Khusus" wire:model.live="jenis_barang" x-model="jenis_barang"
+                                @change="updatedJenisBarang()">
+                            <label class="form-check-label" for="jenis_barang_khusus">Barang Khusus</label>
+                        </div>
+                    @endrole
+                    @error('jenis_barang')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
                 <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
                     <textarea class="form-control" wire:model="deskripsi" x-model="deskripsi"></textarea>
@@ -102,30 +128,10 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Kirim Ke Verifikator</label>
-                    <div wire:ignore>
-                        <select class="form-control" x-model="verifikator_id" x-init="$($el).select2({
-                            width: '100%',
-                            dropdownAutoWidth: true
-                        });
-                        $($el).on('change', function(e) {
-                            verifikator_id = e.target.value;
-                        });
-                        $watch('verifikator_id', (value) => {
-                            if (value !== $($el).val()) {
-                                $($el).val(value).trigger('change');
-                            }
-                        });"
-                            wire:model="verifikator_id">
-                            <option value="">-- Pilih Verifikator --</option>
-                            @foreach ($dataPengguna as $subRow)
-                                <option value="{{ $subRow['id'] }}">
-                                    {{ $subRow['kepegawaian_pegawai'] ? $subRow['kepegawaian_pegawai']['nama'] : $subRow['nama'] }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @error('verifikator_id')
+                    <input type="checkbox" class="form-check-input" id="kirim" x-model="kirim" value="1"
+                        wire:model="kirim">
+                    <label class="form-label" for="kirim">&nbsp;Kirim Ke Verifikator</label>
+                    @error('kirim')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
@@ -147,7 +153,7 @@
     </div>
     <x-alert />
     <x-modal.cetak judul="Nota" />
-    
+
     <div wire:loading>
         <x-loading />
     </div>
@@ -157,10 +163,9 @@
     function permintaanForm() {
         return {
             deskripsi: @js($deskripsi),
-            verifikator_id: @js($verifikator_id),
-            barang: @js($barang).map(row => ({
-                ...row
-            })),
+            jenis_barang: @js($jenis_barang),
+            barang: @js($barang),
+            kirim: @js($kirim),
             dataBarang: @json($dataBarang),
             tambahBarang() {
                 this.barang.push({
@@ -169,6 +174,22 @@
                     qty: 1,
                     barangSatuan: [],
                 });
+            },
+            updatedJenisBarang() {
+                if (window.Livewire && window.Livewire.find) {
+                    let componentId = this.$root.closest('[wire\\:id]')?.getAttribute('wire:id');
+                    if (componentId) {
+                        let $wire = window.Livewire.find(componentId);
+                        if ($wire && typeof $wire.call === 'function') {
+                            $wire.call('getBarang', this.jenis_barang)
+                                .then(result => {
+                                    this.dataBarang = result;
+                                });
+                        }
+                    }
+                } else {
+                    this.dataBarang = @json($dataBarang);
+                }
             },
             hapusBarang(index) {
                 this.barang.splice(index, 1);
@@ -204,7 +225,9 @@
                         let $wire = window.Livewire.find(componentId);
                         if ($wire && typeof $wire.set === 'function') {
                             $wire.set('barang', JSON.parse(JSON.stringify(this.barang)), false);
-                            $wire.set('verifikator_id', this.verifikator_id, false);
+                            $wire.set('kirim', this.kirim, false);
+                            $wire.set('jenis_barang', this.jenis_barang, false);
+                            $wire.set('dataBarang', JSON.parse(JSON.stringify(this.dataBarang)), false);
                             $wire.set('deskripsi', this.deskripsi, false);
                         }
                     }

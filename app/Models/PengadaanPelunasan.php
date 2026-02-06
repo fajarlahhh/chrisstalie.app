@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PengadaanPelunasan extends Model
 {
@@ -21,11 +22,16 @@ class PengadaanPelunasan extends Model
 
     public function pengguna()
     {
-        return $this->belongsTo(Pengguna::class)->withTrashed();
+        return $this->belongsTo(Pengguna::class)->with('kepegawaianPegawai')->withTrashed();
     }
 
     public function kodeAkunPembayaran()
     {
         return $this->belongsTo(KodeAkun::class);
+    }
+    
+    public function pengadaanPelunasanDetail(): HasMany
+    {
+        return $this->hasMany(PengadaanPelunasanDetail::class);
     }
 }

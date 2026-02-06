@@ -56,11 +56,6 @@ return [
                 //     "urutkan" => true,
                 //     "method" => ["Index"],
                 // ],
-                [
-                    "title" => "Metode Bayar",
-                    "urutkan" => true,
-                    "method" => ["Index", "Form"],
-                ],
             ]
         ],
         [
@@ -70,6 +65,12 @@ return [
             "sub_menu" => [
                 [
                     "title" => "Shift",
+                    "urutkan" => true,
+                    "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Metode Bayar",
+                    "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
                 [
@@ -155,51 +156,30 @@ return [
                             "method" => ["Index", "Form"],
                         ],
                         [
-                            "title" => "Pembelian",
+                            "title" => "Pemesanan",
                             "urutkan" => true,
                             "method" => ["Index", "Form"],
                         ],
-                        // [
-                        //     "title" => "Pemesanan",
-                        //     "urutkan" => true,
-                        //     "method" => ["Index", "Form"],
-                        // ],
-                        // [
-                        //     "title" => "Persetujuan Pemesanan",
-                        //     "urutkan" => true,
-                        //     "method" => ["Index", "Form"],
-                        // ],
+                        [
+                            "title" => "Persetujuan Pemesanan",
+                            "urutkan" => true,
+                            "method" => ["Index", "Form"],
+                        ],
                         [
                             "title" => "Stok Masuk",
                             "urutkan" => true,
                             "method" => ["Index", "Form"],
                         ],
-                        // [
-                        //     "title" => "Tagihan",
-                        //     "urutkan" => true,
-                        //     "method" => ["Index", "Form"],
-                        // ],
                         [
-                            "title" => "Pelunasan",
+                            "title" => "Tagihan",
                             "urutkan" => true,
                             "method" => ["Index", "Form"],
                         ],
                         [
-                            "title" => "Lainnya",
+                            "title" => "Pelunasan",
                             "urutkan" => true,
-                            "sub_menu" => [
-                                [
-                                    "title" => "Alat Dan Bahan",
-                                    "urutkan" => true,
-                                    "method" => ["Index", "Form"],
-                                ],
-                                [
-                                    "title" => "Barang Khusus",
-                                    "urutkan" => true,
-                                    "method" => ["Index", "Form"],
-                                ]
-                            ]
-                        ],
+                            "method" => ["Index", "Form"],
+                        ]
                     ]
                 ],
             ],

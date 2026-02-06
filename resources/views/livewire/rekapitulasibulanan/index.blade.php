@@ -15,13 +15,14 @@
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Bulan</label>
-                    <input type="month" class="form-control" wire:model="bulan" min="2025-11" max="{{ date('Y-m', strtotime('-1 month')) }}">
+                    <input type="month" class="form-control" wire:model="bulan" min="2025-09">
                 </div>
                 <div class="alert alert-info">
                     <strong>Info:</strong> Rekapitulasi bulanan akan menghitung semua data yang ada pada bulan tersebut.
                     <ul>
-                        <li>Stok Barang</li>
-                        <li>Saldo-saldo akhir</li>
+                        <li>Stok Akhir Barang Dagang</li>
+                        <li>Saldo Akhir Keuangan</li>
+                        <li>Penyusutan Aset</li>
                         <li>Pembuatan Laporan Laba Rugi</li>
                         <li>Pembuatan Laporan Neraca</li>
                         <li>Pembuatan Laporan Arus Kas</li>

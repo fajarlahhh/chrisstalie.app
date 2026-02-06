@@ -41,7 +41,7 @@ class PengadaanPemesanan extends Model
 
     public function pengguna(): BelongsTo
     {
-        return $this->belongsTo(Pengguna::class)->withTrashed();
+        return $this->belongsTo(Pengguna::class)->with('kepegawaianPegawai')->withTrashed();
     }
 
     public function keuanganJurnal(): HasOne
@@ -62,6 +62,16 @@ class PengadaanPemesanan extends Model
     public function kodeAkun(): BelongsTo
     {
         return $this->belongsTo(KodeAkun::class);
+    }
+
+    public function pengadaanPemesananVerifikasi(): HasOne
+    {
+        return $this->hasOne(PengadaanVerifikasi::class)->where('jenis', 'Persetujuan Pemesanan Pengadaan');
+    }
+
+    public function pengadaanTagihan(): HasOne
+    {
+        return $this->hasOne(PengadaanTagihan::class);
     }
 
     public function getTotalHargaAttribute(): float

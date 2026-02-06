@@ -10,9 +10,9 @@ class KodeAkun extends Model
     //
     protected $table = 'kode_akun';
 
-    public function kodeAkunNeraca()
+    public function keuanganSaldo()
     {
-        return $this->hasMany(KodeAkunNeraca::class);
+        return $this->hasMany(KeuanganSaldo::class);
     }
 
     public function parent()

@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\PengadaanPelunasan;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
+use App\Class\JurnalkeuanganClass;
 
 class Index extends Component
 {
@@ -21,6 +22,10 @@ class Index extends Component
 
     public function delete($id)
     {
+        if (JurnalkeuanganClass::tutupBuku($this->bulan . '-01')) {
+            session()->flash('error', 'Pembukuan periode ini sudah ditutup');
+            return;
+        }
         PengadaanPelunasan::findOrFail($id)->forceDelete();
         session()->flash('success', 'Berhasil menghapus data');
     }
@@ -35,7 +40,7 @@ class Index extends Component
         return view(
             'livewire.manajemenstok.pengadaanbrgdagang.pelunasan.index',
             [
-                'data' => PengadaanPelunasan::with(['pengadaanPemesanan', 'keuanganJurnal', 'pengguna.kepegawaianPegawai', 'kodeAkunPembayaran'])->where('created_at', 'like', $this->bulan . '%')
+                'data' => PengadaanPelunasan::with(['pengadaanPelunasanDetail.pengadaanTagihan', 'keuanganJurnal', 'pengguna.kepegawaianPegawai', 'kodeAkunPembayaran'])->where('created_at', 'like', $this->bulan . '%')
                     ->orderBy('created_at', 'desc')->paginate(10)
             ]
         );

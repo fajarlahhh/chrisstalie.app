@@ -1,5 +1,5 @@
 <div>
-    @section('title', 'Harga Jual')
+    @section('title', 'Metode Bayar')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Pengaturan</li>
@@ -30,6 +30,7 @@
                         <th class="w-10px">No.</th>
                         <th>Nama</th>
                         <th>Kode Akun</th>
+                        <th>Biaya Admin</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -39,6 +40,7 @@
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
                             <td>{{ $item->nama }}</td>
                             <td>{{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
+                            <td>{{ number_format($item->biaya_admin, 2) }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     @if ($item->nama == 'Cash')

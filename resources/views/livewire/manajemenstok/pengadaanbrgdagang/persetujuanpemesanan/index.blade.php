@@ -1,3 +1,143 @@
 <div>
-    {{-- Nothing in the world is as soft and yielding as water. --}}
+    @section('title', 'Persetujuan Pemesanan')
+
+    @section('breadcrumb')
+        <li class="breadcrumb-item">Pengadaan Barang Dagang</li>
+        <li class="breadcrumb-item active">Persetujuan Pemesanan</li>
+    @endsection
+
+    <h1 class="page-header">Persetujuan Pemesanan <small>Pengadaan Barang Dagang</small></h1>
+    <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+        <!-- begin panel-heading -->
+        <div class="panel-heading">
+            <div class="w-100">
+                <div class="panel-heading-btn float-end">
+                    <select class="form-select" wire:model.lazy="status">
+                        <option value="Belum Disetujui">Belum Disetujui</option>
+                        <option value="Sudah Disetujui">Sudah Disetujui</option>
+                    </select>&nbsp;
+                    @if ($status == 'Sudah Disetujui')
+                        <input type="month" class="form-control w-auto" wire:model.lazy="bulan"
+                            max="{{ date('Y-m') }}">
+                        &nbsp;
+                    @endif
+                    <input type="text" class="form-control w-200px" placeholder="Cari"
+                        aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
+                        wire:model.lazy="cari">
+                </div>
+            </div>
+        </div>
+        <div class="panel-body table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="w-10px">No.</th>
+                        <th>Data Permintaan</th>
+                        <th>Tanggal Pemesanan</th>
+                        <th>Supplier</th>
+                        <th>Catatan</th>
+                        <th class="w-600px">Detail Barang Pemesanan</th>
+                        <th class="w-100px">Total Harga</th>
+                        @if ($status == 'Sudah Disetujui')
+                            <th>Detail Persetujuan</th>
+                        @endif
+                        <th class="w-10px"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($data as $item)
+                        <tr>
+                            <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
+                            <td nowrap>
+                                <small>
+                                    <ul>
+                                        <li>Nomor: {{ $item->pengadaanPermintaan?->nomor }}</li>
+                                        <li>Deskripsi: {{ $item->pengadaanPermintaan?->deskripsi }}</li>
+                                        <li>Tanggal: {{ $item->pengadaanPermintaan?->created_at }}</li>
+                                        <li>Jenis Barang: {{ $item->pengadaanPermintaan?->jenis_barang }}</li>
+                                    </ul>
+                                </small>
+                            </td>
+                            <td>{{ $item->tanggal }}</td>
+                            <td>{{ $item->supplier->nama }}</td>
+                            <td>{{ $item->catatan }}</td>
+                            <td>
+                                <table class="table table-bordered fs-11px">
+                                    <thead>
+                                        <tr>
+                                            <th>Barang</th>
+                                            <th>Satuan</th>
+                                            <th>Qty</th>
+                                            <th>Harga Beli</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($item->pengadaanPemesananDetail as $detail)
+                                            <tr>
+                                                <td class="text-nowrap w-300px">
+                                                    {{ $detail->barangSatuan->barang->nama }}</td>
+                                                <td class="text-nowrap w-80px">
+                                                    @if ($detail->barangSatuan->konversi_satuan)
+                                                        {!! $detail->barangSatuan->nama . ' <small>' . $detail->barangSatuan->konversi_satuan . '</small>' !!}
+                                                    @else
+                                                        {{ $detail->barangSatuan->nama }}
+                                                    @endif
+                                                </td>
+                                                <td class="text-nowrap text-end w-80px">
+                                                    {{ $detail->qty }}
+                                                </td>
+                                                <td class="text-nowrap text-end w-80px">
+                                                    {{ number_format($detail->harga_beli) }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td class="text-nowrap text-end w-100px">
+                                {{ number_format($item->pengadaanPemesananDetail->sum(fn($q) => $q->harga_beli * $q->qty)) }}
+                            </td>
+                            @if ($status == 'Sudah Disetujui')
+                                <td nowrap>
+                                    <small>
+                                        <ul>
+                                            <li>
+                                                Nomor : {{ $item->nomor }}
+                                            </li>
+                                            <li>
+                                                Operator :
+                                                {{ $item->pengadaanPemesananVerifikasi?->pengguna?->nama }}
+                                            </li>
+                                            <li>
+                                                Waktu :
+                                                {{ $item->pengadaanPemesananVerifikasi?->waktu_verifikasi }}
+                                            </li>
+                                        </ul>
+                                    </small>
+                                </td>
+                            @endif
+                            <td class="with-btn-group text-end" nowrap>
+                                @role('administrator|supervisor|operator')
+                                    @if ($status == 'Belum Disetujui')
+                                        <a href="/manajemenstok/pengadaanbrgdagang/persetujuanpemesanan/form/{{ $item->id }}"
+                                            class="btn btn-info btn-sm">
+                                            Input
+                                        </a>
+                                    @endif
+                                @endrole
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="panel-footer">
+            {{ $data->links() }}
+        </div>
+    </div>
+    <x-alert />
+
+    <div wire:loading>
+        <x-loading />
+    </div>
 </div>

@@ -14,14 +14,13 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $dataBarang = [], $dataPengguna = [], $barang = [], $deskripsi, $data, $verifikator_id, $status = 'Ditolak', $catatan;
+    public $dataBarang = [], $dataPengguna = [], $barang = [], $data, $status = 'Ditolak', $catatan;
 
     public function submit()
     {
         if ($this->status == 'Disetujui') {
             $this->validateWithCustomMessages([
                 'status' => 'required',
-                'deskripsi' => 'required',
                 'barang' => 'required|array',
                 'barang.*.qty_disetujui' => 'required|numeric|min:1',
             ]);
@@ -48,6 +47,7 @@ class Form extends Component
             $pengadaanVerifikasi->status = $this->status;
             $pengadaanVerifikasi->catatan = $this->catatan;
             $pengadaanVerifikasi->waktu_verifikasi = now();
+            $pengadaanVerifikasi->pengguna_id = auth()->id();
             $pengadaanVerifikasi->save();
 
             session()->flash('success', 'Berhasil menyimpan data');
