@@ -7,6 +7,7 @@ use App\Models\StokMasuk;
 use App\Class\BarangClass;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
+use App\Class\JurnalkeuanganClass;
 use Illuminate\Support\Facades\DB;
 
 class Index extends Component
@@ -28,6 +29,10 @@ class Index extends Component
 
     public function delete($id)
     {
+        if (JurnalkeuanganClass::tutupBuku($this->bulan . '-01')) {
+            session()->flash('error', 'Pembukuan periode ini sudah ditutup');
+            return;
+        }
         DB::transaction(function () use ($id) {
             $stokMasuk = StokMasuk::findOrFail($id);
             if (BarangClass::hapusStok($stokMasuk->barang_id, $stokMasuk->qty, $stokMasuk->id)) {

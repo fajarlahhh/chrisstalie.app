@@ -12,7 +12,7 @@ class KodeAkun extends Model
 
     public function kodeAkunNeraca()
     {
-        return $this->hasMany(KodeAkunNeraca::class);
+        return $this->hasMany(KeuanganSaldo::class);
     }
 
     public function parent()

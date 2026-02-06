@@ -3,9 +3,10 @@
 namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Tagihan;
 
 use Livewire\Component;
-use App\Models\PengadaanTagihan;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
+use App\Models\PengadaanTagihan;
+use App\Class\JurnalkeuanganClass;
 
 class Index extends Component
 {
@@ -24,6 +25,10 @@ class Index extends Component
 
     public function delete($id)
     {
+        if (JurnalkeuanganClass::tutupBuku($this->bulan . '-01')) {
+            session()->flash('error', 'Pembukuan periode ini sudah ditutup');
+            return;
+        }
         $data = PengadaanTagihan::find($id);
         $data->delete();
         session()->flash('success', 'Berhasil menghapus data');

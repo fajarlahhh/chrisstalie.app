@@ -14,4 +14,9 @@ class PengadaanPelunasanDetail extends Model
     {
         return $this->belongsTo(PengadaanPelunasan::class);
     }
+
+    public function pengadaanTagihan()
+    {
+        return $this->belongsTo(PengadaanTagihan::class);
+    }
 }

@@ -5,7 +5,7 @@ namespace App\Exports;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\Exportable;
-use App\Models\KodeAkunNeraca;
+use App\Models\KeuanganSaldo;
 
 class LaporanbukubesarExport implements FromView
 {
@@ -28,8 +28,8 @@ class LaporanbukubesarExport implements FromView
             'data' => $this->data,
             'saldo' => $this->kodeAkunId ?
                 (collect($this->dataKodeAkun)->where('id', $this->kodeAkunId)->first()['kategori'] == 'Aktiva' ?
-                    KodeAkunNeraca::where('kode_akun_id', $this->kodeAkunId)->where('periode', $this->bulan . '-01')->first()->debet ?? 0
-                    : KodeAkunNeraca::where('kode_akun_id', $this->kodeAkunId)->where('periode', $this->bulan . '-01')->first()->kredit ?? 0)
+                    KeuanganSaldo::where('kode_akun_id', $this->kodeAkunId)->where('periode', $this->bulan . '-01')->first()->debet ?? 0
+                    : KeuanganSaldo::where('kode_akun_id', $this->kodeAkunId)->where('periode', $this->bulan . '-01')->first()->kredit ?? 0)
                 : 0,
             'bulan' => $this->bulan,
             'dataKodeAkun' => $this->dataKodeAkun,

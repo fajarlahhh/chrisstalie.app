@@ -5,7 +5,7 @@ namespace App\Livewire\Rekapitulasibulanan;
 use Carbon\Carbon;
 use App\Models\Barang;
 use App\Models\KodeAkun;
-use App\Models\KodeAkunNeraca;
+use App\Models\KeuanganSaldo;
 use App\Models\StokAwal;
 use Livewire\Component;
 use Livewire\Attributes\Url;
@@ -58,7 +58,7 @@ class Index extends Component
             for ($i = 0; $i < $diff; $i++) {
                 $saldo = [];
 
-                KodeAkunNeraca::where('periode', $periodeSelanjutnya->format('Y-m-01'))->delete();
+                KeuanganSaldo::where('periode', $periodeSelanjutnya->format('Y-m-01'))->delete();
 
                 $dataAkun = KodeAkun::with([
                     'kodeAkunNeraca' => fn($q) => $q->selectRaw("kode_akun_id, debet, kredit")
@@ -119,7 +119,7 @@ class Index extends Component
                 }
                 $ds = collect($saldo)->chunk(2000);
                 foreach ($ds as $sal) {
-                    KodeAkunNeraca::insert($sal->toArray());
+                    KeuanganSaldo::insert($sal->toArray());
                 }
 
                 $periode->addMonths(1);

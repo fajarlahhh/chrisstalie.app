@@ -20,7 +20,7 @@ class Form extends Component
 
     #[Url]
     public $supplier;
-    public $pengadaanTagihan = [], $dataSupplier = [], $dataKodePembayaran = [], $kode_akun_pembayaran_id, $pengadaan_pemesanan_id, $tanggal, $catatan, $pengadaan_tagihan_id = [];
+    public $pengadaanTagihan = [], $dataSupplier = [], $dataKodePembayaran = [], $kode_akun_pembayaran_id, $pengadaan_pemesanan_id, $tanggal, $catatan, $pengadaan_tagihan_id = [], $bukti;
 
     public function mount()
     {
@@ -57,7 +57,9 @@ class Form extends Component
 
             $data = new PengadaanPelunasan();
             $data->tanggal = $this->tanggal;
+            $data->bukti = $this->bukti;
             $data->catatan = $this->catatan;
+            $data->supplier_id = $this->supplier;
             $data->kode_akun_pembayaran_id = $this->kode_akun_pembayaran_id;
             $data->jumlah = $pengadaanTagihan->sum('total_tagihan');
             $data->save();
@@ -70,7 +72,7 @@ class Form extends Component
             ])->toArray());
 
             $this->jurnalKeuangan(
-                uraian: 'Pelunasan pengadaan barang dagang No. Tagihan ' . $pengadaanTagihan->pluck('no_faktur')->implode(', ') . ' supplier ' . $pengadaanTagihan->first()->supplier->nama,
+                uraian: 'Pelunasan pengadaan barang dagang No. Tagihan ' . $pengadaanTagihan->pluck('no_faktur')->implode(', ') . ' supplier ' . $pengadaanTagihan->first()->supplier->nama . ', Bukti : ' . $this->bukti,
                 foreign_id: $data->id,
                 detail: [
                     [

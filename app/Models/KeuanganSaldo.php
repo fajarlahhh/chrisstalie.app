@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class KodeAkunNeraca extends Model
+class KeuanganSaldo extends Model
 {
     //
-    protected $table = 'kode_akun_neraca';
+    protected $table = 'keuangan_saldo';
 }
