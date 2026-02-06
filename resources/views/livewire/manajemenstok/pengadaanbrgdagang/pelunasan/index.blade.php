@@ -35,6 +35,7 @@
                         <th>Uraian</th>
                         <th>Pembayaran</th>
                         <th>Jumlah</th>
+                        <th>No. Jurnal</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -52,6 +53,8 @@
                             <td>{{ $row->uraian }}</td>
                             <td>{{ $row->kodeAkunPembayaran->nama }}</td>
                             <td>{{ number_format($row->jumlah) }}</td>
+                            <td><a href="/jurnalkeuangan?bulan={{ substr($row->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $row->keuanganJurnal?->id }}"
+                                    target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     <x-action :row="$row" custom="" :detail="false" :edit="false"

@@ -38,6 +38,7 @@
                         <th>Satuan</th>
                         <th>No. Batch</th>
                         <th>Tanggal Kedaluarsa</th>
+                        <th>No. Jurnal</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -75,6 +76,8 @@
                             <td>{{ $row->barangSatuan->nama }}</td>
                             <td>{{ $row->no_batch }}</td>
                             <td>{{ $row->tanggal_kedaluarsa }}</td>
+                            <td><a href="/jurnalkeuangan?bulan={{ substr($row->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $row->keuanganJurnal?->id }}"
+                                    target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     @if ($row->pengadaanPemesanan->pengadaanTagihan)

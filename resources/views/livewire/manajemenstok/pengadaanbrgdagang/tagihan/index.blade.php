@@ -31,12 +31,13 @@
                     <tr>
                         <th class="w-10px">No.</th>
                         <th>Data Pemesanan</th>
+                        <th>No. Faktur</th>
                         <th>Tanggal</th>
                         <th>Catatan</th>
-                        <th>Supplier</th>
                         <th>Jatuh Tempo</th>
                         <th>Detail Tagihan</th>
                         <th>Status</th>
+                        <th>No. Jurnal</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -53,9 +54,9 @@
                                     <li>Tanggal : {{ $row->pengadaanPemesanan->tanggal }}</li>
                                 </ul>
                             </td>
+                            <td>{{ $row->no_faktur }}</td>
                             <td>{{ $row->tanggal }}</td>
                             <td>{{ $row->catatan }}</td>
-                            <td>{{ $row->supplier->nama }}</td>
                             <td>{{ $row->tanggal_jatuh_tempo }}</td>
                             <td>
                                 <table class="table table-bordered fs-11px">
@@ -113,6 +114,8 @@
                                 </table>
                             </td>
                             <td>{{ $row->status }}</td>
+                            <td><a href="/jurnalkeuangan?bulan={{ substr($row->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $row->keuanganJurnal?->id }}"
+                                    target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     <x-action :row="$row" custom="" :detail="false" :edit="false"

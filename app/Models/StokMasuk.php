@@ -36,6 +36,11 @@ class StokMasuk extends Model
         return $this->belongsTo(Pengguna::class)->with('kepegawaianPegawai')->withTrashed();
     }
 
+    public function keuanganJurnal(): HasOne
+    {
+        return $this->hasOne(KeuanganJurnal::class);
+    }
+
     public function stok(): HasMany
     {
         return $this->hasMany(Stok::class);

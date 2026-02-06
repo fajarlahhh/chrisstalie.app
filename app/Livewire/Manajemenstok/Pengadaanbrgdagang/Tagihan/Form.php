@@ -14,7 +14,7 @@ use App\Models\PengadaanPemesananDetail;
 class Form extends Component
 {
     use CustomValidationTrait, KodeakuntransaksiTrait;
-    public $data, $dataPemesanan = [], $barang = [], $pengadaanPemesanan, $pengadaan_pemesanan_id, $no_faktur, $tanggal, $jatuh_tempo, $diskon, $ppn, $catatan, $total_harga_barang, $total_tagihan;
+    public $data, $dataPemesanan = [], $barang = [], $pengadaanPemesanan, $pengadaan_pemesanan_id, $no_faktur, $tanggal, $jatuh_tempo, $diskon = 0, $ppn = 0, $catatan, $total_harga_barang, $total_tagihan;
 
     public function updatedPengadaanPemesananId($value)
     {
@@ -38,8 +38,8 @@ class Form extends Component
             'pengadaan_pemesanan_id' => 'required',
             'no_faktur' => 'required',
             'tanggal' => 'required|date',
-            'diskon' => 'required|numeric|min:0',
-            'ppn' => 'required|numeric|min:0',
+            'diskon' => 'numeric|min:0',
+            'ppn' => 'numeric|min:0',
             'jatuh_tempo' => 'required|date|after:tanggal',
             'catatan' => 'nullable',
         ]);
@@ -52,7 +52,7 @@ class Form extends Component
             $data->total_harga_barang = $this->total_harga_barang;
             $data->diskon = $this->diskon;
             $data->ppn = $this->ppn;
-            $data->total_tagihan = $this->total_tagihan;
+            $data->total_tagihan = $this->total_harga_barang - $this->diskon + $this->ppn;
             $data->pengadaan_pemesanan_id = $this->pengadaan_pemesanan_id;
             $data->supplier_id = $this->pengadaanPemesanan->supplier_id;
             $data->pengguna_id = auth()->id();
