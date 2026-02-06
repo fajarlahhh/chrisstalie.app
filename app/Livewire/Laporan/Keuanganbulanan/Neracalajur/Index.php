@@ -28,7 +28,7 @@ class Index extends Component
         $data = [];
         $bulanIni = $this->bulan;
         $dataKodeAkun = KodeAkun::with([
-            'kodeAkunNeraca' => function ($q) use ($bulanIni) {
+            'keuanganSaldo' => function ($q) use ($bulanIni) {
                 $q->where('periode', $bulanIni . '-01');
             }
         ])
@@ -42,8 +42,8 @@ class Index extends Component
                     'deskripsi' => $q->nama,
                     'kategori' => $q->kategori,
                     'laba_rugi' => $q->laba_rugi,
-                    'saldo_debet' => $q->kodeAkunNeraca->sum('debet') ?? 0,
-                    'saldo_kredit' => $q->kodeAkunNeraca->sum('kredit') ?? 0,
+                    'saldo_debet' => $q->keuanganSaldo->sum('debet') ?? 0,
+                    'saldo_kredit' => $q->keuanganSaldo->sum('kredit') ?? 0,
                     'jurnal_debet' => $q->keuanganJurnalDetail->sum('debet') ?? 0,
                     'jurnal_kredit' => $q->keuanganJurnalDetail->sum('kredit') ?? 0,
                 ];

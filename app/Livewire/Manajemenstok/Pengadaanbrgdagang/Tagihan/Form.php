@@ -43,6 +43,12 @@ class Form extends Component
             'jatuh_tempo' => 'required|date|after:tanggal',
             'catatan' => 'nullable',
         ]);
+
+        if (JurnalkeuanganClass::tutupBuku(substr($this->tanggal, 0, 7) . '-01')) {
+            session()->flash('error', 'Pembukuan periode ini sudah ditutup');
+            return;
+        }
+
         DB::transaction(function () {
             $data = new PengadaanTagihan();
             $data->no_faktur = $this->no_faktur;
