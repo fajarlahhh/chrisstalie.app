@@ -59,7 +59,7 @@ class Form extends Component
             $data->save();
 
             $this->jurnalKeuangan(
-                'Hutang pengadaan ' . $this->pengadaanPemesanan->jenis . ' ' . $this->pengadaanPemesanan->nomor . ' dari supplier ' . $this->pengadaanPemesanan->supplier->nama . ' dengan nomor faktur ' . $this->no_faktur . ' tanggal ' . $this->tanggal,
+                'Hutang pengadaan ' . $this->pengadaanPemesanan->jenis . ' No. SP ' . $this->pengadaanPemesanan->pengadaanPermintaan?->nomor . ' dari supplier ' . $this->pengadaanPemesanan->supplier->nama . ' dengan No. faktur ' . $this->no_faktur . ' tanggal ' . $this->tanggal,
                 $data->id,
                 [
                     [
@@ -80,7 +80,7 @@ class Form extends Component
                     [
                         'debet' => 0,
                         'kredit' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']) - $this->diskon + $this->ppn,
-                        'kode_akun_id' => $data->kode_akun_id
+                        'kode_akun_id' => $this->pengadaanPemesanan->supplier->kode_akun_id
                     ]
                 ]
             );
