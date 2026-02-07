@@ -9,15 +9,14 @@ use Livewire\Attributes\Url;
 class Index extends Component
 {
     #[Url]
-    public $pasien, $pasienId;
+    public $noRm;
 
     public $dataPasien;
     public $rekamMedis;
 
-    public function updatedPasienId($id)
+    public function updatedNoRm()
     {
-        $this->pasien = $id;
-        $this->dataPasien = $this->getRekamMedis($id);
+        $this->dataPasien = $this->getRekamMedis($this->noRm);
     }
 
     private function getRekamMedis($id)
@@ -44,8 +43,8 @@ class Index extends Component
 
     public function mount()
     {
-        if ($this->pasien) {
-            $this->dataPasien = $this->getRekamMedis($this->pasien);
+        if ($this->noRm) {
+            $this->dataPasien = $this->getRekamMedis($this->noRm);
         } else {
             $this->dataPasien = null;
         }
