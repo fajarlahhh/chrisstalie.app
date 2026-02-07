@@ -77,7 +77,7 @@
                                     <div class="col-md-11">
                                         <div class="mb-3">
                                             <label class="form-label" x-text="`Resep ${resepIndex + 1}`"></label>
-                                            <input type="text" class="form-control" x-model="resepItem.nama"
+                                            <input type="text" class="form-control" x-model="resepItem.nama" required
                                                 placeholder="Nama Resep">
                                         </div>
                                     </div>
@@ -151,7 +151,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <textarea class="form-control" x-model="resepItem.catatan" placeholder="Catatan"></textarea>
+                                <textarea class="form-control" x-model="resepItem.catatan" placeholder="Catatan" required></textarea>
                             </div>
                         </template>
                         <div class="text-center">
