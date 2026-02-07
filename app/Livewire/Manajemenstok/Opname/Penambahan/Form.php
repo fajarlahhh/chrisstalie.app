@@ -105,9 +105,9 @@ class Form extends Component
     {
         JurnalkeuanganClass::insert(
             jenis: 'Koreksi',
-            sub_jenis: 'Koreksi Penambaan Stok',
+            sub_jenis: 'Koreksi Penambahan Stok',
             tanggal: now(),
-            uraian: 'Koreksi Stok Barang ' . $this->barang['nama'] . ' sejumlah ' . $this->qty_masuk . ' ' . $this->satuan['nama'],
+            uraian: 'Koreksi Penambahan Stok Barang ' . $this->barang['nama'] . ' sejumlah ' . $this->qty_masuk . ' ' . $this->satuan['nama'],
             system: 1,
             foreign_key: 'stok_masuk_id',
             foreign_id: $koreksi->id,

@@ -101,7 +101,7 @@ class Form extends Component
             jenis: 'Koreksi',
             sub_jenis: 'Koreksi Pengeluaran Stok',
             tanggal: now(),
-            uraian: 'Koreksi Stok Barang ' . $this->barang['nama'],
+            uraian: 'Koreksi Pengeluaran Stok Barang ' . $this->barang['nama'] . ' sejumlah ' . $this->qty_keluar . ' ' . $this->barang['satuan'],
             system: 1,
             foreign_key: 'stok_keluar_id',
             foreign_id: $koreksi->id,
