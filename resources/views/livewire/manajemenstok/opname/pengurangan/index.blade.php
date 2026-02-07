@@ -32,14 +32,13 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
-                        <th>ID</th>
                         <th>Tanggal</th>
                         <th>Catatan</th>
                         <th>Barang</th>
                         <th>Qty</th>
-                        <th>Harga Beli</th>
                         <th>No. Batch</th>
                         <th>Tgl. Kedaluarsa</th>
+                        <th class="text-end">Harga Beli</th>
                         <th>No. Jurnal</th>
                         <th class="w-10px"></th>
                     </tr>
@@ -48,21 +47,20 @@
                     @foreach ($data as $index => $row)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-                            <td class="text-nowrap w-100px">{{ $row->id }}</td>
                             <td class="text-nowrap w-100px">{{ $row->created_at }}</td>
                             <td class="text-nowrap w-100px">{{ $row->catatan }}</td>
                             <td class="text-nowrap w-100px">{{ $row->barang->nama }}</td>
                             <td class="text-nowrap w-100px">{{ $row->qty }}</td>
-                            <td class="text-nowrap w-100px">{{ $row->harga }}</td>
                             <td class="text-nowrap w-100px">{{ $row->no_batch }}</td>
                             <td class="text-nowrap w-100px">{{ $row->tanggal_kedaluarsa }}</td>
+                            <td class="text-nowrap w-100px text-end">{{ number_format($row->harga, 0, ',', '.') }}</td>
                             <td class="text-nowrap w-100px"><a
                                     href="/jurnalkeuangan?bulan={{ substr($row->created_at, 0, 7) }}&cari={{ $row->keuanganJurnal?->nomor }}"
                                     target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     @role('administrator|supervisor')
-                                        @if ($row->keuanganJurnal->waktu_tutup_buku)
+                                        @if ($row->keuanganJurnal?->waktu_tutup_buku)
                                             <x-action :row="$row" :detail="false" :edit="false" :print="false"
                                                 :permanentdelete="false" :restore="false" :delete="false" />
                                         @else

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class StokKeluar extends Model
 {
@@ -32,8 +33,8 @@ class StokKeluar extends Model
         return $this->belongsTo(BarangSatuan::class)->with('satuanKonversi');
     }
 
-    public function keuanganJurnal(): BelongsTo
+    public function keuanganJurnal(): HasOne
     {
-        return $this->belongsTo(KeuanganJurnal::class);
+        return $this->hasOne(KeuanganJurnal::class);
     }
 }
