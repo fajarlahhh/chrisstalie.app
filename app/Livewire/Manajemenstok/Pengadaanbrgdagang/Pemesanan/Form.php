@@ -37,7 +37,18 @@ class Form extends Component
                     }
                 }
             ],
-            'barang.*.harga_beli' => 'required|integer',
+            'barang.*.harga_beli' => [
+                function ($attribute, $value, $fail) {
+                    $matches = [];
+                    if (preg_match('/^barang\.(\d+)\.harga_beli$/', $attribute, $matches)) {
+                        $index = (int)$matches[1];
+                        $qty = $this->barang[$index]['qty'] ?? 0;
+                        if ($qty > 0 && (is_null($value) || $value === '' || !is_numeric($value))) {
+                            $fail('Harga beli wajib diisi.');
+                        }
+                    }
+                }
+            ],
         ]);
 
         DB::transaction(function () {
@@ -88,6 +99,7 @@ class Form extends Component
             'qty_permintaan' => $q->qty_disetujui,
             'qty_sudah_dipesan' => $data->pengadaanPemesananDetail->where('barang_id', $q->barang_id)->sum('qty') ?? 0,
             'qty' => 0,
+            'harga_beli' => 0,
         ])->toArray();
         $this->dataSupplier = Supplier::whereNotNull('konsinyator')->orderBy('nama')->get()->toArray();
     }

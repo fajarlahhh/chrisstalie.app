@@ -42,8 +42,8 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Estimasi Kedatangan</label>
-                    <input class="form-control" type="date" wire:model="tanggal_estimasi_kedatangan" x-model="tanggal_estimasi_kedatangan"
-                        min="{{ now()->format('Y-m-d') }}" required />
+                    <input class="form-control" type="date" wire:model="tanggal_estimasi_kedatangan"
+                        x-model="tanggal_estimasi_kedatangan" min="{{ now()->format('Y-m-d') }}" required />
                     @error('tanggal_estimasi_kedatangan')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -95,24 +95,23 @@
                                                 autocomplete="off" disabled>
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control" min="0" step="1"
-                                                min="0" max="100" :value="row.qty_permintaan"
-                                                autocomplete="off" disabled>
+                                            <input type="number" class="form-control" step="1" min="0"
+                                                max="100" :value="row.qty_permintaan" autocomplete="off" disabled>
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control" min="0" step="1"
-                                                min="0" max="100" :value="row.qty_sudah_dipesan"
-                                                autocomplete="off" disabled>
+                                            <input type="number" class="form-control" step="1" min="0"
+                                                max="100" :value="row.qty_sudah_dipesan" autocomplete="off"
+                                                disabled>
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control" min="0" step="1"
-                                                min="0" max="100" x-model="row.qty"
-                                                :max="row.qty_permintaan - row.qty_sudah_dipesan" autocomplete="off"
+                                            <input type="number" class="form-control" step="1" min="0"
+                                                max="100" x-model="row.qty"
+                                                :max="row.qty_permintaan - row.qty_sudah_dipesan" @input="hitungTotal()" autocomplete="off"
                                                 required>
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control" min="0" step="1"
-                                                x-model="row.harga_beli" @input="hitungTotal()" required>
+                                            <input type="number" class="form-control" step="1"
+                                                x-model="row.harga_beli" @input="hitungTotal()">
                                         </td>
                                     </tr>
                                 </template>
