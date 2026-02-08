@@ -17,16 +17,8 @@
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <select wire:model.lazy="status" class="form-control w-auto">
-                        <option value="Disetujui">Disetujui</option>
-                        <option value="Ditolak">Ditolak</option>
-                        <option value="Pending Verifikasi">Pending Verifikasi</option>
-                        <option value="Belum Kirim Verifikasi">Belum Kirim Verifikasi</option>
-                    </select>&nbsp;
-                    @if ($status == 'Disetujui')
-                        <input type="month" class="form-control w-200px" wire:model.lazy="bulan"
-                            max="{{ date('Y-m') }}" />&nbsp;
-                    @endif
+                    <input type="month" class="form-control w-200px" wire:model.lazy="bulan"
+                        max="{{ date('Y-m') }}" />&nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
                         wire:model.lazy="cari">

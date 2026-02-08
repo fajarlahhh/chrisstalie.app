@@ -46,20 +46,8 @@ class Index extends Component
                 ->where('deskripsi', 'like', '%' . $this->cari . '%')
                 ->orWhere('nomor', 'like', '%' . $this->cari . '%'))
             ->when(auth()->user()->hasRole('operator|guest'), fn($q) => $q->whereIn('jenis_barang', ['Persediaan Apotek', 'Alat Dan Bahan']))
-            ->when($this->status == 'Belum Kirim Verifikasi', fn($q) => $q->whereDoesntHave('pengadaanVerifikasi'))
-            ->when($this->status == 'Pending Verifikasi', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {
-                $q->whereNull('status');
-            })->orWhereDoesntHave('pengadaanVerifikasi'))
-            ->when($this->status == 'Ditolak', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {
-                $q->whereNotNull('status');
-                $q->where('status', 'Ditolak');
-            }))
-            ->when($this->status == 'Disetujui', fn($q) => $q->where('created_at', 'like', $this->bulan . '%')->whereHas('pengadaanVerifikasi', function ($q) {
-                $q->whereNotNull('status');
-                $q->where('status', 'Disetujui');
-            }))
-
-            ->orderBy('created_at', 'asc')
+            ->where('created_at', 'like', $this->bulan . '%')
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
         return $data;
     }
