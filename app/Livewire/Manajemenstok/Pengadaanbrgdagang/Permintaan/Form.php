@@ -43,7 +43,6 @@ class Form extends Component
                     ->first();
                 $nomorTerakhir = $terakhir ? (int)substr($terakhir->id, 6, 5) : 0;
                 $nomor = sprintf('%05d', $nomorTerakhir + 1) . '/PERMINTAAN-CHRISSTALIE/' . date('m') . '/' . date('Y');
-                dd($nomor);
                 $this->data->nomor = $nomor;
             }
             $this->data->jenis_barang = $this->jenis_barang;
