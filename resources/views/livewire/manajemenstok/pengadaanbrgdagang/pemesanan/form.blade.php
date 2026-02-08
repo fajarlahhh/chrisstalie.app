@@ -77,8 +77,8 @@
                                 <tr>
                                     <th>Barang</th>
                                     <th class="w-150px">Satuan</th>
-                                    <th class="w-150px">Qty Permintaan</th>
-                                    <th class="w-150px">Qty Sudah Dipesan</th>
+                                    <th class="w-100px">Qty Permintaan</th>
+                                    <th class="w-100px">Qty Sudah Dipesan</th>
                                     <th class="w-150px">Qty Dipesan Skrg</th>
                                     <th class="w-200px">Harga Satuan</th>
                                 </tr>
@@ -106,8 +106,8 @@
                                         <td>
                                             <input type="number" class="form-control" step="1" min="0"
                                                 max="100" x-model="row.qty"
-                                                :max="row.qty_permintaan - row.qty_sudah_dipesan" @input="hitungTotal()" autocomplete="off"
-                                                required>
+                                                :max="row.qty_permintaan - row.qty_sudah_dipesan" @input="hitungTotal()"
+                                                autocomplete="off" required>
                                         </td>
                                         <td>
                                             <input type="number" class="form-control" step="1"
@@ -115,6 +115,7 @@
                                         </td>
                                     </tr>
                                 </template>
+                            </tbody>
                             <tfoot>
                                 <tr>
                                     <th colspan="5" class="text-end">Total Harga Barang</th>
@@ -125,8 +126,10 @@
                                     </td>
                                 </tr>
                             </tfoot>
-                            </tbody>
                         </table>
+                        @error('barang')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="mb-3">

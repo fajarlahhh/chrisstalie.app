@@ -17,7 +17,14 @@ class Form extends Component
 
     public function submit()
     {
-
+        // Validasi: jumlah total qty dari semua barang harus lebih dari 0
+        $totalQty = array_sum(array_map(function ($b) {
+            return isset($b['qty']) ? (float)$b['qty'] : 0;
+        }, $this->barang));
+        if ($totalQty <= 0) {
+            $this->addError('barang', 'Total jumlah barang yang dipesan harus lebih dari 0.');
+            return;
+        }
         $this->validateWithCustomMessages([
             'tanggal' => 'required|date',
             'tanggal_estimasi_kedatangan' => 'required|date',
@@ -50,7 +57,7 @@ class Form extends Component
                 }
             ],
         ]);
-
+        dd($this->barang);
         DB::transaction(function () {
             $data = new PengadaanPemesanan();
             $data->tanggal = $this->tanggal;
