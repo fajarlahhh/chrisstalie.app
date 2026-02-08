@@ -59,7 +59,7 @@ class Form extends Component
             session()->flash('danger', 'Pembukuan periode ini sudah ditutup');
             return;
         }
-        
+
         DB::transaction(function () {
             $penggajian = new KepegawaianPenggajian();
             $penggajian->tanggal = $this->tanggal;
@@ -75,27 +75,30 @@ class Form extends Component
                 'debet' => 0,
                 'kredit' => collect($this->detail)->sum('debet'),
             ];
-
-            JurnalkeuanganClass::insert(
-                jenis: 'Gaji',
-                sub_jenis: 'Pengeluaran',
-                tanggal: $this->tanggal,
-                uraian: 'Gaji Bulan ' . $this->periode . ' a/n ' . collect($this->dataPegawai)->where('id', $this->pegawai_id)->first()['nama'],
-                system: 1,
-                foreign_key: 'kepegawaian_penggajian_id',
-                foreign_id: $penggajian->id,
-                detail: collect($this->detail)->map(fn($q) => [
-                    'debet' => $q['debet'],
-                    'kredit' => $q['kredit'],
-                    'kode_akun_id' => $q['kode_akun_id'],
-                ])->toArray()
-            );
-
+            $this->jurnalKeuangan($penggajian, $this->detail);
             session()->flash('success', 'Berhasil menyimpan data');
         });
         return redirect()->to('kepegawaian/penggajian');
     }
 
+
+    private function jurnalKeuangan($penggajian, $detail)
+    {
+        JurnalkeuanganClass::insert(
+            jenis: 'Pengeluaran',
+            sub_jenis: 'Pengeluaran Gaji Pegawai',
+            tanggal: $this->tanggal,
+            uraian: 'Gaji Bulan ' . $this->periode . ' a/n ' . collect($this->dataPegawai)->where('id', $this->pegawai_id)->first()['nama'],
+            system: 1,
+            foreign_key: 'kepegawaian_penggajian_id',
+            foreign_id: $penggajian->id,
+            detail: collect($detail)->map(fn($q) => [
+                'debet' => $q['debet'],
+                'kredit' => $q['kredit'],
+                'kode_akun_id' => $q['kode_akun_id'],
+            ])->toArray()
+        );
+    }
     public function render()
     {
         return view('livewire.kepegawaian.penggajian.form');
