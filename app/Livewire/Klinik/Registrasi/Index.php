@@ -89,7 +89,7 @@ class Index extends Component
     {
         $rules = [
             'tanggal' => 'required',
-            'nakes_id' => 'required',
+            'nakes_id' => 'required_if:ketemu_dokter,1',
             'keluhan_awal' => 'required',
         ];
 
@@ -149,7 +149,7 @@ class Index extends Component
             $registrasi->tanggal = $this->tanggal;
             $registrasi->id = str_replace(['/', ':', '-', ' '], '', $this->tanggal . date(' H:i:s'));
             $registrasi->keluhan_awal = $this->keluhan_awal;
-            $registrasi->nakes_id = $this->nakes_id;
+            $registrasi->nakes_id = $this->ketemu_dokter == 1 ? $this->nakes_id : null;
             $registrasi->pasien_id = $this->pasien_id ?: $pasien->id;
             $registrasi->ketemu_dokter = $this->ketemu_dokter == 1 ? 1 : 0;
             $registrasi->pengguna_id = auth()->id();

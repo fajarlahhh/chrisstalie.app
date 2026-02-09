@@ -212,7 +212,7 @@
                                             <td>{{ $row->keluhan_awal }}</td>
                                         </tr>
                                     @endforeach
-                                </table>    
+                                </table>
                             </div>
                         @endif
                         <div class="mb-3">
@@ -223,28 +223,38 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Dokter</label>
-                            <select data-container="body" class="form-control" x-init="$($el).selectpicker({
-                                liveSearch: true,
-                                width: 'auto',
-                                size: 10,
-                                container: 'body',
-                                style: '',
-                                showSubtext: true,
-                                styleBase: 'form-control'
-                            })"
-                                wire:model="nakes_id" data-width="100%">
-                                <option selected value="">-- Pilih Dokter --</option>
-                                @foreach ($dataNakes as $row)
-                                    <option value="{{ $row['id'] }}">
-                                        {{ $row['nama'] }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('nakes_id')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                        <div x-data="{ ketemuDokter: @entangle('ketemu_dokter').defer }">
+                            <div class="mb-3">
+                                <label class="form-label">Ketemu Dokter</label>
+                                <select data-container="body" class="form-control" x-model="ketemuDokter"
+                                    wire:model="ketemu_dokter" data-width="100%">
+                                    <option value="0">Tidak</option>
+                                    <option value="1">Ya</option>
+                                </select>
+                            </div>
+                            <div class="mb-3" x-show="ketemuDokter == 1" x-cloak>
+                                <label class="form-label">Dokter</label>
+                                <select data-container="body" class="form-control" x-init="$($el).selectpicker({
+                                    liveSearch: true,
+                                    width: 'auto',
+                                    size: 10,
+                                    container: 'body',
+                                    style: '',
+                                    showSubtext: true,
+                                    styleBase: 'form-control'
+                                })"
+                                    wire:model="nakes_id" data-width="100%">
+                                    <option selected value="">-- Pilih Dokter --</option>
+                                    @foreach ($dataNakes as $row)
+                                        <option value="{{ $row['id'] }}">
+                                            {{ $row['nama'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('nakes_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Keluhan Awal</label>
@@ -252,14 +262,6 @@
                             @error('keluhan_awal')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Ketemu Dokter</label>
-                            <select data-container="body" class="form-control" wire:model="ketemu_dokter"
-                                data-width="100%">
-                                <option value="0">Tidak</option>
-                                <option value="1">Ya</option>
-                            </select>
                         </div>
                     </div>
                 </div>
@@ -286,7 +288,7 @@
             </div>
         </form>
     </div>
-    
+
     <div wire:loading>
         <x-loading />
     </div>

@@ -119,7 +119,7 @@
                                     target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    @if ($row->pengadaanPelunasan->count() > 0)
+                                    @if ($row->pengadaanPelunasan)
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentdelete="false" :restore="false" :delete="false" />
                                     @else
