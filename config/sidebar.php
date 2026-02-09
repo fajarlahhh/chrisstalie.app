@@ -85,12 +85,12 @@ return [
                 ],
             ]
         ],
-        [
-            "title" => "Penjualan",
-            "urutkan" => true,
-            "method" => ["Index", "Data"],
-            "icon" => "<i class='fas fa-shopping-cart'></i>",
-        ],
+        // [
+        //     "title" => "Penjualan",
+        //     "urutkan" => true,
+        //     "method" => ["Index", "Data"],
+        //     "icon" => "<i class='fas fa-shopping-cart'></i>",
+        // ],
         [
             "title" => "Kasir",
             "urutkan" => true,
@@ -320,10 +320,10 @@ return [
                     "title" => "Peracikan Resep Obat",
                     "method" => ["Index", "Form"],
                 ],
-                [
-                    "title" => "Kasir",
-                    "method" => ["Index", "Form"],
-                ],
+                // [
+                //     "title" => "Kasir",
+                //     "method" => ["Index", "Form"],
+                // ],
                 [
                     "title" => "Upload",
                     "method" => ["Index", "Form"],

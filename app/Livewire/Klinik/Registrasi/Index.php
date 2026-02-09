@@ -30,7 +30,7 @@ class Index extends Component
     public $no_hp;
     public $pasien_description;
     public $keluhan_awal;
-    public $ketemu_dokter = 1;
+    public $ketemu_dokter = 0;
 
     public function mount()
     {

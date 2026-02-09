@@ -144,14 +144,6 @@ class Form extends Component
             'metode_bayar' => 'required',
             'cash' => $this->metode_bayar == 1 ? 'required|numeric|min:' . $this->total_tagihan : 'nullable',
             'keterangan_pembayaran' => $this->metode_bayar != 1 ? 'required|max:1000' : 'nullable',
-            // 'tindakan.*.dokter_id' => function ($attribute, $value, $fail) {
-            //     $index = explode('.', $attribute)[1];
-            //     if (
-            //         !isset($this->tindakan[$index]['dokter_id'])
-            //     ) {
-            //         $fail('Dokter wajib dipilih untuk tindakan ' . $this->tindakan[$index]['nama'] . '.');
-            //     }
-            // },
             'tindakan.*.perawat_id' => function ($attribute, $value, $fail) {
                 $index = explode('.', $attribute)[1];
                 if (
@@ -213,6 +205,7 @@ class Form extends Component
         ]);
 
         DB::transaction(function () {
+            dd($this->bahan);
             // Ambil data pembayaran terakhir di bulan berjalan
             if (Pembayaran::where('registrasi_id', $this->data->id)->count() > 0) {
                 abort(400, 'Pembayaran sudah ada');

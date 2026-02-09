@@ -27,7 +27,7 @@ class Index extends Component
 
     public function delete($id)
     {
-        ResepObat::where('registrasi_id', $id)->delete();
+        ResepObat::where('registrasi_id', $id)->forceDelete();
         session()->flash('success', 'Berhasil menghapus data');
     }
 

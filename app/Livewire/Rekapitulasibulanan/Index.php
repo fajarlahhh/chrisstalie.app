@@ -38,7 +38,7 @@ class Index extends Component
             ->get();
 
         StokAwal::where('tanggal', $periodeSelanjutnya->format('Y-m-01'))->delete();
-        ($data->map(
+        StokAwal::insert($data->map(
             fn($row) =>
             [
                 'barang_id' => $row->id,

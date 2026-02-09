@@ -24,7 +24,8 @@ class Index extends Component
 
     public function delete($id)
     {
-        Tindakan::find($id)?->delete();
+        Tindakan::where('registrasi_id', $id)->delete();
+        session()->flash('success', 'Berhasil menghapus data');
     }
 
     public function getQuery()

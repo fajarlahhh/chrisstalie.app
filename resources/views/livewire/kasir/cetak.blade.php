@@ -97,20 +97,19 @@
         <tr>
             <td class="text-nowrap w-50px p-0">No.</td>
             <td class="p-0">: {{ $data->id }}</td>
+            <td class="text-end p-0">{{ $data->created_at }}</td>
         </tr>
         <tr>
             <td class="text-nowrap w-50px p-0">Pasien</td>
-            <td class="p-0">: {{ $data->registrasi->pasien->nama }}</td>
+            <td class="p-0">: {{ $data->pasien->nama }}</td>
+            <td></td>
         </tr>
         <tr>
             <td class="text-nowrap p-0">Kasir</td>
             <td class="p-0">:
-                {{ $data->pengguna->panggilan }}
+                {{ $data->pengguna->panggilan ?? $data->pengguna->nama }}
             </td>
-        </tr>
-        <tr>
-            <td class="text-nowrap p-0">Tanggal</td>
-            <td class="p-0">: {{ $data->created_at }}</td>
+            <td></td>
         </tr>
     </table>
     <hr>
@@ -151,6 +150,21 @@
                 </td>
             </tr>
         @endforeach
+        @foreach ($data->stokKeluar->where('penjualan', 1) as $keluar)
+            <tr>
+                <td class="p-0">
+                    {{ $keluar->barangSatuan->barang->nama }}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{ $keluar->barangSatuan->nama }} -
+                        {{ number_format($keluar->harga) }}</small>
+                </td>
+                <td class="p-0 ps-2 text-center w-10px" nowrap>
+                    {{ $keluar->qty }}
+                </td>
+                <td class="p-0 text-end w-50px" nowrap>
+                    {{ number_format($keluar->qty * $keluar->harga) }}
+                </td>
+            </tr>
+        @endforeach
     </table>
     <hr>
     <table class="table table-borderless fs-10px">
@@ -165,19 +179,35 @@
             <td class="p-0 text-end">{{ number_format($data->total_resep) }}</td>
         </tr>
         <tr>
-            <td class="p-0">Diskon</td>
-            <td class="p-0 text-end">{{ number_format($data->diskon) }}</td>
+            <td class="p-0">Total Harga Barang</td>
+            <td class="p-0 text-end">{{ number_format($data->total_harga_barang) }}</td>
         </tr>
         <tr>
-            <th class="p-0">Total</th>
+            <td class="p-0">Diskon</td>
+            <td class="p-0 text-end">{{ number_format($data->total_diskon_barang + $data->total_diskon_tindakan) }}
+            </td>
+        </tr>
+        <tr>
+            <th class="p-0">Total Tagihan</th>
             <th class="p-0 text-end" nowrap>
                 {{ number_format($data->total_tagihan) }}
             </th>
         </tr>
         <tr>
-            <td class="p-0">Metode Bayar</td>
-            <td class="p-0 text-end">{{ $data->metode_bayar }}</td>
+            <td colspan="3">
+                <hr>
+            </td>
         </tr>
+        <tr>
+            <td class="p-0">{{ $data->metode_bayar }}</td>
+            <td class="p-0 text-end">{{ number_format($data->bayar) }}</td>
+        </tr>
+        @if ($data->metode_bayar_2)
+            <tr>
+                <td class="p-0">{{ $data->metode_bayar_2 }}</td>
+                <td class="p-0 text-end">{{ number_format($data->bayar_2) }}</td>
+            </tr>
+        @endif
     </table>
     <br>
 
