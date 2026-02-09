@@ -380,8 +380,8 @@
                                             </td>
                                             <td>
                                                 <small>
-                                                    {{ $row->tindakan?->first()->pengguna->nama }}<br>
-                                                    {{ $row->tindakan?->first()->created_at->format('d F Y, H:i') }}
+                                                    {{ $row->tindakan?->first()?->pengguna->nama }}<br>
+                                                    {{ $row->tindakan?->first()?->created_at->format('d F Y, H:i') }}
                                                 </small>
                                             </td>
                                         </tr>
