@@ -517,7 +517,7 @@ class Index extends Component
             jenis: 'Pendapatan',
             sub_jenis: 'Pendapatan ' . ($this->registrasi ? (collect($this->barang)->count() > 0 ? 'Pasien Tindakan/Resep Obat & Penjualan Barang' : 'Pasien Tindakan/Resep Obat') : 'Penjualan Barang Bebas'),
             tanggal: $this->tanggal,
-            uraian: ('Pendapatan ' . ($this->registrasi ? (collect($this->barang)->count() > 0 ? 'Pasien Tindakan/Resep Obat & Penjualan Barang' : 'Pasien Tindakan/Resep Obat') : 'Penjualan Barang Bebas')) . ' No. Nota : ' . $pembayaranId . ' a/n ' . ($this->registrasi ? $this->registrasi->pasien->nama : Pasien::find($this->pasien_id)?->nama ?? '-'),
+            uraian: ('Pendapatan ' . ($this->registrasi ? (collect($this->barang)->count() > 0 ? 'Pasien Tindakan/Resep Obat & Penjualan Barang' : 'Pasien Tindakan/Resep Obat') : 'Penjualan Barang Bebas')) . ' No. Nota : ' . $pembayaranId . ' a/n ' . ($this->registrasi ? $this->registrasi->pasien->nama : Pasien::find($this->pasien_id)?->nama ?? '-') . ' Ket : ' . $this->keterangan,
             system: 1,
             foreign_key: 'pembayaran_id',
             foreign_id: $pembayaranId,
