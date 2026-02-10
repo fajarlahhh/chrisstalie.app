@@ -81,18 +81,24 @@
                                     target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    @if ($row->pengadaanPemesanan->pengadaanTagihan)
+                                    @if ($row->keuanganJurnal?->waktu_tutup_buku)
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentdelete="false" :restore="false" :delete="false" />
                                     @else
-                                        @if ($row->keluar->count() == 0)
+                                        @if ($row->pengadaanPemesanan->pengadaanTagihan)
                                             <x-action :row="$row" custom="" :detail="false" :edit="false"
                                                 :print="false" :permanentdelete="false" :restore="false"
-                                                :delete="true" />
-                                        @else
-                                            <x-action :row="$row" custom="" :detail="false"
-                                                :edit="false" :print="false" :permanentdelete="false" :restore="false"
                                                 :delete="false" />
+                                        @else
+                                            @if ($row->keluar->count() == 0)
+                                                <x-action :row="$row" custom="" :detail="false"
+                                                    :edit="false" :print="false" :permanentdelete="false"
+                                                    :restore="false" :delete="true" />
+                                            @else
+                                                <x-action :row="$row" custom="" :detail="false"
+                                                    :edit="false" :print="false" :permanentdelete="false"
+                                                    :restore="false" :delete="false" />
+                                            @endif
                                         @endif
                                     @endif
                                 @endrole

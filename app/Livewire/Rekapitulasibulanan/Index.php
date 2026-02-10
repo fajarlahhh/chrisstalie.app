@@ -73,6 +73,9 @@ class Index extends Component
         $periodeSelanjutnya = $periodeSekarang->copy()->addMonth();
         $saldo = [];
 
+        KeuanganJurnal::where('tanggal', '>=', $periode->format('Y-m-01'))->update([
+            'waktu_tutup_buku' => null,
+        ]);
         KeuanganSaldo::where('periode', '>=', $periodeSelanjutnya->format('Y-m-01'))->delete();
 
         $dataAkun = KodeAkun::with([
@@ -184,27 +187,22 @@ class Index extends Component
     {
         set_time_limit(0);
         $periode = Carbon::parse($this->bulan . '-01');
-        $diff = Carbon::parse($this->bulan . '-01')->diffInMonths(date('Y-m-01'));
-        if ($diff > 12) {
-            $diff = 24;
-        }
-        $tes = [];
+        // $diff = Carbon::parse($this->bulan . '-01')->diffInMonths(date('Y-m-01'));
+        // if ($diff > 12) {
+        //     $diff = 24;
+        // }
 
-        KeuanganJurnal::where('tanggal', '>=', $periode->format('Y-m-01'))->update([
-            'waktu_tutup_buku' => null,
-        ]);
-        for ($i = 0; $i < $diff; $i++) {
-            DB::transaction(function () use ($periode) {
-                $this->penyusutan($periode);
-                $this->stok($periode);
-                $this->keuangan($periode);
-                KeuanganJurnal::where('tanggal', 'like', $periode->format('Y-m') . '%')->update([
-                    'waktu_tutup_buku' => now(),
-                ]);
-            });
-            $tes[] = $periode->format('Y-m-01');
-            $periode->addMonth();
-        }
+        // for ($i = 0; $i < $diff; $i++) {
+        DB::transaction(function () use ($periode) {
+            $this->penyusutan($periode);
+            $this->stok($periode);
+            $this->keuangan($periode);
+            KeuanganJurnal::where('tanggal', 'like', $periode->format('Y-m') . '%')->update([
+                'waktu_tutup_buku' => now(),
+            ]);
+        });
+        // $periode->addMonth();
+        // }
         session()->flash('success', 'Berhasil menyimpan data');
     }
 

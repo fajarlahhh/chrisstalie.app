@@ -119,12 +119,19 @@
                                     target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    @if ($row->pengadaanPelunasan)
+                                    @if ($row->keuanganJurnal->waktu_tutup_buku)
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentdelete="false" :restore="false" :delete="false" />
                                     @else
-                                        <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                            :print="false" :permanentdelete="false" :restore="false" :delete="true" />
+                                        @if ($row->pengadaanPelunasan)
+                                            <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                                :print="false" :permanentdelete="false" :restore="false"
+                                                :delete="false" />
+                                        @else
+                                            <x-action :row="$row" custom="" :detail="false"
+                                                :edit="false" :print="false" :permanentdelete="false" :restore="false"
+                                                :delete="true" />
+                                        @endif
                                     @endif
                                 @endrole
                             </td>

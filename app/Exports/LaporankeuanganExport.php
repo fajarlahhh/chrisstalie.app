@@ -6,7 +6,7 @@ use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\Exportable;
 
-class LaporanneracalajurExport implements FromView
+class LaporankeuanganExport implements FromView
 {
     use Exportable;
     public $data, $bulan;
