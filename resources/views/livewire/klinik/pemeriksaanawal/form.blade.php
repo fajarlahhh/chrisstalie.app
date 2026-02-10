@@ -422,7 +422,7 @@
                 @role('administrator|supervisor|operator')
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
-                        Simpan
+                        Submit
                     </button>
                 @endrole
                 @if (isset($data->pemeriksaanAwal) && $data->pemeriksaanAwal->count() > 0)
@@ -606,7 +606,7 @@
                 @role('administrator|supervisor|operator')
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
-                        Simpan
+                        Submit
                     </button>
                 @endrole
                 @if (isset($data->pemeriksaanAwal) && $data->pemeriksaanAwal->count() > 0)

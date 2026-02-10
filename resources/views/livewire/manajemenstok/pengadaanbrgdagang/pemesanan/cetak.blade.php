@@ -23,7 +23,7 @@
             </div>
             <div class="col-6 text-end">
                 Praya,
-                {{ \Carbon\Carbon::parse($data->pengadaanPemesananVerifikasi->waktu_verifikasi)->format('d F Y') }}<br>
+                {{ \Carbon\Carbon::parse($data->tanggal)->format('d F Y') }}<br>
             </div>
             <div class="col-12">
                 <br>
@@ -52,14 +52,6 @@
                             </tr>
                         @endforeach
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colspan="5" class="text-end">Total</th>
-                            <th class="text-end">
-                                {{ number_format($data->pengadaanPemesananDetail->sum(fn($q) => $q->harga_beli * $q->qty)) }}
-                            </th>
-                        </tr>
-                    </tfoot>
                 </table>
                 <strong>Estimasi Kedatangan:</strong>
                 {{ \Carbon\Carbon::parse($data->tanggal_estimasi_kedatangan)->format('d F Y') }}
@@ -68,17 +60,16 @@
             </div>
         </div>
         <div class="col-12 text-center">
-            Apoteker Instalasi Farmasi Klinik<br>
-            <span style="position: relative; display: inline-block; width: 90px; height: 70px;">
-                <img src="{{ Storage::url($data->pengadaanPemesananVerifikasi->pengguna->kepegawaianPegawai->tanda_tangan) }}"
-                    alt="ttd" class="w-100px" style="position: absolute; top: 10px; left: 0; z-index: 1;">
-                <img src="{{ asset('assets/img/stempel.png') }}" alt="stempel" class="w-150px"
-                    style="position: absolute; top: -10px; left: -80px; z-index: 222; opacity: 0.8;">
-            </span>
+            Penanggung Jawab:
             <br>
             <br>
-            <u>{{ $data->pengadaanPemesananVerifikasi->pengguna->nama }}</u><br>
-            SIPA : {{ $data->pengadaanPemesananVerifikasi->pengguna->kepegawaianPegawai->sipa }}<br>
+            <br>
+            <br>
+            <u>{{ $data->penanggungJawab?->nama }}</u><br>
+            @if ($data->penanggungJawab?->kepegawaianPegawai->sipa)
+                SIPA : {{ $data->penanggungJawab?->kepegawaianPegawai->sipa }}
+            @endif
+            <br>
         </div>
     </div>
 </body>

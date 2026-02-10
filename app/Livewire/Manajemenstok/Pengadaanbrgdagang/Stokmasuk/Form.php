@@ -103,6 +103,18 @@ class Form extends Component
                     }
                 }
             ],
+            'barang.*.harga_beli' => [
+                function ($attribute, $value, $fail) {
+                    $matches = [];
+                    if (preg_match('/^barang\.(\d+)\.harga_beli$/', $attribute, $matches)) {
+                        $index = (int)$matches[1];
+                        $qty = $this->barang[$index]['qty'] ?? 0;
+                        if ($qty > 0 && (is_null($value) || $value === '' || !is_numeric($value))) {
+                            $fail('Harga beli wajib diisi.');
+                        }
+                    }
+                }
+            ],
         ]);
         DB::transaction(function () {
             $stok = [];

@@ -33,17 +33,9 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Tanggal Pemesanan</label>
-                    <input class="form-control" type="date" wire:model="tanggal" x-model="tanggal"
-                        max="{{ now()->format('Y-m-d') }}" required />
-                    @error('tanggal')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
                     <label class="form-label">Estimasi Kedatangan</label>
-                    <input class="form-control" type="date" wire:model="tanggal_estimasi_kedatangan"
-                        x-model="tanggal_estimasi_kedatangan" min="{{ now()->format('Y-m-d') }}" required />
+                    <input class="form-control" type="date" x-model="tanggal_estimasi_kedatangan"
+                        min="{{ now()->format('Y-m-d') }}" required />
                     @error('tanggal_estimasi_kedatangan')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -70,6 +62,28 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+                <div class="mb-3">
+                    <label class="form-label">Penanggung Jawab</label>
+                    <div wire:ignore>
+                        <select class="form-control" x-init="$($el).select2({
+                            width: '100%',
+                            dropdownAutoWidth: true
+                        });
+                        $($el).on('change', function(e) {
+                            penanggung_jawab_id = e.target.value;
+                        });" x-model="penanggung_jawab_id" required>
+                            <option value="">-- Pilih Penanggung Jawab --</option>
+                            <template x-for="item in dataPengguna" :key="item.id">
+                                <option :value="item.id" :selected="penanggung_jawab_id == item.id"
+                                    x-text="item.kepegawaian_pegawai?.sipa ? `${item.nama}, SIPA : ${item.kepegawaian_pegawai.sipa}` : item.nama">
+                                </option>
+                            </template>
+                        </select>
+                    </div>
+                    @error('penanggung_jawab_id')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
                 <div class="note alert-secondary mb-3">
                     <div class="note-content table-responsive">
                         <table class="table table-borderless">
@@ -77,8 +91,8 @@
                                 <tr>
                                     <th>Barang</th>
                                     <th class="w-150px">Satuan</th>
-                                    <th class="w-100px">Qty Permintaan</th>
-                                    <th class="w-100px">Qty Sudah Dipesan</th>
+                                    <th class="w-150px">Qty Permintaan</th>
+                                    <th class="w-150px">Qty Sudah Dipesan</th>
                                     <th class="w-150px">Qty Dipesan Skrg</th>
                                     <th class="w-200px">Harga Satuan</th>
                                 </tr>
@@ -106,8 +120,8 @@
                                         <td>
                                             <input type="number" class="form-control" step="1" min="0"
                                                 max="100" x-model="row.qty"
-                                                :max="row.qty_permintaan - row.qty_sudah_dipesan" @input="hitungTotal()"
-                                                autocomplete="off" required>
+                                                :max="row.qty_permintaan - row.qty_sudah_dipesan"
+                                                @input="hitungTotal()" autocomplete="off" required>
                                         </td>
                                         <td>
                                             <input type="number" class="form-control" step="1"
@@ -144,7 +158,7 @@
                 @role('administrator|supervisor')
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
-                        Kirim Utk Persetujuan
+                        Submit
                     </button>
                 @endrole
                 <button type="button" onclick="window.location.href='/manajemenstok/pengadaanbrgdagang/pemesanan'"
@@ -169,13 +183,13 @@
 <script>
     function form() {
         return {
-            tanggal: @js($tanggal ?? ''),
             tanggal_estimasi_kedatangan: @js($tanggal_estimasi_kedatangan ?? ''),
             dataSupplier: @json($dataSupplier ?? []),
+            dataPengguna: @json($dataPengguna ?? []),
             supplier_id: @js($supplier_id ?? ''),
+            penanggung_jawab_id: @js($penanggung_jawab_id ?? ''),
             barang: @json($barang ?? []),
             catatan: @js($catatan ?? ''),
-            errors: {},
             totalHargaBeli: @js($totalHargaBeli ?? 0),
             hitungTotal() {
                 let total = 0;
@@ -190,11 +204,6 @@
                 if (isNaN(num)) return '0';
                 return Number(num).toLocaleString('id-ID');
             },
-            pembayaranChanged() {
-                if (this.pembayaran !== 'Jatuh Tempo') {
-                    this.jatuh_tempo = '';
-                }
-            },
             updateSupplier() {
                 this.supplier_id = this.supplier_id.trim();
             },
@@ -208,10 +217,11 @@
                     if (componentId) {
                         let $wire = window.Livewire.find(componentId);
                         if ($wire && typeof $wire.set === 'function') {
-                            $wire.set('tanggal', this.tanggal, false);
                             $wire.set('supplier_id', this.supplier_id, false);
                             $wire.set('barang', JSON.parse(JSON.stringify(this.barang)), false);
                             $wire.set('catatan', this.catatan, false);
+                            $wire.set('tanggal_estimasi_kedatangan', this.tanggal_estimasi_kedatangan, false);
+                            $wire.set('penanggung_jawab_id', this.penanggung_jawab_id, false);
                         }
                     }
                 }

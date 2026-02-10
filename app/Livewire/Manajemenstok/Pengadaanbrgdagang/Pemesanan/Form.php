@@ -2,18 +2,20 @@
 
 namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Pemesanan;
 
+use App\Models\KepegawaianPegawai;
 use Livewire\Component;
 use App\Models\Supplier;
 use App\Models\PengadaanPemesanan;
 use Illuminate\Support\Facades\DB;
 use App\Models\PengadaanPermintaan;
 use App\Models\PengadaanVerifikasi;
+use App\Models\Pengguna;
 use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $dataBarang = [], $dataPengguna = [], $barang = [], $deskripsi, $data, $verifikator_id, $status = 'Ditolak', $catatan, $dataSupplier = [], $supplier_id, $barangSudahDipesan = [], $tanggal, $tanggal_estimasi_kedatangan;
+    public $dataBarang = [], $dataPengguna = [], $barang = [], $deskripsi, $data, $verifikator_id, $status = 'Ditolak', $catatan, $dataSupplier = [], $supplier_id, $barangSudahDipesan = [], $tanggal, $tanggal_estimasi_kedatangan, $penanggung_jawab_id;
 
     public function submit()
     {
@@ -26,9 +28,9 @@ class Form extends Component
             return;
         }
         $this->validateWithCustomMessages([
-            'tanggal' => 'required|date',
             'tanggal_estimasi_kedatangan' => 'required|date',
             'supplier_id' => 'required|integer|exists:supplier,id',
+            'penanggung_jawab_id' => 'required|integer|exists:pengguna,id',
             'barang' => 'required|array',
             'barang.*.id' => 'required|integer',
             'barang.*.qty' => [
@@ -44,30 +46,28 @@ class Form extends Component
                     }
                 }
             ],
-            'barang.*.harga_beli' => [
-                function ($attribute, $value, $fail) {
-                    $matches = [];
-                    if (preg_match('/^barang\.(\d+)\.harga_beli$/', $attribute, $matches)) {
-                        $index = (int)$matches[1];
-                        $qty = $this->barang[$index]['qty'] ?? 0;
-                        if ($qty > 0 && (is_null($value) || $value === '' || !is_numeric($value))) {
-                            $fail('Harga beli wajib diisi.');
-                        }
-                    }
-                }
-            ],
         ]);
-        
+
         DB::transaction(function () {
             $data = new PengadaanPemesanan();
-            $data->tanggal = $this->tanggal;
+            if (!$data->exists) {
+                $terakhir = PengadaanPemesanan::where('tanggal', 'like', date('Y-m') . '%')
+                    ->orderBy('nomor', 'desc')
+                    ->first();
+                $nomorTerakhir = $terakhir ? (int)substr($terakhir->nomor, 0, 5) : 0;
+                $nomor = sprintf('%05d', $nomorTerakhir + 1) . '/SP-CHRISSTALIE/' . date('m') . '/' . date('Y');
+                $data->nomor = $nomor;
+            }
+            $data->tanggal = date('Y-m-d');
             $data->jenis = $this->data->jenis_barang;
             $data->tanggal_estimasi_kedatangan = $this->tanggal_estimasi_kedatangan;
             $data->catatan = $this->catatan;
             $data->supplier_id = $this->supplier_id;
             $data->pengadaan_permintaan_id = $this->data->id;
             $data->pengguna_id = auth()->id();
+            $data->penanggung_jawab_id = $this->penanggung_jawab_id;
             $data->save();
+
             $data->pengadaanPemesananDetail()->delete();
             $data->pengadaanPemesananDetail()->insert(collect($this->barang)->map(fn($q) => [
                 'qty' => $q['qty'],
@@ -80,17 +80,18 @@ class Form extends Component
                 'pengadaan_pemesanan_id' => $data->id,
             ])->toArray());
 
-            $pengadaanVerifikasi = new PengadaanVerifikasi();
-            $pengadaanVerifikasi->pengadaan_pemesanan_id = $data->id;
-            $pengadaanVerifikasi->pengadaan_permintaan_id = $this->data->id;
-            $pengadaanVerifikasi->jenis = 'Persetujuan Pemesanan Pengadaan';
-            $pengadaanVerifikasi->save();
+
+            $cetak = view('livewire.manajemenstok.pengadaanbrgdagang.pemesanan.cetak', [
+                'data' => $data,
+                'apoteker' => KepegawaianPegawai::where('apoteker', 1)->first(),
+            ])->render();
+            session()->flash('cetak', $cetak);
             session()->flash('success', 'Berhasil menyimpan data');
         });
         $this->redirect('/manajemenstok/pengadaanbrgdagang/pemesanan');
     }
 
-    public function mount(PengadaanPermintaan $data)
+    public function mount(PengadaanPermintaan $data, PengadaanPemesanan $pemesanan)
     {
         $this->data = $data;
         if ($this->data->pengadaanVerifikasi->where('status', 'Disetujui')->count() == 0) {
@@ -109,6 +110,7 @@ class Form extends Component
             'harga_beli' => 0,
         ])->toArray();
         $this->dataSupplier = Supplier::whereNotNull('konsinyator')->orderBy('nama')->get()->toArray();
+        $this->dataPengguna = Pengguna::role(['supervisor', 'administrator'])->with('kepegawaianPegawai')->whereNotNull('kepegawaian_pegawai_id')->orderBy('nama')->get()->toArray();
     }
 
     public function render()

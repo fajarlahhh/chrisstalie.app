@@ -15,7 +15,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $status = 'Belum Dipesan', $bulan;
+    public $cari, $status = 'Belum Buat SP', $bulan;
 
     public function updated()
     {
@@ -39,9 +39,6 @@ class Index extends Component
     public function delete($id)
     {
         DB::transaction(function () use ($id) {
-            PengadaanVerifikasi::where('pengadaan_pemesanan_id', $id)
-                ->where('jenis', 'Persetujuan Pemesanan Pengadaan')
-                ->forceDelete();
             PengadaanPemesanan::findOrFail($id)
                 ->forceDelete();
             session()->flash('success', 'Berhasil menghapus data');
@@ -49,7 +46,7 @@ class Index extends Component
     }
     private function getData()
     {
-        if ($this->status == 'Belum Dipesan') {
+        if ($this->status == 'Belum Buat SP') {
             $data = PengadaanPermintaan::with([
                 'pengguna.kepegawaianPegawai',
                 'pengadaanPermintaanDetail.barangSatuan.satuanKonversi',
@@ -69,6 +66,7 @@ class Index extends Component
         } else {
             $data = PengadaanPemesanan::with([
                 'supplier',
+                'penanggungJawab',
                 'pengguna.kepegawaianPegawai',
                 'pengadaanPemesananDetail.barangSatuan.barang',
                 'pengadaanPemesananDetail.barangSatuan.satuanKonversi',
@@ -86,8 +84,7 @@ class Index extends Component
                     $q->where('nama', 'like', '%' . $this->cari . '%');
                 })
                     ->orWhere('catatan', 'like', '%' . $this->cari . '%'))
-                ->when($this->status == 'Pending Persetujuan', fn($q) => $q->whereHas('pengadaanPemesananVerifikasi', fn($q) => $q->whereNull('status')))
-                ->when($this->status == 'Sudah Persetujuan', fn($q) => $q->whereHas('pengadaanPemesananVerifikasi', fn($q) => $q->where('status', 'Disetujui')->where('waktu_verifikasi', 'like', $this->bulan . '%')))
+                ->where('tanggal', 'like', $this->bulan . '%')
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
             return $data;

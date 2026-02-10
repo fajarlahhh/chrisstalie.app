@@ -150,7 +150,7 @@
                 @unlessrole('guest')
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
-                        Simpan
+                        Submit
                     </button>
                 @endunlessrole
                 <button type="button" onclick="window.location.href='/jurnalkeuangan'" class="btn btn-warning"

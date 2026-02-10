@@ -126,6 +126,6 @@ Untuk testing, pastikan:
 ## Future Improvements
 
 1. **Real-time Validation**: Validasi client-side sebelum submit
-2. **Auto-save**: Simpan draft otomatis
+2. **Auto-save**: Submit draft otomatis
 3. **Better Error Handling**: Error handling yang lebih robust
 4. **Animation**: Smooth transitions untuk add/remove items

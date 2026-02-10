@@ -13,11 +13,10 @@
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
                     <select class="form-select" wire:model.lazy="status">
-                        <option value="Belum Dipesan">Belum Dipesan</option>
-                        <option value="Pending Persetujuan">Pending Persetujuan</option>
-                        <option value="Sudah Persetujuan">Sudah Persetujuan</option>
+                        <option value="Belum Buat SP">Belum Buat SP</option>
+                        <option value="Sudah Buat SP">Sudah Buat SP</option>
                     </select>&nbsp;
-                    @if ($status == 'Sudah Persetujuan')
+                    @if ($status == 'Sudah Buat SP')
                         <input type="month" class="form-control w-auto" wire:model.lazy="bulan"
                             max="{{ date('Y-m') }}">
                         &nbsp;
@@ -30,11 +29,12 @@
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
-            @if ($status == 'Belum Dipesan')
+            @if ($status == 'Belum Buat SP')
                 <table class="table table-hover">
                     <thead>
                         <tr>
                             <th class="w-10px">No.</th>
+                            <th>Nomor Permintaan</th>
                             <th>Waktu Permintaan</th>
                             <th>Deskripsi Permintaan</th>
                             <th>Jenis Barang</th>
@@ -46,6 +46,7 @@
                         @foreach ($data as $item)
                             <tr>
                                 <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
+                                <td>{{ $item->nomor ?? $item->id }}</td>
                                 <td>{{ $item->created_at }}</td>
                                 <td>{{ $item->deskripsi }}</td>
                                 <td>{{ $item->jenis_barang }}</td>
@@ -55,7 +56,7 @@
                                             <tr>
                                                 <th>Barang</th>
                                                 <th>Satuan</th>
-                                                <th>Qty Permintaan</th>
+                                                <th>Qty Diminta</th>
                                                 <th>Qty Dipesan</th>
                                             </tr>
                                         </thead>
@@ -86,7 +87,7 @@
                                     @role('administrator|supervisor|operator')
                                         <a href="/manajemenstok/pengadaanbrgdagang/pemesanan/form/{{ $item->id }}"
                                             class="btn btn-info btn-sm">
-                                            Buat Pemesanan
+                                            Buat SP
                                         </a>
                                     @endrole
                                 </td>
@@ -100,14 +101,12 @@
                         <tr>
                             <th class="w-10px">No.</th>
                             <th>Data Permintaan</th>
+                            <th>Nomor SP</th>
                             <th>Tanggal Pemesanan</th>
                             <th>Supplier</th>
+                            <th>Penanggung Jawab</th>
                             <th>Catatan</th>
-                            <th class="w-600px">Detail Barang Pemesanan</th>
-                            <th class="w-100px">Total Harga</th>
-                            @if ($status == 'Sudah Persetujuan')
-                                <th>Persetujuan Pemesanan</th>
-                            @endif
+                            <th class="w-600px">Detail Barang</th>
                             <th class="w-10px"></th>
                         </tr>
                     </thead>
@@ -125,8 +124,10 @@
                                         </ul>
                                     </small>
                                 </td>
+                                <td>{{ $item->nomor }}</td>
                                 <td>{{ $item->tanggal }}</td>
                                 <td>{{ $item->supplier->nama }}</td>
+                                <td>{{ $item->penanggungJawab?->nama }}</td>
                                 <td>{{ $item->catatan }}</td>
                                 <td>
                                     <table class="table table-bordered fs-11px">
@@ -136,7 +137,6 @@
                                                 <th>Satuan</th>
                                                 <th>Qty</th>
                                                 <th>Harga Beli</th>
-                                                <th>Qty Masuk</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -157,57 +157,26 @@
                                                     <td class="text-nowrap text-end w-80px">
                                                         {{ number_format($detail->harga_beli) }}
                                                     </td>
-                                                    <td class="text-nowrap text-end w-80px">
-                                                        {{ $item->stokMasuk->where('barang_id', $detail->barang_id)->sum('qty') }}
-                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
                                 </td>
-                                <td class="text-nowrap text-end w-100px">
-                                    {{ number_format($item->pengadaanPemesananDetail->sum(fn($q) => $q->harga_beli * $q->qty)) }}
-                                </td>
-                                @if ($status == 'Sudah Persetujuan')
-                                    <td nowrap>
-                                        <small>
-                                            <ul>
-                                                <li>
-                                                    Nomor : {{ $item->nomor }}
-                                                </li>
-                                                <li>
-                                                    Operator :
-                                                    {{ $item->pengadaanPemesananVerifikasi?->pengguna?->nama }}
-                                                </li>
-                                                <li>
-                                                    Waktu :
-                                                    {{ $item->pengadaanPemesananVerifikasi?->waktu_verifikasi }}
-                                                </li>
-                                            </ul>
-                                        </small>
-                                    </td>
-                                @endif
                                 <td class="with-btn-group text-end" nowrap>
                                     @role('administrator|supervisor|operator')
-                                        @if (!$item->pengadaanPemesananVerifikasi)
+                                        @if ($item->stokMasuk->count() > 0)
                                             <x-action :row="$item" custom="" :detail="false" :edit="false"
-                                                :print="false" :permanentdelete="false" :restore="false" :delete="true" />
+                                                :print="true" :permanentdelete="false" :restore="false" :delete="false" />
                                         @else
-                                            @if ($item->stokMasuk->count() > 0)
+                                            {{-- @if ($status == 'Sudah Buat SP')
+                                                <x-action :row="$item" custom="" :detail="false"
+                                                    :edit="true" :print="true" :permanentdelete="false"
+                                                    :restore="false" :delete="true" />
+                                            @else --}}
                                                 <x-action :row="$item" custom="" :detail="false"
                                                     :edit="false" :print="true" :permanentdelete="false"
-                                                    :restore="false" :delete="false" />
-                                            @else
-                                                @if ($status == 'Sudah Persetujuan')
-                                                    <x-action :row="$item" custom="" :detail="false"
-                                                        :edit="false" :print="true" :permanentdelete="false"
-                                                        :restore="false" :delete="true" />
-                                                @else
-                                                    <x-action :row="$item" custom="" :detail="false"
-                                                        :edit="false" :print="false" :permanentdelete="false"
-                                                        :restore="false" :delete="true" />
-                                                @endif
-                                            @endif
+                                                    :restore="false" :delete="true" />
+                                            {{-- @endif --}}
                                         @endif
                                     @endrole
                                 </td>

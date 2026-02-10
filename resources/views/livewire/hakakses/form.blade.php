@@ -148,7 +148,7 @@
                 @role('administrator|supervisor|operator')
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
-                        Simpan
+                        Submit
                     </button>
                 @endrole
                 <button type="button" class="btn btn-danger" onclick="window.history.back()"

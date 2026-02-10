@@ -74,6 +74,11 @@ class PengadaanPemesanan extends Model
         return $this->hasOne(PengadaanTagihan::class);
     }
 
+    public function penanggungJawab(): BelongsTo
+    {
+        return $this->belongsTo(Pengguna::class)->with('kepegawaianPegawai')->withTrashed();
+    }
+
     public function getTotalHargaAttribute(): float
     {
         return $this->pengadaanPemesananDetail->sum(function ($item) {
