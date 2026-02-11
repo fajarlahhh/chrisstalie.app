@@ -39,7 +39,7 @@
                         <th>Alamat</th>
                         <th>No. Telp.</th>
                         <th>Dokter</th>
-                        <th>Pegawai</th>
+                        <th>Perawat</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
