@@ -168,7 +168,7 @@
                                             </th>
                                             <td nowrap>
                                                 <strong>Nomor : </strong>{{ $row->id }}<br>
-                                                <strong>Dokter : </strong>{{ $row->nakes->nama }}<br>
+                                                <strong>Dokter : </strong>{{ $row->nakes?->nama }}<br>
                                                 <strong>Keluhan Awal : </strong>{{ $row->keluhan_awal }}
                                             </td>
                                             <td>
