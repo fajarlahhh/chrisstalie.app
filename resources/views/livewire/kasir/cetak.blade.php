@@ -119,37 +119,39 @@
             <th class="p-0 text-center w-10px" nowrap>Qty<br><br></th>
             <th class="p-0 text-end">Total<br><br></th>
         </tr>
-        @foreach ($data->registrasi->tindakan as $tindakan)
-            <tr>
-                <td class="p-0">
-                    {{ $tindakan->tarifTindakan->nama }}<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($tindakan->biaya) }} @if ($tindakan->diskon > 0)
-                        - {{ number_format($tindakan->diskon) }}
-                    @endif
-                </td>
-                <td class="p-0 ps-2 text-center w-10px" nowrap>
-                    {{ $tindakan->qty }}<br>
+        @if ($data->registrasi)
+            @foreach ($data->registrasi->tindakan as $tindakan)
+                <tr>
+                    <td class="p-0">
+                        {{ $tindakan->tarifTindakan->nama }}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($tindakan->biaya) }} @if ($tindakan->diskon > 0)
+                            - {{ number_format($tindakan->diskon) }}
+                        @endif
+                    </td>
+                    <td class="p-0 ps-2 text-center w-10px" nowrap>
+                        {{ $tindakan->qty }}<br>
 
-                </td>
-                <td class="p-0 text-end w-50px" nowrap>
-                    {{ number_format(($tindakan->biaya - $tindakan->diskon) * $tindakan->qty) }}
-                </td>
-            </tr>
-        @endforeach
-        @foreach ($data->registrasi->resepObat->groupBy('resep') as $resep)
-            <tr>
-                <td class="p-0">
-                    {{ $resep->first()->nama }}<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($resep->sum(fn($q) => $q->harga * $q->qty)) }}
-                </td>
-                <td class="p-0 ps-2 text-center w-10px" nowrap>
-                    1
-                </td>
-                <td class="p-0 text-end w-50px" nowrap>
-                    {{ number_format($resep->sum(fn($q) => $q->harga * $q->qty)) }}
-                </td>
-            </tr>
-        @endforeach
+                    </td>
+                    <td class="p-0 text-end w-50px" nowrap>
+                        {{ number_format(($tindakan->biaya - $tindakan->diskon) * $tindakan->qty) }}
+                    </td>
+                </tr>
+            @endforeach
+            @foreach ($data->registrasi->resepObat->groupBy('resep') as $resep)
+                <tr>
+                    <td class="p-0">
+                        {{ $resep->first()->nama }}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ number_format($resep->sum(fn($q) => $q->harga * $q->qty)) }}
+                    </td>
+                    <td class="p-0 ps-2 text-center w-10px" nowrap>
+                        1
+                    </td>
+                    <td class="p-0 text-end w-50px" nowrap>
+                        {{ number_format($resep->sum(fn($q) => $q->harga * $q->qty)) }}
+                    </td>
+                </tr>
+            @endforeach
+        @endif
         @foreach ($data->stokKeluar->where('penjualan', 1) as $keluar)
             <tr>
                 <td class="p-0">
