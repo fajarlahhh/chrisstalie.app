@@ -208,7 +208,7 @@
                                         <tr>
                                             <td>{{ $row->created_at->format('d M Y') }}</td>
                                             <td>{{ $row->id }}</td>
-                                            <td>{{ $row->nakes->nama }}</td>
+                                            <td>{{ $row->nakes?->nama }}</td>
                                             <td>{{ $row->keluhan_awal }}</td>
                                         </tr>
                                     @endforeach
