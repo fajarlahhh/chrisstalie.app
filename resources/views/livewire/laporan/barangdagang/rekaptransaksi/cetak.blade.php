@@ -94,7 +94,6 @@
                     $stokAkhir = $stokAwal + $stokMasuk - $stokKeluar;
                 @endphp
                 <td>{{ ++$i }}</td>
-                <td>{{ $row->id }}</td>
                 <td>{{ $row->nama }}</td>
                 <td>{{ $row->barangSatuanUtama?->nama }} {{ $row->barangSatuanUtama?->konversi_satuan }}</td>
                 <td class="text-end">
