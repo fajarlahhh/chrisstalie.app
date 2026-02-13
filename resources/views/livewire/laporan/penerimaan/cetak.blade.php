@@ -34,8 +34,9 @@
             <th class="bg-gray-300 text-white">Tindakan</th>
             <th class="bg-gray-300 text-white">Resep</th>
             <th class="bg-gray-300 text-white">Penjualan Barang</th>
+            <th class="bg-gray-300 text-white">Total Sebelum Diskon</th>
             <th class="bg-gray-300 text-white">Diskon</th>
-            <th class="bg-gray-300 text-white">Total</th>
+            <th class="bg-gray-300 text-white">Total Setelah Diskon</th>
             @role('administrator|supervisor')
                 <th class="bg-gray-300 text-white">Kasir</th>
             @endrole
@@ -58,6 +59,9 @@
                 <td class="text-end">{{ $cetak ? $row['total_resep'] : number_format($row['total_resep']) }}</td>
                 <td class="text-end">
                     {{ $cetak ? $row['total_harga_barang'] : number_format($row['total_harga_barang']) }}</td>
+                <td class="text-end">
+                    {{ $cetak ? $row['total_tindakan'] + $row['total_resep'] + $row['total_harga_barang'] : number_format($row['total_tindakan'] + $row['total_resep'] + $row['total_harga_barang']) }}
+                </td>
                 <td class="text-end">{{ $cetak ? $diskon : number_format($diskon) }}</td>
                 <td class="text-end">
                     {{ $cetak ? $row['total_tagihan'] : number_format($row['total_tagihan']) }}
@@ -86,7 +90,7 @@
             <th class="text-end">
                 {{ $cetak ? $data->sum('total_harga_barang') : number_format($data->sum('total_harga_barang')) }}</th>
             <th class="text-end">
-                {{ $cetak ? $data->sum('total_diskon_barang') + $data->sum('total_diskon_tindakan') + $data->sum('diskon') : number_format($data->sum('total_diskon_barang') + $data->sum('total_diskon_tindakan') + $data->sum('diskon')) }}
+                {{ $cetak ? $data->sum('total_diskon_barang') + $data->sum('total_diskon_tindakan') : number_format($data->sum('total_diskon_barang') + $data->sum('total_diskon_tindakan')) }}
             </th>
             <th class="text-end">
                 {{ $cetak ? $data->sum('total_tagihan') : number_format($data->sum('total_tagihan')) }}
