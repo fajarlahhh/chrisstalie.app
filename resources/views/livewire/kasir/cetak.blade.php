@@ -101,7 +101,7 @@
         </tr>
         <tr>
             <td class="text-nowrap w-50px p-0">Pasien</td>
-            <td class="p-0">: {{ $data->pasien->nama }}</td>
+            <td class="p-0">: {{ $data->pasien?->nama }}</td>
             <td></td>
         </tr>
         <tr>

@@ -283,6 +283,7 @@ class Index extends Component
             $pembayaran->id = $id;
             $pembayaran->total_barang = $this->total_barang + $this->total_diskon_barang;
             $pembayaran->total_tindakan = $this->total_tindakan + $this->total_diskon_tindakan;
+            $pembayaran->total_harga_barang = $this->total_barang;
             $pembayaran->total_resep = $this->total_resep;
             $pembayaran->total_diskon_barang = $this->total_diskon_barang;
             $pembayaran->total_diskon_tindakan = $this->total_diskon_tindakan;
