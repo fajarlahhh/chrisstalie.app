@@ -186,7 +186,7 @@
         </tr>
         <tr>
             <td class="p-0">Diskon</td>
-            <td class="p-0 text-end">{{ number_format($data->total_diskon_barang + $data->total_diskon_tindakan $data->diskon) }}
+            <td class="p-0 text-end">{{ number_format($data->total_diskon_barang + $data->total_diskon_tindakan + $data->diskon) }}
             </td>
         </tr>
         <tr>
