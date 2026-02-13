@@ -11,6 +11,8 @@ class Aset extends Model
 {
     protected $table = 'aset';
 
+    protected $dates = ['tanggal_perolehan', 'tanggal_terminasi'];
+
     public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class)->with('kepegawaianPegawai')->withTrashed();

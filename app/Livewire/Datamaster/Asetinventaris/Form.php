@@ -69,6 +69,7 @@ class Form extends Component
             $this->data->status = !$this->data->exists ? 'Aktif' : $this->status;
             $this->data->nilai_penyusutan = $this->harga_perolehan / $this->masa_manfaat;
             $this->data->nilai_residu = $this->nilai_residu;
+            $this->data->tanggal_terminasi = $this->tanggal_perolehan->addMonths($this->masa_manfaat);
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
