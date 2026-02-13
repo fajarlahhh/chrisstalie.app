@@ -46,7 +46,7 @@
     <tbody>
         @foreach ($data as $row)
             @php
-                $diskon = $row['total_diskon_barang'] + $row['total_diskon_tindakan'];
+                $diskon = $row['total_diskon_barang'] + $row['total_diskon_tindakan'] + $row['diskon'];
             @endphp
             <tr>
                 <td>{{ $loop->iteration }}</td>
@@ -86,7 +86,7 @@
             <th class="text-end">
                 {{ $cetak ? $data->sum('total_harga_barang') : number_format($data->sum('total_harga_barang')) }}</th>
             <th class="text-end">
-                {{ $cetak ? $data->sum('total_diskon_barang') + $data->sum('total_diskon_tindakan') : number_format($data->sum('total_diskon_barang') + $data->sum('total_diskon_tindakan')) }}
+                {{ $cetak ? $data->sum('total_diskon_barang') + $data->sum('total_diskon_tindakan') + $data->sum('diskon') : number_format($data->sum('total_diskon_barang') + $data->sum('total_diskon_tindakan') + $data->sum('diskon')) }}
             </th>
             <th class="text-end">
                 {{ $cetak ? $data->sum('total_tagihan') : number_format($data->sum('total_tagihan')) }}
