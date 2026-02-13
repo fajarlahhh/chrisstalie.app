@@ -40,6 +40,7 @@ class Index extends Component
         foreach ($template as $item) {
             $nilai = '';
             if ($item['kode_akun']) {
+                
                 $debet = $saldo->whereIn('kode_akun_id', explode(';', $item['kode_akun']))->sum('debet_jurnal');
                 $kredit = $saldo->whereIn('kode_akun_id', explode(';', $item['kode_akun']))->sum('kredit_jurnal');
 
