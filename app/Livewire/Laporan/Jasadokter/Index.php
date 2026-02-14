@@ -27,18 +27,19 @@ class Index extends Component
     public function getData()
     {
         return Tindakan::with('registrasi.pasien', 'pembayaran', 'tarifTindakan', 'dokter')
-            ->where('biaya_jasa_dokter', '>', 0)->whereNotNull('dokter_id')
+            ->where('biaya_jasa_dokter', '>', 0)
             ->whereHas('pembayaran', fn($r) => $r
-                ->whereBetween(DB::raw('DATE(created_at)'), [$this->tanggal1, $this->tanggal2]))
+                ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2]))
             ->get()->map(fn($row) => [
                 'perawat_id' => $row->dokter_id,
+                'no_registrasi' => $row->registrasi->id,
                 'no_nota' => $row->pembayaran->id,
                 'tanggal' => substr($row->pembayaran->created_at, 0, 10),
                 'nama_pasien' => $row->registrasi->pasien->nama,
                 'nama_tindakan' => $row->tarifTindakan->nama,
                 'nama_petugas' => $row->dokter?->nama,
                 'biaya' => $row->biaya_jasa_dokter,
-            ])->toArray();
+            ])->sortByDesc('perawat_id')->values()->toArray();
     }
 
     public function render()

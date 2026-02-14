@@ -20,6 +20,7 @@
         <tr>
             <th class="bg-gray-300 text-white" rowspan="2">No.</th>
             <th class="bg-gray-300 text-white" rowspan="2">No. Nota</th>
+            <th class="bg-gray-300 text-white" rowspan="2">No. Registrasi</th>
             <th class="bg-gray-300 text-white" rowspan="2">Tanggal</th>
             <th class="bg-gray-300 text-white" rowspan="2">Nama Pasien</th>
             <th class="bg-gray-300 text-white" colspan="{{ collect($data)->groupBy('perawat_id')->count() }}">Nama Dokter</th>
@@ -35,6 +36,7 @@
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $row['no_nota'] }}</td>
+                <td>{{ $row['no_registrasi'] }}</td>
                 <td>{{ substr($row['tanggal'], 0, 10) }}</td>
                 <td>{{ $row['nama_pasien'] }}</td>
                 @foreach (collect($data)->groupBy('perawat_id') as $key => $item)
@@ -47,7 +49,7 @@
             </tr>
         @endforeach
         <tr>
-            <th colspan="4">Total</th>
+            <th colspan="5">Total</th>
             @foreach (collect($data)->groupBy('perawat_id') as $key => $item)
                 <th class="text-end">
                     {{ $cetak ? collect($data)->where('perawat_id', $key)->sum('biaya') : number_format(collect($data)->where('perawat_id', $key)->sum('biaya')) }}
