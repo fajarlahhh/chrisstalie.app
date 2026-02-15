@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class KeuanganJurnal extends Model
 {
     //
+    use SoftDeletes;
     protected $table = 'keuangan_jurnal';
     protected $primaryKey = 'id';
     public $incrementing = false;

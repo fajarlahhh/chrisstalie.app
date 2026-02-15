@@ -20,6 +20,7 @@ class JurnalkeuanganClass
     {
         $terakhir = KeuanganJurnal::where('tanggal', 'like', substr($tanggal, 0, 7) . '%')
             ->orderBy('id', 'desc')
+            ->withTrashed()
             ->first();
         $nomorTerakhir = $terakhir ? (int)substr($terakhir->id, 6, 5) : 0;
         // dd(substr($terakhir->id, 6, 5));

@@ -103,41 +103,44 @@ class BarangClass
 
         foreach ($barang as $brg) {
             $jumlahStokKeluar = (int) $brg['qty'] * (int) $brg['rasio_dari_terkecil'];
+            $stokKeluar = StokKeluar::where('barang_id', $brg['barang_id'])
+                ->where('pembayaran_id', $pembayaranId)
+                ->first();
             // Persiapan data awal StokKeluar
-            $stokKeluar = new StokKeluar();
-            $stokKeluar->tanggal = $now;
-            $stokKeluar->qty = $brg['qty'];
-            $stokKeluar->pembayaran_id = $pembayaranId;
-            $stokKeluar->barang_id = $brg['barang_id'];
-            $stokKeluar->harga = $brg['harga'] > 0 ? $brg['harga'] : null;
-            $stokKeluar->diskon = $brg['diskon'];
-            $stokKeluar->barang_satuan_id = $brg['barang_satuan_id'];
-            $stokKeluar->rasio_dari_terkecil = $brg['rasio_dari_terkecil'];
-            $stokKeluar->pengguna_id = $userId;
-            $stokKeluar->save();
+            // $stokKeluar = new StokKeluar();
+            // $stokKeluar->tanggal = $now;
+            // $stokKeluar->qty = $brg['qty'];
+            // $stokKeluar->pembayaran_id = $pembayaranId;
+            // $stokKeluar->barang_id = $brg['barang_id'];
+            // $stokKeluar->harga = $brg['harga'] > 0 ? $brg['harga'] : null;
+            // $stokKeluar->diskon = $brg['diskon'];
+            // $stokKeluar->barang_satuan_id = $brg['barang_satuan_id'];
+            // $stokKeluar->rasio_dari_terkecil = $brg['rasio_dari_terkecil'];
+            // $stokKeluar->pengguna_id = $userId;
+            // $stokKeluar->save();
 
 
-            // Update stok secara batch
-            Stok::where('barang_id', $brg['barang_id'])
-                ->available()
-                ->orderBy('tanggal_kedaluarsa', 'asc')
-                ->limit($jumlahStokKeluar)
-                ->update([
-                    'tanggal_keluar' => $now,
-                    'stok_keluar_id' => $stokKeluar->id,
-                ]);
+            // // Update stok secara batch
+            // Stok::where('barang_id', $brg['barang_id'])
+            //     ->available()
+            //     ->orderBy('tanggal_kedaluarsa', 'asc')
+            //     ->limit($jumlahStokKeluar)
+            //     ->update([
+            //         'tanggal_keluar' => $now,
+            //         'stok_keluar_id' => $stokKeluar->id,
+            //     ]);
 
-            // Hitung total harga_beli untuk stok yang baru dikeluarkan
+            // // Hitung total harga_beli untuk stok yang baru dikeluarkan
             $hargaBeli = Stok::where('barang_id', $brg['barang_id'])
                 ->where('stok_keluar_id', $stokKeluar->id)
                 ->sum('harga_beli');
 
-            if ($brg['harga'] > 0) {
-                // Update harga pembelian aktual ke StokKeluar
-                $stokKeluar->update([
-                    'harga' => $hargaBeli,
-                ]);
-            }
+            // if ($brg['harga'] > 0) {
+            //     // Update harga pembelian aktual ke StokKeluar
+            //     $stokKeluar->update([
+            //         'harga' => $hargaBeli,
+            //     ]);
+            // }
 
             // Optimized append ke $detail
             $detail[] = [
