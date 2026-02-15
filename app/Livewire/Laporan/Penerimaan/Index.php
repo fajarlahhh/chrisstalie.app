@@ -56,7 +56,7 @@ class Index extends Component
 
     private function getData($paginate = true)
     {
-        $query = Pembayaran::with(['registrasi.pasien', 'pengguna.kepegawaianPegawai'])->whereNotNull('registrasi_id')->whereBetween(DB::raw('DATE(tanggal)'), ['2026-01-01', '2026-01-31']);
+        $query = Pembayaran::with(['registrasi.pasien', 'pengguna.kepegawaianPegawai'])->whereDoesntHave('keuanganJurnal')->whereNull('registrasi_id')->whereBetween(DB::raw('DATE(tanggal)'), ['2026-01-01', '2026-01-31']);
         if (!auth()->user()->hasRole(['administrator', 'supervisor'])) {
             $query->where('pengguna_id', auth()->id());
         }
@@ -224,7 +224,7 @@ class Index extends Component
                     'kode_akun_id' => $brg['kode_akun_id'],
                     'kode_akun_penjualan_id' => $brg['kode_akun_penjualan_id'],
                     'kode_akun_modal_id' => $brg['kode_akun_modal_id'],
-                    'barang_id' => $brg['barang_id'],   
+                    'barang_id' => $brg['barang_id'],
                     'barang_satuan_id' => $q['id'],
                     'rasio_dari_terkecil' => $brg['rasio_dari_terkecil'],
                 ];
@@ -250,8 +250,8 @@ class Index extends Component
 
     private function barangBebas($pembayaran)
     {
-        $hpp = BarangClass::stokKeluar(collect($this->barang)->map(function ($q) {
-            $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
+        $hpp = BarangClass::stokKeluar(collect($pembayaran->stokKeluar)->map(function ($q) {
+            $brg = collect($this->dataBarang)->firstWhere('id', $q['barang_satuan_id']);
             return [
                 'barang_id' => $brg['barang_id'],
                 'barang_satuan_id' => $q['id'],
@@ -277,126 +277,134 @@ class Index extends Component
         ini_set('max_execution_time', 0);
         $data = $this->getData(true);
         foreach ($data as $item) {
-            DB::transaction(function () use ($item) {
-                $this->registrasi = Registrasi::find($item->registrasi_id);
-                $this->barang = [];
-                $this->pasien_id = $this->registrasi->pasien_id;
+            try {
+                DB::transaction(function () use ($item) {
+                    // $this->registrasi = Registrasi::find($item->registrasi_id);
+                    // $this->barang = [];
+                    $this->pasien_id = $item->pasien_id;
 
-                $this->tindakan = $this->registrasi->tindakan->map(function ($q) {
-                    return [
-                        'id' => $q->id,
-                        'tarif_tindakan_id' => $q->tarif_tindakan_id,
-                        'nama' => $q->tarifTindakan->nama,
-                        'diskon' => 0,
-                        'qty' => $q->qty,
-                        'kode_akun_id' => $q->tarifTindakan->kode_akun_id,
-                        'harga' => $q->harga,
-                        'catatan' => $q->catatan,
-                        'dokter_id' => $q->dokter_id,
-                        'perawat_id' => $q->perawat_id,
-                        'biaya_alat' => collect($q->tindakanAlatBarang)->whereNotNull('aset_id')->sum(function ($q) {
-                            return $q->qty * $q->biaya;
-                        }),
-                        'biaya_alat_barang' => $q->biaya_alat_barang,
-                        'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
-                        'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
-                        'biaya' => $q->biaya,
-                    ];
-                })->toArray();
+                    // $this->tindakan = $this->registrasi->tindakan->map(function ($q) {
+                    //     return [
+                    //         'id' => $q->id,
+                    //         'tarif_tindakan_id' => $q->tarif_tindakan_id,
+                    //         'nama' => $q->tarifTindakan->nama,
+                    //         'diskon' => 0,
+                    //         'qty' => $q->qty,
+                    //         'kode_akun_id' => $q->tarifTindakan->kode_akun_id,
+                    //         'harga' => $q->harga,
+                    //         'catatan' => $q->catatan,
+                    //         'dokter_id' => $q->dokter_id,
+                    //         'perawat_id' => $q->perawat_id,
+                    //         'biaya_alat' => collect($q->tindakanAlatBarang)->whereNotNull('aset_id')->sum(function ($q) {
+                    //             return $q->qty * $q->biaya;
+                    //         }),
+                    //         'biaya_alat_barang' => $q->biaya_alat_barang,
+                    //         'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
+                    //         'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
+                    //         'biaya' => $q->biaya,
+                    //     ];
+                    // })->toArray();
 
-                $this->resep = collect($this->registrasi->resepObat)
-                    ->groupBy('resep')
-                    ->map(function ($group) {
-                        $first = $group->first();
-                        return [
-                            'resep' => $first->resep,
-                            'catatan' => $first->catatan,
-                            'nama' => $first->nama,
-                            'barang' => $group->map(function ($r) {
-                                $barang = collect($this->dataBarang)->firstWhere('id', $r->barang_satuan_id);
-                                if (!$barang) {
-                                    return [
-                                        'id' => null,
-                                        'nama' => 'Terjadi Kesalahan Resep Obat',
-                                        'satuan' => null,
-                                        'kode_akun_id' => null,
-                                        'kode_akun_penjualan_id' => null,
-                                        'kode_akun_modal_id' => null,
-                                        'harga' => null,
-                                        'qty' => null,
-                                        'subtotal' => null,
-                                    ];
-                                }
-                                return [
-                                    'id' => $r->barang_satuan_id,
-                                    'nama' => $barang['nama'],
-                                    'satuan' => $barang['satuan'],
-                                    'kode_akun_id' => $barang['kode_akun_id'],
-                                    'kode_akun_penjualan_id' => $barang['kode_akun_penjualan_id'],
-                                    'kode_akun_modal_id' => $barang['kode_akun_modal_id'],
-                                    'harga' => $r->harga,
-                                    'qty' => $r->qty,
-                                    'subtotal' => $r->harga * $r->qty,
-                                ];
-                            })->toArray(),
-                        ];
-                    })->values()->toArray();
+                    // $this->resep = collect($this->registrasi->resepObat)
+                    //     ->groupBy('resep')
+                    //     ->map(function ($group) {
+                    //         $first = $group->first();
+                    //         return [
+                    //             'resep' => $first->resep,
+                    //             'catatan' => $first->catatan,
+                    //             'nama' => $first->nama,
+                    //             'barang' => $group->map(function ($r) {
+                    //                 $barang = collect($this->dataBarang)->firstWhere('id', $r->barang_satuan_id);
+                    //                 if (!$barang) {
+                    //                     return [
+                    //                         'id' => null,
+                    //                         'nama' => 'Terjadi Kesalahan Resep Obat',
+                    //                         'satuan' => null,
+                    //                         'kode_akun_id' => null,
+                    //                         'kode_akun_penjualan_id' => null,
+                    //                         'kode_akun_modal_id' => null,
+                    //                         'harga' => null,
+                    //                         'qty' => null,
+                    //                         'subtotal' => null,
+                    //                     ];
+                    //                 }
+                    //                 return [
+                    //                     'id' => $r->barang_satuan_id,
+                    //                     'nama' => $barang['nama'],
+                    //                     'satuan' => $barang['satuan'],
+                    //                     'kode_akun_id' => $barang['kode_akun_id'],
+                    //                     'kode_akun_penjualan_id' => $barang['kode_akun_penjualan_id'],
+                    //                     'kode_akun_modal_id' => $barang['kode_akun_modal_id'],
+                    //                     'harga' => $r->harga,
+                    //                     'qty' => $r->qty,
+                    //                     'subtotal' => $r->harga * $r->qty,
+                    //                 ];
+                    //             })->toArray(),
+                    //         ];
+                    //     })->values()->toArray();
 
-                $this->bahan = TindakanAlatBarang::whereNotNull('barang_satuan_id')->whereIn('tindakan_id', collect($this->tindakan)->pluck('id'))->get()->map(function ($q) {
-                    $barang = collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id);
-                    return [
-                        'barang_id' => $barang['barang_id'],
-                        'nama' => $barang['nama'],
-                        'satuan' => $barang['satuan'],
-                        'kode_akun_id' => $barang['kode_akun_id'],
-                        'kode_akun_penjualan_id' => $barang['kode_akun_penjualan_id'],
-                        'kode_akun_modal_id' => $barang['kode_akun_modal_id'],
-                        'qty' => $q->qty,
-                        'biaya' => $q->biaya,
-                        'barang_satuan_id' => $q->barang_satuan_id,
-                        'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
-                    ];
-                })->toArray();
+                    // $this->bahan = TindakanAlatBarang::whereNotNull('barang_satuan_id')->whereIn('tindakan_id', collect($this->tindakan)->pluck('id'))->get()->map(function ($q) {
+                    //     $barang = collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id);
+                    //     return [
+                    //         'barang_id' => $barang['barang_id'],
+                    //         'nama' => $barang['nama'],
+                    //         'satuan' => $barang['satuan'],
+                    //         'kode_akun_id' => $barang['kode_akun_id'],
+                    //         'kode_akun_penjualan_id' => $barang['kode_akun_penjualan_id'],
+                    //         'kode_akun_modal_id' => $barang['kode_akun_modal_id'],
+                    //         'qty' => $q->qty,
+                    //         'biaya' => $q->biaya,
+                    //         'barang_satuan_id' => $q->barang_satuan_id,
+                    //         'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
+                    //     ];
+                    // })->toArray();
 
-                $this->alat = TindakanAlatBarang::whereNotNull('aset_id')->where('biaya', '>', 0)->with('alat')->whereIn('tindakan_id', collect($this->tindakan)->pluck('id'))->get()->map(function ($q) {
-                    return [
-                        'id' => $q->aset_id,
-                        'nama' => $q->alat->nama,
-                        'metode_penyusutan' => $q->alat->metode_penyusutan,
-                        'kode_akun_penyusutan_id' => $q->alat->kode_akun_penyusutan_id,
-                        'qty' => $q->qty,
-                        'biaya' => $q->biaya,
-                        'kode_akun_id' => $q->alat->kode_akun_id,
-                    ];
-                })->toArray();
-                if (count($this->tindakan) > 0) {
-                    $this->dispatch('set-tindakan', data: $this->tindakan);
-                }
-                if (count($this->resep) > 0) {
-                    $this->dispatch('set-resep', data: $this->resep);
-                }
-                $this->total_tindakan = collect($this->tindakan)->sum(function ($q) {
-                    return $q['biaya'] * $q['qty'] - $q['diskon'];
-                });
-                $this->total_resep = collect($this->resep)->sum(function ($q) {
-                    return collect($q['barang'])->sum(function ($b) {
-                        return $b['harga'] * $b['qty'];
+                    // $this->alat = TindakanAlatBarang::whereNotNull('aset_id')->where('biaya', '>', 0)->with('alat')->whereIn('tindakan_id', collect($this->tindakan)->pluck('id'))->get()->map(function ($q) {
+                    //     return [
+                    //         'id' => $q->aset_id,
+                    //         'nama' => $q->alat->nama,
+                    //         'metode_penyusutan' => $q->alat->metode_penyusutan,
+                    //         'kode_akun_penyusutan_id' => $q->alat->kode_akun_penyusutan_id,
+                    //         'qty' => $q->qty,
+                    //         'biaya' => $q->biaya,
+                    //         'kode_akun_id' => $q->alat->kode_akun_id,
+                    //     ];
+                    // })->toArray();
+                    // if (count($this->tindakan) > 0) {
+                    //     $this->dispatch('set-tindakan', data: $this->tindakan);
+                    // }
+                    // if (count($this->resep) > 0) {
+                    //     $this->dispatch('set-resep', data: $this->resep);
+                    // }
+                    $this->total_tindakan = collect($this->tindakan)->sum(function ($q) {
+                        return $q['biaya'] * $q['qty'] - $q['diskon'];
                     });
+                    $this->total_resep = collect($this->resep)->sum(function ($q) {
+                        return collect($q['barang'])->sum(function ($b) {
+                            return $b['harga'] * $b['qty'];
+                        });
+                    });
+
+
+                    $detail = $this->kas($item); // Kas dan diskon
+                    if ($item->total_tindakan > 0) {
+                        $detail = array_merge($detail, $this->tindakan($item)); // Pendapatan Tindakan
+                    } // Pendapatan Tindakan
+                    if ($item->total_resep > 0) {
+                        $detail = array_merge($detail, $this->resep($item)); // Pendapatan Resep
+                    } // Pendapatan Resep
+                    if (collect($item)->filter(fn($item) => !empty($item['id']))->count() > 0) {
+                        $detail = array_merge($detail, $this->barangBebas($item)); // Pendapatan Barang Bebas
+                    }
+                    $this->jurnalKeuangan($item, (collect($detail)->groupBy('kode_akun_id')->map(fn($q) => [
+                        'kode_akun_id' => $q->first()['kode_akun_id'],
+                        'debet' => $q->sum('debet'),
+                        'kredit' => $q->sum('kredit'),
+                    ])));
                 });
-
-
-                $detail = $this->kas($item); // Kas dan diskon
-                $detail = array_merge($detail, $this->tindakan($item)); // Pendapatan Tindakan
-                $detail = array_merge($detail, $this->resep($item)); // Pendapatan Resep
-                // if (collect($this->barang)->filter(fn($item) => !empty($item['id']))->count() > 0) {
-                //     $detail = array_merge($detail, $this->barangBebas($item)); // Pendapatan Barang Bebas
-                // }
-                $this->jurnalKeuangan($item, (collect($detail)->groupBy('kode_akun_id')->map(fn($q) => [
-                    'kode_akun_id' => $q->first()['kode_akun_id'],
-                    'debet' => $q->sum('debet'),
-                    'kredit' => $q->sum('kredit'),
-                ])));
-            });
+            } catch (\Exception $e) {
+                dd($e->getMessage(), $e, $item);
+            }
         }
         return view('livewire.laporan.penerimaan.index', [
             'data' =>  $data->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id))->when($this->metode_bayar, fn($q) => $q->where('metode_bayar', $this->metode_bayar)),
@@ -410,12 +418,11 @@ class Index extends Component
             jenis: 'Pendapatan',
             sub_jenis: 'Pendapatan ' . ($pembayaran->registrasi ? (collect($this->barang)->count() > 0 ? 'Pasien Tindakan/Resep Obat & Penjualan Barang' : 'Pasien Tindakan/Resep Obat') : 'Penjualan Barang Bebas'),
             tanggal: $pembayaran->tanggal,
-            uraian: ('Pendapatan ' . ($pembayaran->registrasi ? (collect($this->barang)->count() > 0 ? 'Pasien Tindakan/Resep Obat & Penjualan Barang' : 'Pasien Tindakan/Resep Obat') : 'Penjualan Barang Bebas')) . ' No. Nota : ' . $pembayaran->id . ' a/n ' . ($pembayaran->registrasi ? $pembayaran->registrasi->pasien->nama : $pembayaran->pasien->nama) . ' Ket : ' . $pembayaran->keterangan,
-            system: 2,
+            uraian: ('Pendapatan ' . ($pembayaran->registrasi ? (collect($this->barang)->count() > 0 ? 'Pasien Tindakan/Resep Obat & Penjualan Barang' : 'Pasien Tindakan/Resep Obat') : 'Penjualan Barang Bebas')) . ' No. Nota : ' . $pembayaran->id . ' a/n ' . ($pembayaran->registrasi ? $pembayaran?->registrasi?->pasien?->nama : $pembayaran?->pasien?->nama) . ' Ket : ' . $pembayaran->keterangan,
+            system: 3,
             foreign_key: 'pembayaran_id',
             foreign_id: $pembayaran->id,
             detail: $detail
         );
     }
 }
-
