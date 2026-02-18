@@ -18,13 +18,13 @@ class JurnalkeuanganClass
 
     public static function getNomor($tanggal)
     {
-        $prefix = date('Ym', strtotime($tanggal));
+        $prefix = date('Y-m', strtotime($tanggal));
         $terakhir = KeuanganJurnal::where('tanggal', 'like', $prefix . '%')
             ->orderBy('id', 'desc')
             ->first();
         $nomorTerakhir = $terakhir ? (int)substr($terakhir->id, 6, 5) : 0;
         // dd(substr($terakhir->id, 6, 5));
-        $nomor = 'JURNAL/' . $prefix . '/' . sprintf('%05d', $nomorTerakhir + 1);
+        $nomor = 'JURNAL/' . str_replace('-', '/', $prefix) . '/' . sprintf('%05d', $nomorTerakhir + 1);
         return $nomor;
     }
 
