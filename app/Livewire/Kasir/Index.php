@@ -272,13 +272,14 @@ class Index extends Component
         );
 
         DB::transaction(function () {
-            $dataTerakhir = Pembayaran::where('tanggal', 'like',  substr($this->tanggal, 0, 7) . '%')->orderBy('id', 'desc')->first();
+            $dataTerakhir = Pembayaran::where('tanggal', 'like', date('Ym', strtotime($this->tanggal)) . '%')->orderBy('id', 'desc')->first();
 
             if ($dataTerakhir) {
                 $id = $dataTerakhir->id + 1;
             } else {
                 $id = date('Ym') . '00001';
             }
+            
             $pembayaran = new Pembayaran();
             $pembayaran->id = $id;
             $pembayaran->total_barang = $this->total_barang + $this->total_diskon_barang;
