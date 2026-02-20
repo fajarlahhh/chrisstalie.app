@@ -1,11 +1,11 @@
 <div class="mb-3">
-    <label class="form-label">Total Diskon</label>
-    <input class="form-control text-end text-bold fs-20px" type="text" disabled
+    <label class="form-label text-danger">Total Diskon</label>
+    <input class="form-control text-end text-bold fs-20px text-danger" type="text" disabled
         :value="formatNumber(total_diskon_tindakan + total_diskon_barang)" />
 </div>
-<div class="mb-3">
+<div class="mb-3 text-success">
     <label class="form-label">Total Tagihan</label>
-    <input class="form-control text-end text-bold fs-20px" type="text" disabled :value="formatNumber(total_tagihan)" />
+    <input class="form-control text-end text-bold fs-20px text-success" type="text" disabled :value="formatNumber(total_tagihan)" />
 </div>
 @role('administrator|supervisor')
     <div class="mb-3">
@@ -37,7 +37,7 @@
                         <option :value="item.id" x-text="item.nama" :selected="metode_bayar == item.id"></option>
                     </template>
                 </select>
-                <input class="form-control text-end fs-16px" type="number" wire:model="cash" x-model.number="cash"
+                <input class="form-control text-end fs-16px text-bold" type="number" wire:model="cash" x-model.number="cash"
                     @input="if (parseInt(cash || 0) == 0 || parseInt(cash || 0) >= parseInt(total_tagihan || 0)){
                         cash_2 = 0;
                     }"

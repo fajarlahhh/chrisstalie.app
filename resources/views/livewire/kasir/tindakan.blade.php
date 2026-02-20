@@ -16,11 +16,14 @@
                 <br>
                 <small>
                     <small class="text-nowrap">
-                        - Dokter : <span
+                        &nbsp;&nbsp;&nbsp;- Dokter : <span
                             x-text="row.dokter_id ? dataNakes.find(n => n.id == row.dokter_id)?.nama : '-'"></span>
                         <br>
-                        - Perawat : <span
+                        &nbsp;&nbsp;&nbsp;- Perawat : <span
                             x-text="row.perawat_id ? dataNakes.find(n => n.id == row.perawat_id)?.nama : '-'"></span>
+                        <br>
+                        <span class="text-danger">Catatan : <span
+                            x-text="row.catatan ? row.catatan : '-'"></span></span>
                     </small>
                 </small>
             </td>

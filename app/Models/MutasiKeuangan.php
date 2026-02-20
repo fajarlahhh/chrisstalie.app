@@ -9,4 +9,9 @@ class MutasiKeuangan extends Model
 {
     //
     protected $table = 'mutasi_keuangan';
+
+    public function pengguna()
+    {
+        return $this->belongsTo(Pengguna::class);
+    }
 }
