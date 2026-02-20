@@ -63,10 +63,6 @@
                                                     $($el).select2({ width: '100%', dropdownAutoWidth: true });
                                                     $($el).on('change', function(e) {
                                                         row.id = e.target.value;
-                                                        $($el).on('change', function(e) {
-                                                            row.id = e.target.value;
-                                                            updateKodeAkun(index);
-                                                        });
                                                     });
                                                     $watch('row.id', (value) => {
                                                         if (value !== $($el).val()) {
@@ -84,7 +80,8 @@
                                         </td>
                                         <td>
                                             <input type="number" class="form-control w-150px text-end" min="0"
-                                                step="any" x-model.number="row.debet" step="any" @input="hitungTotal()">
+                                                step="any" x-model.number="row.debet" step="any"
+                                                @input="hitungTotal()">
                                             <template x-if="errors['detail.'+index+'.debet']">
                                                 <span class="text-danger"
                                                     x-text="errors['detail.'+index+'.debet']"></span>
@@ -92,7 +89,8 @@
                                         </td>
                                         <td>
                                             <input type="number" class="form-control w-150px text-end" min="0"
-                                                step="any" x-model.number="row.kredit" step="any" @input="hitungTotal()">
+                                                step="any" x-model.number="row.kredit" step="any"
+                                                @input="hitungTotal()">
                                             <template x-if="errors['detail.'+index+'.kredit']">
                                                 <span class="text-danger"
                                                     x-text="errors['detail.'+index+'.kredit']"></span>
@@ -161,7 +159,7 @@
             </div>
         </div>
     </form>
-    
+
     <div wire:loading>
         <x-loading />
     </div>
@@ -210,17 +208,6 @@
                     this.$nextTick(() => {
                         this.refreshSelect2();
                     });
-                    this.hitungTotal();
-                },
-
-                updateKodeAkun(index) {
-                    let row = this.detail[index];
-                    let selected = this.dataKodeAkun.find(b => b.id == row.id);
-                    if (selected) {
-                        row.id = selected.id;
-                    } else {
-                        row.id = '';
-                    }
                     this.hitungTotal();
                 },
                 hapusDetail(idx) {
