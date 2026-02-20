@@ -33,7 +33,7 @@
             {{ $data->links() }}
         </div>
     </div>
-    
+
     <div wire:loading>
         <x-loading />
     </div>
