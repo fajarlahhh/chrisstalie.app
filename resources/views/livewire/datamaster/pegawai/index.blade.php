@@ -33,8 +33,7 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
-                        <th>ID</th>
-                        <th>NIK</th>
+                        <th>No. KTP</th>
                         <th>Nama</th>
                         <th>Alamat</th>
                         <th>No. Hp</th>
