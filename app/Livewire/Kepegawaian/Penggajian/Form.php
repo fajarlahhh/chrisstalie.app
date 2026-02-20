@@ -9,16 +9,18 @@ use App\Class\JurnalkeuanganClass;
 use App\Models\KepegawaianPenggajian;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
+use App\Traits\KodeakuntransaksiTrait;
 
 class Form extends Component
 {
     use CustomValidationTrait;
+    use KodeakuntransaksiTrait;
     public $dataPegawai = [], $dataUnsurGaji = [], $dataKodeAkun = [], $metode_bayar;
     public $tanggal, $periode, $detail = [], $pegawai_id;
 
     public function mount()
     {
-        $this->dataKodeAkun = KodeAkun::detail()->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::detail()->whereIn('id', $this->getKodeAkunTransaksiByTransaksi('Pembayaran')->pluck('kode_akun_id'))->get()->toArray();
         $this->tanggal = date('Y-m-01');
         $this->periode = date('Y-m');
         $this->updatedPeriode($this->periode);
@@ -33,18 +35,15 @@ class Form extends Component
             'debet' => $q['nilai'],
             'kredit' => 0,
         ])->toArray();
-        $this->detail[] = [
-            'kode_akun_id' => null,
-            'kode_akun_nama' => null,
-            'debet' => 0,
-            'kredit' => 0,
-        ];
     }
 
     public function updatedPeriode($value)
     {
         $this->detail = [];
-        $this->dataPegawai = KepegawaianPegawai::with('kepegawaianPegawaiUnsurGaji.kodeAkun')->whereNotIn('id', KepegawaianPenggajian::where('periode', $value . '-01')->get()->pluck('kepegawaian_pegawai_id'))->aktif()->get()->toArray();
+        $this->dataPegawai = KepegawaianPegawai::with('kepegawaianPegawaiUnsurGaji.kodeAkun')->orderBy('nama', 'asc')->whereNotIn('id', KepegawaianPenggajian::where('periode', $value . '-01')->get()->pluck('kepegawaian_pegawai_id'))
+        ->where('tanggal_masuk', '<', \Carbon\Carbon::parse($value . '-01')->format('Y-m-t'))
+        ->where(fn($q) => $q->where('tanggal_keluar', '>', \Carbon\Carbon::parse($value . '-01')->format('Y-m-01'))->orWhereNull('tanggal_keluar'))  
+        ->get()->toArray();
     }
 
     public function submit()
@@ -88,7 +87,7 @@ class Form extends Component
             jenis: 'Pengeluaran',
             sub_jenis: 'Pengeluaran Gaji Pegawai',
             tanggal: $this->tanggal,
-            uraian: 'Gaji Bulan ' . $this->periode . ' a/n ' . collect($this->dataPegawai)->where('id', $this->pegawai_id)->first()['nama'],
+            uraian: 'Gaji Bulan ' . $this->periode,
             system: 1,
             foreign_key: 'kepegawaian_penggajian_id',
             foreign_id: $penggajian->id,

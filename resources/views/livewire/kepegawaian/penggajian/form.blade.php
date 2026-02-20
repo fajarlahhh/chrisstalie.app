@@ -56,8 +56,9 @@
                             <label class="form-label">Metode Pembayaran</label>
                             <select class="form-control" wire:model="metode_bayar">
                                 <option selected hidden>-- Pilih Metode Pembayaran --</option>
-                                @foreach (collect($dataKodeAkun)->where('parent_id', '11100') as $item)
-                                    <option value="{{ $item['id'] }}">{{ $item['id'] . ' - ' . $item['nama'] }}</option>
+                                @foreach (collect($dataKodeAkun) as $item)
+                                    <option value="{{ $item['id'] }}">{{ $item['id'] . ' - ' . $item['nama'] }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -71,24 +72,14 @@
                                     @foreach ($detail as $index => $row)
                                         <tr>
                                             <td>
-                                                @if ($row['kode_akun_id'] == null)
-                                                    <select class="form-control" required
-                                                        wire:model="detail.{{ $index}}.kode_akun_id">
-                                                        <option value="">-- Pilih Komponen Lainnya --</option>
-                                                        @foreach (collect($dataKodeAkun)->where('kategori', 'Beban') as $subRow)
-                                                            <option value="{{ $subRow['id'] }}">
-                                                                {{ $subRow['id'] . ' - ' . $subRow['nama'] }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                @else
-                                                    <input type="text" class="form-control"
-                                                        value="{{ $row['kode_akun_id'] . ' - ' . $row['kode_akun_nama'] }}"
-                                                        disabled>
-                                                @endif
+                                                <input type="text" class="form-control"
+                                                    value="{{ $row['kode_akun_id'] . ' - ' . $row['kode_akun_nama'] }}"
+                                                    disabled>
                                             </td>
                                             <td>
                                                 <input type="text" class="form-control" required
-                                                    wire:model="detail.{{ $index }}.debet" autocomplete="off">
+                                                    wire:model="detail.{{ $index }}.debet" autocomplete="off"
+                                                    disabled>
                                             </td>
                                         </tr>
                                     @endforeach
