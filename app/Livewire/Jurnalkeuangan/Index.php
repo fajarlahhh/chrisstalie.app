@@ -43,7 +43,7 @@ class Index extends Component
                     ->orWhere('uraian', 'like', '%' . $this->cari . '%')
             )
             ->orderBy('tanggal', 'desc')
-            ->when(!auth()->user()->hasRole('administrator'), fn($q) => $q->where('pengguna_id', auth()->id()))
+            ->when(!auth()->user()->hasRole('administrator', 'supervisor'), fn($q) => $q->where('pengguna_id', auth()->id()))
             ->paginate(10);
     }
 
