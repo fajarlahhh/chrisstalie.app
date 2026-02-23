@@ -28,17 +28,19 @@
                 </div>
                 &nbsp;
             @endrole
-            <select class="form-control w-auto" wire:model.lazy="jenis">
-                <option value="">Semua Jenis</option>
-                @foreach ($dataJenis as $item)
-                    <option value="{{ $item['jenis'] }}">{{ $item['jenis'] }}</option>
-                @endforeach
-            </select>
-            &nbsp;
-            <input type="month" class="form-control w-auto" wire:model.lazy="bulan" max="{{ date('Y-m') }}">
-            &nbsp;
-            <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
-                wire:model.lazy="cari">
+            <div class="ms-auto d-flex align-items-center">
+                <select class="form-control w-auto" wire:model.lazy="jenis">
+                    <option value="">Semua Jenis</option>
+                    @foreach ($dataJenis as $item)
+                        <option value="{{ $item['jenis'] }}">{{ $item['jenis'] }}</option>
+                    @endforeach
+                </select>
+                &nbsp;
+                <input type="month" class="form-control w-auto" wire:model.lazy="bulan" max="{{ date('Y-m') }}">
+                &nbsp;
+                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                    wire:model.lazy="cari">
+            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

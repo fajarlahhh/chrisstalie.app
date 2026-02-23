@@ -17,8 +17,10 @@
                 <a href="javascript:;" wire:click="export" class="btn btn-success">
                     Export</a>&nbsp;
             @endrole
-            <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
-                wire:model.lazy="cari">
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                    wire:model.lazy="cari">
+            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

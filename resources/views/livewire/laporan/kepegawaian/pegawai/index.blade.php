@@ -17,8 +17,6 @@
                 }, 1000)
             })" class="btn btn-warning">
                 Cetak</a>&nbsp;
-            <div class="w-100">
-            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
@@ -26,7 +24,7 @@
         </div>
     </div>
     <x-modal.cetak judul="Pegawai" />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

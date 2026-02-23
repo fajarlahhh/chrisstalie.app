@@ -15,20 +15,22 @@
                     class="btn btn-primary">
                     Tambah</a>&nbsp;
             @endrole
-            <select class="form-control w-auto" wire:model.lazy="barang_id" x-init="$($el).selectpicker({
-                liveSearch: true,
-                width: 'auto',
-                size: 10,
-                container: 'body',
-                style: '',
-                showSubtext: true,
-                styleBase: 'form-control'
-            })">
-                <option value="">Semua Barang</option>
-                @foreach ($dataBarang as $item)
-                    <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
-                @endforeach
-            </select>
+            <div class="ms-auto d-flex align-items-center">
+                <select class="form-control w-auto" wire:model.lazy="barang_id" x-init="$($el).selectpicker({
+                    liveSearch: true,
+                    width: 'auto',
+                    size: 10,
+                    container: 'body',
+                    style: '',
+                    showSubtext: true,
+                    styleBase: 'form-control'
+                })">
+                    <option value="">Semua Barang</option>
+                    @foreach ($dataBarang as $item)
+                        <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

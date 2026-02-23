@@ -16,26 +16,28 @@
                 }, 1000)
             })" class="btn btn-warning">
                 Cetak</a>&nbsp;
-            <input type="month" class="form-control w-auto" wire:model.lazy="bulan" min="2025-11"
-                max="{{ date('Y-m') }}">
-            &nbsp;
-            <select class="form-control w-auto" wire:model.lazy="persediaan">
-                <option value="">Semua Persediaan</option>
-                <option value="Apotek">Persediaan Apotek</option>
-                <option value="Klinik">Persediaan Klinik</option>
-            </select>&nbsp;
-            <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
-                <option value="">Semua Kategori</option>
-                @foreach ($dataKodeAkun as $item)
-                    <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
-                @endforeach
-            </select>&nbsp;
-            <select class="form-control w-auto" wire:model.lazy="satuan">
-                <option value="Utama">Satuan Utama</option>
-                <option value="Terkecil">Satuan Terkecil</option>
-            </select>&nbsp;
-            <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
-                wire:model.lazy="cari">
+            <div class="ms-auto d-flex align-items-center">
+                <input type="month" class="form-control w-auto" wire:model.lazy="bulan" min="2025-11"
+                    max="{{ date('Y-m') }}">
+                &nbsp;
+                <select class="form-control w-auto" wire:model.lazy="persediaan">
+                    <option value="">Semua Persediaan</option>
+                    <option value="Apotek">Persediaan Apotek</option>
+                    <option value="Klinik">Persediaan Klinik</option>
+                </select>&nbsp;
+                <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
+                    <option value="">Semua Kategori</option>
+                    @foreach ($dataKodeAkun as $item)
+                        <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
+                    @endforeach
+                </select>&nbsp;
+                <select class="form-control w-auto" wire:model.lazy="satuan">
+                    <option value="Utama">Satuan Utama</option>
+                    <option value="Terkecil">Satuan Terkecil</option>
+                </select>&nbsp;
+                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                    wire:model.lazy="cari">
+            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

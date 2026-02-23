@@ -15,22 +15,24 @@
         <div class="panel-heading overflow-auto d-flex">
             <a href="javascript:;" wire:click="export" class="btn btn-success">
                 Export</a>&nbsp;
-            <select class="form-control w-auto" x-init="$($el).selectpicker({
-                liveSearch: true,
-                width: 'auto',
-                size: 10,
-                container: 'body',
-                style: '',
-                showSubtext: true,
-                styleBase: 'form-control'
-            })" wire:model.lazy="kodeAkunId">
-                <option value="">-- Pilih Kode Akun --</option>
-                @foreach ($dataKodeAkun as $item)
-                    <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
-                @endforeach
-            </select>&nbsp;
-            <input type="month" autocomplete="off" wire:model.lazy="bulan" min="2025-09"
-                max="{{ date('Y-m', strtotime('-1 month')) }}" class="form-control w-auto">
+            <div class="ms-auto d-flex align-items-center">
+                <select class="form-control w-auto" x-init="$($el).selectpicker({
+                    liveSearch: true,
+                    width: 'auto',
+                    size: 10,
+                    container: 'body',
+                    style: '',
+                    showSubtext: true,
+                    styleBase: 'form-control'
+                })" wire:model.lazy="kodeAkunId">
+                    <option value="">-- Pilih Kode Akun --</option>
+                    @foreach ($dataKodeAkun as $item)
+                        <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
+                    @endforeach
+                </select>&nbsp;
+                <input type="month" autocomplete="off" wire:model.lazy="bulan" min="2025-09"
+                    max="{{ date('Y-m', strtotime('-1 month')) }}" class="form-control w-auto">
+            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

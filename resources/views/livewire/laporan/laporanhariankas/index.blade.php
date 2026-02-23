@@ -17,15 +17,17 @@
                 }, 1000)
             })" class="btn btn-warning">
                 Cetak</a>&nbsp;
-            <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
-                wire:model.lazy="tanggal" />
-            &nbsp;
-            <select class="form-control w-auto" wire:model.lazy="pengguna_id">
-                <option value="">Semua Pengguna</option>
-                @foreach ($dataPengguna as $item)
-                    <option value="{{ $item->id }}">{{ $item->nama }}</option>
-                @endforeach
-            </select>
+            <div class="ms-auto d-flex align-items-center">
+                <input class="form-control w-auto" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                    wire:model.lazy="tanggal" />
+                &nbsp;
+                <select class="form-control w-auto" wire:model.lazy="pengguna_id">
+                    <option value="">Semua Pengguna</option>
+                    @foreach ($dataPengguna as $item)
+                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

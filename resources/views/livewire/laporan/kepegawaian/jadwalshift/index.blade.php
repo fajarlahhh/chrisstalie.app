@@ -17,8 +17,10 @@
                 }, 1000)
             })" class="btn btn-warning">
                 Cetak</a>&nbsp;
-            <input type="month" class="form-control w-auto" wire:model.lazy="bulan" min="2025-11"
-                max="{{ date('Y-m') }}">&nbsp;
+            <div class="ms-auto d-flex align-items-center">
+                <input type="month" class="form-control w-auto" wire:model.lazy="bulan" min="2025-11"
+                    max="{{ date('Y-m') }}">&nbsp;
+            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

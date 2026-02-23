@@ -15,10 +15,12 @@
                     class="btn btn-primary">
                     Tambah</a>&nbsp;
             @endrole
-            <input type="month" class="form-control w-auto" wire:model.lazy="bulan" max="{{ date('Y-m') }}">
-            &nbsp;
-            <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
-                wire:model.lazy="cari">
+            <div class="ms-auto d-flex align-items-center">
+                <input type="month" class="form-control w-auto" wire:model.lazy="bulan" max="{{ date('Y-m') }}">
+                &nbsp;
+                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                    wire:model.lazy="cari">
+            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

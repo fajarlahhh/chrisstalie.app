@@ -39,11 +39,11 @@
             <th class="bg-gray-300 text-white">Satuan</th>
             <th class="bg-gray-300 text-white">Kategori</th>
             <th class="bg-gray-300 text-white">Tanggal Kedaluarsa</th>
-            @role('administrator')
+            @role('administrator|supervisor')
                 <th class="bg-gray-300 text-white">Harga Beli</th>
             @endrole
             <th class="bg-gray-300 text-white">Stok</th>
-            @role('administrator')
+            @role('administrator|supervisor')
                 <th class="bg-gray-300 text-white">Nilai Persediaan</th>
             @endrole
         </tr>
@@ -79,11 +79,11 @@
                     {{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
                 @if ($stok->count() == 0)
                     <td nowrap></td>
-                    @role('administrator')
+                    @role('administrator|supervisor')
                         <td nowrap class="text-end">0</td>
                     @endrole
                     <td nowrap class="text-end">0</td>
-                    @role('administrator')
+                    @role('administrator|supervisor')
                         <td nowrap class="text-end">0</td>
                     @endrole
                 @endif
@@ -91,7 +91,7 @@
             @foreach ($stok->sortBy('tanggal_kedaluarsa') as $subItem)
                 <tr class="bg-green-100">
                     <td nowrap class="text-end">{{ $subItem['tanggal_kedaluarsa'] }}</td>
-                    @role('administrator')
+                    @role('administrator|supervisor')
                         <td nowrap class="text-end">{{ number_format($subItem['harga_beli']) }}</td>
                     @endrole
                     <td nowrap class="text-end">
@@ -101,7 +101,7 @@
                         @endphp
                         {{ fmod($stok, 1) != 0 ? number_format($stok, 3) : number_format($stok) }}
                     </td>
-                    @role('administrator')
+                    @role('administrator|supervisor')
                         <td nowrap class="text-end">
                             {{ number_format($subItem['total']) }}</td>
                     @endrole
@@ -110,7 +110,7 @@
             </tr>
         @endforeach
     </tbody>
-    @role('administrator')
+    @role('administrator|supervisor')
         <tfoot>
             <tr>
                 <th colspan="7" class="text-end">Total Nilai Persediaan</th>

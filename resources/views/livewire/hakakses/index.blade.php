@@ -14,12 +14,10 @@
                     class="btn btn-primary">
                     Tambah</a>&nbsp;
             @endrole
-            <select data-container="body" class="form-control w-auto" wire:model.lazy="exist">
-                <option value="1">Exist</option>
-                <option value="2">Deleted</option>
-            </select>&nbsp;
-            <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
-                wire:model.lazy="cari">
+            <div class="ms-auto d-flex align-items-center">
+                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                    wire:model.lazy="cari">
+            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

@@ -20,23 +20,25 @@
                 }, 1000)
             })" class="btn btn-warning">
                 Cetak</a>&nbsp;
-            <select class="form-control w-auto" wire:model.lazy="jenis">
-                <option value="Rekap">Rekap</option>
-                <option value="Per Pegawai">Per Pegawai</option>
-            </select>
-            &nbsp;
-            <input type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
-                wire:model.lazy="tanggal1" id="tanggal" class="form-control w-auto">&nbsp;s/d&nbsp;
-            <input type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
-                wire:model.lazy="tanggal2" id="tanggal" class="form-control w-auto">&nbsp;
-            @if ($jenis == 'Per Pegawai')
-                <select class="form-control w-auto" wire:model.lazy="kepegawaian_pegawai_id">
-                    <option value="">-- Pilih Pegawai --</option>
-                    @foreach ($dataPegawai as $row)
-                        <option value="{{ $row['id'] }}">{{ $row['nama'] }}</option>
-                    @endforeach
+            <div class="ms-auto d-flex align-items-center">
+                <select class="form-control w-auto" wire:model.lazy="jenis">
+                    <option value="Rekap">Rekap</option>
+                    <option value="Per Pegawai">Per Pegawai</option>
                 </select>
-            @endif
+                &nbsp;
+                <input type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                    wire:model.lazy="tanggal1" id="tanggal" class="form-control w-auto">&nbsp;s/d&nbsp;
+                <input type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                    wire:model.lazy="tanggal2" id="tanggal" class="form-control w-auto">&nbsp;
+                @if ($jenis == 'Per Pegawai')
+                    <select class="form-control w-auto" wire:model.lazy="kepegawaian_pegawai_id">
+                        <option value="">-- Pilih Pegawai --</option>
+                        @foreach ($dataPegawai as $row)
+                            <option value="{{ $row['id'] }}">{{ $row['nama'] }}</option>
+                        @endforeach
+                    </select>
+                @endif
+            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

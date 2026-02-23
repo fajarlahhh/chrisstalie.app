@@ -14,7 +14,9 @@
                 <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
                     class="btn btn-outline-secondary btn-block">Tambah</a>
             @endunlessrole
-            <input type="month" class="form-control w-auto" autocomplete="off" wire:model.lazy="bulan" />
+            <div class="ms-auto d-flex align-items-center">
+                <input type="month" class="form-control w-auto" autocomplete="off" wire:model.lazy="bulan" />
+            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

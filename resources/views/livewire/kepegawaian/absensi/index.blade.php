@@ -39,42 +39,34 @@
     <div class="panel panel-inverse" data-sortable-id="table-basic-2">
         <!-- BEGIN panel-heading -->
         <div class="panel-heading overflow-auto d-flex">
-            <div class="row w-100">
-                <div class="col-md-2">
-                    @unlessrole('guest')
-                        @if ($connected)
-                            <a href="javascript:;" wire:click="download" class="btn btn-outline-secondary btn-block"
-                                wire:loading.attr="disabled">
-                                <span wire:loading class="spinner-border spinner-border-sm"></span>
-                                Download
-                            </a>
-                        @endif
-                        <a href="javascript:;" wire:click="posting" class="btn btn-outline-secondary btn-block"
-                            wire:loading.attr="disabled">
-                            <span wire:loading class="spinner-border spinner-border-sm"></span>
-                            Posting
-                        </a>
-                    @endunlessrole
-                </div>
-                <div class="col-md-10">
-                    <div class="panel-heading-btn float-end">
-                        <div class="input-group w-100">
-                            <select class="form-control w-auto" wire:model="kepegawaian_pegawai_id">
-                                <option value="">Semua Pegawai</option>
-                                @foreach ($dataPegawai as $row)
-                                    <option value="{{ $row['id'] }}">{{ $row['nama'] }}</option>
-                                @endforeach
-                            </select>
-                            <input class="form-control w-auto" type="date" autocomplete="off"
-                                wire:model="tanggal1" />
-                            <input class="form-control w-auto" type="date" autocomplete="off"
-                                wire:model="tanggal2" />
-                            <input type="text" class="form-control w-auto" placeholder="Cari" aria-label="Cari"
-                                wire:model="cari" aria-describedby="button-addon2">
-                            <button class="btn btn-primary" type="button" wire:click="$commit">Filter</button>
-                        </div>
-                    </div>
-                </div>
+            @unlessrole('guest')
+                @if ($connected)
+                    <a href="javascript:;" wire:click="download" class="btn btn-outline-secondary btn-block"
+                        wire:loading.attr="disabled">
+                        <span wire:loading class="spinner-border spinner-border-sm"></span>
+                        Download
+                    </a>
+                @endif
+                <a href="javascript:;" wire:click="posting" class="btn btn-outline-secondary btn-block"
+                    wire:loading.attr="disabled">
+                    <span wire:loading class="spinner-border spinner-border-sm"></span>
+                    Posting
+                </a>
+            @endunlessrole
+            <div class="ms-auto d-flex align-items-center">
+                <select class="form-control w-auto" wire:model="kepegawaian_pegawai_id">
+                    <option value="">Semua Pegawai</option>
+                    @foreach ($dataPegawai as $row)
+                        <option value="{{ $row['id'] }}">{{ $row['nama'] }}</option>
+                    @endforeach
+                </select>
+                &nbsp;
+                <input class="form-control w-auto" type="date" autocomplete="off" wire:model="tanggal1" />&nbsp;
+                <input class="form-control w-auto" type="date" autocomplete="off" wire:model="tanggal2" />&nbsp;
+                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                    wire:model="cari">
+                &nbsp;
+                <button class="btn btn-primary" type="button" wire:click="$commit">Filter</button>
             </div>
         </div>
         <!-- END panel-heading -->

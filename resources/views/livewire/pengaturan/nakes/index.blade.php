@@ -15,12 +15,14 @@
                     class="btn btn-primary">
                     Tambah</a>&nbsp;
             @endrole
-            <select class="form-control w-auto" wire:model.lazy="aktif">
-                <option value="1">Aktif</option>
-                <option value="0">Non Aktif</option>
-            </select>&nbsp;
-            <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
-                wire:model.lazy="cari">
+            <div class="ms-auto d-flex align-items-center">
+                <select class="form-control w-auto" wire:model.lazy="aktif">
+                    <option value="1">Aktif</option>
+                    <option value="0">Non Aktif</option>
+                </select>&nbsp;
+                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                    wire:model.lazy="cari">
+            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

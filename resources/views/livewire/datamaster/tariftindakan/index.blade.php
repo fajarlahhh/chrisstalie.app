@@ -17,14 +17,16 @@
             @endrole
             <a href="javascript:;" wire:click="export" class="btn btn-success">
                 Export</a>&nbsp;
-            <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
-                <option value="">Semua Kategori</option>
-                @foreach ($dataKodeAkun as $item)
-                    <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
-                @endforeach
-            </select>&nbsp;
-            <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
-                wire:model.lazy="cari">
+            <div class="ms-auto d-flex align-items-center">
+                <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
+                    <option value="">Semua Kategori</option>
+                    @foreach ($dataKodeAkun as $item)
+                        <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
+                    @endforeach
+                </select>&nbsp;
+                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                    wire:model.lazy="cari">
+            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

@@ -50,7 +50,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td nowrap>{{ $row[0]['tanggal'] }}</td>
                         <td nowrap>{{ $row[0]['operator'] }}</td>
-                        <td nowrap>{{ $row[0]['metode_bayar'] }}</td>
+                        <td nowrap>{!! $row[0]['metode_bayar'] !!}</td>
                         <td nowrap>{{ $row[0]['barang'] }}</td>
                         <td nowrap>{{ $row[0]['satuan'] }}</td>
                         <td nowrap>{{ $row[0]['no_batch'] }}</td>

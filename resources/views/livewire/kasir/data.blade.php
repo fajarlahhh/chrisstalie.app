@@ -11,11 +11,14 @@
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading overflow-auto d-flex">
-            <input class="form-control w-auto" type="date" wire:model.lazy="tanggal1" max="{{ date('Y-m-d') }}" />&nbsp;
-            <input class="form-control w-auto" type="date" wire:model.lazy="tanggal2"
-                max="{{ date('Y-m-d') }}" />&nbsp;
-            <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
-                wire:model.lazy="cari">
+            <div class="ms-auto d-flex align-items-center">
+                <input class="form-control w-auto" type="date" wire:model.lazy="tanggal1"
+                    max="{{ date('Y-m-d') }}" />&nbsp;
+                <input class="form-control w-auto" type="date" wire:model.lazy="tanggal2"
+                    max="{{ date('Y-m-d') }}" />&nbsp;
+                <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                    wire:model.lazy="cari">
+            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
