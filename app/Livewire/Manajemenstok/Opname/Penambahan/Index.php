@@ -21,6 +21,11 @@ class Index extends Component
         $this->bulan = $this->bulan ?: date('Y-m');
     }
 
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function delete($id)
     {
         DB::transaction(function () use ($id) {
@@ -40,7 +45,8 @@ class Index extends Component
     public function render()
     {
         return view('livewire.manajemenstok.opname.penambahan.index', [
-            'data' => StokMasuk::with(['barang', 'barangSatuan', 'keluar', 'pengguna', 'keuanganJurnal'])->whereNull('pengadaan_pemesanan_id')->where('created_at', 'like', $this->bulan . '%')->paginate(10)
+            'data' => StokMasuk::with(['barang', 'barangSatuan', 'keluar', 'pengguna', 'keuanganJurnal'])->whereNull('pengadaan_pemesanan_id')->where('created_at', 'like', $this->bulan . '%')
+            ->where(fn($q) => $q->whereHas('barang', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%')))->paginate(10)
         ]);
     }
 }

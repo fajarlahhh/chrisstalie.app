@@ -41,14 +41,13 @@ class Index extends Component
                     ->orderBy('tanggal', 'desc')
                     ->get()->map(function ($q) {
                         $pengadaanPemesanan = $q->pengadaanPemesanan;
-                        $pengadaanPemesananDetail = $pengadaanPemesanan?->pengadaanPemesananDetail?->where('barang_id', $q->barang_id)->first();
                         return [
                             'barang_id' => $q->barang->nama . $q->barang->id . $q->tanggal,
                             'tanggal' => $q->tanggal,
                             'barang' => $q->barang->nama,
                             'satuan' => $q->barangSatuan->nama . ' ' . $q->barangSatuan->konversi_satuan,
                             'no_batch' => $q->no_batch,
-                            'metode_bayar' => $pengadaanPemesanan ? ($pengadaanPemesanan?->pembayaran ? ($pengadaanPemesanan?->pembayaran == 'Lunas' ? $pengadaanPemesanan?->kodeAkun?->nama : 'Jatuh Tempo') : '<span class="text-danger">Koreksi</span>') : '',
+                            'status' => $pengadaanPemesanan ? '' : '<span class="text-danger">Koreksi</span>',
                             'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
                             'harga_beli' => $q->harga_beli,
                             'qty' => $q->qty,
