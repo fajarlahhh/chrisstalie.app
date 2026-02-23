@@ -12,9 +12,10 @@
         <!-- begin panel-heading -->
         <div class="panel-heading overflow-auto d-flex">
             <input class="form-control w-auto" type="date" wire:model.lazy="tanggal1" max="{{ date('Y-m-d') }}" />&nbsp;
-            <input class="form-control w-auto" type="date" wire:model.lazy="tanggal2" max="{{ date('Y-m-d') }}" />&nbsp;
-            <input type="text" class="form-control w-200px" placeholder="Cari" aria-label="Sizing example input"
-                autocomplete="off" aria-describedby="basic-addon2" wire:model.lazy="cari">
+            <input class="form-control w-auto" type="date" wire:model.lazy="tanggal2"
+                max="{{ date('Y-m-d') }}" />&nbsp;
+            <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                wire:model.lazy="cari">
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

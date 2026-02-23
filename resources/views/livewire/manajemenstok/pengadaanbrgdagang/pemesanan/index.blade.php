@@ -10,18 +10,16 @@
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading overflow-auto d-flex">
-                    <select class="form-select" wire:model.lazy="status">
-                        <option value="Belum Buat SP">Belum Buat SP</option>
-                        <option value="Sudah Buat SP">Sudah Buat SP</option>
-                    </select>&nbsp;
-                    @if ($status == 'Sudah Buat SP')
-                        <input type="month" class="form-control w-auto" wire:model.lazy="bulan"
-                            max="{{ date('Y-m') }}">
-                        &nbsp;
-                    @endif
-                    <input type="text" class="form-control w-200px" placeholder="Cari"
-                        aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
-                        wire:model.lazy="cari">
+            <select class="form-control w-auto" wire:model.lazy="status">
+                <option value="Belum Buat SP">Belum Buat SP</option>
+                <option value="Sudah Buat SP">Sudah Buat SP</option>
+            </select>&nbsp;
+            @if ($status == 'Sudah Buat SP')
+                <input type="month" class="form-control w-auto" wire:model.lazy="bulan" max="{{ date('Y-m') }}">
+                &nbsp;
+            @endif
+            <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                wire:model.lazy="cari">
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
@@ -169,9 +167,9 @@
                                                     :edit="true" :print="true" :permanentdelete="false"
                                                     :restore="false" :delete="true" />
                                             @else --}}
-                                                <x-action :row="$item" custom="" :detail="false"
-                                                    :edit="false" :print="true" :permanentdelete="false"
-                                                    :restore="false" :delete="true" />
+                                            <x-action :row="$item" custom="" :detail="false" :edit="false"
+                                                :print="true" :permanentdelete="false" :restore="false"
+                                                :delete="true" />
                                             {{-- @endif --}}
                                         @endif
                                     @endrole

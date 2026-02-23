@@ -17,9 +17,11 @@
                 }, 1000)
             })" class="btn btn-warning">
                 Cetak</a>&nbsp;
-                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="date1" />
-                    &nbsp;s/d&nbsp;
-                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="date2" />
+            <input class="form-control w-auto" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                wire:model.lazy="date1" />
+            &nbsp;s/d&nbsp;
+            <input class="form-control w-auto" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                wire:model.lazy="date2" />
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
@@ -27,7 +29,7 @@
         </div>
     </div>
     <x-modal.cetak judul="" />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

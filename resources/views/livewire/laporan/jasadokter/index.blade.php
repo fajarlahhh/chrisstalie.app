@@ -13,9 +13,11 @@
         <div class="panel-heading overflow-auto d-flex">
             <a href="javascript:;" wire:click="export" class="btn btn-warning">
                 Export</a>&nbsp;
-                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal1" />
-                    &nbsp;s/d&nbsp;
-                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal2" />
+            <input class="form-control w-auto" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                wire:model.lazy="tanggal1" />
+            &nbsp;s/d&nbsp;
+            <input class="form-control w-auto" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                wire:model.lazy="tanggal2" />
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
@@ -23,7 +25,7 @@
         </div>
     </div>
     <x-modal.cetak judul="" />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

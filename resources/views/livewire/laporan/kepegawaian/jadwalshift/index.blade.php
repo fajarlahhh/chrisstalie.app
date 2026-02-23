@@ -17,7 +17,8 @@
                 }, 1000)
             })" class="btn btn-warning">
                 Cetak</a>&nbsp;
-                    <input type="month" class="form-control w-auto" wire:model.lazy="bulan" min="2025-11" max="{{ date('Y-m') }}">&nbsp;
+            <input type="month" class="form-control w-auto" wire:model.lazy="bulan" min="2025-11"
+                max="{{ date('Y-m') }}">&nbsp;
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
@@ -25,7 +26,7 @@
         </div>
     </div>
     <x-modal.cetak judul="Jadwal Shift" />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

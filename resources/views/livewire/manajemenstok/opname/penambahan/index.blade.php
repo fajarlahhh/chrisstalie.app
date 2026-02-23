@@ -16,11 +16,10 @@
                 <a href="/manajemenstok/opname/penambahan/form" class="btn btn-primary">
                     Tambah</a>&nbsp;
             @endrole
-                    <input class="form-control" type="month" wire:model.lazy="bulan" min="2025-09"
-                        max="{{ date('Y-m') }}" />&nbsp;
-                    <input type="text" class="form-control w-200px" placeholder="Cari"
-                        aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
-                        wire:model.lazy="cari" placeholder="Cari">
+            <input class="form-control w-auto" type="month" wire:model.lazy="bulan" min="2025-09"
+                max="{{ date('Y-m') }}" />&nbsp;
+            <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                wire:model.lazy="cari">
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
@@ -51,7 +50,8 @@
                             <td class="text-nowrap w-100px">{{ $row->qty }}</td>
                             <td class="text-nowrap w-100px">{{ $row->no_batch }}</td>
                             <td class="text-nowrap w-100px">{{ $row->tanggal_kedaluarsa }}</td>
-                            <td class="text-nowrap w-100px text-end">{{ number_format($row->harga_beli, 0, ',', '.') }}</td>
+                            <td class="text-nowrap w-100px text-end">{{ number_format($row->harga_beli, 0, ',', '.') }}
+                            </td>
                             <td class="text-nowrap w-100px"><a
                                     href="/jurnalkeuangan?bulan={{ substr($row->created_at, 0, 7) }}&cari={{ $row->keuanganJurnal?->nomor }}"
                                     target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>

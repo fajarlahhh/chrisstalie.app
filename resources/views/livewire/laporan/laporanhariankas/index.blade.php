@@ -20,7 +20,7 @@
             <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
                 wire:model.lazy="tanggal" />
             &nbsp;
-            <select class="form-control" wire:model.lazy="pengguna_id">
+            <select class="form-control w-auto" wire:model.lazy="pengguna_id">
                 <option value="">Semua Pengguna</option>
                 @foreach ($dataPengguna as $item)
                     <option value="{{ $item->id }}">{{ $item->nama }}</option>

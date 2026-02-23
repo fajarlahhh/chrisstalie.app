@@ -15,13 +15,12 @@
                     class="btn btn-primary">
                     Tambah</a>&nbsp;
             @endrole
-                    <select data-container="body" class="form-control "wire:model.lazy="aktif">
-                        <option value="1">Aktif</option>
-                        <option value="0">Non Aktif</option>
-                    </select>&nbsp;
-                    <input type="text" class="form-control w-200px" placeholder="Cari"
-                        aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
-                        wire:model.lazy="cari">
+            <select class="form-control w-auto" wire:model.lazy="aktif">
+                <option value="1">Aktif</option>
+                <option value="0">Non Aktif</option>
+            </select>&nbsp;
+            <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                wire:model.lazy="cari">
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

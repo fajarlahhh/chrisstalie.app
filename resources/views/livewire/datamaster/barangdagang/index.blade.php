@@ -17,20 +17,19 @@
             @endrole
             <a href="javascript:;" wire:click="export" class="btn btn-success">
                 Export</a>&nbsp;
-                    <select class="form-control w-auto" wire:model.lazy="persediaan">
-                        <option value="">Semua Persediaan</option>
-                        <option value="Apotek">Apotek</option>
-                        <option value="Klinik">Klinik</option>
-                    </select>&nbsp;
-                    <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
-                        <option value="">Semua Kategori</option>
-                        @foreach ($dataKodeAkun as $item)
-                            <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
-                        @endforeach
-                    </select>&nbsp;
-                    <input type="text" class="form-control w-200px" placeholder="Cari"
-                        aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
-                        wire:model.lazy="cari">
+            <select class="form-control w-auto" wire:model.lazy="persediaan">
+                <option value="">Semua Persediaan</option>
+                <option value="Apotek">Apotek</option>
+                <option value="Klinik">Klinik</option>
+            </select>&nbsp;
+            <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
+                <option value="">Semua Kategori</option>
+                @foreach ($dataKodeAkun as $item)
+                    <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
+                @endforeach
+            </select>&nbsp;
+            <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                wire:model.lazy="cari">
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
@@ -40,7 +39,7 @@
             {{ $data->links() }}
         </div>
     </div>
-    
+
     <div wire:loading>
         <x-loading />
     </div>

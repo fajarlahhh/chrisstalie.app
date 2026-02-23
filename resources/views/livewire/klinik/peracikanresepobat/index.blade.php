@@ -11,17 +11,16 @@
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading overflow-auto d-flex">
-                    <select data-container="body" class="form-control" wire:model.lazy="status">
-                        <option value="1">Belum Proses</option>
-                        <option value="2">Sudah Proses</option>
-                    </select>&nbsp;
-                    @if ($status == 2)
-                        <input class="form-control" type="date" wire:model.lazy="tanggal"
-                            max="{{ date('Y-m-d') }}" />&nbsp;
-                    @endif
-                    <input type="text" class="form-control w-200px" placeholder="Cari"
-                        aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
-                        wire:model.lazy="cari">
+            <select class="form-control w-auto" wire:model.lazy="status">
+                <option value="1">Belum Proses</option>
+                <option value="2">Sudah Proses</option>
+            </select>&nbsp;
+            @if ($status == 2)
+                <input type="date" class="form-control w-auto" wire:model.lazy="tanggal"
+                    max="{{ date('Y-m-d') }}" />&nbsp;
+            @endif
+            <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                wire:model.lazy="cari">
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
@@ -94,7 +93,7 @@
         </div>
     </div>
     <x-modal.cetak judul='Resep Obat' />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

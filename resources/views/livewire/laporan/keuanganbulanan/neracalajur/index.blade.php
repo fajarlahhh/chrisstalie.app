@@ -15,7 +15,8 @@
         <div class="panel-heading overflow-auto d-flex">
             <a href="javascript:;" wire:click="export" class="btn btn-success">
                 Export</a>&nbsp;
-                    <input type="month" autocomplete="off" wire:model.lazy="bulan" min="2025-09" max="{{ date('Y-m', strtotime('-1 month')) }}" class="form-control w-auto">
+            <input type="month" autocomplete="off" wire:model.lazy="bulan" min="2025-09"
+                max="{{ date('Y-m', strtotime('-1 month')) }}" class="form-control w-auto">
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
@@ -23,7 +24,7 @@
         </div>
     </div>
     <x-modal.cetak judul="Neraca Lajur" />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

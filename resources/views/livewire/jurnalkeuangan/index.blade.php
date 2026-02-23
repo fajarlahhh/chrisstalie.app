@@ -37,8 +37,8 @@
             &nbsp;
             <input type="month" class="form-control w-auto" wire:model.lazy="bulan" max="{{ date('Y-m') }}">
             &nbsp;
-            <input type="text" class="form-control w-200px" placeholder="Cari" aria-label="Sizing example input"
-                autocomplete="off" aria-describedby="basic-addon2" wire:model.lazy="cari">
+            <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                wire:model.lazy="cari">
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

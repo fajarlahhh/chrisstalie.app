@@ -17,9 +17,8 @@
                 <a href="javascript:;" wire:click="export" class="btn btn-success">
                     Export</a>&nbsp;
             @endrole
-                    <input type="text" class="form-control w-200px" placeholder="Cari"
-                        aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
-                        wire:model.lazy="cari">
+            <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"
+                wire:model.lazy="cari">
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
@@ -29,7 +28,7 @@
             {{ $data->links() }}
         </div>
     </div>
-    
+
     <div wire:loading>
         <x-loading />
     </div>

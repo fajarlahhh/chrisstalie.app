@@ -16,18 +16,20 @@
                 }, 1000)
             })" class="btn btn-warning">
                 Cetak</a>&nbsp;
-                    <select class="form-control w-auto" wire:model.lazy="persediaan">
-                        <option value="">Semua Persediaan</option>
-                        <option value="Apotek">Apotek</option>
-                        <option value="Klinik">Klinik</option>
-                    </select>&nbsp;
-                    <select class="form-control w-auto" wire:model.lazy="jenis">
-                        <option value="perbarang">Per Barang</option>
-                        <option value="perhargajual">Per Harga Jual</option>
-                        <option value="pertanggalkedaluarsa">Per Tanggal Kedaluarsa</option>
-                    </select>&nbsp;
-                    <input type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" class="form-control w-auto" wire:model.lazy="tanggal1">&nbsp;s/d&nbsp;
-                    <input type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" class="form-control w-auto" wire:model.lazy="tanggal2">
+            <select class="form-control w-auto" wire:model.lazy="persediaan">
+                <option value="">Semua Persediaan</option>
+                <option value="Apotek">Apotek</option>
+                <option value="Klinik">Klinik</option>
+            </select>&nbsp;
+            <select class="form-control w-auto" wire:model.lazy="jenis">
+                <option value="perbarang">Per Barang</option>
+                <option value="perhargajual">Per Harga Jual</option>
+                <option value="pertanggalkedaluarsa">Per Tanggal Kedaluarsa</option>
+            </select>&nbsp;
+            <input type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal1"
+                class="form-control w-auto">&nbsp;s/d&nbsp;
+            <input type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal2"
+                class="form-control w-auto">
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
@@ -35,7 +37,7 @@
         </div>
     </div>
     <x-modal.cetak judul="Laporan Barang Keluar" />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

@@ -15,20 +15,20 @@
                     class="btn btn-primary">
                     Tambah</a>&nbsp;
             @endrole
-                    <select class="form-control w-200px" wire:model.lazy="barang_id" x-init="$($el).selectpicker({
-                        liveSearch: true,
-                        width: 'auto',
-                        size: 10,
-                        container: 'body',
-                        style: '',
-                        showSubtext: true,
-                        styleBase: 'form-control'
-                    })">
-                        <option value="">Semua Barang</option>
-                        @foreach ($dataBarang as $item)
-                            <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
-                        @endforeach
-                    </select>
+            <select class="form-control w-auto" wire:model.lazy="barang_id" x-init="$($el).selectpicker({
+                liveSearch: true,
+                width: 'auto',
+                size: 10,
+                container: 'body',
+                style: '',
+                showSubtext: true,
+                styleBase: 'form-control'
+            })">
+                <option value="">Semua Barang</option>
+                @foreach ($dataBarang as $item)
+                    <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
+                @endforeach
+            </select>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
@@ -50,9 +50,7 @@
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
                             <td>{{ $item->barang_nama }}</td>
                             <td>{{ $item->nama }}</td>
-                            <td>{!! $item->utama == 1
-                                ? '<span class="badge bg-success">Ya</span>'
-                                : '' !!}</td>
+                            <td>{!! $item->utama == 1 ? '<span class="badge bg-success">Ya</span>' : '' !!}</td>
                             <td>{{ number_format($item->harga_jual, 0, ',', '.') }}</td>
                             <td>{!! $item->rasio_dari_terkecil == 1
                                 ? '<span class="badge bg-success">Satuan Terkecil</span>'
@@ -77,7 +75,7 @@
             {{ $data->links() }}
         </div>
     </div>
-    
+
     <div wire:loading>
         <x-loading />
     </div>
