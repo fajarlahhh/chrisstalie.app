@@ -43,16 +43,16 @@
                     @foreach ($data as $index => $row)
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
-                            <td>
+                            <td nowrap class="fs-11px">
                                 <ul>
                                     @foreach ($row->pengadaanPelunasanDetail as $subRow)
                                         <li>No. Tagihan : {{ $subRow->pengadaanTagihan->no_faktur }},
-                                            {{ $subRow->pengadaanTagihan->tanggal }} <strong>Rp.
+                                             <strong>Rp.
                                                 {{ number_format($subRow->tagihan) }}</strong></li>
                                     @endforeach
                                 </ul>
                             </td>
-                            <td>{{ $row->tanggal }}</td>
+                            <td nowrap>{{ $row->tanggal }}</td>
                             <td>{{ $row->catatan }}</td>
                             <td>{{ number_format($row->jumlah) }}</td>
                             <td>{{ $row->kodeAkunPembayaran->nama }}</td>
