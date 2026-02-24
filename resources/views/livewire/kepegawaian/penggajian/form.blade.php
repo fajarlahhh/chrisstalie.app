@@ -23,14 +23,14 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">Tanggal</label>
-                            <input class="form-control" type="date" wire:model="tanggal" />
+                            <input class="form-control" type="date" wire:model="tanggal" max="{{ date('Y-m-d') }}" />
                             @error('tanggal')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Periode</label>
-                            <input class="form-control" type="month" wire:model.live="periode" />
+                            <input class="form-control" type="month" wire:model.live="periode" max="{{ date('Y-m-d') }}" />
                             @error('periode')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
