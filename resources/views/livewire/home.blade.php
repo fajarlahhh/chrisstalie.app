@@ -117,13 +117,14 @@
                 <div class="panel-heading ui-sortable-handle">
                     <h4 class="panel-title">Pengadaan Barang Jatuh Tempo</h4>
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive fs-11px">
                     <table class="table table-panel align-middle mb-0">
                         <thead>
                             <tr>
-                                <th>No. Faktur</th>
+                                <th>No.</th>
+                                <th>No. Tagihan</th>
                                 <th>Vendor</th>
-                                <th>Tanggal Jatuh Tempo</th>
+                                <th>Tanggal</th>
                                 <th class="text-end">Total</th>
                                 <th></th>
                             </tr>
@@ -131,22 +132,23 @@
                         <tbody>
                             @foreach ($dataPengadaanBarangJatuhTempo as $row)
                                 <tr>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td nowrap="" nowrap>
-                                        {{ $row->uraian }}
+                                        {{ $row->no_faktur }}
                                     </td>
                                     <td nowrap="" nowrap>{{ $row->supplier?->nama }}</td>
                                     <td nowrap="" nowrap>
-                                        @if ($row->jatuh_tempo < date('Y-m-d'))
-                                            <span class="badge bg-danger">{{ $row->jatuh_tempo }}</span>
-                                        @elseif ($row->jatuh_tempo = date('Y-m-d'))
-                                            <span class="badge bg-warning">{{ $row->jatuh_tempo }}</span>
-                                        @elseif ($row->jatuh_tempo > date('Y-m-d'))
-                                            <span class="badge bg-success">{{ $row->jatuh_tempo }}</span>
+                                        @if ($row->tanggal_jatuh_tempo < date('Y-m-d'))
+                                            <span class="badge bg-danger">{{ $row->tanggal_jatuh_tempo }}</span>
+                                        @elseif ($row->tanggal_jatuh_tempo = date('Y-m-d'))
+                                            <span class="badge bg-warning">{{ $row->tanggal_jatuh_tempo }}</span>
+                                        @elseif ($row->tanggal_jatuh_tempo > date('Y-m-d'))
+                                            <span class="badge bg-success">{{ $row->tanggal_jatuh_tempo }}</span>
                                         @endif
                                     </td>
-                                    <td class="text-end" nowrap>Rp. {{ number_format($row->total_harga) }}</td>
+                                    <td class="text-end" nowrap>{{ number_format($row->total_tagihan) }}</td>
                                     <td>
-                                        <a href="/manajemenstok/pengadaanbrgdagang/pelunasan/form/{{ $row->id }}"
+                                        <a href="/manajemenstok/pengadaanbrgdagang/pelunasan/form?supplier={{ $row->supplier_id }}"
                                             class="btn btn-xs btn-primary">Lunasi</a>
                                     </td>
                                 </tr>

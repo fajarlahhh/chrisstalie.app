@@ -3,14 +3,15 @@
 namespace App\Livewire;
 
 use Carbon\Carbon;
-use App\Models\KeuanganJurnal;
-use App\Models\KepegawaianAbsensi;
 use Livewire\Component;
 use App\Models\KodeAkun;
-use App\Models\PengadaanPemesanan;
 use App\Models\Pembayaran;
-use App\Models\KeuanganJurnalDetail;
 use Livewire\Attributes\Url;
+use App\Models\KeuanganJurnal;
+use App\Models\PengadaanTagihan;
+use App\Models\KepegawaianAbsensi;
+use App\Models\PengadaanPemesanan;
+use App\Models\KeuanganJurnalDetail;
 
 class Home extends Component
 {
@@ -64,10 +65,10 @@ class Home extends Component
 
     public function getDataPengadaanBarangJatuhTempo()
     {
-        return PengadaanPemesanan::with('supplier', 'pengadaanPemesananDetail')
-            ->whereNotNull('jatuh_tempo')
-            ->where(fn($q) => $q->where('jatuh_tempo', '<=', date('Y-m-d', strtotime('+2 days')))
-                ->whereDoesntHave('pengadaanPelunasanPemesanan'))
+        return PengadaanTagihan::with('supplier', 'pengadaanPemesanan')
+            ->orderBy('tanggal_jatuh_tempo', 'asc')
+            ->where(fn($q) => $q->where('tanggal_jatuh_tempo', '<=', date('Y-m-d', strtotime('+2 days')))
+                ->whereDoesntHave('pengadaanPelunasanDetail'))
             ->get();
     }
 

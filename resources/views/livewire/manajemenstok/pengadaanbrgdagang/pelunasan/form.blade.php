@@ -26,7 +26,7 @@
                         style: '',
                         showSubtext: true,
                         styleBase: 'form-control'
-                    });" x-model="supplier" wire:model.live="supplier" >
+                    });" x-model="supplier" wire:model.live="supplier">
                         <option selected value="" hidden>-- Cari Data Supplier --</option>
                         @foreach ($dataSupplier as $row)
                             <option value="{{ $row['id'] }}">
@@ -36,22 +36,13 @@
                     </select>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered table-hover">
                         <tr>
-                            <th rowspan="2" class="w-5px"></th>
-                            <th rowspan="2" class="w-300px">No. Tagihan</th>
-                            <th rowspan="2" class="w-150px">Tanggal</th>
-                            <th rowspan="2" class="w-150px">Tgl. Jatuh Tempo</th>
-                            <th rowspan="2" class="w-100px">Total Harga Barang</th>
-                            <th rowspan="2" class="w-100px">PPN</th>
-                            <th rowspan="2" class="w-100px">Diskon</th>
-                            <th rowspan="2" class="w-100px">Total Tagihan</th>
-                            <th colspan="3">Detail Barang</th>
-                        </tr>
-                        <tr>
-                            <th>Nama Barang</th>
-                            <th class="text-end">Qty</th>
-                            <th class="text-end">Harga Satuan</th>
+                            <th class="w-5px"></th>
+                            <th class="w-300px">No. Tagihan</th>
+                            <th class="w-150px">Tanggal</th>
+                            <th class="w-150px">Tgl. Jatuh Tempo</th>
+                            <th>Detail</th>
                         </tr>
                         @foreach ($pengadaanTagihan as $item)
                             <tr>
@@ -70,28 +61,51 @@
                                 <td
                                     rowspan="{{ count($item['pengadaan_pemesanan']['pengadaan_pemesanan_detail']) + 1 }}">
                                     {{ $item['tanggal_jatuh_tempo'] }}</td>
-                                <td class="text-end"
-                                    rowspan="{{ count($item['pengadaan_pemesanan']['pengadaan_pemesanan_detail']) + 1 }}">
-                                    {{ number_format($item['total_harga_barang'], 2) }}</td>
-                                <td class="text-end"
-                                    rowspan="{{ count($item['pengadaan_pemesanan']['pengadaan_pemesanan_detail']) + 1 }}">
-                                    {{ number_format($item['diskon'], 2) }}</td>
-                                <td class="text-end"
-                                    rowspan="{{ count($item['pengadaan_pemesanan']['pengadaan_pemesanan_detail']) + 1 }}">
-                                    {{ number_format($item['ppn'], 2) }}</td>
-                                <td class="text-end"
-                                    rowspan="{{ count($item['pengadaan_pemesanan']['pengadaan_pemesanan_detail']) + 1 }}">
-                                    {{ number_format($item['total_tagihan'], 2) }}</td>
+                                <td>
+                                    <table class="table table-bordered fs-11px">
+                                        <thead>
+                                            <tr>
+                                                <th>Nama Barang</th>
+                                                <th>Satuan</th>
+                                                <th>Harga Satuan</th>
+                                                <th>Qty</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        @foreach ($item['pengadaan_pemesanan']['pengadaan_pemesanan_detail'] as $q)
+                                            <tr>
+                                                <td nowrap>{{ $q['barang']['nama'] }}</td>
+                                                <td nowrap>{{ $q['barang_satuan']['nama'] }}</td>
+                                                <td class="text-end w-70px" nowrap>
+                                                    {{ number_format($q['harga_beli'], 2) }}</td>
+                                                    <td class="text-end w-70px" nowrap>{{ $q['qty'] }}</td>
+                                                <td class="text-end w-70px" nowrap>
+                                                    {{ number_format($q['harga_beli'] * $q['qty'], 2) }}</td>
+                                            </tr>
+                                        @endforeach
+                                        <tr>
+                                            <th colspan="4">Total Harga Barang</th>
+                                            <th class="text-end w-70px" nowrap>
+                                                {{ number_format($item['total_harga_barang'], 2) }}</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="4">Diskon</th>
+                                            <th class="text-end w-70px" nowrap>
+                                                {{ number_format($item['diskon'], 2) }}</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="4">PPN</th>
+                                            <th class="text-end w-70px" nowrap>
+                                                {{ number_format($item['ppn'], 2) }}</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="4">Total Tagihan</th>
+                                            <th class="text-end w-70px" nowrap>
+                                                {{ number_format($item['total_tagihan'], 2) }}</th>
+                                        </tr>
+                                    </table>
+                                </td>
                             </tr>
-                            @foreach ($item['pengadaan_pemesanan']['pengadaan_pemesanan_detail'] as $q)
-                                <tr>
-                                    <td>{{ $q['barang']['nama'] }}</td>
-                                    <td class="text-end w-70px" nowrap>{{ $q['qty'] }}
-                                        {{ $q['barang_satuan']['nama'] }}</td>
-                                    <td class="text-end w-70px" nowrap>
-                                        {{ number_format($q['harga_beli'], 2) }}</td>
-                                </tr>
-                            @endforeach
                         @endforeach
                     </table>
                 </div>
@@ -117,7 +131,8 @@
                         style: '',
                         showSubtext: true,
                         styleBase: 'form-control'
-                    });" x-model="kode_akun_pembayaran_id" wire:model="kode_akun_pembayaran_id" data-width="100%">
+                    });" x-model="kode_akun_pembayaran_id"
+                        wire:model="kode_akun_pembayaran_id" data-width="100%">
                         <option hidden selected>-- Pilih Metode Pembayaran --</option>
                         @foreach ($dataKodePembayaran as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}

@@ -38,7 +38,7 @@ class Form extends Component
 
     public function updatedSupplier()
     {
-        $this->pengadaanTagihan = PengadaanTagihan::with('pengadaanPemesanan.pengadaanPemesananDetail.barang', 'pengadaanPemesanan.pengadaanPemesananDetail.barangSatuan')->where('supplier_id', $this->supplier)->get()->toArray();
+        $this->pengadaanTagihan = PengadaanTagihan::with('pengadaanPemesanan.pengadaanPemesananDetail.barang', 'pengadaanPemesanan.pengadaanPemesananDetail.barangSatuan')->whereDoesntHave('pengadaanPelunasan')->where('supplier_id', $this->supplier)->get()->toArray();
 
         $this->dispatch('set-total-tagihan', value: collect($this->pengadaanTagihan));
     }
