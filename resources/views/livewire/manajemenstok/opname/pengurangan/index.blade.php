@@ -33,10 +33,11 @@
                         <th>Catatan</th>
                         <th>Barang</th>
                         <th>Satuan</th>
-                        <th>Qty</th>
                         <th>No. Batch</th>
                         <th>Tgl. Kedaluarsa</th>
+                        <th>Qty</th>
                         <th class="text-end">Harga Beli</th>
+                        <th class="text-end">Total Harga Beli</th>
                         <th>No. Jurnal</th>
                         <th class="w-10px"></th>
                     </tr>
@@ -49,10 +50,11 @@
                             <td class="text-nowrap w-100px">{{ $row->catatan }}</td>
                             <td class="text-nowrap w-100px">{{ $row->barang->nama }}</td>
                             <td class="text-nowrap w-100px">{{ $row->barangSatuan->nama }}</td>
-                            <td class="text-nowrap w-100px">{{ $row->qty }}</td>
                             <td class="text-nowrap w-100px">{{ $row->no_batch }}</td>
                             <td class="text-nowrap w-100px">{{ $row->tanggal_kedaluarsa }}</td>
+                            <td class="text-nowrap w-100px">{{ $row->qty }}</td>
                             <td class="text-nowrap w-100px text-end">{{ number_format($row->harga, 0, ',', '.') }}</td>
+                            <td class="text-nowrap w-100px text-end">{{ number_format($row->harga * $row->qty, 0, ',', '.') }}</td>
                             <td class="text-nowrap w-100px"><a
                                     href="/jurnalkeuangan?bulan={{ substr($row->created_at, 0, 7) }}&cari={{ $row->keuanganJurnal?->nomor }}"
                                     target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
