@@ -261,6 +261,36 @@ return [
                     ]
                 ],
                 [
+                    "title" => "Statistik",
+                    "urutkan" => true,
+                    "sub_menu" => [
+                        [
+                            "title" => "Penggunaan Alat",
+                            "method" => ["Index"],
+                        ],
+                        [
+                            "title" => "Penggunaan Bahan",
+                            "method" => ["Index"],
+                        ],
+                        [
+                            "title" => "Tindakan",
+                            "method" => ["Index"],
+                        ],
+                        [
+                            "title" => "Barang",
+                            "method" => ["Index"],
+                        ],
+                        [
+                            "title" => "Kunjungan Pasien",
+                            "method" => ["Index"],
+                        ],
+                    ]
+                ],
+                [
+                    "title" => "Laporan Harian Kas",
+                    "method" => ["Index"],
+                ],
+                [
                     "title" => "Laporan Harian Kas",
                     "method" => ["Index"],
                 ],

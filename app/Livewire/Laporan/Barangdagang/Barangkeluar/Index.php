@@ -68,7 +68,7 @@ class Index extends Component
                     })->sortBy('barang_id')->groupBy('barang_id')->toArray();
                 break;
             case 'perbarang':
-                return Stok::with(['barang.barangSatuanUtama.satuanKonversi'])
+                return Stok::with(['barang.barangSatuanUtama'])
                     ->when($this->persediaan, fn($q) => $q->whereHas('barang', fn($q) => $q->where('persediaan', $this->persediaan)))
                     ->whereNotNull('stok_keluar_id')
                     ->whereBetween('tanggal_keluar', [$this->tanggal1, $this->tanggal2])
@@ -77,7 +77,7 @@ class Index extends Component
                         return [
                             'nama' => $q->barang->nama,
                             'barang_id' => $q->barang->nama . $q->barang_id,
-                            'satuan' => $q->barang->barangSatuanUtama->nama . ' ' . $q->barang->barangSatuanUtama->konversi_satuan,
+                            'satuan' => $q->barang->barangSatuanUtama->nama,
                             'qty' => 1 / $q->barang->barangSatuanUtama->rasio_dari_terkecil,
                         ];
                     })
