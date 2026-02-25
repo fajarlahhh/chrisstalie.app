@@ -49,7 +49,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Kas/Bank</label>
+                    <label class="form-label">Kas/Bank/Biaya</label>
                     <select class="form-control" x-init="$($el).selectpicker({
                         liveSearch: true,
                         width: 'auto',
