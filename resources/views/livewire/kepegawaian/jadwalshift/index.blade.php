@@ -23,8 +23,16 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="kepegawaian_pegawai_id">Pegawai</label>
-                    <select wire:model.live="kepegawaian_pegawai_id" id="kepegawaian_pegawai_id" class="form-control">
-                        <option value="">-- Pilih Pegawai --</option>
+                    <select wire:model.live="kepegawaian_pegawai_id" x-init="$($el).selectpicker({
+                        liveSearch: true,
+                        width: 'auto',
+                        size: 10,
+                        container: 'body',
+                        style: '',
+                        showSubtext: true,
+                        styleBase: 'form-control'
+                    })" id="kepegawaian_pegawai_id" class="form-control">
+                        <option hidden selected>-- Pilih Pegawai --</option>
                         @foreach ($dataPegawai as $row)
                             <option value="{{ $row['id'] }}">
                                 {{ $row['nama'] }}

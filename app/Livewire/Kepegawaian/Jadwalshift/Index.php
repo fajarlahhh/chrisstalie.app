@@ -22,7 +22,7 @@ class Index extends Component
     {
         $this->bulan = $this->bulan ?: date('Y-m');
         $this->dataShift = Shift::orderBy('nama')->get()->toArray();
-        $this->dataPegawai = KepegawaianPegawai::orderBy('nama')->get()->toArray();
+        $this->dataPegawai = KepegawaianPegawai::aktif()->orderBy('nama')->get()->toArray();
         $this->kepegawaian_pegawai_id = $this->kepegawaian_pegawai_id ?: $this->dataPegawai[0]['id'];
         $this->getDetail($this->bulan, $this->kepegawaian_pegawai_id);
     }
