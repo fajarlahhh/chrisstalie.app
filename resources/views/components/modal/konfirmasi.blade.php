@@ -3,13 +3,13 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body text-center">
-                    <h3>Apakah Anda yakin ingin melanjutkan?</h3>
+                    <h6>Harap Periksa Kembali Data Yang Anda Inputkan!!!<br>Jika sudah yakin benar, silakan klik tombol <strong class="text-success">Ya</strong> untuk melanjutkan atau <strong class="text-danger">Batal</strong> untuk membatalkan.</h6>
                     <input type="submit" class="btn btn-primary" x-init="$($el).on('click', function() {
                         $('#modal-konfirmasi').modal('hide');
                     })" value="Ya">
                     <input type="button" class="btn btn-danger" x-init="$($el).on('click', function() {
                         $('#modal-konfirmasi').modal('hide');
-                    })" value="Tidak">
+                    })" value="Batal">
                 </div>
             </div>
         </div>
