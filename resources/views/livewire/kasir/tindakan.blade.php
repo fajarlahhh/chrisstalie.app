@@ -14,18 +14,15 @@
             <td nowrap>
                 <span x-text="row.nama"></span>
                 <br>
-                <small>
-                    <small class="text-nowrap">
-                        &nbsp;&nbsp;&nbsp;- Dokter : <span
-                            x-text="row.dokter_id ? dataNakes.find(n => n.id == row.dokter_id)?.nama : '-'"></span>
-                        <br>
-                        &nbsp;&nbsp;&nbsp;- Perawat : <span
-                            x-text="row.perawat_id ? dataNakes.find(n => n.id == row.perawat_id)?.nama : '-'"></span>
-                        <br>
-                        <span class="text-danger">Catatan : <span
-                            x-text="row.catatan ? row.catatan : '-'"></span></span>
-                    </small>
-                </small>
+                <span class="text-muted">
+                    &nbsp;&nbsp;&nbsp;- Dokter : <span
+                        x-text="row.dokter_id ? dataNakes.find(n => n.id == row.dokter_id)?.nama : '-'"></span>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;- Perawat : <span
+                        x-text="row.perawat_id ? dataNakes.find(n => n.id == row.perawat_id)?.nama : '-'"></span>
+                    <br>
+                    Catatan : <span x-text="row.catatan ? row.catatan : '-'"></span>
+                </span>
             </td>
             <td>
                 <input type="text" class="form-control text-end" :value="formatNumber(row.biaya)" disabled>

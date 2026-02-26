@@ -12,18 +12,15 @@
             <td class="text-nowrap" colspan="4">
                 <span x-text="row.resep"></span>. <span x-text="row.nama"></span>
                 <br>
-                <small>
-                    <small class="text-muted">
-                        &nbsp;&nbsp;&nbsp;Catatan : <span x-text="row.catatan"></span>
-                    </small>
-                </small>
+                <span class="text-muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Catatan : <span x-text="row.catatan"></span></span>
             </td>
             <td>
                 <input type="text" class="form-control text-end"
                     :value="formatNumber(row.barang.reduce((sum, b) => sum + (b.harga * b.qty), 0))" disabled>
             </td>
             <td class="w-10px">
-                <button type="button" class="btn btn-danger btn-sm mt-2px" wire:loading.attr="disabled" @click="hapusResep(index)">
+                <button type="button" class="btn btn-danger btn-sm mt-2px" wire:loading.attr="disabled"
+                    @click="hapusResep(index)">
                     <i class="fa fa-times"></i>
                 </button>
             </td>
