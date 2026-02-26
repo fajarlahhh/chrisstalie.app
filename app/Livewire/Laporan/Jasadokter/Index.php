@@ -28,6 +28,7 @@ class Index extends Component
     {
         return Tindakan::with('registrasi.pasien', 'pembayaran', 'tarifTindakan', 'dokter')
             ->where('biaya_jasa_dokter', '>', 0)
+            ->whereNotNull('dokter_id')
             ->whereHas('pembayaran', fn($r) => $r
                 ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2]))
             ->get()->map(fn($row) => [
