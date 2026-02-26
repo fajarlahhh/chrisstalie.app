@@ -39,14 +39,14 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Tanggal Lahir</label>
-                        <input class="form-control" type="date" value="{{ $data->pasien->tanggal_lahir }}" disabled />
+                        <input class="form-control" type="date" value="{{ $data->pasien->tanggal_lahir->format('Y-m-d') }}" disabled />
                         @error('tanggal_lahir')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Jenis Kelamin</label>
-                        <input class="form-control" type="text" value="{{ $data->pasien->jenis_kelamin }}" disabled />                        
+                        <input class="form-control" type="text" value="{{ $data->pasien->jenis_kelamin }}" disabled />
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Alamat</label>
