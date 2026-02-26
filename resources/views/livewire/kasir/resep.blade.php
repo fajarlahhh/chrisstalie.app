@@ -8,7 +8,6 @@
     <template x-for="(row, index) in resep" :key="`resep-${index}`">
         <tr>
             <td x-text="tindakan.length + index + 1"></td>
-            </td>
             <td class="text-nowrap" colspan="4">
                 <span x-text="row.resep"></span>. <span x-text="row.nama"></span>
                 <br>
