@@ -21,7 +21,8 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">Nama</label>
-                            <input class="form-control" type="text" wire:model="nama" @if ($data->exists) disabled @endif />
+                            <input class="form-control" type="text" wire:model="nama"
+                                @if ($data->exists) disabled @endif />
                             @error('nama')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -58,7 +59,15 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Kategori</label>
-                            <select class="form-control" wire:model="kode_akun_id"
+                            <select class="form-control" wire:model="kode_akun_id" x. x-init="$($el).selectpicker({
+                                liveSearch: true,
+                                width: 'auto',
+                                size: 10,
+                                container: 'body',
+                                style: '',
+                                showSubtext: true,
+                                styleBase: 'form-control'
+                            })"
                                 @if ($data->exists) disabled @endif data-width="100%">
                                 <option hidden selected>-- Tidak Ada Kode Akun --</option>
                                 @foreach ($dataKodeAkun as $item)
@@ -73,6 +82,15 @@
                         <div class="mb-3">
                             <label class="form-label">Sumber Dana</label>
                             <select class="form-control" wire:model="kode_akun_sumber_dana_id"
+                                x-model="kode_akun_sumber_dana_id" x-init="$($el).selectpicker({
+                                    liveSearch: true,
+                                    width: 'auto',
+                                    size: 10,
+                                    container: 'body',
+                                    style: '',
+                                    showSubtext: true,
+                                    styleBase: 'form-control'
+                                })"
                                 @if ($data->exists) disabled @endif data-width="100%">
                                 <option hidden selected>-- Tidak Ada Kode Akun --</option>
                                 @foreach ($dataKodeAkunSumberDana as $item)
@@ -165,9 +183,9 @@
                 </button>
                 <x-alert />
             </div>
-        
-        <x-modal.konfirmasi />
-    </form>
+
+            <x-modal.konfirmasi />
+        </form>
     </div>
 
     <div wire:loading>

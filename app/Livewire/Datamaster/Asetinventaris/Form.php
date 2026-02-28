@@ -9,10 +9,12 @@ use App\Class\JurnalkeuanganClass;
 use App\Models\AsetPenyusutan;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
+use App\Traits\KodeakuntransaksiTrait;
 
 class Form extends Component
 {
     use CustomValidationTrait;
+    use KodeakuntransaksiTrait;
     public $data, $dataKodeAkun = [], $dataKodeAkunSumberDana = [], $dataKodeAkunPenyusutan = [];
     public $nama;
     public $tanggal_perolehan;
@@ -143,9 +145,13 @@ class Form extends Component
         $this->tanggal_perolehan = date('Y-m-d');
         $this->data = $data;
         $this->fill($this->data->toArray());
-        $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '15100')->get()->toArray();
-        $this->dataKodeAkunSumberDana = KodeAkun::detail()->whereIn('parent_id', ['11100', '20000', '15300', '21200 '])->get()->toArray();
-        $this->dataKodeAkunPenyusutan = KodeAkun::detail()->whereIn('parent_id', ['15200'])->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::detail()
+        ->whereIn('id', $this->getKodeAkunTransaksiByKategori(['Aset Tetap'])->pluck('kode_akun_id'))->get()->toArray();
+        $this->dataKodeAkunSumberDana = KodeAkun::detail()
+        ->whereIn('id', $this->getKodeAkunTransaksiByTransaksi(['Hutang Ke Pemegang Saham', 'Pembayaran','Aset Dalam Penyelesaian'])->pluck('kode_akun_id'))->get()->toArray();
+        $this->dataKodeAkunPenyusutan = KodeAkun::detail()
+        ->whereIn('id', $this->getKodeAkunTransaksiByKategori(['Penyusutan Aset'])->pluck('kode_akun_id'))
+        ->get()->toArray();
     }
 
     public function render()
