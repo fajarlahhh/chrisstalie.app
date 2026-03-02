@@ -20,7 +20,7 @@ class Index extends Component
 {
     use KodeakuntransaksiTrait;
     #[Url]
-    public $bulan, $tutup_buku = false;
+    public $bulan, $tutup_buku = 0;
 
     public function mount()
     {
@@ -127,7 +127,7 @@ class Index extends Component
                     'kredit_jurnal' => $kreditJurnal,
                     'kredit' => $kreditNeraca,
                     'debet' => $debetNeraca,
-                    'tutup_buku' => $this->tutup_buku ? 1 : 0,
+                    'tutup_buku' => $this->tutup_buku,
                     'pengguna_id' => auth()->id(),
                     'created_at' => now(),
                     'updated_at' => now(),
