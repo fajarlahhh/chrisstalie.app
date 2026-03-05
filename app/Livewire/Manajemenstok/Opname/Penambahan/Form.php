@@ -10,23 +10,29 @@ use App\Class\JurnalkeuanganClass;
 use App\Models\BarangSatuan;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
+use App\Models\StokKeluar;
 
 class Form extends Component
 {
     use CustomValidationTrait;
     public $dataBarang = [], $barang, $dataStok = [], $barang_id, $dataBarangSatuan = [];
 
-    public $satuan_id, $satuan, $tanggal, $qty_masuk, $catatan, $harga_beli = 0, $tanggal_kedaluarsa, $no_batch, $transaksi = 'pemindahan';
+    public $satuan_id, $satuan, $tanggal, $qty_masuk, $catatan, $harga_beli = 0, $tanggal_kedaluarsa, $no_batch, $transaksi = 'pemindahan', $stok_keluar_id, $dataStokKeluar = [];
 
     public function updatedTransaksi($value)
     {
         if ($value == 'pemindahan') {
             $this->harga_beli = null;
-        }else{
+        } else {
             $this->harga_beli = 0;
         }
     }
-    
+
+    public function updatedStokKeluarId($value)
+    {
+        $this->harga_beli = collect($this->dataStokKeluar)->where('id', $value)->first()['harga'];
+    }
+
     public function updatedBarangId($value)
     {
         $this->barang = collect($this->dataBarang)->firstWhere('id', $value);
@@ -47,6 +53,13 @@ class Form extends Component
     {
         $this->barang_id = '';
         $this->dataBarang = Barang::orderBy('nama')->get()->toArray();
+        $this->dataStokKeluar = StokKeluar::whereNull('pembayaran_id')->whereNotIn('id', (StokMasuk::whereNull('pengadaan_pemesanan_id')->whereNotNull('stok_keluar_id')->orWhere('transaksi', 'pemindahan')->get()->pluck('stok_keluar_id')))->with('barang', 'barangSatuan')->orderBy('id', 'desc')->get()->map(fn($q) => [
+            'id' => $q->id,
+            'qty' => $q->qty,
+            'harga' => $q->harga,
+            'nama' => $q->barang->nama,
+            'satuan' => $q->barangSatuan->nama,
+        ])->sortBy('nama')->toArray();
     }
 
 
@@ -63,6 +76,12 @@ class Form extends Component
             'transaksi' => 'required',
         ]);
 
+        if ($this->transaksi == 'pemindahan') {
+            $this->validateWithCustomMessages([
+                'stok_keluar_id' => 'required',
+            ]);
+        }
+
         DB::transaction(function () {
 
             $stok = [];
@@ -77,8 +96,9 @@ class Form extends Component
             $data->pengadaan_pemesanan_id = null;
             $data->barang_satuan_id = $this->satuan_id;
             $data->rasio_dari_terkecil = $this->satuan['rasio_dari_terkecil'];
-            $data->harga_beli = $this->harga_beli;
+            $data->harga_beli = $this->transaksi == 'pemindahan' ? $this->dataStokKeluar[$this->stok_keluar_id]['harga'] : 0;
             $data->transaksi = $this->transaksi;
+            $data->stok_keluar_id = $this->stok_keluar_id;
             $data->pengguna_id = auth()->id();
             $data->save();
 

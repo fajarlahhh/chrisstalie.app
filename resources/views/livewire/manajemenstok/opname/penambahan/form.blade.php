@@ -16,36 +16,59 @@
         </div>
         <form wire:submit="submit">
             <div class="panel-body">
-                <div class="mb-3">
-                    <label class="form-label">Transaksi</label>
-                    <select class="form-control" wire:model.live="transaksi">
-                        <option value="" selected hidden>-- Pilih Transaksi --</option>
-                        <option value="pemindahan">Pemindahan Stok</option>
-                        <option value="opname">Opname</option>
-                    </select>
-                    @error('harga_jual')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Cari Barang</label>
-                    <div wire:ignore>
-                        <select class="form-control" wire:model="barang_id" x-init="$($el).select2({
-                            width: '100%',
-                            dropdownAutoWidth: true
-                        });
-                        $($el).on('change', function(e) {
-                            $wire.set('barang_id', e.target.value);
-                        });">
-                            <option value="" selected hidden>-- Pilih Barang --</option>
-                            @foreach ($dataBarang as $item)
-                                <option value="{{ $item['id'] }}">{{ $item['nama'] }} </option>
-                            @endforeach
+                <div x-data="{ transaksi: @entangle('transaksi') }">
+                    <div class="mb-3">
+                        <label class="form-label">Transaksi</label>
+                        <select class="form-control" wire:model.live="transaksi" x-model="transaksi">
+                            <option value="" selected hidden>-- Pilih Transaksi --</option>
+                            <option value="pemindahan">Pemindahan Stok</option>
+                            <option value="opname">Opname</option>
                         </select>
+                        @error('harga_jual')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
-                    @error('barang_id')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                    <div class="mb-3" x-show="transaksi != 'pemindahan'" x-transition>
+                        <label class="form-label">Cari Barang</label>
+                        <div wire:ignore>
+                            <select class="form-control" wire:model="barang_id" x-init="$($el).select2({
+                                width: '100%',
+                                dropdownAutoWidth: true
+                            });
+                            $($el).on('change', function(e) {
+                                $wire.set('barang_id', e.target.value);
+                            });">
+                                <option value="" selected hidden>-- Pilih Barang --</option>
+                                @foreach ($dataBarang as $item)
+                                    <option value="{{ $item['id'] }}">{{ $item['nama'] }} </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @error('barang_id')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="mb-3" x-show="transaksi == 'pemindahan'" x-transition>
+                        <label class="form-label">Cari Stok Keluar</label>
+                        <div wire:ignore>
+                            <select class="form-control" wire:model="stok_keluar_id" x-init="$($el).select2({
+                                width: '100%',
+                                dropdownAutoWidth: true
+                            });
+                            $($el).on('change', function(e) {
+                                $wire.set('stok_keluar_id', e.target.value);
+                            });">
+                                <option value="" selected hidden>-- Pilih Stok Keluar --</option>
+                                @foreach ($dataStokKeluar as $item)
+                                    <option value="{{ $item['id'] }}">{{ $item['nama'] }} (Rp. {{ $item['harga'] }} x
+                                        {{ $item['qty'] }} {{ $item['satuan'] }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @error('barang_id')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
                 @if ($barang_id)
                     <div class="mb-3">
@@ -87,7 +110,7 @@
                 <div class="mb-3">
                     <label class="form-label">Harga Beli</label>
                     @if ($transaksi == 'pemindahan')
-                        <input type="text" class="form-control text-end" wire:model="harga_beli">
+                        <input type="text" class="form-control text-end" wire:model="harga_beli" disabled>
                     @else
                         <input type="text" class="form-control text-end" wire:model="harga_beli" disabled>
                     @endif
