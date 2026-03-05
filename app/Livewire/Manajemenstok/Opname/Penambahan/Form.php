@@ -16,8 +16,17 @@ class Form extends Component
     use CustomValidationTrait;
     public $dataBarang = [], $barang, $dataStok = [], $barang_id, $dataBarangSatuan = [];
 
-    public $satuan_id, $satuan, $tanggal, $qty_masuk, $catatan, $harga_beli, $tanggal_kedaluarsa, $no_batch, $transaksi;
+    public $satuan_id, $satuan, $tanggal, $qty_masuk, $catatan, $harga_beli = 0, $tanggal_kedaluarsa, $no_batch, $transaksi = 'pemindahan';
 
+    public function updatedTransaksi($value)
+    {
+        if ($value == 'pemindahan') {
+            $this->harga_beli = null;
+        }else{
+            $this->harga_beli = 0;
+        }
+    }
+    
     public function updatedBarangId($value)
     {
         $this->barang = collect($this->dataBarang)->firstWhere('id', $value);
