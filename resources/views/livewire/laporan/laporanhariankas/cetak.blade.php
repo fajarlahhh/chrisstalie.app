@@ -40,7 +40,7 @@
                 <td>- Pendapatan {{ $index }}</td>
                 <td class="text-end">{{ number_format($row->sum('total_tagihan')) }}</td>
                 <td>
-                    Diskon : {{ number_format($row->sum('diskon')) }}
+                    Diskon : {{ number_format($row->sum(fn($q) => $q['total_diskon_barang'] + $q['total_diskon_tindakan'] + $q['diskon'])) }}
                 </td>
             </tr>
         @endforeach
@@ -48,7 +48,7 @@
             <th></th>
             <th>Total Pendapatan</th>
             <th class="text-end">{{ number_format($dataPendapatan->sum('total_tagihan')) }}</th>
-            <th>Total Diskon : {{ number_format($dataPendapatan->sum('diskon')) }}</th>
+            <th>Total Diskon : {{ number_format($dataPendapatan->sum(fn($q) => $q['total_diskon_barang'] + $q['total_diskon_tindakan'] + $q['diskon'])) }}</th>
         </tr>
         <tr>
             <td class="w-10px">2.</td>
