@@ -28,7 +28,7 @@ class Form extends Component
             'id',
             PengadaanTagihan::select('supplier_id')
                 ->distinct()
-                ->whereDoesntHave('pengadaanPelunasan')
+                ->whereDoesntHave('pengadaanPelunasanDetail')
                 ->get()
                 ->pluck('supplier_id')
         )->orderBy('nama')->get()->toArray();
