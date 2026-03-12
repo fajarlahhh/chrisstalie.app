@@ -109,11 +109,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Harga Beli</label>
-                    @if ($transaksi == 'pemindahan')
-                        <input type="text" class="form-control text-end" wire:model="harga_beli" disabled>
-                    @else
-                        <input type="text" class="form-control text-end" wire:model="harga_beli">
-                    @endif
+                    <input type="text" class="form-control text-end" wire:model="harga_beli">
                     @error('harga_beli')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
