@@ -273,6 +273,17 @@ class Index extends Component
                 abort(400, 'Pembayaran sudah ada');
             }
 
+            // Pendapatan paket bundling dicatat melalui tindakan paketnya.
+            // Jika paket bundling tidak memiliki tindakan, uang paket masuk ke kas tetapi pendapatannya tidak terjurnal.
+            $paketTanpaTindakan = collect($this->registrasi_paket_perawatan)
+                ->where('jenis', 'Bundling')
+                ->filter(fn($paket) => collect($this->tindakan)->where('paket_perawatan_id', $paket['paket_perawatan_id'])->isEmpty())
+                ->pluck('nama');
+            if ($paketTanpaTindakan->isNotEmpty()) {
+                $this->addError('registrasi_paket_perawatan', 'Paket bundling ' . $paketTanpaTindakan->implode(', ') . ' belum memiliki tindakan. Tambahkan tindakan paket pada registrasi terlebih dahulu.');
+                return;
+            }
+
             $this->validateWithCustomMessages(
                 [
                     'bahan.*.qty' => [
@@ -644,6 +655,15 @@ class Index extends Component
 
     private function jurnalKeuangan($pembayaranId, $detail)
     {
+        $totalDebet = round(collect($detail)->sum('debet'), 2);
+        $totalKredit = round(collect($detail)->sum('kredit'), 2);
+        if ($totalDebet != $totalKredit) {
+            // Dilempar di dalam DB::transaction sehingga pembayaran & stok keluar ikut dibatalkan
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'jurnal' => 'Jurnal pembayaran tidak seimbang (debet ' . number_format_id($totalDebet) . ', kredit ' . number_format_id($totalKredit) . ', selisih ' . number_format_id($totalDebet - $totalKredit) . '). Periksa kembali paket, tindakan, dan resep pada registrasi ini.',
+            ]);
+        }
+
         JurnalkeuanganClass::insert(
             jenis: 'Pendapatan',
             sub_jenis: 'Pendapatan ' . ($this->registrasi ? (collect($this->barang)->count() > 0 ? 'Pasien Tindakan/Resep Obat & Penjualan Barang' : 'Pasien Tindakan/Resep Obat') : 'Penjualan Barang Bebas'),
